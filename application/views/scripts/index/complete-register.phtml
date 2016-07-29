@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<?php $customer_session  = new Zend_Session_Namespace('customer');
+	$user_mail = $customer_session->cus_email;
+	$discount = $customer_session->cus_discount;
+	?>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/css/default.css"/>
+    <title>Complete Registration</title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">Complete Registration</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- page heading-->
+        <h2 class="page-heading">
+            <span class="page-heading-title2">Complete Registration</span>
+        </h2>
+        <!-- ../page heading-->
+        <div class="page-content">
+            <div class="row">
+                <div class="col-sm-8">
+                <div class="box-authentication_address">
+                	 
+                	  <form action="<?php echo $this->url(array('controller'=>'index','action'=>'complete-register')); ?>" method="post">
+                    			<div class="complete_register"> 
+                    			<h3>1. Personal details</h3>
+                    			<table class="find-address">
+                    				<tr>	
+                    					<td class="address-title"><label for="name">Title*</label></td>
+                    					<td>
+	                    					<select id="title" name="title" required="required"  class="form-control">
+											   <option value="1">Mr</option>
+											    <option value="2">Ms</option>
+											     <option value="3">Mss</option>
+											</select>
+										</td>
+                    				</tr>
+                    				<tr>	
+                    					<td class="address-title"><label for="name">First Name*</label></td>
+                    					<td>
+	                    					<input id="first_name" name="first_name" type="text" required="required" class="form-control">
+										</td>
+                    				</tr>
+                    				<tr>
+                    					<td class="address-title">
+                    					<label for="name">Last Name*</label>
+                    					</td>
+                    					<td>
+                    					<input id="last_name" name="last_name" type="text"  required="required" class="form-control">
+                    					</td>
+                    				</tr>
+                    			</table>
+                    		</div>
+                    		 	<div class="complete_register">  
+                    		 	<h3>2. Terms and Conditions of Use</h3>
+                    		 	<table class="find-address">
+                    				<tr>
+                    					<td>
+                    						<p>To protect all our customers, use of the Tesco Online Grocery sites and services is subject to the <a href="<?php echo $this->baseUrl().'/index/termcondition'?>" target="blank">Terms & Conditions.</a></p>
+                    					</td>
+                    				</tr>
+                    			</table>
+                    			</div>
+	                    			<table class="find-address">
+	                    				<tr>
+	                    					<td width="10%">
+	                    						<input id="check_condiction" name="check_condiction" type="checkbox" value="1" onclick="comfirmCondiction();">
+	                    					</td>
+	                    					<td>
+	                    						<p>I have read and agree to be bound by terms and conditions above. I agree with the processing of my personal data and want to be registered.</p>
+	                    					</td>
+	                    				</tr>
+	                    			</table>
+                    			<button class="btn_condiction" id="btn_submit" disabled="disabled">Complete Registration</button>
+                    	</form>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="box-authentication_address">
+                        <h3>Help</h3>
+                          <br />
+                        <h4>Personal details:</h4>
+                        <p>We are committed to protecting your privacy. If you have any question about data protection, please read our <a href="<?php echo $this->baseUrl().'/index/termcondition'?>" target="blank">Terms & Conditions.</a></p>
+                        
+                        <br/>
+                        <h4>Terms and Conditions</h4>
+                        <p>Please read through the <a href="<?php echo $this->baseUrl().'/index/termcondition'?>" target="blank">Terms & Conditions</a> before registering.</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./page wapper-->
+
+<!-- Script-->
+<script>
+
+function comfirmCondiction(){ //alert(1);
+	if(document.getElementById('check_condiction').checked== 1){
+		//alert(1);
+	document.getElementById('btn_submit').disabled=false;
+	document.getElementById("btn_submit").classList.remove("btn_condiction");
+	document.getElementById("btn_submit").classList.add("button");
+	}
+	else{
+		document.getElementById('btn_submit').disabled=true;
+		document.getElementById("btn_submit").classList.add("btn_condiction");
+		document.getElementById("btn_submit").classList.remove("button");
+	}
+	//document.getElementById("btn_submit").classList.remove("display-contact");
+}
+var url_district='<?php echo $this->url(array('controller'=>'index','action'=>'get-district')); ?>';
+function getDistrict(){
+	province_id = $('#province').val();
+	$.ajax({
+        url: url_district,
+        type: "post",
+        data: {'province_id':province_id},
+        success: function(data){
+        	val = $.parseJSON(data);
+			//alert(val);
+			document.getElementById('district').innerHTML= val;
+		},
+		error: function(err) {
+			//alert(err);
+		}
+	});
+}
+
+
+function checkPass()
+{
+    //Store the password field objects into variables ...
+    var pass1 = document.getElementById('password');
+    var pass2 = document.getElementById('c_password');
+    //Store the Confimation Message Object ...
+    var message = document.getElementById('confirmMessage');
+    //Set the colors we will be using ...
+    var goodColor = "#66cc66";
+    var badColor = "#ff6666";
+    //Compare the values in the password field 
+    //and the confirmation field
+    if(pass1.value == pass2.value){
+        //The passwords match. 
+        //Set the color to the good color and inform
+        //the user that they have entered the correct password 
+    	document.getElementById('btn_submit').disabled=false;
+        pass2.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+        message.innerHTML = "Passwords Match!"
+    }else{
+        //The passwords do not match.
+        //Set the color to the bad color and
+        //notify the user.
+    	document.getElementById('btn_submit').disabled=true;
+        pass2.style.backgroundColor = badColor;
+        message.style.color = badColor;
+        message.innerHTML = "Passwords Do Not Match!"
+    }
+}  
+var url_email = '<?php echo $this->url(array('controller'=>'customer','action'=>'get-cus-email')); ?>';
+function getEmail(){
+	email = $('#emmail_register').val();
+	 var message = document.getElementById('error');
+	//alert(1);
+	$.ajax({
+        url: url_email,
+        type: "post",
+        data: {'email':email},
+        success: function(data){
+            val = $.parseJSON(data);
+				if(val==1){
+					//alert(1);
+					document.getElementById('btn_submit').disabled=true;
+					 message.innerHTML = "  Email already use !";
+				}
+				else{
+					document.getElementById('btn_submit').disabled=false;
+					message.innerHTML = "";
+				}
+
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<?php 
+$this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+	$url_save = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'addphpajax'));
+	//print_r($this->item);
+?>
+<?php //$this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+ echo '<title>'. $this->tr->translate("PRODUCTS").'</title>';
+?>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
+<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
+<style>
+}
+.bg{ background:#eeeeee; border:1px solid #000;}
+
+select{ width:100%;}
+table tr.head-title{ background: none repeat scroll 0% 0% rgba(213, 249, 244, 1); padding:2px;}
+table tr td.null-border{ background: #fff; border-left:none !important;}
+table .set-style td,table .set-style th{ padding: 5px; border:1px solid #ccc;}
+table .display_form-add{display:none;}
+</style>
+<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<script type="text/javascript" src="js/dojo/dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
+<script type="text/javascript">
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.DateTextBox");
+dojo.require("dojo.html");
+dojo.require("dojo.parser");
+dojo.require("dojo.NodeList-manipulate");
+require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
+var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
+dojo.ready(function(){
+	//addRow(1);
+// 	addRow(2);
+// 	addRow(3);
+// 	addRow(4);
+new dijit.form.FilteringSelect({
+    store: make_store,
+    autoComplete: true,                        
+    required: true,
+    id: "make",
+    name: "make",           
+    class: 'fullside',            
+    onChange: function() {  
+    	make_id = dijit.byId('make').get('value');
+    	if(make_id==-1){
+			dijit.byId('pop_make').show();
+	     }
+    	else {
+    		dijit.byId('model').attr('value','');
+    		getallModel(make_id);
+    	}           
+    }
+}, "make");
+});
+//model controll
+dojo.ready(function(){
+	
+	});  
+
+</script>
+<form id='add_food' action="<?php echo $url_save; ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<table  width="100%" style="margin-top:10px;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend ><strong>Add Food</strong></legend>
+					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
+								<tr>
+									<td>Quote Reference</td>
+									<td>
+										<select tabindex="24" name="quote_no" id="quote_no" onChange="addRowAjax();" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Select Quote Reference Code">
+										    <option value="" label="Select Quote Reference Code"></option>
+										    <?php if(!empty($this->qute_code)) foreach($this->qute_code as $row){?>
+										    <option value="<?php echo $row['id']?>" label="<?php echo $row['quot_code'];?>"><?php echo $row['quot_code'];?></option>
+										    <?php }?>
+										</select>
+									</td>
+									<td>Purchase No </td>
+									<td><input type="text" name="pu_code" id="pu_code" dojoType="dijit.form.TextBox" class="fullside" /></td>
+								</tr>
+					</table>
+					
+					
+			<table id="table_data" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;">
+				
+			</table>	
+			<table>
+				<tr>
+									<td colspan="6" align="center">
+									<input type="reset" label="Clear" dojoType="dijit.form.Button" 
+										 iconClass="dijitIconClear" /> 
+								    <input type="submit" value="SAVE_CLOSE" label="Save&Close" id="save_close" dojoType="dijit.form.Button" name="save_close"
+										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+									<input type="submit" value="SAVE_NEW" label="Save&New" id="save_new" dojoType="dijit.form.Button" name="save_new"
+										 iconClass="dijitEditorIcon dijitEditorIconSave"/>
+									</td>
+								</tr>
+			</table>
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>
+
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_make" >
+		<form id='frm_make' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td>Make Title</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_make" name="txt_make" value="" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="SAVE" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addMake();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+dojo.require("dijit.form.Textarea"); 
+</script>
+<script type="text/javascript">
+
+var url_item = '<?php echo $this->url(array('module'=>'purchase','controller'=>'index','action'=>'get-item-purchase')); ?>';
+var title = 0;
+
+function addRowAjax(){
+	//document.getElementById("table_data").innerHTML='';
+	dojo.query("#table_data").append('');
+	id = dijit.byId('quote_no').get('value');
+		dojo.xhrPost({
+			url: url_item,
+			content:{
+	 			'id':id
+	 			},
+			handleAs:"json",
+			load: function(data) {
+				indexs =0;
+				var address = null;
+				old_item = null;
+				old_su_id = null;
+				old_deliver = null;
+				for(var i=0;i<data.length;i++){
+					
+					
+					data_addr = data[i].address;
+					
+					addr_name = myTrim(data_addr.split(' ').join('_')); // Replace all spacial character and space 
+					temp ='<tr style="background: rgb(78, 157, 246) none repeat scroll 0% 0%; color:white; font-weight:800;"><td colspan=""> Ceremony Address : '+data[i].address+'';
+						temp += '<input style="float:right" type="button" label="Add Row" value="Add New Row" dojoType="dijit.form.Button" iconClass="dijitIconEditProperty" onclick="addRow('+"'"+addr_name+"'"+','+indexs+');" />';
+						temp += '<input type="text" name="identity_'+addr_name+'" id="identity_'+addr_name+'" value=""> <input type="text" name="index_id_'+addr_name+'" id="index_id_'+addr_name+'" />';
+					temp+= '</td></tr>';
+					
+		 		   temp_h = '<tr>';
+		 		  	temp_h += '<td>';
+		 		  		temp_h += '<table id="tables_'+addr_name+'" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;">';
+			 		  		temp_h += '<tr style="background:#ccc;">';
+				 		  		temp_h += '<td>No</td>';
+				 		  		temp_h += '<td>Item Name</td>';
+				 		  		temp_h += '<td>QTY</td>';
+				 		  		temp_h += '<td>Supplier</td>';
+				 		  		temp_h += '<td>Date</td>';
+				 		  		temp_h += '<td>Location</td>';
+				 		  		temp_h += '<td>Note</td>';
+						 	temp_h += '</tr>';
+		 		  		temp_h += '</table>';
+		 		  	temp_h += '</td>';
+		 		   temp_h += '</tr>';
+		 		
+				  if(address != data[i].address){
+			 		    num =0;
+						col = 0;
+						indexs++;
+		 		    	dojo.query("#table_data").append(temp);
+						 dojo.query("#table_data").append(temp_h);
+		 		    	address = data[i].address;
+		 		    }
+					num++;
+		 		 temp_d='';
+					//alert(old_item+"="+data[i].item_id);
+						
+						if(old_item==data[i].item_id){
+							if(old_su_id==data[i].su_id){
+								if(old_deliver==data[i].deliver_day){
+									
+									no = num -1;
+									new_qty = parseFloat(dijit.byId("item_qty_"+addr_name+"_"+no).get('value'));
+									//alert(new_qty);
+									new_qty = new_qty +parseFloat(data[i].qty*data[i].num_table);
+									dijit.byId("item_qty_"+addr_name+"_"+no).attr('value',new_qty);
+									continue;
+									//return false;
+								}
+								
+							}
+							
+						}
+						col++;
+						
+						old_item=data[i].item_id;
+						old_su_id=data[i].su_id;
+						old_deliver=data[i].deliver_day;
+				 		  		temp_d += '<td>'+col+' </td>';
+				 		  		temp_d += '<td>'+data[i].pro_name_kh+'<input type="hidden" name="item_id_'+addr_name+"_"+num+'" id="item_id_'+addr_name+"_"+num+'" value="'+data[i].item_id+'"></td>';
+				 		  		temp_d += '<td><input type="text" dojoType="dijit.form.TextBox" class="[]" name="item_qty_'+addr_name+"_"+num+'" id="item_qty_'+addr_name+"_"+num+'" value="'+data[i].qty * data[i].num_table+'"></td>';
+				 		  		temp_d += '<td>';
+				 		  			temp_d += '<select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+addr_name+"_"+num+'" name="supplier_name_'+addr_name+"_"+num+'" style="width:100%;">';
+				 		  				temp_d +='<option value="" label="Select Supplier"></option>';
+				 		  				<?php foreach($this->supplier as $key){?>
+				 		  					temp_d += '<option value="<?php echo $key['id']?>"><?php echo $key['company_name'];?></option>';
+				 		  				<?php }?>
+				 		  			temp_d += '</select>';
+				 		  		temp_d += '</td>';
+				 		  		temp_d += '<td><input dojoType="dijit.form.DateTextBox" class="fullside" name="daliver_date_'+addr_name+"_"+num+'" id="daliver_date_'+addr_name+"_"+num+'" ></td>';
+				 		  		temp_d += '<td><input dojoType="dijit.form.TextBox" class="fullside" name="location_'+addr_name+"_"+num+'" id="location_'+addr_name+"_"+num+'" value="'+data[i].address+'" ></td>';
+				 		  		temp_d += '<td><input dojoType="dijit.form.TextBox" class="fullside" name="note_'+addr_name+"_"+num+'" id="note_'+addr_name+"_"+num+'" ></td>';
+//						 	
+						temp_t = '<tr id="row_'+addr_name+'_'+num+'">';
+						temp_t += '</tr>';
+		 		  dojo.query("#tables_"+addr_name).append(temp_t);
+				
+				  dojo.html.set(dojo.byId("row_"+addr_name+"_"+num),temp_d , {
+					 parseContent: true,
+				  });
+				  
+				if($("#identity_"+addr_name).val()!='') {
+					var identity = $("#identity_"+addr_name).val();
+					$("#identity_"+addr_name).val(identity+','+num);
+					$("#index_id_"+addr_name).val(num);
+				} else {$("#identity_"+addr_name).val(num);}
+				  dijit.byId("supplier_name_"+addr_name+"_"+num).attr('value',data[i].su_id);
+				  if(data[i].deliver_day !="" && data[i].deliver_day != null && data[i].deliver_day != "null" ){
+					  var date = new Date(data[i].date_do);
+					  day = (60 * 60 * 24 * 1000) * data[i].deliver_day;
+					  tomorrow = new Date(date.getTime() + day);
+					  dijit.byId("daliver_date_"+addr_name+"_"+num).attr('value',tomorrow);
+				  }else{  
+					dijit.byId("daliver_date_"+addr_name+"_"+num).attr('value',data[i].date_do); 
+				  }
+		 	  	}
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+}
+
+
+var col = 0;
+var no = 0;
+var title = 0;
+func='';
+// tmp = '';
+// temp='';
+// 
+function addRow(addr) {
+
+index = $("#index_id_"+addr).val();
+num = parseInt(index)+1;
+template='';
+		var ids =$("#identity_"+addr).val();
+		var arraysn = ids.split(',');
+		for(var j=0;j<arraysn.length;j++){
+		}
+		inx = arraysn.length + 1;
+		col = arraysn.length + 1;
+	  	//num++;
+	  	//col++;
+			template+='<td>'+inx+'</td>';
+			template+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+addr+num+'" name="item_name_'+addr+num+'" style="width:100%;">';
+			template+='<option value="-1">Select Food</option>';
+			<?php foreach($this->food as $key){?>
+			template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
+			<?php }?>
+			template+='</td>';
+			template+='<td><input type="text" required="true" name="qty_'+addr+num+'" id="qty_'+addr+num+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
+			template+='<td><select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+addr+num+'" name="supplier_name_'+addr+num+'" style="width:100%;" placeHolder="Select Supplier">';
+				template+='<option value="" label="Select Supplier"></option>';
+			<?php foreach($this->supplier as $key){?>
+				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['company_name'];?></option>';
+			<?php }?>
+			template+='</td>';
+			template += '<td><input dojoType="dijit.form.DateTextBox" class="fullside" name="daliver_date_'+addr+"_"+num+'" id="daliver_date_'+addr+"_"+num+'" value="now" ></td>';
+			template += '<td><input dojoType="dijit.form.TextBox" class="fullside" name="location_'+addr+"_"+num+'" id="location_'+addr+"_"+num+'"  ></td>';
+			template += '<td><input dojoType="dijit.form.TextBox" class="fullside" name="note_'+addr+"_"+num+'" id="note_'+addr+"_"+num+'" ></td>';
+
+			tmp='<tr id="row_'+addr+"_"+num+'">';
+			tmp+="</tr>";
+			dojo.query("#tables_"+addr).append(tmp);
+		if($("#identity_"+addr).val()!='') {
+			var identity = $("#identity_"+addr).val();
+			$("#identity_"+addr).val(identity+','+num);
+		} else {$("#identity_"+addr).val(num);}
+		dojo.html.set(dojo.byId("row_"+addr+"_"+num),template , {
+		     parseContent: true,
+		});
+		
+		$("#index_id_"+addr).val(num);
+		//$("#table_"+addr).append(template);
+		//document.getElementById("table_"+addr).innerHTML = template;
+ }
+
+function hideDialog() {		
+	dijit.byId("popup_service").hide();
+}
+ function deleteRecord(index) {
+		var identity = $('#identity').val();
+		var arrays = identity.split(',');
+		for(var i=0;i<arrays.length;i++) {
+		if(arrays[i] == index) arrays.splice(i,1);
+		}
+		var strings = arrays.join(',');
+		$('#identity').val(strings);
+		dojo.query("#row"+index).remove();
+		//calculateDiscount(index);
+}
+ function doAmount(index){
+	 price = dijit.byId('price'+index).get('value');
+	 qty = dijit.byId('qty'+index).get('value');
+	 total = parseFloat(price)*parseFloat(qty);
+	 dijit.byId('amount'+index).attr('value',total);
+ }
+ 
+ function myTrim(x) {
+    return x.replace(/[^\w\s]/gi, '');
+}
+</script>

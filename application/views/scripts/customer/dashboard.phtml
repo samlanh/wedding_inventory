@@ -1,0 +1,269 @@
+ <?php 
+ 	$customer_data = $this->customer_data;
+ ?>
+ <style>
+	.left-side > .left-block > ul{list-style-type: none !important; padding:0 !important}
+	.left-side > .left-block > ul > li{padding: 5px 23px !important;}
+	.left-side > .left-block > ul > li :BEFORE{border-bottom: 1px solid !important;}
+	.left-side > .left-block > ul > li a{color:#C7081B}
+</style>
+<section class="content">
+        <div class="container">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid"> 
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                      </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav pull-right">
+                            <li><a href="<?php echo $this->baseUrl()."/customer/dashboard"?>">Home</a></li>
+                            <li><a href="#" data-toggle="dropdown">Pages </a></li>
+                            <li><a href="#" data-toggle="dropdown">Inventory </a></li>
+                            <li><a href="#">Services</a></li>
+                            <li><a href="#">Our Team</a></li>
+                            <li><a href="#" data-toggle="dropdown">Blog </a>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse --> 
+                </div>
+                <!-- /.container-fluid --> 
+            </nav>
+        </div>
+        <div class="header_shadow"></div>
+</section>
+<section class="content">
+    <div class="container">
+        <div class="inner-page row">
+            <div class="row">
+                <div class="inventory-wide-sidebar-right">
+                    <div class=" col-md-9" style="padding-left: 0px !important;">
+                        <div class="car_listings sidebar clearfix">
+                            <div class="inventory margin-bottom-10 margin-top-10 clearfix scroll_effect fadeIn animated" style="visibility: visible; animation-name: fadeIn;">
+                                <div class=" col-md-6" style="margin: 10px 0;">
+                                <?php if(!empty($customer_data['old_photo'])){?>
+		                        	<img alt="" src="<?php echo $this->baseUrl()."/images/".$customer_data['old_photo']?>" style="width: 50px;"><span class="secondary_text"><?php echo $this->customer_name;?></span>
+		                        
+		                        <?php }else{?>
+		                        	<img alt="" src="<?php echo $this->baseUrl();?>/images/customer/no-profile-img.gif">
+		                        <?php }?>
+		                        <h5>International Contact</h5>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											Address Line 1 :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["address1"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											Address Line 2 :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["address2"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											City :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["i_city"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											Zip/Postal Code :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["i_zipcode"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											State/Province/Region :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["i_state"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+										   Country :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["country"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											Cell Phone :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["i_phone"];?>
+	                                    </div>
+                                	</div>
+		                        
+		                         
+		                        </div>
+		                        <div class=" col-md-6"><?php //print_r($customer_data);?>
+						            <h5>Customer Information</h5>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+	                                        First Name :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["first_name"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+	                                        Last Name :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["last_name"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+	                                        Occupation :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["occupation"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+	                                        Gender :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo ($customer_data["sex"]==1)?"Male":"Female";?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+	                                        Date of Birth :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["dob"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+	                                        Place of Birth :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["pob"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+	                                        Nationality :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["nationality"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+	                                        Company :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["company_name"];?>
+	                                    </div>
+                                	</div>
+						            <h5>Contact Info</h5>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											Group No :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["group_num"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											Home :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["house_num"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											Street :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["street"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											Commune :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["commune"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											District :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["district"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											Province :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["province_id"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+											Cell Phone No :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["phone"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+	                                        E-mail :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["email"];?>
+	                                    </div>
+                                	</div>
+                                	<div class="select-wrapper clearfix">
+	                                     <div class="col-md-6">
+	                                        Fax :
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<?php echo $customer_data["fax"];?>
+	                                    </div>
+                                	</div>
+                                	
+						        </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inventory-sidebar col-md-3 margin-top-10 left-side" style="border: 1px solid #ccc;border-radius:10px; padding-left:0">
+                        <div class="left_inventory left-block">
+                        	<h4 style="background: #ccc;margin: 0px;border-radius: 5px 5px 0px 0px !important; padding:5px 8px; color:#C7081B">Action</h4>
+                            <ul>
+                            	<li><a href="<?php echo $this->baseUrl();?>/customer/edit">Edit your profile</a></li>
+                            	<li><a href="<?php echo $this->baseUrl();?>/customer/changpassword">Change password</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--container ends--> 
+</section>

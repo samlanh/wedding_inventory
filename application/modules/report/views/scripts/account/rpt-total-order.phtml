@@ -1,0 +1,103 @@
+<?php $filter = $this->frm_search;
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$frm=$this->frm;
+ $dateNow = date("d-M-Y");
+?>
+<script>
+dojo.require("dijit.form.DateTextBox");
+</script>
+<meta charset="utf-8">
+<title><?php echo $tr->translate("ACCOUNT STATEMENT");?></title>
+<form id="list" name="list" action="<?php echo $this->url(array('module'=>'report','controller'=>'account','action'=>'rpt-total-order')); ?>" dojoType="dijit.form.Form" method="post">
+	<table>
+	  <tr>	
+	  		<td><ipput type="text" dojoType="dijit.form.TextBox" name="search" id="search" value="<?php if (!empty($this->txtsearch))  echo $this->txtsearch?>"/></td>
+	  		<td><ipput  dojoType="dijit.form.DateTextBox" name="from_date" id="from_date" value="<?php if (!empty($this->from_date)){echo $this->from_date;}else{ echo "now";}?>" /></td>
+	  		<td><ipput  dojoType="dijit.form.DateTextBox" name="end_date" id="end_date" value="<?php if (!empty($this->end_date)){echo $this->end_date;}else{ echo "now";}?>" /></td>
+	  		<td><input type="submit" value="save_close" name="save_close" label="<?php echo $tr->translate('SEARCH');?>" dojoType="dijit.form.Button" 
+										iconClass="dijitSearchIcon dijitSearchIcon" /></td>
+	  </tr>
+  	</table>
+</form>
+<div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+<div id="divPrint" style="width: 100%;">
+<style>
+.style{
+	line-height: 20px;font-size: 10px !important;
+	font-family: 'Khmer OS Battambang';
+}
+th{padding: 5px;}
+</style>
+<table style="font-family: 'Khmer OS Content'; width:100%;">
+	<tr>
+    	<td align="center">
+    		<table width="100%" style="font-family: 'Khmer OS Battambang';" style="margin:0; padding:0;border:none;">
+            	<tr>
+                	<td width="20%"><img style="width: 255px; position: absolute; z-index: 99;" alt="Aplus Fresh Shop" src="<?php echo $this->baseUrl()?>/assets/images/aplush_logo.png" /></td>
+                	<td width="60%" valign="top">
+                	<h2 style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("អេផ្លើស ហ្រ្វេស សប");?></label></h2>
+                	</td>
+                    <td width="20%"></td>
+                </tr> 
+                <tr>
+                	<td colspan="3">&nbsp;</td>
+                </tr>
+            	<tr>
+            		<td width="20%"></td>
+                	<td width="60%" valign="top">
+                	<h2 style="text-align:center; font-size:14px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("EFG Express Food Group");?></label></h2>
+                	<h2 style="text-align:center; font-size:14px; font-family:'Khmer MEF2'"><?php echo $tr->translate("Account Statemetnt ");if (!empty($this->from_date)){  echo date('d-M-Y', strtotime($this->from_date));}else{ echo date("d-M-Y");}echo "  - "; if (!empty($this->end_date)){  echo date('d-M-Y', strtotime($this->end_date));}else{ echo date("d-M-Y");}?></h2>
+                	</td>
+                    <td width="20%"></td>
+                </tr> 
+                <tr>
+                	<td colspan="3">
+		              </td>
+		           </tr>   
+            </table>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <table id="exportExcel" border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:10px; white-space: nowrap;" width="100%" cellspacing="0">
+                 <tr bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:5px 0px; ">
+                    <th >&nbsp;<?php echo $tr->translate("Date");?>&nbsp;</th>
+                    <th ><?php echo $tr->translate("Customer");?></th>
+                    <th ><?php echo $tr->translate("Invoice/CM#");?></th>
+                    <th ><?php echo $tr->translate("0-30");?></th>
+                    <th ><?php echo $tr->translate("Amount Due");?></th>
+                 </tr>
+               <?php $net_total=0; $balance_total=0; if (!empty($this->order))  foreach($this->order as $row){
+                //for($i=0; $i<10; $i++){?>
+              
+					<tr style="line-height: 18px;">
+					<td><a style=" text-decoration: none; color:#000;" href="<?php echo $this->url(array('controller'=>'account','action'=>'rpt-invoice','id'=>$row['id']));?>" target="blank">&nbsp;<?php echo date('d-M-Y',strtotime($row['order_date']));?>&nbsp;</a></td>
+					<td><a style=" text-decoration: none; color:#000;" href="<?php echo $this->url(array('controller'=>'account','action'=>'rpt-invoice','id'=>$row['id']));?>" target="blank">&nbsp;<?php echo $row['name'];?>&nbsp;</a></td>
+					<td align="center"><a style=" text-decoration: none; color:#000;" href="<?php echo $this->url(array('controller'=>'account','action'=>'rpt-invoice','id'=>$row['id']));?>" target="blank">&nbsp;<?php echo $row['invoice_no'];?>&nbsp;</a></td>
+					<td>&nbsp;$<span style="text-align: right; float: right;"><?php echo number_format($row['grand_total'],2);?></span>&nbsp;</td>
+					<td>&nbsp;$<span style="text-align: right; float: right;"><?php echo number_format($row['balance_due'],2);?></span>&nbsp;</td>
+					</tr>
+					<?php 
+						$net_total=$net_total+$row['grand_total'];
+						$balance_total=$balance_total+$row['balance_due'];
+					?>
+				<?php } ?>
+				<tr>
+					<td colspan="3" style="text-align:center; font-size:14px; font-weight:bold; border-left: #fff solid 1px; border-right: #fff solid 1px; border-bottom: #fff solid 1px;">Express Food Group</td>
+					<td style=" font-size:14px; font-weight:bold; border-right: #fff solid 1px; border-bottom:double;">&nbsp;$<span style="  text-align: right; float: right;"><?php echo number_format($net_total,2);?></span>&nbsp;</td>
+					<td style=" font-size:14px; font-weight:bold; border-right: #fff solid 1px; border-bottom:double">&nbsp;$<span style="text-align: right; float: right;"><?php echo number_format($balance_total,2);?></span>&nbsp;</td>
+				</tr>
+            </table>
+            <br />
+               <table align="center" width="100%">
+				   <tr style="font-size: 12px;">
+				        <th style="width:20%;text-align:center;  font-family:'Khmer MEF2'"><?php echo $tr->translate('VERIFYED BY');?></th>
+				        <th></th>
+				        <th style="width:20%;text-align:center;font-family:'Khmer MEF2'"><?php echo $tr->translate('PREPARE BY');?></th>
+				   </tr>
+			</table>
+    	</td>
+    </tr>
+</table>
+</div>
+</div>

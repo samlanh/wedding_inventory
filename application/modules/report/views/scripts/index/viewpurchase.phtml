@@ -1,0 +1,159 @@
+<?php $filter = $this->frm_search;
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$frm=$this->frm;
+$db = new Report_Model_DbTable_DbQuote();
+$url_save = $this->url(array('module'=>'report','controller'=>'index','action'=>'viewpurchase'));
+?>
+<style>
+.absolute{ position: absolute !important; top: 210px !important;}
+.tbl_first{width:20% !important;}
+.tbl_second{width:60% !important;}
+</style>
+
+<div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+<div id="divPrint" style="width: 100%;">
+<style>
+.bg{ background:#eeeeee; border:1px solid #000;}
+
+select{ width:100%;}
+table tr.head-title{ background: none repeat scroll 0% 0% rgba(213, 249, 244, 1); padding:2px;}
+table tr td.null-border{ background: #fff; border-left:none !important;}
+table .set-style td,table .set-style th{ padding: 5px; border:1px solid #ccc;}
+table .display_form-add{display:none;}
+td .td-left{text-align:right !important;}
+</style>
+<script type="text/javascript" src="js/dojo/dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
+<script type="text/javascript">
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.DateTextBox");
+dojo.require("dojo.html");
+dojo.require("dojo.parser");
+dojo.require("dojo.NodeList-manipulate");
+require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
+
+dojo.ready(function(){
+	addRowAjax();
+});
+</script>
+<form id='add_food' action="<?php echo $url_save; ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<table style="font-family: 'Khmer OS Content'; width:100%;">
+	<tr>
+    	<td>
+    		<table style="border-collapse:collapse; font-size:12px; white-space: nowrap;line-height:16px;" width="100%" cellspacing="0">
+    			<tr>
+    				<td>Purchase Code</td>
+    				<td><input type="text" value="" namr="pu_code" dojoType="dijit.form.TextBox" class="fullside"></td>
+    				<td>Supplier :</td>
+    				<td>
+    					<select dojoType="dijit.form.FilteringSelect" id="supplier_name" name="supplier_name" style="width:100%;" placeHolder="Select Supplier">';
+							<option value="-1" label="Select Supplier">All Supplier</option>';
+							<?php foreach($this->supplier as $key){?>
+							<option value="<?php echo $key['id']?>"><?php echo $key['company_name'];?></option>';
+							<?php }?>
+    				</td>
+    				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="SEARCH" label="SEARCH" id="save_close" dojoType="dijit.form.Button" name="save_close" iconClass="dijitEditorIcon dijitEditorIconSearch" /> </td>
+    			</tr>
+    		</table>
+    		
+    		<table id="table_data" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;">
+				
+			</table>
+        </td>
+    </tr>
+     
+</table>
+</form>
+</div>
+</div>
+
+<script>
+function addRowAjax(){
+	data = <?php print_r(Zend_Json::encode($this->rows));?>;
+	inx =0 ;
+				indexs =0;
+				var su_id = null;
+				old_item = null;
+				old_address = null;
+				old_deliver = null;
+				old_date_deliver=null;
+				old_deliver_addr = null;
+				old_deliver_date = null;
+				old_su_id = null;
+				for(var i=0;i<data.length;i++){
+					inx++;
+					if(su_id != data[i].su_id){
+						indexs++;
+						addr_name = "address_temp_"+indexs;
+					   temp ='<tr style="background: rgb(78, 157, 246) none repeat scroll 0% 0%; color:white; font-weight:800;"><td colspan=""> Ceremony Address : '+data[i].supplier_name+'</td></tr>';
+			 		   temp_h = '<tr>';
+			 		  	temp_h += '<td>';
+			 		  		temp_h += '<table id="tables_'+addr_name+'" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;">';
+				 		  		temp_h += '<tr style="background:#ccc;">';
+					 		  		temp_h += '<td width="2%">No</td>';
+					 		  		temp_h += '<td>Item Name</td>';
+					 		  		temp_h += '<td>QTY</td>';
+					 		  		//temp_h += '<td>Location</td>';
+					 		  		//temp_h += '<td>Date</td>';
+					 		  		temp_h += '<td>Note</td>';
+							 	temp_h += '</tr>';
+			 		  		temp_h += '</table>';
+			 		  	temp_h += '</td>';
+			 		   temp_h += '</tr>';
+						
+			 		    num =0;
+						col = 0;
+		 		    	dojo.query("#table_data").append(temp);
+						dojo.query("#table_data").append(temp_h);
+						su_id = data[i].su_id;
+		 		    }
+					num++;
+					if(old_su_id == data[i].su_id){
+						if(old_item==data[i].item_id){
+							if(old_address==data[i].deliver_address){
+								if(old_deliver_date == data[i].deliver_date){
+									no = num -1;
+									new_qty = parseFloat(data[i].qty);
+									new_qty = new_qty +parseFloat(data[i].qty);
+									//continue;
+								}
+							}
+						}
+					}
+						old_item=data[i].item_id;
+						old_address=data[i].deliver_address;
+						old_deliver_date = data[i].deliver_date;
+						old_su_id = data[i].su_id;
+						
+						if((old_date_deliver != data[i].deliver_date) || (old_deliver_addr != data[i].deliver_address)){
+							//alert(1);
+							temp_date = '<td colspan="3">Deliver Address : '+data[i].deliver_address+'</td>';
+							temp_date += '<td colspan="">Delivery Date : '+data[i].deliver_date+'</td>';
+						temp_a = '<tr id="rows_'+addr_name+'_'+num+'" style="background: rgb(231, 138, 245);color: rgb(255, 255, 255);">';
+						temp_a += '</tr>';
+						dojo.query("#tables_"+addr_name).append(temp_a);
+						dojo.query("#rows_"+addr_name+'_'+num).append(temp_date);
+						
+						old_date_deliver = data[i].deliver_date;
+						old_deliver_addr = data[i].deliver_address;
+						}
+						col++;
+						temp_d='';
+				 		  		temp_d += '<td>'+col+' </td>';
+				 		  		temp_d += '<td>'+data[i].pro_name_kh+'</td>';
+				 		  		temp_d += '<td>'+data[i].qty+'</td>';
+				 		  		//temp_d += '<td>'+data[i].deliver_address+'</td>';
+				 		  		//temp_d += '<td>'+data[i].deliver_date+'</td>';
+				 		  		temp_d += '<td>'+data[i].note+'</td>';
+						temp_t = '<tr id="row_'+addr_name+'_'+num+'" >';
+						temp_t += '</tr>';
+						
+		 		  dojo.query("#tables_"+addr_name).append(temp_t);
+				
+				  dojo.html.set(dojo.byId("row_"+addr_name+"_"+num),temp_d , {
+					 parseContent: true,
+				  });
+		 	  	}
+			
+}
+</script>

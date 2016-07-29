@@ -1,0 +1,119 @@
+<title>Job Announcement</title>
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">Job Announcement</span>
+        </div>
+            <div class="order-detail-content">
+            	
+                <?php 
+                	if($this->id ==""){
+				?>
+                 <h2 class="page-heading"><span class="page-heading-title2">Job Announcement</span></h2>
+				
+				<table class="table table-bordered table-responsive cart_summary" style="font-size:12px;" >
+					<thead style="font-size:12px;">
+                	<tr>
+                		<th style="padding:10px 5px;">No.</th>
+                		<th style="padding:10px 5px;">Job Title</th>
+                		<th style="padding:10px 5px;">Salary</th>
+                		<th style="padding:10px 5px;">Hiring</th>
+                		<th style="padding:10px 5px;">Term</th>
+                		<th style="padding:10px 5px;">Closing Date</th>
+                	</tr>
+                	</thead>    
+                	<?php $i=0;
+                	foreach ($this->showdata as $row){ ?>
+                	<tr>
+                		<td><?php echo $i+1;$i++;?></td>
+                		<td align="left">&nbsp;&nbsp;<a href="<?php echo $this->baseUrl();?>/index/job/id/<?php echo $row["id"];?>"><?php echo $row["job_title"];?></a></td>
+                		<td><?php echo $row["salary"];?></td>
+                		<td><?php echo $row["hiring"];?></td>
+                		<td>
+                			<?php if($row["job_type"]==1){
+                				echo "Full Time";
+                			}else echo "Part Time";?>
+                		</td>
+                		<td><?php echo date('d-M-Y',strtotime($row["closting_date"]));?></td>
+                	</tr> 
+                		
+                <?php }?>
+                </table>
+               	<?php }else{ $row = $this->showdata;?>
+               			<h3> <?php echo $row['job_title']?></h3>
+               			<div class="table-responsive">
+                           <table class="table">
+                               <tbody>
+                                   <tr>
+                                       <td>Salary</td>
+                                       <td><?php echo $row["salary"];?></td>
+                                   </tr>
+                                   <tr>
+                                       <td>Hiring </td>
+                                       <td><?php echo $row["hiring"];?></td>
+                                   </tr>
+                                   <tr>
+                                       <td>Term </td>
+                                       <td><?php if($row["job_type"]==1){
+				                				echo "Full Time";
+				                			}else echo "Part Time";?></td>
+                                   </tr> 
+                                   <tr>
+                                       <td>Post Date </td>
+                                       <td><?php echo $row["posting_date"];?></td>
+                                   </tr>
+                                   <tr>
+                                       <td>Closing Date </td>
+                                       <td><?php echo $row["closting_date"];?></td>
+                                   </tr>
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                   </tr>
+                                </tbody>
+                           </table>
+                            </div>
+                            <div class="bs-example bs-example-tabs example-tabs margin-top-10">
+		                        <ul class="nav nav-tabs" id="myTab">
+		                            <li class="active"><a href="#introduction" data-toggle="tab">Introduction</a></li>
+		                            <li><a href="#job_description" data-toggle="tab">Job Descriptions</a></li>
+		                            <li><a href="#job_respone" data-toggle="tab">Job Responsibilities</a></li>
+		                            <li><a href="#job_require" data-toggle="tab">Job Requirements</a></li>
+		                            <li><a href="#job_duty" data-toggle="tab">Duty Station</a></li>
+		                            <li><a href="#benifit" data-toggle="tab">Salary and Benifit</a></li>
+		                            <li><a href="#apply" data-toggle="tab">How To Apply</a></li>
+		                        </ul>
+		                        <div class="tab-content margin-top-15 margin-bottom-20" id="myTabContent">
+		                            <div class="tab-pane fade in active" id="introduction">
+		                             	<?php echo $row["introduction"]?>
+		                            </div>
+		                            <div class="tab-pane fade " id="job_description">
+		                                  <?php echo $row["job_purpose"]?>
+		                            </div>
+		                            <div class="tab-pane fade" id="job_respone">
+		                                 <?php echo $row["job_respone"]?>
+		                            </div>
+		                            <div class="tab-pane fade " id="job_require">
+		                                 <?php echo $row["job_requirement"]?>
+		                            </div>
+		                             <div class="tab-pane fade " id="job_duty">
+		                                 <?php echo $row["job_duty"]?>
+		                            </div>
+		                             <div class="tab-pane fade " id="benifit">
+		                                 <?php echo $row["benifit"]?>
+		                            </div>
+		                            
+		                            <div class="tab-pane fade" id="apply">
+		                            	<?php echo $row["how_applay"]?>
+		                            </div>
+		                            
+		                        </div>
+                    </div>
+               	<?php }?>
+        </div>
+    </div>
+    <!--container ends--> 
+ </div>

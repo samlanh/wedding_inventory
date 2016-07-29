@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<?php 
+$customer_session  = new Zend_Session_Namespace('customer');
+$user_name = $customer_session->customer_name;
+$cus_id = $customer_session->customer_id;
+$cus_lastname = $customer_session->cus_lasttname;
+$cus_firstname = $customer_session->cus_firstname;
+$cus_sex = $customer_session->cus_sex;
+$cus_email = $customer_session->cus_email;
+$cus_phone=$customer_session->cus_phone;
+$photo = $customer_session->cus_photo;
+$remark=$customer_session->cus_remark;
+$home=$customer_session->houseno;
+$street=$customer_session->street;
+$district = $customer_session->districts;
+$province = $customer_session->province;
+$branch = $customer_session->branch_name;
+$company = $customer_session->company;
+
+
+$product_session = new Zend_Session_Namespace('product_add_cart');
+$product_session->cart_item;
+$count = count($product_session->cart_item);
+?>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/css/default.css"/>
+    <title>User Profile</title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">User Profile</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- page heading-->
+        <h2 class="page-heading">
+            <span class="page-heading-title2">User Profile</span>
+        </h2>
+        <!-- ../page heading-->
+        <div class="page-content">
+            <div class="row">
+            	<div class="bs-example bs-example-tabs example-tabs">
+                      <div class="col-sm-4">
+                      	<div class="box-profile">
+                     		<h3>Your Infomation</h3>
+					        <table id="profile">
+					        	<?php if (!empty($company)){?>
+					        	 <tr>
+					                 <td><label>Company</label></td>
+					                  <td><label><?php echo $company?></label></td>
+				                </tr>
+				                <?php }?>
+					        	 <?php if (!empty($branch)){?>
+					        	 <tr>
+					                 <td><label>Branch</label></td>
+					                  <td><label><?php echo $branch?></label></td>
+				                </tr>
+				                <?php }?>
+					             <tr>
+					                 <td><label>Full Name</label></td>
+					                  <td><label><?php if (!empty($cus_firstname)) echo $cus_firstname;?> <?php if (!empty($cus_lastname)) echo $cus_lastname;?></label></td>
+				                </tr>
+			  					 <tr>
+			                    	<td><label>Email</label></td>
+			                    	<td><label><?php if (!empty($cus_email)) echo $cus_email;?></label></td>
+			                    </tr>
+			                    <tr>
+			                    	<td><label for="name">Phone Number</label></td>
+			                    	<td><label for="name"><?php if (!empty($cus_phone)) echo $cus_phone;?></label></td>
+			                   	</tr>
+			                   	<tr>
+			                   		<td><label>House No</label></td>
+			                   		<td><label><?php if (!empty($home)) echo $home?></label></td>
+			                   	</tr>
+			                   	<tr>
+			                   		<td><label>Street No</label></td>
+			                    	<td><label><?php if (!empty($street)) echo $street;?></label></td>
+			                    </tr>
+			                    <tr>
+			                    	<td><label for="name">District</label></td>
+			                    	<td><label for="name"><?php if (!empty($district)) echo $district;?></label></td>
+			                    </tr>
+			                    <tr>
+				                	<td><label for="name">Province</label></td>
+					                <td><label for="name"><?php if (!empty($province)) echo $province;?></label></td>
+					           	</tr>
+					      </table>
+					</div>      
+			</div>
+			<div class="col-sm-8">
+				<h3>Your Order History</h3>
+				<?php if (!empty($this->orderhistory)){?>
+                 	<table class="table table-bordered table-responsive cart_summary">
+						<thead>
+		                    <tr>
+			                  	<th>Invoice No</th>
+		                     	<th>Order Date</th>
+		                       	<th>Discount</th>
+		                        <th>Total</th>
+		                         <th></th>
+		                    </tr>
+		                 </thead>
+		                 <tbody id="process_cart">
+		                    <?php $total=0; if (!empty($this->orderhistory)) foreach($this->orderhistory as $row){?>
+		                     <tr>
+			                   	<td><span><?php echo $row['invoice_no'];?></span></td>
+		                    	<td><?php echo date("d-M-Y",strtotime($row['order_date']));?></td>
+		                        <td><?php if(!empty($row['discount_login'])) {echo $row['discount_login'];}else{echo '0';}?>%</td>
+		                        <td class="price">
+		    	                    <span>$<?php echo $row['grand_total']?></span>
+		                        </td>
+		                        <td>
+			                          <a href="<?php echo $this->baseUrl().'/index/invoice/no/'.$row['id'];?>" target="blank">View detail</a>
+				                </td>
+				             </tr>
+				            <?php }?>
+	                 </tbody>
+               </table>
+               <?php } else {}?>
+       </div>
+    </div>  
+  </div>
+        </div>
+    </div>
+</div>
+<style>
+#profile{ width: ;}
+#profile tr td{ padding:10px;}
+.box-profile{
+	border: 1px solid #eaeaea;
+padding: 10px 5px;
+}
+</style>
+<!-- ./page wapper-->
+
+<!-- Script-->
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <title>FAQ</title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">FAQ</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- row -->
+        <div class="row">
+            <!-- Left colunm -->
+            <div class="column col-xs-12 col-sm-3" id="left_column">
+                <!-- block category -->
+                <div class="block left-module">
+                    <p class="title_block">Infomations</p>
+                    <div class="block_content">
+                        <!-- layered -->
+                        <div class="layered layered-category">
+                            <div class="layered-content">
+                                <ul class="tree-menu">
+                                    <li><span></span><a href="<?php echo $this->baseUrl().'/index/about-us'?>">About Us</a></li>
+                                    <li><span></span><a href="<?php echo $this->baseUrl().'/index/delivery'?>">Delivery Information</a></li>
+                                    <li><span></span><a href="<?php echo $this->baseUrl().'/index/policy'?>">Privacy Policy</a></li>
+                                    <li><span></span><a href="<?php echo $this->baseUrl().'/index/termcondition'?>">Terms &amp; Conditions</a></li>
+                                    <li><span></span><a href="<?php echo $this->baseUrl().'/index/contact-us'?>">Contact Us</a></li>
+                                    <li  class="active"><span></span><a href="<?php echo $this->baseUrl().'/index/faq-us'?>">FAQ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- ./layered -->
+                    </div>
+                </div>
+                <!-- ./block category  -->
+                <!-- Banner silebar -->
+                <div class="block left-module">
+                    <!--<div class="banner-opacity">
+                        <a href="#"><img src="<?php echo $this->baseUrl()?>/assets/data/slide-left.jpg" alt="ads-banner"></a>
+                    </div> -->
+                </div>
+                <!-- ./Banner silebar -->
+            </div>
+            <!-- ./left colunm -->
+              <div class="center_column col-xs-12 col-sm-9" id="center_column">
+               <h2 class="page-heading">
+                    <span class="page-heading-title2">Faq</span>
+                </h2>
+            <?php if(!empty($this->rows)) foreach ($this->rows as $key => $row){?>
+            <!-- Center colunm-->
+               <div class="panel panel-default  padding-bottom-15" data-categories="Electrical,Navigational,Wiring">
+		                                <div class="panel-heading padding-vertical-10 padding-horizontal-15">
+		                                    <h4 class="panel-title padding-left-30"> <a data-toggle="collapse" style="font-size:14px;" data-parent="#accordion" href="#collapse<?php echo$key;?>" class="collapsed"><?php echo ($key+1).", ".$row['question'];?></a> </h4>
+		                                </div>
+		                                <div id="collapse<?php echo$key;?>" class="panel-collapse collapse" style="height: 0px;">
+		                                    <div class="panel-body"> 
+		                                        <!--Panel_body-->
+		                                        <div class="faq_post padding-left-40">
+		                                            <div class="post-entry clearfix margin-top-10"> <!--<img src="http://demo.themesuite.com/automotive/images/faq-img1.jpg" alt="" class="alignleft"> -->
+		                                               <p><?php echo $row['answer'];?></p>
+		                                            </div>
+		                                        </div>
+		                                        <!--Panel_body--> 
+		                                    </div>
+		                                </div>
+		                            </div>
+            <!-- ./ Center colunm -->
+             <?php }?>
+        </div>
+        <!-- ./row-->
+    </div>
+</div>
+</div>
+<!-- ./page wapper-->
+
+<!-- Script-->
+<script type="text/javascript" src="assets/lib/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/lib/select2/js/select2.min.js"></script>
+<script type="text/javascript" src="assets/lib/jquery.bxslider/jquery.bxslider.min.js"></script>
+<script type="text/javascript" src="assets/lib/owl.carousel/owl.carousel.min.js"></script>
+<script type="text/javascript" src="assets/lib/jquery.countdown/jquery.countdown.min.js"></script>
+<script type="text/javascript" src="assets/lib/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="assets/js/jquery.actual.min.js"></script>
+<script type="text/javascript" src="assets/js/theme-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<title>Edit Job Anounment</title>
+<form id='add_job' action="<?php echo $this->url(array('module'=>'other','controller'=>'job','action'=>'edit')); ?>" enctype="application/x-www-form-urlencoded" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+		return true;
+	}else {
+		return false;
+	}
+</script>
+<table  width="100%" style="margin-top:5px;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend ><strong>Edit Job Anounment</strong></legend>
+					<table style="margin: 0 auto; width:100%;" cellspacing="10">
+						<tr>
+							<td>Job Title</td>
+							<td><input dojoType="dijit.form.ValidationTextBox" required="true" class="fullside" id="job_title" name="job_title" value="<?php echo $this->row['job_title'];?>" type="text">
+								<input dojoType="dijit.form.ValidationTextBox" required="true" class="fullside" id="id" name="id" value="<?php echo $this->row['id'];?>" type="hidden">
+							</td>
+							<td>Job Type</td>
+							<td><select name="job_type" id="job_type" dojoType="dijit.form.FilteringSelect" class="fullside" Onchange="getFunction();">
+								    <option value="1">Full Time</option>
+								    <option value="2">Part Time</option>
+								    <option value="3">Full/ParTime</option>
+								</select></td>		
+							<td>Salary</td>
+						   <td><input dojoType="dijit.form.ValidationTextBox" required="true" class="fullside" id="salary" name="salary" value="<?php echo $this->row['salary'];?>" type="text"></td>
+						</tr>
+						<tr>
+							<td>Hiring</td>
+							<td><input dojoType="dijit.form.NumberTextBox" required="true" class="fullside" id="hiring" name="hiring" value="<?php echo $this->row['hiring'];?>" type="text"></td>
+							<td>Posting Date</td>
+							<td><input dojoType="dijit.form.DateTextBox" required="true" class="fullside" id="posting_date" name="posting_date" value="<?php echo $this->row['posting_date'];?>" type="text"></td>
+							<td>Closing Date</td>
+							<td><input dojoType="dijit.form.DateTextBox" required="true" class="fullside" id="closing_date" name="closing_date" value="<?php echo $this->row['closting_date'];?>" type="text"></td>
+						</tr>
+						<tr>
+							<td colspan="3">Introduction<textarea dojoType="dijit/Editor" height="150px" style="min-height:60px;"  id="introduction" name="introduction"><?php echo $this->row['introduction'];?></textarea></td>
+							<td colspan="3">Job Descriptions<textarea dojoType="dijit/Editor"  height="150px" style="min-height:60px;" id="job_purpose" name="job_purpose"><?php echo $this->row['job_purpose'];?></textarea></td>
+						</tr>
+						<tr>
+							<td colspan="3">Job Responsibilities<textarea dojoType="dijit/Editor" height="150px" style="min-height:60px;"  id="job_respone" name="job_respone"><?php echo $this->row['job_respone'];?></textarea></td>
+							<td colspan="3">Job Requirements<textarea dojoType="dijit/Editor" height="150px" style="min-height:60px;"  id="job_requirement" name="job_requirement"><?php echo $this->row['job_requirement'];?></textarea></td>
+						</tr>
+						<tr>
+							<td colspan="3">Duty Station<textarea dojoType="dijit/Editor" height="150px" style="min-height:60px;"  name="job_duty"><?php echo $this->row['job_duty'];?></textarea></td>
+							<td colspan="3">Salary and Benifit<textarea dojoType="dijit/Editor" height="150px" style="min-height:60px;"  name="benifit"><?php echo $this->row['benifit'];?></textarea></td>
+						</tr>
+						<tr>
+							<td>How To Apply</td>
+							<td><textarea dojoType="dijit.form.SimpleTextarea" class="fullside" style="width:96%;min-height:35px;" id="how_apply" name="how_apply"><?php echo $this->row['how_applay'];?></textarea></td>
+							<td>Status</td>
+							<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
+								    <option value="1" <?php if($this->row['status']==1){echo'selected="selected"';}?> >Active</option>
+								    <option value="0" <?php if($this->row['status']==0){echo'selected="selected"';}?>>Deactive</option>
+								</select></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td colspan="6" align="center">
+							<input type="reset" label="Clear" dojoType="dijit.form.Button" 
+								 iconClass="dijitIconClear" /> 
+							<input type="submit" value="SAVE_NEW" label="Edit" id="save_new" dojoType="dijit.form.Button" name="save_new"
+								 iconClass="dijitEditorIcon dijitEditorIconSave"/> 
+						    
+							</td>
+						</tr>
+					</table>	
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>
+<script type="text/javascript">
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.Textarea"); 
+dojo.require("dijit.form.DateTextBox");  
+require(["dijit/Editor"]);
+</script>
+				

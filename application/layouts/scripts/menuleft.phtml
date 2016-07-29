@@ -1,0 +1,137 @@
+<?php
+	$request=Zend_Controller_Front::getInstance()->getRequest();
+	$action = $request->getActionName();
+	$baseurl  = $this->baseUrl();
+		/*--------------------URLs link display--------------------------*/
+		  $tr=Application_Form_FrmLanguages::getCurrentlanguage();
+		$arr_param_menu=array( 
+			'home'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("HOME").'</a></li>',
+			),
+				'category'=>array(
+						// 						'branch'=>'<li><a href="">'.$tr->translate("BRANCH_LIST").'</a></li>',
+						// 						'province'=>'<li><a href="">'.$tr->translate("PROVINCE").'</a></li>',
+						// 						'district'=>'<li><a href="">'.$tr->translate("DISTRICT").'</a></li>',
+						// 						'commune'=>'<li><a href="">'.$tr->translate("COMMUNE").'</a></li>',
+						// 						'village'=>'<li><a href="">'.$tr->translate("VILLAGE").'</a></li>',
+						// 						'zone'=>'<li><a href="">'.$tr->translate("ZONE_AREA").'</a></li>',
+						'index'=>'<li><a href="">'.$tr->translate("CATEGORY").'</a></li>'),
+				'products'=>array(
+				// 						'branch'=>'<li><a href="">'.$tr->translate("BRANCH_LIST").'</a></li>',
+				// 						'province'=>'<li><a href="">'.$tr->translate("PROVINCE").'</a></li>',
+				// 						'district'=>'<li><a href="">'.$tr->translate("DISTRICT").'</a></li>',
+				// 						'commune'=>'<li><a href="">'.$tr->translate("COMMUNE").'</a></li>',
+				// 						'village'=>'<li><a href="">'.$tr->translate("VILLAGE").'</a></li>',
+				// 						'zone'=>'<li><a href="">'.$tr->translate("ZONE_AREA").'</a></li>',
+						'index'=>'<li><a href="">'.$tr->translate("PRODUCTS").'</a></li>'),
+			'other'=>array(
+// 						
+'mediafile'=>'<li><a href="">'.$tr->translate("Media Files").'</a></li>',
+					//	'loantype'=>'<li><a href="">'.$tr->translate("LOAN_TYPE").'</a></li>' ,
+                        'slideshow'=>'<li><a href="">'.$tr->translate("Manage Slide Show").'</a></li>',
+                        'photo'=>'<li><a href="">'.$tr->translate("Manage Logo").'</a></li>',
+					    'job'=>'<li><a href="">'.$tr->translate("Job Announcement").'</a></li>',
+					'promotion'=>'<li><a href="">'.$tr->translate("Promotion").'</a></li>',
+				//	'seo'=>'<li><a href="">'.$tr->translate("SEO").'</a></li>',
+					    'faq'=>'<li><a href="">'.$tr->translate("FAQS").'</a></li>',
+					'delivery'=>'<li><a href="">'.$tr->translate("Delivery Infomation").'</a></li>',
+					    'help'=>'<li><a href="">'.$tr->translate("Terms and Conditions").'</a></li>',
+						'about'=>'<li><a href="">'.$tr->translate("About Us").'</a></li>',
+						'contact'=>'<li><a href="">'.$tr->translate("Contact Us").'</a></li>',
+						'privacy'=>'<li><a href="">'.$tr->translate("Privacy").'</a></li>',
+						'partner'=>'<li><a href="">'.$tr->translate("Partner").'</a></li>',
+					    'paramater'=>'<li><a href="">'.$tr->translate("Manage Paramater").'</a></li>',
+			),
+			'group'=>array(
+					    'index'=>'<li><a href="">'.$tr->translate("Customer Information").'</a></li>',
+						//'branch'=>'<li><a href="">'.$tr->translate("Branch Information").'</a></li>',
+						'province'=>'<li><a href="">'.$tr->translate("Manage Province").'</a></li>',
+						'district'=>'<li><a href="">'.$tr->translate("Manage District").'</a></li>',
+				),
+				
+			'supplier'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("Supplier Information").'</a></li>',
+						//'branch'=>'<li><a href="">'.$tr->translate("Branch Information").'</a></li>',
+						//'province'=>'<li><a href="">'.$tr->translate("Manage Province").'</a></li>',
+						//'district'=>'<li><a href="">'.$tr->translate("Manage District").'</a></li>',
+				),
+			
+			'callecterall'=>array(
+						'callecterall'=>'<li><a href="">'.$tr->translate("CALLECTERALL").'</a></li>',
+						'callecteralllist'=>'<li><a href="">'.$tr->translate("CALLECTERALLLIST").'</a></li>',
+						'chengcallecterall'=>'<li><a href="">'.$tr->translate("CHENGCALLECTERALL").'</a></li>',
+						'refundcallecterall'=>'<li><a href="">'.$tr->translate("REFUNDCALLECTERALL").'</a></li>',
+						'salecallecterall'=>'<li><a href="">'.$tr->translate("SALECALLECTERALL").'</a></li>',
+				),
+		   'booking'=>array(
+		   				
+		   		'order'=>'<li><a href="">'.$tr->translate("ORDER").'</a></li>',
+				),
+			
+			'items'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("Manage Item").'</a></li>',
+						'make'=>'<li><a href="">'.$tr->translate("Manage Category").'</a></li>',
+						'measure'=>'<li><a href="">'.$tr->translate("Manage Measure").'</a></li>',
+				
+				
+				),
+			'food'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("Manage Food").'</a></li>',
+						'category'=>'<li><a href="">'.$tr->translate("Manage Category").'</a></li>',
+						//'measure'=>'<li><a href="">'.$tr->translate("Manage Measure").'</a></li>',
+				
+				
+				),
+			'order'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("Order Food").'</a></li>',
+						'quote'=>'<li><a href="">'.$tr->translate("Order Quotation").'</a></li>',
+						//'measure'=>'<li><a href="">'.$tr->translate("Manage Measure").'</a></li>',
+				
+				
+				),
+			
+			'purchase'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("Order Food").'</a></li>',
+						//'quote'=>'<li><a href="">'.$tr->translate("Order Quotation").'</a></li>',
+						//'measure'=>'<li><a href="">'.$tr->translate("Manage Measure").'</a></li>',
+				
+				
+				),
+			'report'=>array(
+					'index/rpt-quote'=>'<li><a href="" title="">'.$tr->translate("Quote Reports").'</a></li>',
+					'index/rptpurchase'=>'<li><a href="" title="">'.$tr->translate("Purchase Reports").'</a></li>',
+// 					'hotsale'=>'<li><a href="" title="">'.$tr->translate("Hot Sale Reports").'</a></li>',
+				),
+			'user'=>array(
+				'index'=>'<li><a href="">'.$tr->translate("USER").'</a></li>',
+			),	
+			'rsvacl'=>array(
+					 	//'index'=>'<li><a href="">'.$tr->translate("USER").'</a></li>',
+					   // 'acl'=>'<li><a href="">'.$tr->translate("ACL").'</a></li>',
+						'user'=>'<li><a href="">'.$tr->translate('USER').'</a></li>',
+						
+				),
+			'backup'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("Backup List").'</a></li>',
+						'index'=>'<li><a href="">'.$tr->translate("Backup List").'</a></li>',
+				),	
+			'setting'=>array(
+						'database'=>'<li><a href="">'.$tr->translate("DATA_BASE_SETTING").'</a></li>',
+						
+					
+					)
+				);       
+	?>
+	<div id="header-left">
+	<ul>
+			<?php 
+				$dc=new Application_Model_Decorator();					
+				$class="current-left";					
+				$menu=$dc->getMenuLeft($arr_param_menu[$request->getModuleName()],$request->getControllerName(),$request->getModuleName());
+				if($menu) echo $menu;					
+			?>
+	</ul>																
+	</div>
+	<style>
+	.current-left{  background: none repeat scroll 0 0 #EDF7F8 !important;}
+	</style>

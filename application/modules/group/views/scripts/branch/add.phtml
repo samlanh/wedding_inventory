@@ -1,0 +1,124 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate('ADD_BRANCH'));
+?>	
+<?php  $frm = $this->frm_branch;?>
+<style>
+fieldset{border: 1px solid #ccc; }
+fieldset table td input ,fieldset table td select{color: #000 !important; }
+</style>
+<form id='add_client' action="<?php echo $this->url(array('module'=>'group','controller'=>'branch','action'=>'add')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			}else{
+				return false;
+			}
+</script>
+			<table style=" width: 100%">
+							<tr>
+								<td valign="top" width="34%" style="white-space: nowrap;">
+										<fieldset>
+											<legend align="center"><strong>Add Branch</strong></legend>
+											<table style="margin: 0 auto;" cellspacing="10">
+													<tr>
+													   <td><?php echo $tr->translate("Company Name")?></td>
+													   <td><select dojoType='dijit.form.FilteringSelect' id="company_name" name="company_name" class="fullside">
+													   		<?php if (!empty($this->company)) foreach ($this->company as $row){?>
+													   			<option value="<?php echo $row['id'];?>"><?php echo $row['title'];?></option>
+													   		<?php }?>
+													   		</select> 
+													   </td>
+													   <td><?php echo $tr->translate("Branch's ID")?></td>
+													   <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->branch; ?>" readonly="readonly" id="branch_id" name="branch_id" class="fullside" /></td>
+													</tr>
+													<tr>
+													   <td><?php echo $tr->translate("Branch Name")?>*</td>
+													   <td><input type="text" dojoType="dijit.form.ValidationTextBox" required="required" value="" id="branch_name" name="branch_name" class="fullside" /></td>
+														<td valign="top"><?php echo $tr->translate("NOTE")?></td>
+													   <td><input type="text" dojoType="dijit.form.TextBox" value=""  id="branch_not" name="branch_not" class="fullside" /></td>
+													</tr>
+													<tr>
+														<td><?php echo $tr->translate("STATUS")?></td>
+														<td>
+															<select dojoType='dijit.form.FilteringSelect' id="status" name="status" class="fullside">
+													   			<?php if (!empty($this->status)) foreach ($this->status as $rs){?>
+													   				<option value="<?php echo $rs['key_code'];?>"><?php echo $rs['name_en'];?></option>
+													   			<?php }?>
+													   		</select> 
+													   	</td>
+													</tr>
+													
+											</table>
+										</fieldset>
+								</td>
+							</tr>
+							<tr>
+								<td width="100%" align="top">
+										<fieldset><legend align="center"><strong>Local Contact</strong></legend>
+									   <table style="padding-left:10px;" cellspacing="10">
+											<tr>
+												<td><?php echo $tr->translate("Group No")?></td>
+											    <td><input type="text" dojoType="dijit.form.TextBox" value=""  id="group_no" name="group_no" class="fullside" /></td>
+												<td><?php echo $tr->translate("Home No")?></td>
+											    <td><input type="text" dojoType="dijit.form.TextBox" value=""  id="home_no" name="home_no" class="fullside" /></td>
+											    <td><?php echo $tr->translate("Street No")?></td>
+											    <td><input type="text" dojoType="dijit.form.TextBox" value=""  id="street_no" name="street_no" class="fullside" /></td>
+											</tr>
+											<tr>
+												<td><?php echo $tr->translate("Commune Name")?></td>
+											    <td><input type="text" dojoType="dijit.form.TextBox" value=""  id="commune" name="commune" class="fullside" /></td>
+												<td><?php echo $tr->translate("District")?></td>
+											    <td><input type="text" dojoType="dijit.form.TextBox" value=""  id="district" name="district" class="fullside" /></td>
+											    <td><?php echo $tr->translate("Province")?></td>
+											    <td>
+											    	<select dojoType='dijit.form.FilteringSelect' id="province" name="province" class="fullside">
+														<?php if (!empty($this->province)) foreach ($this->province as $row){?>
+														<option value="<?php echo $row['id'];?>"><?php echo $row['province_name'];?></option>
+														<?php }?>
+													</select> 
+													</td>
+											</tr>
+											<tr>
+											   <td><?php echo $tr->translate("PHONE")?></td>
+											   <td><input type="text" dojoType="dijit.form.ValidationTextBox" required="required" value="" id="phone" name="phone" class="fullside" /></td>
+											   <td><?php echo $tr->translate("Email")?></td>
+											   <td><input type="text" dojoType="dijit.form.ValidationTextBox" required="required" value="" id="email" name="email" class="fullside" /></td>
+											   <td><?php echo $tr->translate("Fax")?></td>
+											   <td><input type="text" dojoType="dijit.form.TextBox" value=""  id="fax" name="fax" class="fullside" /></td>
+											</tr>
+											</table>
+											</fieldset>
+								</td>
+							</tr>
+							<tr align="center">
+								<td valign="top">
+										<input type="reset" style="color:#000;" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" 
+											iconClass="dijitIconClear" /> 
+										<input type="submit" value="SAVE_CLOSE" label="<?php echo $tr->translate('SAVECLOSE');?>" style="color:#000;" id="save_close" dojoType="dijit.form.Button" name="save_close"
+											iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+										<input type="submit" value="SAVE_NEW" label="<?php echo $tr->translate('SAVENEW');?>" id="save_new" style="color:#000;" dojoType="dijit.form.Button" name="save_new"
+											iconClass="dijitEditorIcon dijitEditorIconSave"/>
+								</td>
+							</tr>
+							<tr style="background: #711A7B">
+									<td colspan="3" align="center">
+										
+								     </td>
+							</tr>
+					</table>	
+</form>
+<script type="text/javascript">  
+dojo.require("dijit.form.DateTextBox");
+dojo.ready(function(){
+	try{	
+		
+	}catch(e){
+		alert(e);
+	}
+});
+
+function showPopupclientdtype(){
+	dijit.byId('frm_clienttype').show();
+}
+</script>

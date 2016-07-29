@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/css/default.css"/>
+    <title><?php if (!empty($this->orderhistory)) foreach($this->orderhistory as $key => $row ){ if ($key<1)echo $row['invoice_no'];}?></title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">Inovice Detail</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- page heading-->
+        <h2 class="page-heading">
+            Invoice No : <span class="page-heading-title2"><?php if (!empty($this->orderhistory)) foreach($this->orderhistory as $key => $row ){ if ($key<1)echo $row['invoice_no'];}?></span>
+        </h2>
+        <!-- ../page heading-->
+        <div class="page-content">
+            <div class="row">
+                     <table class="table table-bordered table-responsive cart_summary">
+						                    <thead>
+						                        <tr>
+						                        	<th>Order Date</th>
+						                        	<th>product Code</th>
+						                            <th class="cart_product">Product</th>
+						                            <th>Description</th>
+						                            <th>Unit price</th>
+						                            <th>Qty</th>
+						                            <th>Total</th>
+						                        </tr>
+						                    </thead>
+						                    <tbody id="process_cart">
+						                    <?php $total=0; if (!empty($this->orderhistory)) foreach($this->orderhistory as $row ){?>
+						                        <tr>
+						                        	<td><?php echo date("d-M-Y",strtotime($row['order_date']));?></td>
+						                        	<td><?php echo $row['pro_no'];?></td>
+						                            <td class="cart_product">
+						                               <img src="<?php if (!empty($row['img_front'])){ echo $this->baseUrl()."/images/product/".$row['img_front'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" alt="Product">
+						                            </td>
+						                            <td class="cart_description">
+						                                <p class="product-name"><?php echo $row['pro_name']; ?></p>
+						                                <small class="cart_ref"><?php //echo $row['description'];?></small><br>
+						                            </td>
+						                            <td class="price"><span>$<?php echo $row['price']." / ".$row['unit'];?></span></td>
+						                            <td class="qty">
+						                                <label><?php echo $row['qty']." ".$row['unit'];?></label>
+						                            </td>
+						                            <td class="price">
+						                                <span>$<?php echo $row['amount'];?></span>
+						                            </td>
+						                        </tr>
+						                       <?php }?>
+						                        
+						                    </tbody>
+						                    <tfoot id="total_checkout">
+						                   		 <tr>
+						                            <td colspan="5"><strong>Discount</strong></td>
+						                            <td colspan="2"><strong><?php if (!empty($this->orderhistory)) foreach($this->orderhistory as $key=>$row ){ if ($key<1){  if (!empty($row['dicount_login'])){ echo $row['dicount_login'].'%';}else{echo '0'.'%';}?></strong></td>
+						                        </tr>
+						                        <tr>
+						                            <td colspan="5"><strong>Total</strong></td>
+						                            <td colspan="2"><strong>$<?php echo $row['grand_total'];}}?></strong></td>
+						                        </tr>
+						                    </tfoot>    
+						                </table>
+                        	  </div>
+                        </div>
+    </div>
+</div>
+<style>
+#profile{ width: 100%;}
+#profile tr td{ padding:10px;}
+</style>
+<!-- ./page wapper-->
+
+<!-- Script-->
+</body>
+</html>

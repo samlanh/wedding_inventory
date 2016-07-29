@@ -1,0 +1,169 @@
+<?php $filter = $this->frm_search;
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$frm=$this->frm;
+$db = new Report_Model_DbTable_DbQuote();
+?>
+<style>
+.absolute{ position: absolute !important; top: 210px !important;}
+.tbl_first{width:20% !important;}
+.tbl_second{width:60% !important;}
+</style>
+
+<div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+<div id="divPrint" style="width: 100%;">
+<style>
+.style{
+	line-height: 20px; font-size: 10px !important;
+	font-family: 'Khmer OS Battambang';
+}
+
+.invoice p{ }
+.center{width:4%; text-align: center;}
+.wd{width:30%}
+th{padding: 5px;}
+</style>
+<table style="font-family: 'Khmer OS Content'; width:100%;">
+	<tr>
+    	<td>
+    		<table style="border-collapse:collapse; font-size:12px; white-space: nowrap;line-height:16px;" width="100%" cellspacing="0">
+    			<tr>
+    				<td>You Logo</td>
+    			</tr>
+    			<tr>
+    				<td>Address :</td>
+    			</tr>
+    			<tr>
+    				<td>Tel :</td>
+    			</tr>
+    			<tr>
+    				<td>Email :</td>
+    			</tr>
+    		</table>
+        </td>
+        
+        <td align="right">
+    		<table style="border-collapse:collapse; font-size:12px; white-space: nowrap;line-height:16px;" width="100%" cellspacing="0" align="right">
+    			<tr>
+    				<td>Invoice</td>
+    			</tr>
+    			<tr>
+    				<td>Date </td>
+    				<td> : <?php echo date("Y-m-d")?></td>
+    			</tr>
+    			<tr>
+    				<td>Invoice No </td>
+    				<td> : <?php echo $this->rows_quote["quot_code"]?></td>
+    			</tr>
+    		</table>
+        </td>
+    </tr>
+    <tr><td colspan="2"><hr></td></tr>
+    <tr>
+    	<td colspan="2">
+	    	<table style="border-collapse:collapse; font-size:12px; white-space: nowrap;line-height:16px;" width="100%" cellspacing="0">
+	    			<tr>
+	    				<td>Bill To</td>
+	    			</tr>
+	    			<tr>
+	    				<td class="wd">Name </td>
+	    				<td>: <?php echo $this->rows_quote["first_name"]?></td>
+	    				<td>Tel </td>
+	    				<td>: <?php echo $this->rows_quote["phone"]?></td>
+	    			</tr>
+	    			<tr>
+	    				<td class="wd">Address </td>
+	    				<td>: <?php echo $this->rows_quote["address"]?></td>
+	    				<td>Email </td>
+	    				<td>: <?php echo $this->rows_quote["email"]?></td>
+	    			</tr>
+	    			<tr>
+	    				
+	    			</tr>
+	    	</table>
+    	</td>
+    </tr>
+    <tr><td colspan="2"><hr></td></tr>
+    <?php 
+    	$total_pay=0;
+    	foreach ($db->getQuoteConnects($this->rows_quote["id"]) as $row_connect){
+    		$total_pay = $total_pay + $row_connect["total_pay"];
+    ?>
+    	<tr>
+    		<td colspan="2">
+    			<table style="border-collapse:collapse; font-size:12px; white-space: nowrap;line-height:16px;" width="100%" cellspacing="0">
+    				<tr style="background: #ccc">
+    					<td colspan="4" style="font-size: 14px; font-weight: 800;"><?php if($row_connect["type"]==1){echo "For Wedding Ceremony";}elseif($row_connect["type"]==2){echo "For Breakfast Ceremony";}elseif($row_connect["type"]==3){echo "For Lunch Ceremony";}elseif($row_connect["type"]==4){echo "<h4>For Dinner Ceremony</h4>";}?></td>
+    				</tr>
+    				<tr>
+    					<td class="wd">Number Of Table </td>
+    					<td> : <?php echo $row_connect["num_table"]?></td>
+    					<td>Price/Table </td>
+    					<td> : <?php echo $row_connect["price"]?></td>
+    				</tr>
+    				<tr>
+    					<td class="wd">Date Ceremony </td>
+    					<td> : <?php echo $row_connect["date_do"]?></td>
+    					<td>Time Ceremony </td>
+    					<td> : <?php echo $row_connect["time_do"]?></td>
+    				</tr>
+    				<tr>
+    					<td class="wd">Address Ceremony </td>
+    					<td> : <?php echo $row_connect["address"]?></td>
+    					<td>Total Amount </td>
+    					<td> : <?php echo $row_connect["total_pay"]?></td>
+    				</tr>
+    			</table>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td colspan="2">
+    			<table border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:12px; white-space: nowrap;" width="100%" cellspacing="0">
+    				<tr>
+    					<th class="center">&nbsp;<?php echo $tr->translate("No");?>&nbsp;</th>
+                    	<th >&nbsp;<?php echo $tr->translate("Item");?>&nbsp;</th>
+    				</tr>
+    				<?php foreach ($db->getQuoteDetail($row_connect["id"]) as $key => $row_detail){ $num = $key+1;?>
+    				<tr>
+    					<td class="center">&nbsp;<?php echo $num;?>&nbsp;</td>
+                    	<td>&nbsp;<?php echo $row_detail["name_kh"];?>&nbsp;</td>
+    				</tr>
+    				<?php }?>
+    			</table>
+    		</td>
+    	</tr>
+    	<tr><td colspan="2"><br></td></tr>
+    <?php }?>
+    <tr>
+    	<td colspan="2">
+            <table id="exportExcel" border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:12px; white-space: nowrap;" width="100%" cellspacing="0">
+				<tr style="line-height:16px;">
+					<td colspan="5" style="text-align:right; font-size:12px; font-weight:bold; border-left: #fff solid 1px; border-right: #fff solid 1px; border-bottom: #fff solid 1px;">Total</td>
+					<td style=" text-align:right; font-size:12px; font-weight:bold; border-right: #fff solid 1px; border-bottom: #fff solid 1px; ">&nbsp;$<?php echo number_format($total_pay,2);?>&nbsp;</td>
+				</tr>
+				<tr style="line-height:16px;">
+					<td colspan="5" style="text-align:right; font-size:12px; font-weight:bold; border-left: #fff solid 1px; border-right: #fff solid 1px; border-bottom: #fff solid 1px;">Book</td>
+					<td style=" text-align:right; font-size:12px; font-weight:bold; border-right: #fff solid 1px; border-bottom: #fff solid 1px;  ">&nbsp;$<?php echo number_format($total_pay,2);?>&nbsp;</td>
+				</tr>
+				<tr style="line-height:16px;">
+					<td colspan="5" style="text-align:right; font-size:12px; font-weight:bold; border-left: #fff solid 1px; border-right: #fff solid 1px; border-bottom: #fff solid 1px;">Balance Due</td>
+					<td style=" text-align:right; font-size:12px; font-weight:bold; border-right: #fff solid 1px; border-bottom: #fff solid 1px;  ">&nbsp;$<?php echo number_format(0,2);?>&nbsp;</td>
+				</tr>
+            </table>
+    	</td>
+    </tr>
+     
+	<tr>
+		<td colspan="3" valign="top" align="left">
+               <table align="center" width="100%">
+				   <tr style="font-size: 12px;">
+				        <th style="width:20%;text-align:center;  font-family:'Khmer MEF2'"><?php echo $tr->translate('Reciever Sign');?></th>
+				        <th></th>
+				        <th style="width:20%;text-align:center;font-family:'Khmer MEF2'"><?php echo $tr->translate('Authority Sign');?></th>
+				   </tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+</div>
+</div>

@@ -1,0 +1,768 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate('PURCHASE_ORDER')); 
+?>
+<script type="text/javascript" src="js/dojo/dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
+
+<script type="text/javascript">
+
+dojo.require("dojo.data.ItemFileWriteStore");  
+    dojo.require("dojo.NodeList-manipulate");
+    dojo.require('dijit.form.Textarea');
+    dojo.require("dojo.parser");
+    dojo.require("dijit.form.DateTextBox");
+    dojo.require("dijit.form.FilteringSelect"); 
+    //dojo.require("dojo.data.ItemFileWriteStore"); 
+	dojo.require("dojo.html");
+	dojo.require("dijit.form.NumberTextBox");
+	require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
+	
+require(["dojo/ready"], function(ready){
+//var customer_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->cus));?> );
+	var cus_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->cus));?> );
+	var branch_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->branch));?> );
+	ready(function(){
+	
+		//addRow();
+		ShowCusInfo();
+		initailize();
+		new dijit.form.FilteringSelect({
+		    store: cus_store,
+		    autoComplete: true,                        
+		    required: true,
+		    id: "cus_name",
+		    name: "cus_name",
+		    value:'<?php echo $this->getOrder['cus_id'];?>',
+		    labelAttr:"name",
+		    readOnly: true,           
+		    class: 'fullside',            
+		    onChange: function() { 
+		     group_id = dijit.byId('cus_name').get('value');
+		     if(group_id==-1){
+					dijit.byId('pop_customer').show();
+			     } 
+		     toControll();        
+		    } 
+		}, "cus_name");
+
+		new dijit.form.FilteringSelect({
+		    store: branch_store,
+		    autoComplete: true,                        
+		    required: true,
+		    id: "branch_name",
+		    name: "branch_name",
+		    value:'<?php echo $this->getOrder['cus_id'];?>',
+		    labelAttr:"name", 
+		    readOnly: true,           
+		    class: 'fullside',            
+		    onChange: function() { 
+		     group_id = dijit.byId('branch_name').get('value');
+		     if(group_id==-1){
+					dijit.byId('pop_branch').show();
+			     } 
+		     branchToControll();
+		    } 
+		}, "branch_name");
+
+		var province_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->province));?> );
+		new dijit.form.FilteringSelect({
+		    store: province_store,
+		    autoComplete: true,                        
+		    required: true,
+		    placeHolder:"Select province...",
+		    id: "province",
+		    name: "province",           
+		    class: 'fullside',            
+		    onChange: function() { 
+		    	getAllDistrict();      
+		    } 
+		}, "province");
+		new dijit.form.FilteringSelect({
+		    autoComplete: true,                        
+		    id: "district",
+		    name: "district",         
+		    class: 'fullside',  
+		    placeHolder:"Selected district...",          
+		    onChange: function() {  
+			    distric_id = dijit.byId('district').get('value');
+			    if(distric_id == -1){
+				   
+		    		dijit.byId("pop_district").show();
+			    }
+		    }
+		}, "district");
+
+		var province_branch_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->province));?> );
+		new dijit.form.FilteringSelect({
+		    store: province_branch_store,
+		    autoComplete: true,                        
+		    required: true,
+		    placeHolder:"Select province...",
+		    id: "province_branch",
+		    name: "province_branch",           
+		    class: 'fullside',            
+		    onChange: function() { 
+		    	getAllDistrictBranch();      
+		    } 
+		}, "province_branch");
+		new dijit.form.FilteringSelect({
+		    autoComplete: true,                        
+		    id: "district_branch",
+		    name: "district_branch",         
+		    class: 'fullside',  
+		    placeHolder:"Selected district...",          
+		    onChange: function() {  
+			    distric_id = dijit.byId('district').get('value');
+			    if(distric_id == -1){
+				   
+		    		dijit.byId("pop_district").show();
+			    }
+		    }
+		}, "district_branch");
+		toControll();
+		 branchToControll();
+		});
+
+	
+	
+});
+	 
+</script>
+<style>
+select{ width:100%;}
+table tr.head-title{ background: none repeat scroll 0% 0% rgba(213, 249, 244, 1); padding:2px;}
+table tr td.null-border{ background: #fff; border-left:none !important;}
+table .set-style td,table .set-style th{ padding: 5px; border:1px solid #ccc;}
+table .display_form-add{display:none;}
+</style>
+
+<?php
+$frm_set_price = $this->frm_set_charge;?>
+<form id='studentgroup'  dojoType="dijit.form.Form" action="<?php echo $this->url(array('module'=>'booking','controller'=>'order','action'=>'edit')); ?>" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+<table cellspacing="10" style="margin: 0 auto;width:100%;" >
+	<tr>
+		<td>
+		<fieldset>
+					<legend align="center"><strong>PURCHASE ORDER EDITING</strong></legend>
+					<table align="left" style="margin: 0 auto; width: 100%;" cellspacing="10">
+						<tr>
+							<td width="19%"><label>Cutomer Type</label></td>
+							<td width="34%"><select  dojoType='dijit.form.FilteringSelect' id="type_cus" name="type_cus" readonly="readonly"  class="fullside" onchange="ShowCusInfo();">
+									<option value="1" <?php if ($this->getOrder['cus_type']==1){echo "selected='selected'";}?>>Normal Customer</option>
+									<option value="2" <?php if ($this->getOrder['cus_type']==2){echo "selected='selected'";}?>>Company</option>
+								</select> 
+							</td>
+							<td width="25%">&nbsp;</td>
+							<td width="25%">&nbsp;</td>
+						</tr>
+					</table>
+						<table id="table_cus" style="margin: 0 auto; width: 100%;" cellspacing="10";>
+							<tr>
+								<td width="19%">Customer Name</td>
+								<td><input id="cus_name" >
+									
+								</td>						
+								<td>Reciept No:</td>
+								<td>
+									<input type="text" value="<?php echo $this->getOrder['invoice_no'];?>" class="fullside" readonly="readonly" required="required" id="reciept_no" name="reciept_no" dojoType="dijit.form.TextBox" />
+								</td>
+							</tr>
+							<tr>
+								<td>Order Date</td>
+								<td>
+									<input class="fullside" name="order_date" id="order_date" dojoType="dijit.form.DateTextBox"  value="<?php echo date('Y-m-d', strtotime($this->getOrder['order_date']));?>" type="text"/>
+								</td>
+								<td>Is Pending</td>
+								<td><select dojoType='dijit.form.FilteringSelect' id="cus_pending" name="cus_pending" class="fullside">
+									<option value="1" <?php if ($this->getOrder['pending']==1){echo "selected='selected'";}?>>Pending</option>
+									<option value="2"<?php if ($this->getOrder['pending']==2){echo "selected='selected'";}?>>Deliveried</option>
+								</select> 
+								</td>
+							</tr>
+							<tr>
+							<td>Status</td>
+								<td><select dojoType='dijit.form.FilteringSelect' id="cus_status" name="cus_status" class="fullside">
+									<option value="1" <?php if ($this->getOrder['status']==1){echo "selected='selected'";}?>>Active</option>
+									<option value="2" <?php if ($this->getOrder['status']==2){echo "selected='selected'";}?>>Deactive</option>
+								</select> 
+								</td>
+						</tr>
+							<tr>
+								<td colspan="4"><label id="customer_info" name="customer_info"></label></td>
+							</tr>
+						</table>
+					<table id="table_branch" style="margin: 0 auto; width: 100%;" cellspacing="10";>
+						<tr>
+							<td width="19%">Branch Name</td>
+							<td> <input id="branch_name" >
+							</td>						
+							<td>Reciept No:</td>
+							<td>
+								<input type="text" value="<?php echo $this->getOrder['invoice_no'];?>" class="fullside" readonly="readonly" required="required" id="br_reciept_no" name="br_reciept_no" dojoType="dijit.form.TextBox" />
+							</td>
+						</tr>
+						<tr>
+								<td>Order Date</td>
+								<td>
+									<input class="fullside" name="br_order_date" id="br_order_date" dojoType="dijit.form.DateTextBox"  value="<?php echo date('Y-m-d', strtotime($this->getOrder['order_date']));?>" type="text"/>
+								</td>
+								<td>Is Pending</td>
+								<td><select dojoType='dijit.form.FilteringSelect' id="branch_pending" name="branch_pending" class="fullside">
+									<option value="1" <?php if ($this->getOrder['pending']==1){echo "selected='selected'";}?>>Pending</option>
+									<option value="2" <?php if ($this->getOrder['pending']==2){echo "selected='selected'";}?>>Deliveried</option>
+								</select> 
+								</td>
+						</tr>
+						<tr>
+							<td>Status</td>
+								<td><select dojoType='dijit.form.FilteringSelect' id="branch_status" name="branch_status" class="fullside">
+									<option value="1" <?php if ($this->getOrder['status']==1){echo "selected='selected'";}?>>Active</option>
+									<option value="2" <?php if ($this->getOrder['status']==2){echo "selected='selected'";}?>>Deactive</option>
+								</select> 
+								</td>
+						</tr>
+						<tr>
+								<td colspan="4"><label id="branch_info" name="branch_info"></label></td>
+						</tr>
+					</table>
+					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
+						<thead>
+							<tr>
+								<td colspan="8" align="left">
+									<input type="button" label="<?php echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+								 		iconClass="dijitIconEditProperty" onclick="addRow();" />
+									<input type="hidden" name="identity" id="identity"  value="" >
+								 </td>
+							</tr>
+							<tr>
+								<td colspan="8">
+									<table id="table_row" border="1px" style="border-collapse: collapse; border:1px solid #ccc;">
+										<tr id="head-title" class="head-td" align="right"></tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" align="right">
+								<table style="width:400px;border-collapse: collapse;" cellpadding="10" cellspacing="10" >
+									<tr>
+										<td ><?php echo $tr->translate("DISCOUNT(%)");?></td>
+										<td align="right"><input class="fullside" type="text" onkeyup="calculatBalanceAndReturn();" readonly="readonly" required="true" value="<?php if (!empty($this->getOrder['discount_login'])){ echo $this->getOrder['discount_login'];}else{ echo '0'; }?>" name="discount" id="discount" dojoType="dijit.form.NumberTextBox" /></td>
+									</tr>
+									<tr>
+										<td ><?php echo $tr->translate("TOTAL_PAYMENT");?></td>
+										<td align="right"><input class="fullside" type="text" onkeyup="calculatBalanceAndReturn();" readonly="readonly" value="<?php if (!empty($this->getOrder['grand_total'])){ echo $this->getOrder['grand_total'];}else{ echo '0'; }?>" required="true" name="grand_total" id="grand_total" dojoType="dijit.form.NumberTextBox" /></td>
+									</tr>
+									<tr>	
+										<td><?php echo $tr->translate("BOOKS");?></td>
+										<td align="right"><input class="fullside" type="text" onkeyup="calculatBalanceAndReturn();" value="<?php if (!empty($this->getOrder['book'])){ echo $this->getOrder['book'];}else{ echo '0'; }?>" required="true" name="total_received" id="total_received" dojoType="dijit.form.NumberTextBox" /></td>
+									</tr>
+									<tr>
+										<td><?php echo $tr->translate("BALANCE");?></td>
+										<td align="right"><input class="fullside" type="text" readonly="readonly" name="total_balance" value="<?php if (!empty($this->getOrder['balance_due'])){ echo $this->getOrder['balance_due'];}else{ echo '0'; }?>" id="total_balance" dojoType="dijit.form.NumberTextBox" /></td>
+									</tr>
+									<tr>
+										<td><?php echo $tr->translate("RETURN");?></td>
+										<td align="right"><input class="fullside" type="text" readonly="readonly" name="total_return" id="total_return" value="<?php if (!empty($this->getOrder['return'])){ echo $this->getOrder['return'];}else{ echo '0'; }?>" dojoType="dijit.form.NumberTextBox" /></td>
+									</tr>
+									
+								</table>
+							</td>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<td colspan="8" align="center">
+									<input type="button" label="GO_BACK" id="back" dojoType="dijit.form.Button" 
+									 iconClass="dijitIconUndo" onclick="window.location = '<?php echo $this->url(array('module'=>'booking','controller'=>"order",'action'=>'index'),null,true); ?>';" />
+									<input type="submit" label="SAVE" id="save_new" dojoType="dijit.form.Button" 
+								 		iconClass="dijitEditorIcon dijitEditorIconSave"/>
+								</td>
+							</tr>
+						</tfoot>
+				 </table>
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>
+
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_customer" >
+		<form id='frm_customer' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr><td colspan="6" align="center">Add New Customer</td></tr>
+			<tr>
+				<td>Customer's ID</td>
+				 <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->newId; ?>" readonly="readonly" id="txt_cus_id" name="txt_cus_id" class="fullside" /></td>
+			</tr>
+			<tr>
+				<td>Title</td>
+				<td>
+					<select dojoType='dijit.form.FilteringSelect' id="title" name="title" class="fullside">
+							<option value="1">Mr</option>
+							<option value="2">Ms</option>
+							<option value="3">Mss</option>
+					</select>
+				</td>
+				<td>First Name</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="first_cus_name" name="first_cus_name" value="" type="text" class="fullside"></td>
+				<td>Last Name</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="last_cus_name" name="last_cus_name" value="" type="text" class="fullside"></td>
+			</tr>
+			<tr>
+				<td><?php echo $tr->translate("Province")?></td>
+				<td><input id="province"></td>
+				<td><?php echo $tr->translate("District")?></td>
+			   	<td><input id="district"></td>
+				<td><?php echo $tr->translate("Home No*")?></td>
+			 <td><input type="text" dojoType="dijit.form.TextBox" value="" required="required"  id="house_no" name="house_no" class="fullside" /></td>
+			</tr>
+			<tr>
+				<td><?php echo $tr->translate("Street No*")?></td>
+				<td><input type="text" dojoType="dijit.form.TextBox" value="" required="required"  id="street" name="street" class="fullside" /></td>
+				<td>Phone</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_phone" name="txt_phone" value="" type="text" class="fullside"></td>
+				<td>Email</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_mail" name="txt_mail" value="" type="text" class="fullside"></td>
+			</tr>
+			<tr>
+				<td colspan="6" align="center">
+				  	<input type="button"  label="SAVE" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addCustomer();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_branch" >
+		<form id='frm_branch' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr><td colspan="6" align="center">Add New Branch</td></tr>
+			<tr>
+				<td>Branch's ID</td>
+				 <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->newId; ?>" readonly="readonly" id="txt_branch_id" name="txt_branch_id" class="fullside" /></td>
+				<td>Company Name</td>
+				<td>
+				<select dojoType="dijit.form.FilteringSelect"  id="txtcom_name" name="txtcom_name" class="fullside">
+								<?php if (!empty($this->company)) foreach($this->company as $rr){?>
+								<option value="<?php echo $rr['id']?>"><?php echo $rr['title'];?></option>
+								<?php }?>
+					</select>
+				</td>
+				<td>Branch Name</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txtbranch_name" name="txtbranch_name" value="" type="text" class="fullside"></td>
+			</tr>
+			<tr>
+				<td>Title</td>
+				<td>
+					<select dojoType='dijit.form.FilteringSelect' id="title_branch" name="title_branch" class="fullside">
+							<option value="1">Mr</option>
+							<option value="2">Ms</option>
+							<option value="3">Mss</option>
+					</select>
+				</td>
+				<td>First Name</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_first_cus_name" name="txt_first_cus_name" value="" type="text" class="fullside"></td>
+				<td>Last Name</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txtlast_cus_name" name="txtlast_cus_name" value="" type="text" class="fullside"></td>
+			</tr>
+			<tr>
+				<td><?php echo $tr->translate("Province")?></td>
+				<td><input id="province_branch"></td>
+				<td><?php echo $tr->translate("District")?></td>
+			   	<td><input id="district_branch"></td>
+				<td><?php echo $tr->translate("Home No*")?></td>
+			 <td><input type="text" dojoType="dijit.form.TextBox" value="" required="required"  id="txthouse_no" name="txthouse_no" class="fullside" /></td>
+			</tr>
+			<tr>
+				<td><?php echo $tr->translate("Street No*")?></td>
+				<td><input type="text" dojoType="dijit.form.TextBox" value="" required="required"  id="txtstreet" name="txtstreet" class="fullside" /></td>
+				<td>Phone</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txtbranch_phone" name="txtbranch_phone" value="" type="text" class="fullside"></td>
+				<td>Email</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txtbranch_mail" name="txtbranch_mail" value="" type="text" class="fullside"></td>
+			</tr>
+			<tr>
+				<td colspan="6" align="center">
+				  	<input type="button"  label="SAVE" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addBranch();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+function initailize(){
+	<?php if (!empty($this->getorderdetail)){ foreach($this->getorderdetail as $resultset){?>
+		col++;no++;
+		template='';
+		if(title!=1){
+			temp+='<th>DEL</th>';
+			temp+='<th>N_O</th>';
+			temp+='<th >PRODUCT_NAME</th>';
+			temp+='<th>PRICE</th>';
+			temp+='<th>QTY</th>';
+			temp+='<th>AMOUNT</th>';
+			dojo.query("#head-title").append(temp);
+			title=1;
+		}
+			template+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
+			template+='<td align="center">'+no+'</td>';
+			template+='<td><select dojoType="dijit.form.FilteringSelect" onChange="price('+col+');" id="item_name_'+col+'" name="item_name_'+col+'" style="width:100%;">';
+				template+='<option value="-1">Select product</option>';
+			<?php foreach($this->pro as $key){?>
+				template+='<option value="'+<?php echo $key['id']?>+'"<?php if($key['id']==$resultset['pro_id']) echo 'selected="selected"'?>><?php echo $key['name'];?></option>';
+			<?php }?>
+			template+='<input type="hidden" id="proid'+col+'">';
+			template+='<td ><input type="text" required="true" readonly="readonly" value="<?php echo $resultset['price'];?>" name="price'+col+'" id="price'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="price($)" style="width: 100%;"/></td>';
+			template+='<td><input type="text" required="true" value="<?php echo $resultset['qty'];?>" onkeyup="calculateTotal('+col+');" name="qty'+col+'" id="qty'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
+			template+='<td><input type="text" required="true" value="<?php echo $resultset['amount'];?>" readonly="readonly" name="amount'+col+'" id="amount'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="amount($)"style="width: 100%;"/></td>';
+			
+		tmp='<tr id="row'+col+'">';
+		tmp+="</tr>";
+		dojo.query("#table_row").append(tmp);
+		if($("#identity").val()!='') {
+			var identity = $("#identity").val();
+			$("#identity").val(identity+','+col);
+		} else {$("#identity").val(col);}
+		dojo.html.set(dojo.byId("row"+col),template , {
+		     parseContent: true,
+		});
+
+		<?php } } ?>
+	}
+var branch_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->branch));?> );
+var url_branch = '<?php echo $this->url(array('module'=>'booking','controller'=>'order','action'=>'add-branch')); ?>';
+function addBranch(){
+	if(dijit.byId('frm_branch').validate()){
+		dojo.xhrPost({
+			url:url_branch,
+			form: dojo.byId("frm_branch"),
+			handleAs:"json",
+			load: function(data) {
+			var title_branch="";
+				if(dijit.byId('title_branch').get('value')==1){
+					title_branch='Mr';
+				}
+				else if(dijit.byId('title_branch').get('value')==2){
+					title_branch='Ms';
+				}
+				else{
+					title_branch='Mss';
+				}
+				var Itemmake = {					
+						id: data,
+						name: dijit.byId('txtbranch_name').get('value')+'('+title_branch+' '+dijit.byId('txt_first_cus_name').get('value')+' '+dijit.byId('txtlast_cus_name').get('value')+')'
+				};		
+				addDataToSelectbox(dijit.byId('branch_name'),branch_store , Itemmake, data);
+				dijit.byId('frm_branch').reset();
+				dijit.byId("pop_branch").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+var cus_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->cus));?> )
+var url_make = '<?php echo $this->url(array('module'=>'booking','controller'=>'order','action'=>'add-customer')); ?>';
+function addCustomer(){
+	if(dijit.byId('frm_customer').validate()){
+		dojo.xhrPost({
+			url:url_make,
+			form: dojo.byId("frm_customer"),
+			handleAs:"json",
+			load: function(data) {
+				var title="";
+				if(dijit.byId('title').get('value')==1){
+					title='Mr';
+				}
+				else if(dijit.byId('title').get('value')==2){
+					title='Ms';
+				}
+				else{
+					title='Mss';
+				}
+				var Itemmake = {					
+						id: data,
+					    name: title+' '+dijit.byId('first_cus_name').get('value')+' '+dijit.byId('last_cus_name').get('value'),
+				};	
+				addDataToSelectbox(dijit.byId('cus_name'),cus_store , Itemmake, data);
+				dijit.byId('frm_customer').reset();
+				dijit.byId("pop_customer").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+function PopupCustomer(){
+	
+	customer = dijit.byId('cus_name').get('value');
+	//alert(customer);
+	if(customer == -1){
+		alert(1);
+		dijit.byId('pop_customer').show();
+	}
+}
+function ShowCusInfo(){
+	 type_cus = dijit.byId('type_cus').get('value');
+	 var a = document.getElementById("table_cus");
+	 var b = document.getElementById("table_branch");
+					//alert(data);
+					if(type_cus==1){
+						//alert(1);
+						b.classList.add("display_form-add");
+						a.classList.remove("display_form-add");
+					}else{
+						b.classList.remove("display_form-add");
+						a.classList.add("display_form-add");
+					}
+}
+
+function ResetRecordRecord(){
+	var identity = $('#identity').val();
+	var arrays = identity.split(',');
+	if(arrays.length==1){
+		deleteRecord(identity);
+	}	
+	else{
+		for(var i=0;i<arrays.length;i++) {
+			deleteRecord(arrays[i]);
+		}
+	}
+}
+var template = '';
+var services = '<?php //echo $this->service_options; ?>';
+
+var col = 0;
+var no = 0;
+var title = 0;
+func='';
+tmp = '';
+temp='';
+function addRow() {
+		col++;no++;
+		template='';
+		if(title!=1){
+			temp+='<th>DEL</th>';
+			temp+='<th>N_O</th>';
+			temp+='<th >PRODUCT_NAME</th>';
+			temp+='<th>PRICE</th>';
+			temp+='<th>QTY</th>';
+			temp+='<th>AMOUNT</th>';
+			dojo.query("#head-title").append(temp);
+			title=1;
+		}
+			template+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
+			template+='<td align="center">'+no+'</td>';
+			template+='<td><select dojoType="dijit.form.FilteringSelect" onChange="price('+col+');" id="item_name_'+col+'" name="item_name_'+col+'" style="width:100%;">';
+				template+='<option value="-1">Select product</option>';
+			<?php foreach($this->pro as $key){?>
+				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name'];?></option>';
+			<?php }?>
+			template+='<input type="hidden" id="proid'+col+'">';
+			template+='<td ><input type="text" required="true" readonly="readonly" name="price'+col+'" id="price'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="price($)" style="width: 100%;"/></td>';
+			template+='<td><input type="text" required="true" onkeyup="calculateTotal('+col+');" name="qty'+col+'" id="qty'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
+			template+='<td><input type="text" required="true" readonly="readonly"  name="amount'+col+'" id="amount'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="amount($)"style="width: 100%;"/></td>';
+			
+		tmp='<tr id="row'+col+'">';
+		tmp+="</tr>";
+		dojo.query("#table_row").append(tmp);
+		if($("#identity").val()!='') {
+			var identity = $("#identity").val();
+			$("#identity").val(identity+','+col);
+		} else {$("#identity").val(col);}
+		dojo.html.set(dojo.byId("row"+col),template , {
+		     parseContent: true,
+		});
+ }
+
+function hideDialog() {		
+	dijit.byId("popup_service").hide();
+}
+ function deleteRecord(index) {
+		var identity = $('#identity').val();
+		var arrays = identity.split(',');
+		for(var i=0;i<arrays.length;i++) {
+		if(arrays[i] == index) arrays.splice(i,1);
+		}
+		var strings = arrays.join(',');
+		$('#identity').val(strings);
+		dojo.query("#row"+index).remove();
+		//calculateDiscount(index);
+}
+ function calculateTotal(index){
+		price = dijit.byId('price'+index).get('value');
+		qty = dijit.byId('qty'+index).get('value');
+		qty=isNaN(qty)?1:qty;
+		if(qty==1){dijit.byId('qty'+index).attr('value',qty);}
+		total = price*qty;
+		dijit.byId('amount'+index).attr('value',total);
+		netTotal();
+		//calculateDiscount(index);
+	}
+ function netTotal() {
+		var netTotal=0;
+		var rowId = $('#identity').val();
+		var rowIDArray = rowId.split(',');
+		for(var n = 0; n < rowIDArray.length; n++) {
+			//netTotal += Number($('#subtotal_'+rowIDArray[n]).val());
+			netTotal += dijit.byId('amount'+rowIDArray[n]).get('value');
+		}
+		discount = dijit.byId('discount').get('value');
+		total_after_dis =	netTotal- ((netTotal*discount)/100);
+		dijit.byId('grand_total').attr('value',total_after_dis);
+		//dijit.byId('total_received').attr('value',netTotal);
+		//$('#grand_total').val(netTotal);
+		//$('#total_received').val(netTotal);
+		calculatePaidAmount();
+		calculatBalanceAndReturn();
+	}
+
+ function calculatBalanceAndReturn(){
+		totalreceived = dijit.byId('total_received').get('value');
+		grand_total = dijit.byId('grand_total').get('value');
+
+		if(totalreceived>grand_total){
+			dijit.byId('total_return').attr('value',totalreceived-grand_total);
+			dijit.byId('total_balance').attr('value',0);
+		}
+		else{
+			dijit.byId('total_balance').attr('value',grand_total-totalreceived);
+			dijit.byId('total_return').attr('value',0);
+		}
+	}
+ var url_to_branch = '<?php echo $this->url(array('module'=>'booking','controller'=>'order','action'=>'get-branch-order')); ?>';
+function branchToControll()
+{
+	to_branch = dijit.byId('branch_name').get('value');
+ 	
+ 	dojo.xhrPost({
+ 		url:url_to_branch,
+ 		content:{
+ 			'to_branch':to_branch
+ 			},
+ 		handleAs:"json",
+ 		load: function(data) {
+ 			var disc="";
+ 			if(data.discount_login==null){
+					disc=0;
+ 	 		}else{
+				disc=data.discount_login;
+ 	 	 	}
+ 			dojo.byId('branch_info').innerHTML='<h4>Contact Informtion </h4><span style=" font-weight:bold; color:#000;">Branch Name :  </span>'+data.branch_name+'<span style=" font-weight:bold; color:#000;"> '+data.name+'</span><br /><span style=" font-weight:bold; color:#000;">Phone :  </span>'+data.phone+'<span style="font-weight:bold; color:#000;">  Email :  </span>'+data.email+'<br /><span style="font-weight:bold; color:#000;"> House No :</span>'+data.house_num+'<span style="font-weight:bold; color:#000;"> Street :</span>'+data.street+'<span style="font-weight:bold; color:#000;"> District :</span>'+data.district+'<span style="font-weight:bold; color:#000;"> City / Province :</span>'+data.province ;
+ 			dijit.byId('discount').attr('value',disc);
+ 		},
+ 		error: function(err) {
+ 			//alert(err);
+ 		}
+ 	});
+}
+ var url_to_control = '<?php echo $this->url(array('module'=>'booking','controller'=>'order','action'=>'get-cus-order')); ?>';
+ function toControll(){
+ 		to_control = dijit.byId('cus_name').get('value');
+ 	//	if(group==-1){
+ 		//		popupgroup();
+ 	//	}
+ 	
+ 	dojo.xhrPost({
+ 		url:url_to_control,
+ 		content:{
+ 			'to_controll':to_control
+ 			},
+ 		handleAs:"json",
+ 		load: function(data) {
+ 			//alert(data);
+ 			var dis="";
+ 			if(data.discount_login==null){
+					dis=0;
+ 	 		}else{
+				dis=data.discount_login;
+ 	 	 	}
+			dojo.byId('customer_info').innerHTML='<h4>Contact Informtion </h4><span style=" font-weight:bold; color:#000;">Phone :  </span>'+data.phone+'<span style="font-weight:bold; color:#000;">  Email :  </span>'+data.email+'<br /><span style="font-weight:bold; color:#000;"> House No :</span>'+data.house_num+'<span style="font-weight:bold; color:#000;"> Street :</span>'+data.street+'<span style="font-weight:bold; color:#000;"> District :</span>'+data.district+'<span style="font-weight:bold; color:#000;"> City / Province :</span>'+data.province ;
+ 			dijit.byId('discount').attr('value',dis);
+ 			//dijit.byId('email').attr('value',data.email);
+
+ 		},
+ 		error: function(err) {
+ 			//alert(err);
+ 		}
+ 	});
+ }
+ var url_to_price = '<?php echo $this->url(array('module'=>'booking','controller'=>'order','action'=>'get-pro')); ?>';
+ function price(index){
+		
+ 		to_price = dijit.byId('item_name_'+index).get('value');
+ 		//to_price = $('#item_name_'+index).val();
+ 	
+ 	dojo.xhrPost({
+ 		url:url_to_price,
+ 		content:{
+ 			'to_pro':to_price
+ 			},
+ 		handleAs:"json",
+ 		load: function(data) {
+ 			//alert(data.price);
+			//dojo.byID().get('value');
+ 			dijit.byId('price'+index).attr('value',data.price);
+
+ 		},
+ 		error: function(err) {
+ 			alert(err);
+ 		}
+ 		
+ 	});
+ }
+ var district_store  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
+ var url_district = '<?php echo $this->url(array('module'=>'booking','controller'=>'order','action'=>'get-district')); ?>';
+ 	function getAllDistrict(){
+ 		province_id = dijit.byId('province').get('value');
+ 		//alert(province_id);
+ 			dojo.xhrPost({
+ 				url:url_district,
+ 				content:{
+ 					'province_id':province_id
+ 					},
+ 				handleAs:"json",
+ 				load: function(data) {
+ 					//alert(data);
+ 					dijit.byId('district').reset('value');
+ 					district_store  = getDataStorefromJSON('id','name', data);
+ 				    dijit.byId('district').set('store',district_store);   
+
+ 				},
+ 				error: function(err) {
+ 					//alert(err);
+ 				}
+ 			});
+ 	}
+ 	var district_branch_store  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
+	 var url_district = '<?php echo $this->url(array('module'=>'booking','controller'=>'order','action'=>'get-district')); ?>';
+	 	function getAllDistrictBranch(){
+	 		province_id = dijit.byId('province_branch').get('value');
+	 		//alert(province_id);
+	 			dojo.xhrPost({
+	 				url:url_district,
+	 				content:{
+	 					'province_id':province_id
+	 					},
+	 				handleAs:"json",
+	 				load: function(data) {
+	 					//alert(data);
+	 					dijit.byId('district_branch').reset('value');
+	 					district_branch_store  = getDataStorefromJSON('id','name', data);
+	 				    dijit.byId('district_branch').set('store',district_branch_store);   
+
+	 				},
+	 				error: function(err) {
+	 					//alert(err);
+	 				}
+	 			});
+	 	}
+ 
+</script>

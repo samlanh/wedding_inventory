@@ -1,0 +1,23 @@
+
+<table class="collape tablesorter" id="exportExcel" width="100%">
+	<tr>
+		<th class="tdheader header">No.</th>
+		<th class="tdheader header">Quote Code</th>
+		<th class="tdheader header">Merge Code</th>
+		<th class="tdheader header">Customer</th>
+		<th class="tdheader header">Date</th>
+		<th class="tdheader header">Address</th>
+		<th class="tdheader header">Total Pay</th>
+	</tr>
+	<?php foreach ($this->rows as $key=>$rs){ $num = $key+1;?>
+	<tr class="normal">
+		<td class="items-no"><?php echo $num;?></td>
+		<td class="items"><a href="<?php echo $this->baseUrl();?>/report/index/viewind/id/<?php echo $rs["id"]?>"><?php echo $rs["quot_code"]?></a></td>
+		<td class="items"><a href="<?php echo $this->baseUrl();?>/report/index/viewmerge/id/<?php echo $rs["merge_id"]?>"><?php echo $rs["merge_id"]?></a></td>
+		<td class="items"><?php echo $rs["customer_name"]?></td>
+		<td class="items"><?php echo $rs["date_do"]?></td>
+		<td class="items"><?php echo $rs["address"]?></td>
+		<td class="items"><?php echo $rs["total_pay"]?></td>
+	</tr>
+	<?php }?>
+</table>

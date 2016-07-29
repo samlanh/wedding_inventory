@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Promotion - Aplus Fresh Shop</title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">Promotion</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- page heading-->
+        
+        <h2 class="page-heading">
+            <span class="page-heading-title2">Promotion</span>
+        </h2>
+        <!-- ../page heading-->
+        <?php if (!empty($this->promotion)) foreach ($this->promotion as $row){?>
+        <div id="contact" class="page-content page-contact">
+            <div id="message-box-conact"></div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <img alt="" src="<?php echo $this->baseUrl()?>/images/promotion/<?php echo $row['image_promotion']; ?>" />
+                </div>
+            </div>
+        </div>
+        <?php }?>
+    </div>
+</div>
+<!-- ./page wapper-->
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<style>
+.cke_contents{ height: 350px !important;}
+</style>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
+<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate('PARAMATER'));
+	
+?>	
+<form action="<?php echo $this->url(array('module'=>'other','controller'=>'paramater','action'=>'add')); ?>" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+ <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<table cellspacing="10" width="100%" style="margin: 0 auto;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend align="center" ><strong><?php echo $tr->translate("Manage Paramater");?></strong></legend>
+					
+					<table style="margin: 0 auto; width: 90%;white-space: nowrap;" cellspacing="10">
+					   <tr>
+							<td>Paramater Name</td>
+							<td>
+								<input dojoType="dijit.form.ValidationTextBox"  type="text" class="fullside" id="paramater" name="paramater" required="required">
+							</td>
+						</tr>
+						<tr>
+						    <td>Value</td>
+							<td><textarea class="ckeditor"   height="400px" style="min-height:60px;" id="values" name="values"></textarea></td>
+						</tr>
+						<tr>
+						    <td>Status</td>
+							<td>
+							    <select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true" missingMessage="Invalid Module!" class="fullside">
+									 <option value="1">Active</option>
+									 <option value="0">Deactive</option>			   
+								</select>
+							</td>
+						</tr>
+					<tr>
+						<td colspan="6" align="center" >
+									<input type="reset" value="សំអាត" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
+									<input type="submit" value="save_close" name="save_close" label="<?php echo $tr->translate('SAVECLOSE');?>" dojoType="dijit.form.Button" 
+										iconClass="dijitEditorIcon dijitEditorIconSave" />
+									<input type="submit" value="save_new" name="save_new" label="<?php echo $tr->translate('SAVENEW');?>" dojoType="dijit.form.Button" 
+										iconClass="dijitEditorIcon dijitEditorIconSave" />
+					   </td>
+					</tr>
+			</table>	
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>

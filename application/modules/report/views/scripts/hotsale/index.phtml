@@ -1,0 +1,98 @@
+<?php $filter = $this->frm_search;
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$frm=$this->frm;
+?>
+<script>
+dojo.require("dijit.form.DateTextBox");
+</script>
+<meta charset="utf-8">
+<title><?php echo $tr->translate("ACCOUNT STATEMENT");?></title>
+<form id="list" name="list" action="<?php echo $this->url(array('module'=>'report','controller'=>'hotsale','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
+	<table>
+		<tr>	
+	  		<td><label>Advand Search</label></td>
+	  		<td><input type="text" dojoType="dijit.form.TextBox" value="<?php if (!empty($this->txtsearch)){ echo $this->txtsearch;}else{ echo "";}?>" name="search" id="search" /></td>
+	  		<td><label>Search By Company</label></td>
+	  		<td>
+	  			<select dojoType='dijit.form.FilteringSelect' id="category" name="category" class="fullside">
+							<option value="-1">Select Category</option>
+							<?php if (!empty($this->cate)) foreach($this->cate as $row){?>
+							<option value="<?php echo $row['id'];?>" <?php if ($row['id']==$this->txtcategory){echo "selected='selected'";}?>><?php echo $row['title'];?></option>
+							<?php }?>
+				</select>
+			</td>
+	  		<td><input type="submit"  label="<?php echo $tr->translate('SEARCH');?>" dojoType="dijit.form.Button" 
+										iconClass="dijitSearchIcon dijitSearchIcon" /></td>
+	  </tr>
+	   
+  	</table>
+</form>
+<style>
+.report_logo{width: 255px; position: absolute; z-index: -1 !important;}
+</style>
+<div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+<div id="divPrint" style="width: 100%;">
+<style>
+.style{
+	line-height: 20px;font-size: 10px !important;
+	font-family: 'Khmer OS Battambang';
+}
+th{padding: 5px;}
+</style>
+<table style="font-family: 'Khmer OS Content'; width:100%;">
+	<tr>
+    	<td align="center">
+    		<table width="100%" style="font-family: 'Khmer OS Battambang';" style="margin:0; padding:0;border:none;">
+            	<tr>
+                	<td width="20%"><img class="report_logo" style="width: 255px; position: absolute; z-index: 99;" alt="Aplus Fresh Shop" src="<?php echo $this->baseUrl()?>/assets/images/aplush_logo.png" /></td>
+                	<td width="60%" valign="top">
+                	<h2 style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("អេផ្លើស ហ្រ្វេស សប");?></label></h2>
+                	</td>
+                    <td width="20%"></td>
+                </tr> 
+                <tr>
+                	<td colspan="3">&nbsp;</td>
+                </tr>
+            	<tr>
+            		<td width="20%"></td>
+                	<td width="60%" valign="top">
+                	<h2 style="text-align:center; font-size:14px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("EFG Express Food Group");?></label></h2>
+                	<h2 style="text-align:center; font-size:14px; font-family:'Khmer MEF2'"><?php echo $tr->translate("Hot Sales Products");?></h2>
+                	</td>
+                    <td width="20%"></td>
+                </tr> 
+                <tr>
+                	<td colspan="3">
+		              </td>
+		           </tr>   
+            </table>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <table id="exportExcel" border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:10px; white-space: nowrap;" width="100%" cellspacing="0">
+                 <tr bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:5px 0px; ">
+                    <th >&nbsp;<?php echo $tr->translate("Product No");?>&nbsp;</th>
+                    <th ><?php echo $tr->translate("Product Name");?></th>
+                    <th ><?php echo $tr->translate("Category");?></th>
+                    <th ><?php echo $tr->translate("Price");?></th>
+                    <th ><?php echo $tr->translate("Description");?></th>
+                 </tr>
+               <?php $net_total=0; $balance_total=0; if (!empty($this->product))  foreach($this->product as $row){
+                //for($i=0; $i<10; $i++){?>
+              
+					<tr style="line-height: 18px;">
+					<td>&nbsp;<?php echo $row['pro_no'];?>&nbsp;</td>
+					<td>&nbsp;<?php if(!empty($row['branch'])){echo $row['branch'];}else{ echo $row['pro_name'];}?>&nbsp;</td>
+					<td>&nbsp;<?php echo $row['cate'];?>&nbsp;</td>
+					<td>&nbsp;$<span style="text-align: right; float: right;"><?php echo number_format($row['price'],2);?></span>&nbsp;</td>
+					<td>&nbsp;<span style=" float: left;"><?php echo $row['description']?></span>&nbsp;</td>
+					</tr>
+				<?php } ?>
+				
+            </table>
+    	</td>
+    </tr>
+</table>
+</div>
+</div>

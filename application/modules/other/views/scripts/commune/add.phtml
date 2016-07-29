@@ -1,0 +1,101 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate('ADD_COMMUNE'));
+?>	
+<script type="text/javascript">
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dojo.store.Memory");
+dojo.require("dojo.data.ObjectStore");
+
+dojo.ready(function(){
+	var district_data = new dojo.store.Memory({
+	       data: <?php print_r(Zend_Json::encode($this->district));?>
+	});
+	 
+	new dijit.form.FilteringSelect({
+	store: dojo.data.ObjectStore({objectStore: district_data}),
+	autoComplete: true,
+	query: {
+		pro_id: "-1"
+	},            
+	required: false,		           
+	name: "district_name",
+	id: "district_name",
+	searchAttr: "name",
+	class: 'fullside',
+	missingMessage:"អ្នក​ភ្លេច​បំពេញ​ ឈ្មោះសាខា​កូន!",	
+		onChange: function() {
+			filterDistrict();
+        }
+	}, "district_name");
+});
+function filterDistrict(){
+	alert(dijit.byId('province_name').get('value'));
+	dijit.byId('district_name').query.pro_id = dijit.byId('province_name').get('value');
+}
+</script>
+
+<?php  $commune = $this->frm_commune;?>
+<form  id='add_techer' action="<?php echo $this->url(array('module'=>'other','controller'=>'Commune','action'=>'add')); ?>" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+ <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+               if(dijit.byId('province_name').get('value')==0){
+				 alert('Please Select Province !');
+                 return false;
+                }
+             if(dijit.byId('district_name').get('value')==''){
+                 alert('Please Select District !');
+                 return false;
+              }
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<table cellspacing="10" width="45%" style="margin: 0 auto;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend align="center" ><strong><?php echo $tr->translate("ADD_COMMUNE");?></strong></legend>
+					
+					<table style="margin: 0 auto; width: 95%;" cellspacing="10">
+						<tr>
+							<td><?php echo $tr->translate("COMMUNE_NAME_KH")?></td>
+							<td><?php  echo $commune->getElement('commune_namekh');?></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("COMMUNE_NAME")?></td>
+							<td><?php  echo $commune->getElement('commune_name');?></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("DISPLAY_BY")?></td>
+							<td><?php  echo $commune->getElement('display');?></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("PROVINCE_NAME")?></td>
+							<td><?php  echo $commune->getElement('province_name');?></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("DISTRICT_NAME")?></td>
+							<td><input id="district_name" ><?php  //echo $commune->getElement('district_name');?></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("STATUS")?></td>
+							<td><?php  echo $commune->getElement('status');?></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+							  <input type="hidden" name="exchangefrom" value="2" />
+											<input type="reset" value="សំអាត" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
+											<input type="submit" value="save_close" name="save_close" label="<?php echo $tr->translate('SAVECLOSE');?>" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+											<input type="submit" value="save_new" name="save_new" label="<?php echo $tr->translate('SAVENEW');?>" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+							</td>
+						</tr>
+					</table>	
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>

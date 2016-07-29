@@ -1,0 +1,53 @@
+<script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
+<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
+<title>Term Condition</title>
+<form id='add_help' action="<?php echo $this->url(array('module'=>'other','controller'=>'help','action'=>'add')); ?>" enctype="application/x-www-form-urlencoded" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<table  width="100%" style="margin-top:-5px;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend ><strong>Add Term Condition</strong></legend>
+					<table style="margin: 0 auto; width:100%;" cellspacing="10">
+						<tr>
+							<td valign="top">Title</td>
+							<td valign="top" ><input dojoType="dijit.form.ValidationTextBox" required="true" class="fullside" id="help_title" name="help_title" value="" type="text"></td>
+							<td valign="top">Status</td>
+							<td valign="top"><select name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
+								    <option value="1">Active</option>
+								    <option value="0">Deactive</option>
+								</select>
+						    </td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<textarea class="ckeditor" dojoType="dijit.form.SimpleTextarea" id="description" name="description"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4" align="center">
+							<input type="reset" label="Clear" dojoType="dijit.form.Button" 
+								 iconClass="dijitIconClear" /> 
+						    <input type="submit" value="SAVE_CLOSE" label="Save&Close" id="save_close" dojoType="dijit.form.Button" name="save_close"
+								 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+							<input type="submit" value="SAVE_NEW" label="Save&New" id="save_new" dojoType="dijit.form.Button" name="save_new"
+								 iconClass="dijitEditorIcon dijitEditorIconSave"/> 
+							</td>
+						</tr>
+					</table>	
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>
+<script type="text/javascript">
+dojo.require("dijit.form.Textarea"); 
+</script>
+				

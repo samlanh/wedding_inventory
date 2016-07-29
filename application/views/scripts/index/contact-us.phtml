@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/select2/css/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/jquery.bxslider/jquery.bxslider.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/owl.carousel/owl.carousel.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/animate.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/responsive.css" />
+    <title>Contact Us - Aplus Fresh Shop</title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">Contact</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- page heading-->
+        <h2 class="page-heading">
+            <span class="page-heading-title2">Contact Us</span>
+        </h2>
+        <!-- ../page heading-->
+        <div id="contact" class="page-content page-contact">
+            <div id="message-box-conact"></div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3 class="page-subheading">CONTACT FORM</h3>
+                    <form action="<?php echo $this->baseUrl().'/index/contact-form-send-mail'?>" method="post">
+	                    <div class="contact-form-box">
+	                        <div class="form-selector">
+	                            <label>Subject Heading</label>
+	                            <input type="text" class="form-control input-sm" id="subject" name="subject"/>
+	                        </div>
+	                        <div class="form-selector">
+	                            <label>Email address</label>
+	                            <input type="email" class="form-control input-sm" id="email" name="email"/>
+	                        </div>
+	                        <div class="form-selector">
+	                            <label>Order reference</label>
+	                            <input type="text" class="form-control input-sm" id="order_reference" name="order_reference" />
+	                        </div>
+	                        <div class="form-selector">
+	                            <label>Message</label>
+	                            <textarea class="form-control input-sm" rows="10" id="message" name="message"></textarea>
+	                        </div>
+	                        <div class="form-selector">
+	                            <button id="btn-send-contact" class="btn">Send</button>
+	                        </div>
+	                    </div>
+                    </form>
+                </div>
+                <div class="col-xs-12 col-sm-6" id="contact_form_map">
+                <?php foreach ($this->showdata as $row){ ?>
+                    <h3 class="page-subheading"><?php echo $row['title']?></h3>
+		                	 	<?php echo $row['description']?> 
+                <?php }?>              
+                    </div>
+            </div>
+        </div>
+        <div id="contact" class="page-content page-contact">
+            <div id="message-box-conact"></div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="page-subheading"> <?php echo $this->googlemap['title'] ;?></h3>
+                    <div class="contact-form-box">
+                       <?php echo $this->googlemap['value'] ;?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./page wapper-->
+
+</body>
+</html>

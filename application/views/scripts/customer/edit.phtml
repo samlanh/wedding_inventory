@@ -1,0 +1,224 @@
+ <?php 
+ 	$customer_data = $this->customer_data;
+ 	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+ 	$form = $this->frm_client;
+ ?>
+ <style>
+	.left-side > .left-block > ul{list-style-type: none !important; padding:0 !important}
+	.left-side > .left-block > ul > li{padding: 5px 23px !important;}
+	.left-side > .left-block > ul > li :BEFORE{border-bottom: 1px solid !important;}
+	.left-side > .left-block > ul > li a{color:#C7081B}
+	#dob_client, .control_style {
+    display: block !important;
+    width: 100% !important;
+    height: 30px !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    color: #555 !important;
+    background-color: #FFFFFF !important;
+    background-image: none  !important;
+    border: 1px solid #ccc !important;
+    border-radius: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075) !important;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075) !important;
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s !important;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+}
+fieldset {
+	    border: 1px solid #8C8C8C;
+	    padding:5px;
+	    margin:5px;
+}	
+legend{ width: inherit; border-bottom: none;}
+</style>
+<section class="content">
+        <div class="container">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid"> 
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                        <a class="navbar-brand" href="<?php echo $this->baseUrl()."/customer/dashboard"?>"><span class="logo"><span class="primary_text">
+                        <?php if(!empty($this->old_photo)){?>
+                        <img alt="" src="<?php echo $this->baseUrl()."/images/".$this->old_photo?>" style="width: 50px;"></span> <span class="secondary_text"><?php echo $this->customer_name;?></span></span></a> </div>
+                  
+                        <?php }else{?>
+                        	<img alt="" src="<?php echo $this->baseUrl();?>/images/customer/no-profile-img.gif" style="width: 50px;"></span> <span class="secondary_text"><?php echo $this->customer_name;?></span></span></a> </div>
+                    <?php }?>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav pull-right">
+                            <li><a href="<?php echo $this->baseUrl()."/customer/dashboard"?>">Home</a></li>
+                            <li><a href="#" data-toggle="dropdown">Pages </a></li>
+                            <li><a href="<?php echo $this->baseUrl()?>/index/guestbook">Guestbook </a></li>
+                            <li><a href="service.html">Services</a></li>
+                            <li><a href="our-team.html">Our Team</a></li>
+                            <li><a href="#" data-toggle="dropdown">Portfolio</a></li>
+                            <li><a href="#" data-toggle="dropdown">Blog </a>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse --> 
+                </div>
+                <!-- /.container-fluid --> 
+            </nav>
+        </div>
+        <div class="header_shadow"></div>
+        <div class="container">
+        <div class="inner-page inventory-listing">
+            <div class="row">
+            <form method="post" action="<?php echo $this->url(array("module"=>"default","controller"=>"customer","action"=>"edit")); ?>" enctype="multipart/form-data">
+	            	<table width="100%">
+	            	<tr style="background:#FFCEF6;">
+	            		<td width="30%" >
+	            		<fieldset ><legend align="center">Customer Information</legend>
+				            <table width="100%">
+				            	<tr>
+				            		<td width="90px">Title</td>
+				            		<td><?php  echo $form->getElement('title');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>First Name*</td>
+			            			<td><?php  echo $form->getElement('name_kh');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Last Name*<br /></td>
+			            			<td><?php  echo $form->getElement('name_en');?></td>
+				            	</tr>
+				            	<tr>
+									<td><?php echo $tr->translate("Occupation")?></td>
+									<td><?php  echo $form->getElement('occupation');?></td>
+								</tr>
+				            	<tr>
+				            		<td>Gender <br /></td>
+			            			<td><?php  echo $form->getElement('sex');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>DOB</td>
+				            		<td><?php  echo $form->getElement('dob_client');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>POB<br /></td>
+			            			<td><?php  echo $form->getElement('country');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Nationality <br /></td>
+			            			<td><?php  echo $form->getElement('national_id');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Company</td>
+				            		<td><?php  echo $form->getElement('company_name');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Photo</td>
+				            		<td><?php  echo $form->getElement('photo');?><input type="hidden" name="old_photo" value="<?php echo $this->old_photo;?>" />
+				            		</td>
+				            	</tr>
+				            </table>
+				            </fieldset>
+		            </td>
+		            <td width="33%" valign="top">
+		            	<fieldset><legend align="center">Local Contact</legend>
+			            	<table width="100%">
+				            	<tr>
+				            		<td width="100px">Group No.</td>
+				            		<td><?php  echo $form->getElement('group_num');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Home</td>
+				            		<td><?php  echo $form->getElement('home');?></td>
+				            	</tr>
+				            	<tr>
+				            		
+				            		<td>Street</td>
+				            		<td><?php  echo $form->getElement('street');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Commune</td>
+				            		<td><?php  echo $form->getElement('commune');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>District</td>
+				            		<td><?php  echo $form->getElement('district');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Province<br /></td>
+				            		<td><?php  echo $form->getElement('province');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Cell Phone<br /></td>
+				            		<td><?php  echo $form->getElement('phone');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>E-mail<br /></td>
+				            		<td><?php  echo $form->getElement('email');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Fax<br /></td>
+				            		<td><?php  echo $form->getElement('fax');?></td>
+				            	</tr>
+			            	</table>
+			             </fieldset>
+	            	</td>
+	            	<td width="33%" valign="top">
+	            		<fieldset><legend align="center">International Contact</legend>
+			            	<table width="100%">
+				            	<tr>
+				            		<td>Address Line 1</td>
+				            		<td><?php  echo $form->getElement('address1');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Address Line 2</td>
+				            		<td><?php  echo $form->getElement('address2');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>City</td>
+				            		<td><?php  echo $form->getElement('city');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Zip/Postal Code</td>
+				            		<td><?php  echo $form->getElement('i_zipcode');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td style="white-space: nowrap;">State/Province/Region</td>
+				            		<td><?php  echo $form->getElement('state');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Country<br /></td>
+				            		<td><?php  echo $form->getElement('country');?></td>
+				            	</tr>
+				            	<tr>
+				            		<td>Cell Phone<br /></td>
+				            		<td><?php  echo $form->getElement('i_phone');?></td>
+				            	</tr>
+				            	
+				            	<tr>
+			            </table>
+			            </fieldset>
+	            	</td>
+	            </tr>
+	            <tr>
+	            	<td align="center" colspan="3">
+	            		<input  type="reset" value="Reset" name="btn_save" />
+	            		<input type="submit" value="Update Profile" name="btn_save" />
+	            		<button type="button" onClick="window.open='<?php echo $this->url(array("module"=>"default","controller"=>"customer","action"=>"dashboard"));?>'">Cancel</button>
+	            	</td>
+	            </tr>
+	            </table>
+            </form>
+            </div>
+         </div>
+     </div>
+</section>
+  <link rel="stylesheet" href="<?php echo $this->baseUrl();?>/js/js-ui/jquery-ui.css">
+  <script src="<?php echo $this->baseUrl();?>/js/js-ui/jquery-ui.js"></script>
+  <script>
+  $(function() {
+    $( "#dob_client" ).datepicker();
+    $( "#dob_client" ).change(function() {
+      $( "#dob_client" ).datepicker( "option","dateFormat", "dd-mm-yy" );
+    });
+  });
+ </script>

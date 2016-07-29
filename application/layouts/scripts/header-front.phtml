@@ -1,0 +1,397 @@
+<?php 
+	$db = new Application_Model_DbTable_DbGlobal();
+	$facebook = $db->getParameter('facebook');
+	$twitter = $db->getParameter('twitter');
+	$skype =$db->getParameter('skype');
+	$link_in=$db->getParameter('link_in');
+	$youtube=$db->getParameter('youtube');
+	$google_plus=$db->getParameter('google_plus');
+	$instangram=$db->getParameter('instantgram');
+	$email = $db->getParameter('email');
+	$office_no = $db->getParameter('Office_Phone');
+	$phone = $db->getParameter('tel_cambodian');
+	$logo = $db->getLogo();
+	
+	$dbs=new Application_Model_DbTable_DbProduct();
+	$cate= $dbs->getAllCateMenu();
+	
+	$customer_session  = new Zend_Session_Namespace('customer');
+	$user_name = $customer_session->customer_name;
+	$discount = $customer_session->cus_discount;
+	$verify_acc = $customer_session->verify_acc;
+	$verify_address=$customer_session->verify_address;
+	$user_mail = $customer_session->cus_email;
+	
+	
+	$product_session = new Zend_Session_Namespace('product_add_cart');
+	$count = count($product_session->cart_item);
+	//print_r($product_session->cart_item);
+	
+	
+	$active_session = new Zend_Session_Namespace('active_menu');
+	$active = $active_session->active;
+?>
+<head>
+      <meta charset="UTF-8">
+    <meta name="Aplus Fresh Shop" content="Aplus Fresh Shop avaliable sale fresh food online such as: Meat, Vegetable, Fruit, ...">
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/select2/css/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/animate.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/style.css" />
+
+    
+
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/responsive.css" />
+
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/option2.css" />
+</head>
+<!-- HEADER -->
+<div id="header" class="header">
+     <div class="top-header">
+        <div class="container">
+           <div class="nav-top-links">
+                <a class="first-item" href="#"><img alt="phone" src="<?php echo $this->baseUrl()?>/assets/images/phone.png" /><?php echo $office_no['value'];?></a>
+                <a><img alt="email" src="<?php echo $this->baseUrl()?>/assets/images/email.png" /><?php echo $email['value'];?></a>
+            </div>
+
+            <div id="user-info-top" class="user-info pull-right">
+                <div class="dropdown">
+                    <a class="current-open" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><span>My Account</span></a>
+                    <ul class="dropdown-menu mega_dropdown" role="menu">
+                    	<?php if(!empty($user_mail)) { ?>
+                    	<li><a href="<?php if ($verify_address==0){echo $this->baseUrl().'/index/find-address';} if($verify_address==1 && $verify_acc==0){echo $this->baseUrl().'/index/complete-register';} else{ echo $this->baseUrl().'/index/profile';}?>"><?php echo $user_mail; ?></a></li>
+                    	<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'customerlogout')); ?>">Logout</a></li>
+                    	<?php } else {?>
+                        <li><a href="<?php echo $this->baseUrl().'/index/register'?>">Login & Register</a></li>
+                        <?php }?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/.top-header -->
+    <!-- MAIN HEADER -->
+    <div class="container main-header">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3 logo">
+                 <a href="<?php echo $this->baseUrl().'/index'?>"><img alt="Aplus Fresh Shop" src="<?php echo $this->baseUrl()?>/slider/<?php echo $logo['photo_name'];?>" /></a>
+            </div>
+            <div class="col-xs-7 col-sm-7 header-search-box">
+                <form class="form-inline" action="<?php echo $this->url(array('controller'=>'index','action'=>'search')); ?>" method="get">
+                      <div class="form-group form-category">
+                        <select class="select-category" name="cate_search" id="cate_search">
+                            <option value="-1">All Categories</option>
+                           <?php if (!empty($cate)) foreach($cate as $row){?>
+                            <option value="<?php echo $row['id'];?>"><?php echo $row['name'];?></option>
+                            <?php }?>
+
+                        </select>
+                      </div>
+                      <div class="form-group input-serach">
+                        <input type="text" name="txtsearch" id="txtsearch"  placeholder="Keyword here...">
+                      </div>
+                      <button type="submit" class="pull-right btn-search"></button>
+                </form>
+            </div>
+            <div id="cart-block" class="col-xs-5 col-sm-2 shopping-cart-box">
+                <a class="cart-link" href="<?php echo $this->baseUrl().'/index/order'?>">
+                    <span class="title">Shopping cart</span>
+                    <span id=count_item class="total"><?php echo $count;?> Items</span>
+                    <span id='item_count' class="notify notify-left"><?php echo $count;?></span>
+                </a>
+                <div class="cart-block">
+                    <div class="cart-block-content">
+                        <h5 id="item_title" class="cart-title"><?php echo $count;?> Items in my cart</h5>
+                    <div class="cart-block-list">
+                            <ul id="pro_list">
+                            <?php $total=0; if (!empty($product_session->cart_item)) foreach($product_session->cart_item as $row){?>
+                                <li class="product-info">
+                                    <div class="p-left">
+                                    	<input type="button" value="Remove" onClick="cartAction('remove','<?php echo $row["id"]; ?>')" class="remove_link" >
+                                        <img class="img-responsive" src="<?php if (!empty($row['img_front'])){ echo $this->baseUrl()."/images/product/".$row['img_front'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" >
+                                    </div>
+                                    <div class="p-right">
+                                        <p class="p-name"><?php echo $row['name']; ?></p>
+                                        <p class="p-rice">$<?php echo $row['price'].' / '.$row['unit'];?></p>
+                                        <p>Qty: <?php echo $row['quantity'].' / '.$row['unit'];?></p>
+                                        <?php $total=$total + $row['price']*$row['quantity'];?>
+                                    </div>
+                                </li>
+                              <?php }?>
+                            </ul>
+                        </div>
+                        <div class="toal-cart">
+                        	<?php if(!empty($user_name)) { if (!empty($discount)) {?><p>Discount <span><?php echo $discount;}else echo '0';?>%</span></p><?php }else{}?>
+                            <span>Total</span>
+                            <span id="total_price" class="toal-price pull-right">$<?php echo $total - (($total * $discount)/100);?></span>
+                        </div>
+                        <div class="cart-buttons">
+                            <a href="<?php echo $this->baseUrl().'/index/order'?>" class="btn-check-out">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+  </div>
+    <!-- END MANIN HEADER -->
+    <div id="nav-top-menu" class="nav-top-menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3" id="box-vertical-megamenus">
+                    <div class="box-vertical-megamenus">
+                    <h4 class="title">
+                        <span class="title-menu">Categories</span>
+                        <span class="btn-open-mobile pull-right home-page"><i class="fa fa-bars"></i></span>
+                    </h4>
+                    <div class="vertical-menu-content is-home">
+                        <ul class="vertical-menu-list">
+                        <?php $db=new Application_Model_DbTable_DbProduct();
+    							$cate = $db->getAllCateMenu(); 
+    							if (!empty($cate)) foreach ($cate as $row){
+    					?>
+                            <li><a href="<?php echo $this->baseUrl().'/index/category/id/'.$row['id'];?>"><img class="icon-menu" alt="Funky roots" src="<?php echo $this->baseUrl()?>/assets/data/12.png"><?php echo $row['name'];?></a></li>
+                         <?php }?>   
+                        </ul>
+                        <div class="all-category"><span class="open-cate">All Categories</span></div>
+                    </div>
+                </div>
+                </div>
+                <div id="main-menu" class="col-sm-9 main-menu">
+                    <nav class="navbar navbar-default">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                    <i class="fa fa-bars"></i>
+                                </button>
+                                <a class="navbar-brand" href="#">MENU</a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                
+                                   <ul class="nav navbar-nav">
+                                    <li <?php if ($active==1) echo 'class="active"';?> ><a href="<?php echo $this->baseUrl().'/index'?>">Home</a></li>
+                                    <li <?php if ($active==2) echo 'class="active"';?>><a href="<?php echo $this->baseUrl().'/index/job'?>">Job Announcement</a></li>
+                                    <li <?php if ($active==5) echo 'class="active"';?>><a href="<?php echo $this->baseUrl().'/index/promotion'?>">Promotion</a></li>
+                                    <li <?php if ($active==3) echo 'class="active"';?>><a href="<?php echo $this->baseUrl().'/index/contact-us'?>">Contact Us</a></li>
+                                    <li <?php if ($active==4) echo 'class="active"';?>><a href="<?php echo $this->baseUrl().'/index/about-us'?>">About Us</a></li>
+<li <?php if ($active==6) echo 'class="active"';?>><a href="<?php echo $this->baseUrl().'/index/how-to-order'?>">How To Order</a></li>
+                              
+                                </ul>
+                            </div><!--/.nav-collapse -->
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- userinfo on top-->
+            <div id="form-search-opntop">
+            </div>
+            <!-- userinfo on top-->
+            <div id="user-info-opntop">
+            </div>
+            <!-- CART ICON ON MMENU -->
+            <div id="shopping-cart-box-ontop">
+                <i class="fa fa-shopping-cart"></i>
+                <div class="shopping-cart-box-ontop-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end header -->
+<script>
+function cartAction(action,product_id,ids) {
+	var url_ajaxcart = '<?php echo $this->url(array('module'=>'','controller' => 'index','action' => 'ajax'));?>';
+	var queryString = "";
+	qty = $("#qty_"+ids).val();
+	if(action != "") {
+		switch(action){
+			case "add":
+				queryString = 'action='+action+'&id='+ product_id+'&quantity='+$("#qty_"+ids).val();
+			break;
+			case "remove":
+				queryString = 'action='+action+'&id='+ product_id;
+			break;
+			case "empty":
+				queryString = 'action='+action;
+			break;
+		} 
+	}
+	tem ="";
+	temp="";
+	temtotal="";
+	template="";
+	template_total="";
+	discount= <?php if (!empty($discount)){ echo $discount;}else{echo '0';}?>;
+	$.ajax({
+	url: url_ajaxcart,
+	data:queryString,
+	type: "POST",
+	success:function(data){
+		
+		
+		total=0;
+		if(data=="" || data=="null"){
+			document.getElementById('count_item').innerHTML = 0;
+			document.getElementById('item_count').innerHTML = 0;
+			document.getElementById('item_title').innerHTML = '0 Items in my cart';
+			tem+=' <li class="product-info">No Item </li>';
+			
+			temtotal+='<tr>';
+	      	temtotal+='<td colspan="3"><strong>Total</strong></td>';
+	      	temtotal+='<td colspan="2"><strong>'+total+'</strong></td>';
+	      	temtotal+='</tr>';
+
+	      	template_total+='<tr>';
+	      	template_total+='<td colspan="3"><strong>Total</strong></td>';
+	      	template_total+='<td colspan="2"><strong>'+total+'</strong></td>';
+	      	template_total+='</tr>';
+		}else{
+			var arrays = $.parseJSON(data);
+			var count = Object.keys(arrays).length;
+			//alert(arrays.length);
+			document.getElementById('count_item').innerHTML = count;
+			document.getElementById('item_count').innerHTML = count;
+			document.getElementById('item_title').innerHTML = count+' Items in my cart';
+		
+		//alert(arrays);
+		
+		var keys = Object.keys(arrays);
+		for(var i=0 in keys) {
+				// alert(i);
+				remove = "'remove'";
+				id = "'"+arrays[keys[i]].id+"'";
+				var image = arrays[keys[i]].img_front;
+				if(image =='' || image==null){
+					img = 'no_image.jpg';
+				}else{
+					img=arrays[keys[i]].img_front;
+				}
+				tem+=' <li class="product-info">';
+					tem+=' <div class="p-left">';
+						tem+='<input type="button" value="Remove" onClick="cartAction('+remove+','+id+')" class="remove_link" >';
+						tem+=' <img class="img-responsive" src="<?php echo $this->baseUrl()?>/images/product/'+img+'">';
+					tem+='</div>';
+					tem+='<div class="p-right">';
+						tem+=' <p class="p-name">'+arrays[keys[i]].name+'</p>';
+						tem+='<p class="p-rice">$'+arrays[keys[i]].price+ ' / '+ arrays[keys[i]].unit+'</p>';
+						tem+='<p>Qty: '+arrays[keys[i]].quantity+' '+ arrays[keys[i]].unit+'</p>';
+					tem+='</div>';
+				tem+=' </li>';
+				subtotal = parseFloat(arrays[keys[i]].price) * parseFloat(arrays[keys[i]].quantity);
+				total = total + subtotal;
+	
+				temp+='<tr>';
+				temp+='<td class="cart_product">';
+					temp+='<img src="<?php echo $this->baseUrl()?>/images/product/'+img+'" alt="Product">';
+				temp+=' </td>';
+				temp+=' <td class="cart_description">';
+					temp+=' <p class="product-name">'+arrays[keys[i]].name+'</p>';
+					temp+='<small class="cart_ref">'+arrays[keys[i]].description+'</small><br>';
+				temp+=' </td>';
+				temp+='<td class="price"><span>$'+arrays[keys[i]].price+'</span></td>'; 
+	            temp+='<td class="qty">';
+	                 temp+='<input class="option-product-qty" type="number" min="1" value='+arrays[keys[i]].quantity+'>';
+	             temp+='</td>';
+	             temp+='<td class="price">';
+	             temp+='<span>$'+subtotal+'</span>';
+	         temp+='</td>';
+	         temp+='<td class="action">';
+	         	temp+='<input type="button" value="Remove" onClick="cartAction('+remove+','+id+')" class="remove_link" >';
+	         temp+='</td>';
+	  		temp+='</tr>';
+	
+	  		temtotal+='<tr>';
+	      	temtotal+='<td colspan="3"><strong>Total</strong></td>';
+	      	temtotal+='<td colspan="2"><strong>$'+total+'</strong></td>';
+	      	temtotal+='</tr>';
+
+	      	template+='<tr>';
+	      	template+='<td class="cart_product">';
+	      		template+='<img src="<?php echo $this->baseUrl()?>/images/product/'+img+'" alt="Product">';
+	      	template+=' </td>';
+	      	template+=' <td class="cart_description">';
+	      		template+=' <p class="product-name">'+arrays[keys[i]].name+'</p>';
+	      		template+='<small class="cart_ref">'+arrays[keys[i]].description+'</small><br>';
+	      	template+=' </td>';
+	      	template+='<td class="price"><span>$'+arrays[keys[i]].price+'</span></td>'; 
+	      	template+='<td class="qty">';
+	      		template+='<label>'+arrays[keys[i]].quantity+'</label>';
+            template+='</td>';
+            template+='<td class="price">';
+            template+='<span>$'+subtotal+'</span>';
+          template+='</td>';
+         template+='</tr>';
+
+         template_total+='<tr>';
+         template_total+='<td colspan="3"><strong>Total</strong></td>';
+         	template_total+='<td colspan="2"><strong>$'+total+'</strong></td>';
+         	template_total+='</tr>';
+			
+			}
+		}
+		document.getElementById('total_price').innerHTML = '$'+(total-((total*discount)/100));
+		document.getElementById('pro_list').innerHTML = tem;
+		//document.getElementById('cart_summary').innerHTML = temp;
+		//document.getElementById('total_order').innerHTML = temtotal;
+		//document.getElementById('process_cart').innerHTML = template;
+		//document.getElementById('total_checkout').innerHTML = template_total;
+		
+		//alert();
+		//$("#cart-item").html(data);
+		//if(action != "") {
+		//	switch(action) {
+				//case "add":
+				//	alert(1);
+				//	$("#add_"+product_id).hide();
+				//	$("#added_"+product_id).show();
+				//break;
+			//	case "remove":
+				//	$("#add_"+product_id).show();
+				//	$("#added_"+product_id).hide();
+				//break;
+			//	case "empty":
+		//			$(".btnAddAction").show();
+		//			$(".btnAdded").hide();
+			//	break;
+		//	}	 
+		//}
+tempAlert(900,ids);
+	},
+	error:function (e){
+		alert(e);
+		tem+=' <li class="product-info">No Item </li>';
+		document.getElementById('pro_list').innerHTML = tem;
+	}
+	});
+}
+function tempAlert(duration,index)
+{
+	document.getElementById("alert_"+index).style.display = 'block';
+ setTimeout(function(){
+	 document.getElementById("alert_"+index).style.display = 'none';
+ },duration);
+ //document.body.appendChild(el);
+}
+function doOnLoad(){
+}
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        var msg='You can input only number.';
+		alert(msg);
+		return false;
+    }
+    return true;
+}
+function default_value(ids){
+	var a = document.getElementById("qty_"+ids).value;
+		if(a==0 || a== null){
+			//alert(11111);
+			document.getElementById("qty_"+ids).value=1;
+		}
+		
+}
+ </script>

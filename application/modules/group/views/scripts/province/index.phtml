@@ -1,0 +1,29 @@
+<?php $tr = Application_Form_FrmLanguages::getCurrentlanguage();?>
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate("Province List"));
+?>	<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<script type="text/javascript">
+dojo.require("dijit.form.FilteringSelect");  
+dojo.require("dijit.form.TextBox");
+//require(["dojo/parser", "dijit/form/TimeTextBox"]);
+</script>
+<?php //$frm =  $this->frm_search;?>
+<form id="list" name="list" action="<?php echo $this->url(array('module'=>'group','controller'=>'province','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
+ 		<input type="text" dojoType="dijit.form.TextBox" name="title" id="title" placeholder="Advand search" />
+ 		<select name="status_search" id="status_search" dojoType="dijit.form.FilteringSelect">
+ 			<option value="-1">Status</option>
+ 			<option value="1">Active</option>
+ 			<option value="0">Deactive</option>
+ 		</select>
+  <?php //echo $frm->getElement("title");?>
+  <?php //echo $frm->getElement('status_search');?>
+    <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button>
+<?php echo $this->list;?>
+</form>

@@ -1,0 +1,28 @@
+<title>Slide Show</title>
+<table width="100%" border='1' style="border:1px solid #ccc; border-collapse:collapse;">
+	  <tr>
+	    <th class="tdheader header">N.</th>
+	    <th class="tdheader header">Title</th>
+	   
+	    <th class="tdheader header">Ordering</th>
+	    <th class="tdheader header">Photo</th>
+	   
+	    <th class="tdheader header">Status</th>
+	  </tr>
+	  <?php 
+		if(!empty($this->rows))foreach ($this->rows as $key =>$row){
+	 ?>
+	  <tr  align="center">
+	  	<td style="border:1px solid #ccc;padding:1px;" align="center"><?php echo $key+1;?></td>
+	  	<td style="border:1px solid #ccc;padding:1px;"><a href="<?php echo $this->baseUrl().'/other/slideshow/edit/id/'.$row['id'];?>"><?php echo $row['title'];?></a></td>
+
+	  	<td style="border:1px solid #ccc;padding:1px;"><?php echo $row['ordering'];?></td>
+	  	<td style="border:1px solid #ccc;padding:1px;text-align: center;" ><a href="<?php echo $this->baseUrl().'/other/slideshow/edit/id/'.$row['id'];?>"><img src="<?php echo $this->baseUrl().'/images/slideshow/'.$row['img'];?>"  style="max-height:50px;"/></a></td>
+	  	
+	  	<td style="border:1px solid #ccc;padding:1px;"><?php echo $row['status'];?></td>
+	  </tr>
+	  <?php 
+		}
+		?>
+</table>
+

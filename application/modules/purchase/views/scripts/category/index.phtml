@@ -1,0 +1,26 @@
+<?php $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+ echo '<title>'. $this->tr->translate("CATEGORY").'</title>';
+?>
+
+
+<?php //echo $this->list;?>
+<table width="100%" border='1' style="border:1px solid #ccc; border-collapse:collapse;">
+	  <tr>
+	    <th class="tdheader header">No.</th>
+	    <th class="tdheader header">Name In Khmer</th>
+	    <th class="tdheader header">Name In Engkish</th>
+	    <th class="tdheader header">Status</th>
+	  </tr>
+	  <?php 
+		if(!empty($this->rows))foreach ($this->rows as $key =>$row){
+	 ?>
+	  <tr  align="center">
+	  	<td style="border:1px solid #ccc;padding:1px;" align="center"><?php echo $key+1;?></td>
+	  	<td style="border:1px solid #ccc;padding:1px;"><a href="<?php echo $this->baseUrl().'/food/category/edit/id/'.$row['id'];?>"><?php echo $row['name_kh'];?></a></td>
+	  	<td style="border:1px solid #ccc;padding:1px;"><a href="<?php echo $this->baseUrl().'/food/category/edit/id/'.$row['id'];?>"><?php echo $row['name_en'];?></a></td>
+	  	<td style="border:1px solid #ccc;padding:1px;"><?php echo $row['status'];?></td>
+	  </tr>
+	  <?php 
+		}
+		?>
+</table>

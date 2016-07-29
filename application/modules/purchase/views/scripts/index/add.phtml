@@ -1,0 +1,73 @@
+<?php 
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$request=Zend_Controller_Front::getInstance()->getRequest();
+echo $this->headTitle($tr->translate("PRODUCTS"));
+ $status = $request->getParam('search_status');
+ if(empty($status)) $status=-1;
+ 
+ $url_merge = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'add',
+ ));
+ $formList = new Application_Form_Frmtable();
+?>
+<script type="text/javascript">
+dojo.require("dojo.data.ObjectStore");
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dojo.store.Memory");
+dojo.require("dojo.data.ObjectStore");
+
+dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.DateTextBox");
+
+
+</script>
+<style>
+	.btn-action{background: rgb(168, 18, 246) none repeat scroll 0% 0%;padding: 3px 10px;border-radius: 5px;}
+	.btn-action b{color: white;padding: 0px 4px;}
+</style>
+<form id="list" name="list" action="<?php echo $this->url(array('module'=>'purchase','controller'=>'index','action'=>'add')); ?>" dojoType="dijit.form.Form" method="post">
+   <table>
+	  <tr> 
+		   <td><input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $this->translate("Search");?>" type="text" ></td>
+		   <td>
+		   		<input dojoType="dijit.form.DateTextBox" name="start_date" id="start_date" class="fullside" value="<?php echo $this->search["start_date"];?>" >
+	    	</td>
+	    	<td>
+		   		<input dojoType="dijit.form.DateTextBox" name="end_date" id="end_date" class="fullside" value="<?php echo $this->search["end_date"];?>">
+	    	</td>
+		   <td>
+		        <select name="search_status" id="search_status" dojoType="dijit.form.FilteringSelect" class="fullside">
+		                <option value="-1" <?php if($status==-1){ echo"selected='selected'";} ?>>Status all</option>
+					    <option value="1" <?php if($status==1){ echo"selected='selected'";} ?> >Active</option>
+					    <option value="0"  <?php if($status==0){ echo"selected='selected'";} ?>>Deactive</option>
+				</select>
+		   </td>
+		   <td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>
+   	  	   <td><?php //echo $formList->showMergeBuntton($url_merge);?></td>
+   	  </tr>
+   </table>
+   <?php echo $this->list;?>
+</form>
+<script>
+function mergeRecord(url) {
+	 var cbs = $("input:checkbox"); //find all checkboxes
+	 var nbCbs = cbs.size(); //the number of checkboxes
+	 var checked = $("input[@type=checkbox]:checked"); //find all checked checkboxes + radio buttons
+	 var nbChecked = checked.size();
+	 if(nbChecked < 1) {
+	  alert("Please select record to copy!");
+	 } else {
+	  /*var answer = confirm("Are you sure you want to delete it?")
+	     if (answer){*/
+	   id = new Array();
+	   var i = 0;
+	   checked.each(function() {
+	    id[i] = $(this).val();
+	    i++;
+	   });
+	   window.location.href = url+'/id/'+id;
+	     /*} else {
+	      alert("Sorrty can't delete it!");
+	     }*/
+	 }
+	}
+</script>

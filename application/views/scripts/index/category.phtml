@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/select2/css/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/jquery.bxslider/jquery.bxslider.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/owl.carousel/owl.carousel.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/animate.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/responsive.css" />
+    <?php $db = new Application_Model_DbTable_DbProduct();
+                			$new_product= $db->getNewProductByCate($this->id);?>
+    <title>All <?php if (!empty($this->product)) foreach ($this->product as $key => $ro){ if ($key<1)echo $ro['cate_name'];}?></title>
+</head>
+<body class="category-page">
+
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page"><?php if (!empty($this->product))foreach ($this->product as $key => $ro){ if ($key<1)echo $ro['cate_name'];}?></span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- row -->
+        <div class="row">
+            <!-- Left colunm -->
+            <div class="column col-xs-12 col-sm-3" id="left_column">
+                <!-- block category -->
+                <div class="block left-module">
+                    <p class="title_block">NEW PRODUCTS</p>
+                    <div class="block_content">
+                        <ul class="products-block best-sell">
+                               <?php if (!empty($new_product)) foreach ($new_product as $new){
+                               	?>
+                                <li>
+                                    <div class="products-block-left">
+                                        <a href="<?php echo $this->baseUrl().'/index/detail/id/'.$new['id'];?>">
+                                            <img src="<?php if(!empty($new['img_front'])){ echo $this->baseUrl()."/images/product/".$new['img_front'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" alt="SPECIAL PRODUCTS">
+                                        </a>
+                                    </div>
+                                    <div class="products-block-right">
+                                        <p class="product-name">
+                                            <a href="<?php echo $this->baseUrl().'/index/detail/id/'.$new['id'];?>"><?php echo $new['pro_name']?></a>
+                                        </p>
+                                        <p class="product-price"><?php echo $new['price']." / ".$new['unit'];?></p>
+                                        <p>&nbsp;</p>
+                                    </div>
+                                </li>
+                                <?php }?>
+                            </ul>
+                    </div>
+                </div>
+                <!-- ./block category  -->
+              
+                <!-- ./block filter  -->
+                <!-- left silide -->
+                
+            </div>
+            <!-- ./left colunm -->
+            <!-- Center colunm-->
+            <div class="center_column col-xs-12 col-sm-9" id="center_column">
+                <!-- view-product-list-->
+                <div id="view-product-list" class="view-product-list">
+                    <h2 class="page-heading">
+                    <?php 
+                			foreach ($this->product as $ro){
+                			?>
+                        <span class="page-heading-title"><?php echo $ro['cate_name']?></span>
+                        <?php }?>
+                    </h2>
+                    <ul class="display-product-option">
+                        <li class="view-as-grid selected">
+                            <span>grid</span>
+                        </li>
+                        <li class="view-as-list">
+                            <span>list</span>
+                        </li>
+                    </ul>
+                    <!-- PRODUCT LIST -->
+                    <ul class="row product-list grid">
+                    <?php 
+                			if (!empty($this->product)) foreach ($this->product as $rs){
+                    ?>
+                        <li class="col-sx-12 col-sm-3">
+                            <div class="product-container">
+                                <div class="left-block">
+                                    <a href="<?php echo $this->baseUrl().'/index/detail/id/'.$rs['id'];?>">
+                                        <img class="img-responsive" alt="product" src="<?php if(!empty($rs['img_front'])){ echo $this->baseUrl()."/images/product/".$rs['img_front'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" />
+                                    </a>
+                                    <div class="add-to-cart">
+                                            <input type="button" id="add_<?php echo $rs['id'];?>" onClick = "cartAction('add','<?php echo $rs["pro_no"];?>','<?php echo $rs["id"];?>')" value="Add to Cart">
+                                     </div>
+                                     
+                                </div>
+                                <div class="right-block">
+                                    <h5 class="product-name"><a href="<?php echo $this->baseUrl().'/index/detail/id/'.$rs['id'];?>"><?php echo $rs['pro_name'];?></a></h5>
+                                    <div class="qty">
+			                                 <label>Qty:</label>
+			                                 <input type="text" class="option-product-qty"  value="1" id="qty_<?php echo $rs['id'];?>" name="qty<?php echo $rs['id'];?>" onkeyup="default_value('<?php echo $rs["id"];?>');" onkeypress="default_value('<?php echo $rs["id"];?>'); return isNumber(event);" style=" border: #ccc 1px solid; color: #F36; width: 50%; text-align: center;" />
+			                        </div>
+                                    <div class="content_price">
+                                        <span class="price product-price">$<?php echo $rs['price']." / ".$rs['unit'];?></span>
+                                         <!--<span class="price old-price">$00,00</span>-->
+                                    </div>
+                                    <div class="info-orther">
+                                        <p>Item Code: <?php echo $rs['pro_no'];?></p>
+                                        <p class="availability"><span></span></p>
+                                        <div class="product-desc">
+                                            <?php echo $rs['description'];?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <?php }?>
+                    </ul>
+                    <!-- ./PRODUCT LIST -->
+                </div>
+                <!-- ./view-product-list-->
+                <div class="sortPagiBar">
+                    <div class="bottom-pagination">
+                        <nav>
+                          <ul class="pagination">
+                           <li><a href="<?php echo $this->baseUrl().'/index/category/id/'.$this->id.'/page/'.$this->previousPage; ?>">&laquo;previous</a></li>
+                            <?php //echo "".$this->currentPage."/".$this->countPages; ?>
+                            <?php if (!empty($this->countPages)) $i=0; for( $i=1; $i<=$this->countPages; $i++){?>
+                            		<?php if($i==$this->currentPage){?>
+	                           		 	<li class="active" tabindex="0"><a href="<?php echo $this->baseUrl().'/index/category/id/'.$this->id.'/page/'.$this->currentPage;?>"><?php echo $i;?></a>
+	                           		 <?php } else {?>
+	                           			 <li><a href="<?php echo $this->baseUrl().'/index/category/id/'.$this->id.'/page/'.$i?>"><?php echo $i;?></a>
+	                           		 <?php }?>
+								</li>
+                            <?php }?>
+                            <li>
+                              <a href="<?php echo $this->baseUrl().'/index/category/id/'.$this->id.'/page/'.$this->nextPage; ?>" aria-label="Next">
+                                <span aria-hidden="true">Next&raquo;</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- ./ Center colunm -->
+        </div>
+        <!-- ./row-->
+    </div>
+</div>
+</body>
+</html>

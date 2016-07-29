@@ -1,0 +1,64 @@
+<?php 
+	  $url_save = $this->url(array('module'=>'items','controller'=>'measure','action'=>'add'));
+	  $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+<?php $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+ echo '<title>'. $this->tr->translate("Measure").'</title>';
+?>
+<style>
+}
+.bg{ background:#eeeeee; border:1px solid #000;}
+</style>
+<script type="text/javascript">
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.DateTextBox");
+require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
+</script>
+<form id='add_client' action="<?php echo $url_save; ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<table width="50%" style=" margin-left:25%; margin-top:10px;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend ><strong>Add Measure</strong></legend>
+							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
+							    <tr>
+									<td>Measure Name In Khmer</td>
+									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside"  id="measure_name_kh" name="measure_name_kh" value="" type="text" required="true"></td>
+								</tr>
+								<tr>
+									<td>Measure Name In English</td>
+									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside"  id="measure_name_en" name="measure_name_en" value="" type="text" required="true"></td>
+								</tr>
+								<tr>
+									<td>Status</td>
+									<td>
+									    <select tabindex="24" name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
+										    <?php if(!empty($this->status)) foreach($this->status as $row){?>
+										    <option value="<?php echo $row['key_code']?>" label="<?php echo $row['name_en'];?>"><?php echo $row['name_en'];?></option>
+										    <?php }?>
+										</select>
+									</td>
+								</tr>
+								 <tr>
+									<td>Description</td>
+									<td><input tabindex="1" dojoType="dijit.form.TextBox" class="fullside"  id="description" name="description" value="" type="text"></td>
+								</tr>
+								<tr>
+									<td colspan="6" align="center">
+									<input type="reset" label="Clear" dojoType="dijit.form.Button" 
+										 iconClass="dijitIconClear" /> 
+								    <input type="submit" value="SAVE_CLOSE" label="Save&Close" id="save_close" dojoType="dijit.form.Button" name="save_close"
+										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+									<input type="submit" value="SAVE_NEW" label="Save&New" id="save_new" dojoType="dijit.form.Button" name="save_new"
+										 iconClass="dijitEditorIcon dijitEditorIconSave"/>
+									</td>
+								</tr>
+								
+							</table>
+						
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>

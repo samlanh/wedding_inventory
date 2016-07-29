@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+<?php 
+$product_session = new Zend_Session_Namespace('product_add_cart');
+$product_session->cart_item;
+$count = count($product_session->cart_item);
+
+$login_cart =new Zend_Session_Namespace('login_cart');
+$customer_session  = new Zend_Session_Namespace('customer');
+$user_name = $customer_session->customer_name;
+$cus_email = $customer_session->cus_email;
+$user_id = $customer_session->customer_id;
+$cus_phone=$customer_session->cus_phone;
+$discount = $customer_session->cus_discount;
+$branch = $customer_session->branch_name;
+$company = $customer_session->company;
+
+$verify_acc = $customer_session->verify_acc;
+$verify_address=$customer_session->verify_address;
+
+
+?> 
+    
+    <title>Shooping Cart</title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">Your shopping cart</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- page heading-->
+        <h2 class="page-heading no-line">
+            <span class="page-heading-title2">Cart Summary</span>
+        </h2>
+        <!-- ../page heading-->
+        <div class="bs-example bs-example-tabs example-tabs">
+                        <ul id="myTab" class="nav nav-tabs">
+                            <li  <?php if(empty($this->ordering_step->point_step))echo'class="active"';?>><a href="#step1" data-toggle="tab">01. Summary</a></li>
+                            <li <?php if($this->ordering_step->point_step ==1 )echo'class="active"';?>><a href="#step2" data-toggle="tab">02. Sign in</a></li>
+                            <li <?php if($this->ordering_step->point_step ==2)echo'class="active"';?>><a href="#step3" data-toggle="tab">03. Finish</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content margin-top-15 margin-bottom-20">
+                        	 <?php if($this->ordering_step->step1==1 or empty($this->ordering_step->point_step)){?>
+                        	 <div class="tab-pane <?php if(empty($this->ordering_step->point_step))echo"in active";?>" id="step1">
+                        	 	<div class="page-content page-order">
+						            <div class="heading-counter warning">Your shopping cart contains:
+						                <span><?php echo $count;?> Product</span>
+						            </div>
+						            <?php if (!empty($product_session->cart_item)){?>
+						            <div class="order-detail-content">
+						                <table class="table table-bordered table-responsive cart_summary">
+						                    <thead>
+						                        <tr>
+						                            <th class="cart_product">Product</th>
+						                            <th>Description</th>
+						                            <th>Unit price</th>
+						                            <th>Qty</th>
+						                            <th>Total</th>
+						                            <th  class="action"><i class="fa fa-trash-o"></i></th>
+						                        </tr>
+						                    </thead>
+						                    <tbody id="cart_summary">
+						                    <?php $total=0;  if (!empty($product_session->cart_item)) foreach($product_session->cart_item as $row){?>
+						                        <tr>
+						                            <td class="cart_product">
+						                               <img src="<?php if (!empty($row['img_front'])){ echo $this->baseUrl()."/images/product/".$row['img_front'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" alt="Product">
+						                            </td>
+						                            <td class="cart_description">
+						                                <p class="product-name"><?php echo $row['name']; ?></p>
+						                                <small class="cart_ref"><?php echo $row['description'];?></small><br>
+						                            </td>
+						                            <td class="price"><span>$<?php echo $row['price'].' / '.$row['unit'];?></span></td>
+						                            <td class="qty">
+														<input type="text" class="option-product-qty"  value="<?php echo $row['quantity'];?>" id="qty_<?php echo $row['id'];?>" name="qty<?php echo $row['id'];?>" onkeyup="qtyUpdate('update','<?php echo $row["code"]?>','<?php echo $row["id"]?>'); default_value('<?php echo $row["id"];?>');" onkeypress="default_value('<?php echo $row["id"];?>'); return isNumber(event);"  />
+						                               
+						                            </td>
+						                            <td class="price">
+						                                <span>$<?php echo $row['price']*$row['quantity'];?></span>
+						                            </td>
+						                            <td class="action">
+						                            	<input type="button" value="Remove" onClick="qtyUpdate('remove','<?php echo $row["id"]; ?>')" class="remove_link" >
+						                            </td>
+						                            <?php $total=$total + $row['price']*$row['quantity'];?>
+						                        </tr>
+						                       <?php }?>
+						                        
+						                    </tbody>
+						                    <tfoot id="total_order">
+						                    	<tr>
+						                            <td colspan="3"><strong>Discount</strong></td>
+						                            <td colspan="2"><strong><?php if (!empty($discount)) {echo $discount;}else echo '0';?>%</strong></td>
+						                        </tr>
+						                        <tr>
+						                            <td colspan="3"><strong>Total</strong></td>
+						                            <td colspan="2"><strong>$<?php echo $total-(($total*$discount)/100);?></strong></td>
+						                        </tr>
+						                    </tfoot>    
+						                </table>
+						                <?php } else{}?>
+						                <div class="cart_navigation">
+						                    <a class="prev-btn" href="<?php echo $this->baseUrl().'/index'?>">Continue shopping</a>
+						                    <?php if (!empty($product_session->cart_item)){?>
+						                    <a class="next-btn" href="<?php if($verify_address==null){ echo $this->baseUrl().'/index/register';} elseif ($verify_address==0 ){ echo $this->baseUrl().'/index/find-address';} elseif ($verify_address==1 && $verify_acc==0){ echo $this->baseUrl().'/index/complete-register';}elseif ($verify_address==1 && $verify_acc==1) {echo $this->baseUrl().'/index/steporder';}?>">Proceed to checkout</a>
+						                	<?php } else{}?>
+						                </div>
+						            </div>
+						        </div>
+						        
+                        	 </div>
+                        	  <?php }else{}if($this->ordering_step->step1==1){?>
+                        	  <div class="tab-pane <?php if($this->ordering_step->point_step ==1 )echo"in active"; ?>" id="step1">
+                   				<?php 
+                   					if (!empty($user_id)){
+                   						if (!empty($product_session->cart_item)){                   					
+                   						?>
+                   					<div class="page-content page-order">
+						            <div class="order-detail-content">
+						            <?php if (!empty($company)){?><p><?php echo 'Company : '.$company;?></p><?php }?>
+						            <p><?php if (!empty($branch)){echo 'Branch :'.$branch;}else{  echo 'Name : '.$user_name;}?></p>
+                   					<p>Email : <?php echo $cus_email;;?></p>
+                   					<p>Phone : <?php echo $cus_phone;;?></p>
+						                <table class="table table-bordered table-responsive cart_summary">
+						                    <thead>
+						                        <tr>
+						                            <th class="cart_product">Product</th>
+						                            <th>Description</th>
+						                            <th>Unit price</th>
+						                            <th>Qty</th>
+						                            <th>Total</th>
+						                        </tr>
+						                    </thead>
+						                    <tbody id="process_cart">
+						                    <?php $total=0; if (!empty($product_session->cart_item)){ foreach($product_session->cart_item as $row){?>
+						                        <tr>
+						                            <td class="cart_product">
+						                               <img src="<?php if (!empty($row['img_front'])){ echo $this->baseUrl()."/images/product/".$row['img_front'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" alt="Product">
+						                            </td>
+						                            <td class="cart_description">
+						                                <p class="product-name"><?php echo $row['name']; ?></p>
+						                                <small class="cart_ref"><?php echo $row['description'];?></small><br>
+						                            </td>
+						                            <td class="price"><span>$<?php echo $row['price'].' / '.$row['unit'];?></span></td>
+						                            <td class="qty">
+						                                <label><?php echo $row['quantity'].' '.$row['unit'];?></label>
+						                            </td>
+						                            <td class="price">
+						                                <span>$<?php echo $row['price']*$row['quantity'];?></span>
+						                            </td>
+						                            <?php $total=$total + $row['price']*$row['quantity'];?>
+						                        </tr>
+						                       <?php } 
+                   							}else{}?>
+						                        
+						                    </tbody>
+						                    <tfoot id="total_checkout">
+						                    	<tr>
+						                            <td colspan="3"><strong>Discount</strong></td>
+						                            <td colspan="2"><strong><?php if (!empty($discount)) {echo $discount;}else echo '0';?>%</strong></td>
+						                        </tr>
+						                        <tr>
+						                            <td colspan="3"><strong>Total</strong></td>
+						                            <td colspan="2"><strong>$<?php echo $total-(($total*$discount)/100);?></strong></td>
+						                        </tr>
+						                    </tfoot>    
+						                </table>
+						                <div class="cart_navigation">
+						                    <a class="prev-btn" href="<?php echo $this->baseUrl().'/index'?>">Continue shopping</a>
+						                    <a class="next-btn" href="<?php  if (!empty($customer_session->customer_name)){  echo $this->baseUrl().'/customer/checkout';} else{echo $this->baseUrl().'/index/register';}?>">Continue checkout</a>
+						                </div>
+						            </div>
+						        </div>
+						        <?php }else{}?>
+                   				<?php } else {?>
+                   					<div class="col-sm-12">
+					                    <div class="box-authentication">
+					                        <h3>Already registered?</h3>
+					                        <form action="<?php echo $this->url(array('controller'=>'index','action'=>'login')); ?>" method="post">
+					                        <label for="emmail_login">Email address</label>
+					                        <input style="width:100%" id="email_login" name="email_login" value="" type="text" class="form-control">
+					                        <label for="password_login">Password</label>
+					                           <?php $login_cart->code = 1;?>
+					                        <input style="width:100%" id="password_login" name="password_login" value="" type="password" class="form-control">
+					                        <?php if ($this->code==1){?>
+					                        <p style="color:#FF0505;"><?php echo $this->msg; }?></p>
+					                        <p class="forgot-pass"><a href="<?php echo $this->baseUrl().'/customer/forgetpassword'?>">Forgot your password?</a></p>
+					                        <p class="forgot-pass"><a href="<?php echo $this->baseUrl().'/index/register'?>">Sign up free</a></p>
+					                        <button type="submit" class="button" ><i class="fa fa-lock"></i> Sign in</button>
+					                        </form>
+					                    </div>
+				                    </div>
+				                  <?php }
+                   					//}?>
+                				
+                        	 </div>
+                        	  <?php }else{}if($this->ordering_step->step2==1){?>
+                        	  <div class="tab-pane <?php if($this->ordering_step->point_step ==2 )echo"in active";?>" id="step3">
+                        	  	<div class="page-content page-order">
+						            <div class="order-detail-content">
+						            	<h3>Succsseful check out</h3>
+						            	<p style="color:#F43636;">Thank You For Support. Please Check Your E-mail Address! If don't see please contact administrator.</p>
+						                <div class="cart_navigation">
+						                    <a class="next-btn" href="<?php if (!empty($customer_session->customer_name)){echo $this->baseUrl().'/index/profile';} else{echo $this->baseUrl().'/index/register';}?>">Check your products here.</a>
+						                </div>
+						            </div>
+						        </div>
+                        	  </div>
+                        	  <?php } else{}?>
+                        </div>
+         </div>
+    </div>
+</div>
+<!-- ./page wapper-->
+<script type="text/javascript">
+function qtyUpdate(action,product_id,ids){
+	var url_update_cart = '<?php echo $this->url(array('module'=>'','controller' => 'index','action' => 'updatecart'));?>';
+	var queryStrings = "";
+	var qty = $('#qty_'+ids).val();
+
+	tem ="";
+	temp="";
+	temtotal="";
+	temtotals="";
+	template="";
+	template_total="";
+	total=0;
+	discount= <?php if (!empty($discount)){ echo $discount;}else{echo '0';}?>;
+	if(action != "") {
+		switch(action){
+			case "update":
+				queryStrings = 'action='+action+'&id='+ product_id+'&quantity='+qty;
+			break;
+			case "remove":
+				queryStrings = 'action='+action+'&id='+ product_id;
+			break;
+			case "empty":
+				queryStrings = 'action='+action;
+			break;
+		} 
+	}
+	$.ajax({
+		url: url_update_cart,
+		data: queryStrings,
+		type: "POST",
+		success:function(data){
+			if(data=="" || data=="null" || data==null){
+				document.getElementById('count_item').innerHTML = 0;
+				document.getElementById('item_count').innerHTML = 0;
+				document.getElementById('item_title').innerHTML = '0 Items in my cart';
+				
+				tem+=' <li class="product-info">No Item </li>';
+				
+//					temtotal+='<tr>';
+//			      	temtotal+='<td colspan="3"><strong>Total</strong></td>';
+//			      	temtotal+='<td colspan="2"><strong>'+total+'</strong></td>';
+//			      	temtotal+='</tr>';
+
+		      	template_total+='<tr>';
+		      	template_total+='<td colspan="3"><strong>Total</strong></td>';
+		      	template_total+='<td colspan="2"><strong>'+total+'</strong></td>';
+		      	template_total+='</tr>';
+			}else{
+				var array = JSON.parse(data);
+				var count = Object.keys(array).length;
+				document.getElementById('total_order').innerHTML ="";
+				var array = $.parseJSON(data);
+				//alert(array.length);
+				document.getElementById('count_item').innerHTML = count;
+				document.getElementById('item_count').innerHTML = count;
+				document.getElementById('item_title').innerHTML = count+' Items in my cart';
+				
+				//alert(array);
+				var keys = Object.keys(array);
+				for(var i=0 in keys) {
+						// alert(i);
+						remove = "'remove'";
+						code = "'"+array[keys[i]].code+"'";
+						var update = "'update'";
+						var qtys = array[keys[i]].quantity;
+						id = "'"+array[keys[i]].id+"'";
+						var image = array[keys[i]].img_front;
+						if(image =='' || image==null){
+							img = 'no_image.jpg';
+						}else{
+							img=array[keys[i]].img_front;
+						}
+						tem+=' <li class="product-info">';
+							tem+=' <div class="p-left">';
+								tem+='<input type="button" value="Remove" onClick="cartAction('+remove+','+id+')" class="remove_link" >';
+								tem+=' <img class="img-responsive" src="<?php echo $this->baseUrl()?>/images/product/'+img+'">';
+							tem+='</div>';
+							tem+='<div class="p-right">';
+								tem+=' <p class="p-name">'+array[keys[i]].name+'</p>';
+								tem+='<p class="p-rice">$'+array[keys[i]].price+' / '+array[keys[i]].unit+'</p>';
+								tem+='<p>Qty: '+array[keys[i]].quantity+' '+array[keys[i]].unit+'</p>';
+							tem+='</div>';
+						tem+=' </li>';
+						subtotal = parseFloat(array[keys[i]].price) * parseFloat(array[keys[i]].quantity);
+						total = total + subtotal;
+			
+						temp+='<tr>';
+						temp+='<td class="cart_product">';
+							temp+='<img src="<?php echo $this->baseUrl()?>/images/product/'+img+'" alt="Product">';
+						temp+=' </td>';
+						temp+=' <td class="cart_description">';
+							temp+=' <p class="product-name">'+array[keys[i]].name+'</p>';
+							temp+='<small class="cart_ref">'+array[keys[i]].description+'</small><br>';
+						temp+=' </td>';
+						temp+='<td class="price"><span>$'+array[keys[i]].price+ ' / '+array[keys[i]].unit+'</span></td>';
+			            temp+='<td class="qty">';
+			                 temp+='<input class="option-product-qty" id="qty_'+array[keys[i]].id+'" onkeyup="qtyUpdate('+update+','+code+','+id+'); default_value('+id+');" onkeypress="default_value('+id+'); return isNumber(event);" type="text" min="1" value="'+qtys+'">';
+			             temp+='</td>';
+			             temp+='<td class="price">';
+			             temp+='<span>$'+subtotal+'</span>';
+			         temp+='</td>';
+			         temp+='<td class="action">';
+			         	temp+='<input type="button" value="Remove" onClick="qtyUpdate('+remove+','+id+')" class="remove_link" >';
+			         temp+='</td>';
+			  		temp+='</tr>';
+			
+			  		
+
+			      	template+='<tr>';
+			      	template+='<td class="cart_product">';
+			      		template+='<img src="<?php echo $this->baseUrl()?>/images/product/'+img+'" alt="Product">';
+			      	template+=' </td>';
+			      	template+=' <td class="cart_description">';
+			      		template+=' <p class="product-name">'+array[keys[i]].name+'</p>';
+			      		template+='<small class="cart_ref">'+array[keys[i]].description+'</small><br>';
+			      	template+=' </td>';
+			      	template+='<td class="price"><span>$'+array[keys[i]].price+ ' / '+array[keys[i]].unit+'</span></td>'; 
+			      	template+='<td class="qty">';
+			      		template+='<label>'+array[keys[i]].quantity+' '+array[keys[i]].unit+'</label>';
+		            template+='</td>';
+		            template+='<td class="price">';
+		            template+='<span>$'+subtotal+'</span>';
+		          template+='</td>';
+		         template+='</tr>';
+
+		        
+					
+					}
+				}
+			 template_total+='<tr>';
+		         template_total+='<td colspan="3"><strong>Discount</strong></td>';
+		         template_total+='<td colspan="2"><strong>'+discount+'%</strong></td>';
+		    template_total+='</tr>';
+		    template_total+='<tr>';
+		         template_total+='<td colspan="3"><strong>Total</strong></td>';
+	         	template_total+='<td colspan="2"><strong>$'+(total-((total*discount)/100))+'</strong></td>';
+	        template_total+='</tr>';
+			temtotal+='<tr>';
+				temtotal+='<td colspan="3"><strong>Discount</strong></td>';
+				temtotal+='<td colspan="2"><strong>'+discount+'%</strong></td>';
+			temtotal+='</tr>';
+			temtotal+='<tr>';
+		      	temtotal+='<td colspan="3"><strong>Total</strong></td>';
+		      	temtotal+='<td colspan="2"><strong>$'+(total-((total*discount)/100))+'</strong></td>';
+	      	temtotal+='</tr>';
+				document.getElementById('total_price').innerHTML = '$'+(total-((total*discount)/100));
+				document.getElementById('pro_list').innerHTML = tem;
+				document.getElementById('cart_summary').innerHTML = temp;
+				
+				document.getElementById('total_order').innerHTML = temtotal;
+				document.getElementById('process_cart').innerHTML = template;
+				document.getElementById('total_checkout').innerHTML = template_total;
+			},
+			error:function (e){
+				tem+=' <li class="product-info">No Item </li>';
+				document.getElementById('pro_list').innerHTML = tem;
+			}
+		});
+}
+</script>
+</body>
+</html>

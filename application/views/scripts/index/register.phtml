@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/css/default.css"/>
+    <title>Registration</title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">Register</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- page heading-->
+        <h2 class="page-heading">
+            <span class="page-heading-title2">Register</span>
+        </h2>
+        <!-- ../page heading-->
+        <div class="page-content">
+            <div class="row">
+                <div class="col-sm-8">
+                <div class="box-authentication">
+                    <form action="<?php echo $this->url(array('controller'=>'customer','action'=>'signupcustomer')); ?>" method="post">
+                    			<label for="emmail_register">Email*<span id="error" style="color:#ff6666;"> &nbsp;</span></label>
+                    			<input id="emmail_register" name="emmail_register" type="email" required="required" onchange="getEmail();"class="form-control">
+                    			<label for="password">Password*<span style="color:#66cc66;"> &nbsp;(Password length between 6 - 8 characters)</span></label>
+                    			<input id="password" name="password" type="password" pattern=".{6,}" required="required" maxlength="8" title="Password at least 6 characters and maximum 8 characters!" onkeyup="checkPass();" class="form-control">
+                    			<label for="c_password">Comfirm Password*</label>
+                    			<input id="c_password" name="c_password" type="password" required="required"  class="form-control" onkeyup="checkPass();" >
+                    			<span id="confirmMessage" class="confirmMessage"></span>
+                    			<button class="button" id="btn_submit"><i class="fa fa-user"></i> Sign up</button>
+                    </form>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="box-authentication">
+                        <h3>Already registered?</h3>
+                        <form action="<?php echo $this->url(array('controller'=>'index','action'=>'login')); ?>" method="post">
+                        <label for="emmail_login">Email address</label>
+                        <input style="width:100%" id="email_login" name="email_login" value="" type="text" required="required"  class="form-control">
+                        <label for="password_login">Password</label>
+                        <input style="width:100%" id="password_login" name="password_login" value="" type="password" required="required"  class="form-control">
+                        <?php if ($this->code==1){?>
+                        <p style="color:#FF0505;"><?php echo $this->msg; }?></p>
+                        <p class="forgot-pass"><a href="<?php echo $this->baseUrl().'/customer/forgetpassword'?>">Forgot your password?</a></p>
+                        <button type="submit" class="button" ><i class="fa fa-lock"></i> Sign in</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./page wapper-->
+
+<!-- Script-->
+<script>
+function checkPass()
+{
+    //Store the password field objects into variables ...
+    var pass1 = document.getElementById('password');
+    var pass2 = document.getElementById('c_password');
+    //Store the Confimation Message Object ...
+    var message = document.getElementById('confirmMessage');
+    //Set the colors we will be using ...
+    var goodColor = "#66cc66";
+    var badColor = "#ff6666";
+    //Compare the values in the password field 
+    //and the confirmation field
+    if(pass1.value == pass2.value){
+        //The passwords match. 
+        //Set the color to the good color and inform
+        //the user that they have entered the correct password 
+    	document.getElementById('btn_submit').disabled=false;
+        pass2.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+        message.innerHTML = "Passwords Match!"
+    }else{
+        //The passwords do not match.
+        //Set the color to the bad color and
+        //notify the user.
+    	document.getElementById('btn_submit').disabled=true;
+        pass2.style.backgroundColor = badColor;
+        message.style.color = badColor;
+        message.innerHTML = "Passwords Do Not Match!"
+    }
+}  
+var url_email = '<?php echo $this->url(array('controller'=>'customer','action'=>'get-cus-email')); ?>';
+function getEmail(){
+	email = $('#emmail_register').val();
+	 var message = document.getElementById('error');
+	//alert(1);
+	$.ajax({
+        url: url_email,
+        type: "post",
+        data: {'email':email},
+        success: function(data){
+            val = $.parseJSON(data);
+				if(val==1){
+					//alert(1);
+					document.getElementById('btn_submit').disabled=true;
+					 message.innerHTML = "  Email already use !";
+				}
+				else{
+					document.getElementById('btn_submit').disabled=false;
+					message.innerHTML = "";
+				}
+
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+}
+</script>
+</body>
+</html>

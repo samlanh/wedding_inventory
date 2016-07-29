@@ -1,0 +1,58 @@
+<title>Add Privacy</title>
+<form id="add_location" action="<?php echo $this->url(array('module'=>'other','controller'=>'privacy','action'=>'add')); ?>" dojoType="dijit.form.Form" method="post" enctype="multipart/form-data">
+	 <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				 if(dijit.byId('record_row').get('value')==''){
+                    alert('Can not submit without record !');
+                    return false;
+                 }
+				return true;
+			} else {
+				return false;
+			}
+	</script>
+	<table cellspacing="10" style="margin: 0 auto; width: 100%">
+		<tr>
+			<td>
+				<fieldset>
+					<legend align="center"><strong>Add Privacy</strong></legend>
+					<table  width="100%" >
+						<tr>
+							<td align="center" valign="top">
+								<table style="margin: 0 auto; width:100%;" cellspacing="10">
+									<tr>
+										<td>Title</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" required="true" id="title" name="title" value="" type="text"></td>
+										<td></td>
+										<td></td>
+										<td>Status</td>
+										<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside">
+											    <option value="1" label="Active">Active</option>
+											    <option value="0" label="Deactive">Deactive</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="6">
+											<textarea dojoType="dijit/Editor"  height="400px" style="min-height:60px;" id="note" name="note"></textarea>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="6" align="center">
+											<input type="reset" value="សំអាត" label="Clear"dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
+											<input type="submit" value="save_new" name="save_new" label="Save&Close" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+											<input type="submit" value="save_close" name="save_close" label="Save&New" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+										</td>
+									</tr>					
+								</table>
+							</td>							
+						</tr>
+					</table>	
+				</fieldset>
+			</td>			
+		</tr>
+		
+	</table>	
+</form>

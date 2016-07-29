@@ -1,0 +1,296 @@
+<style>
+#signup:hover{
+color:blue;}
+</style>
+<?php $form = $this->frmbooking;?>
+<section class="content">
+    <div class="container">
+        <div class="inner-page inventory-listing">
+            <div class="row"> 
+            <div class="clearfix"></div>
+            <div class="tab-pane" id="step4">
+                            	<div class="clearfix"></div>
+			                    <div id="login_section">
+			                    	<form action="<?php echo $this->baseUrl();?>/customer/customerlogin" method="post" id="login">
+			                    		 <div class="select-wrapper clearfix">
+		                                     <div class="col-md-2">
+		                                        <div class="my-dropdown make-dropdown">
+		                                        User Name :
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-5">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                        <?php echo $form->getElement('user_name');?>
+		                                        </div>
+		                                    </div>
+		                                    <div class="clearfix"></div>
+		                                    <div class="col-md-2">
+		                                        <div class="my-dropdown make-dropdown">
+		                                        Password :
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-5">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                        <?php echo $form->getElement('password');?>
+		                                        </div>
+		                                    </div>
+		                                    <div class="clearfix"></div>
+		                                    <div class="col-md-5">
+		                                    	<div class="my-dropdown make-dropdown" style="text-align:right">
+		                                        	<button type="reset" name="reset">Reset</button>
+		                                        	<button type="button" onClick="loginValidate()" name="login">Login</button>
+		                                         </div>
+		                                    </div>
+<div class="clearfix"></div>
+		                                     <div class="col-md-8" style="margin-top: 10px;">
+		                                    	 <div class="my-dropdown make-dropdown" style="text-align:center">
+		                                        	<span id="signup" style="cursor: pointer;font-weight:bold;" onClick="signUp();" >| Create Account</span>
+<span id="signup" style="cursor: pointer;font-weight:bold;" onClick="signUp();" > | <a href="<?php echo $this->baseUrl();?>/customer/forgetpass">Forget Password</a> |</span>
+		                                         </div>
+		                                    </div>
+		                                </div>
+			                    	</form>
+			                    </div>
+			                    <div class="clearfix"></div>
+			                    <div id="signup_section" style="display: none">
+			                    	<form action="<?php echo $this->url(array('module'=>'','controller'=>'customer','action'=>'signup')); ?>" method="post" id="signups">
+                         <div class="select-wrapper clearfix">
+                                       <div class="col-md-6">
+                                          <div class="my-dropdown make-dropdown">
+                                          User Name :
+                                          <?php echo $form->getElement('s_user_name');?>
+                                          <div id='username_availability_result' style="position: absolute;right: 0px;"></div>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        Password : 
+                                           <?php echo $form->getElement('s_password');?>
+                                          </div>
+                                        </div>
+                                  </div>
+                         <div class="select-wrapper clearfix">
+                                       <div class="col-md-6">
+                                          <div class="my-dropdown make-dropdown">
+                                          First Name :
+                                          <?php echo $form->getElement('first_name');?>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        Last Name : 
+                                           <?php echo $form->getElement('last_name');?>
+                                          </div>
+                                        </div>
+                                  </div>
+                                  <div class="select-wrapper clearfix">
+                                   <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        Email : 
+                                           <?php echo $form->getElement('email');?>
+             <div id='email_availability_result' style="position: absolute;right: 0px;"></div>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        Phone : 
+                                           <?php echo $form->getElement('phone');?>
+                                          </div>
+                                      </div>
+                                  </div>
+<div class="select-wrapper clearfix">
+		                                	<div class="col-md-6">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                    	 Date of Birth : 
+		                                        	<?php echo $form->getElement('dob');?>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                    	 Gender : 
+		                                        	<?php echo $form->getElement('gender');?>
+		                                        </div>
+		                                    </div>
+		                                </div>
+                                  
+                                  
+                                  <div class="select-wrapper clearfix">
+                                   <div class="col-md-2">
+                                        
+                                      </div>
+                                      <div class="col-md-8" style="text-align: center;">
+                                       <div class="my-dropdown make-dropdown">
+                                         <button type="reset" name="reset">Reset</button>
+                                           <button type="button" name="signup" onClick="formValidate();">Sign Up</button>
+                                           <span style="cursor: pointer; padding-left: 20px;color: rgb(195, 12, 148);" onClick="logIn();">Have account!</span>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-2">
+                                        
+                                      </div>
+                                  </div>
+                        </form>
+			                    </div>
+			                    
+                            </div>
+            </div>
+        </div>
+   </div>
+</section>
+
+			                    	
+			                    	
+			                    	
+<script>
+
+function signUp(){
+	$('#signup_section').css("display", "block");
+	$('#login_section').css("display", "none");
+}
+function logIn(){
+	$('#signup_section').css("display", "none");
+	$('#login_section').css("display", "block");
+}
+
+form_valid = 0;
+function checkUserName(type){
+	var checking_html = '<img src="<?php echo $this->baseUrl();?>/images/checkloading.gif" />';
+	var available = '<img  src="<?php echo $this->baseUrl();?>/images/apply2.png" />';
+	var unavailable = '<img title="User Name not available!" style="cursor:pointer" src="<?php echo $this->baseUrl();?>/images/cross.png" />';
+	var emilunavailable = '<img title="Email not available!" style="cursor:pointer" src="<?php echo $this->baseUrl();?>/images/cross.png" />';
+	var not_valid = '<img alt="Email not Valid!" title="Email not valid!" style="cursor:pointer" src="<?php echo $this->baseUrl();?>/images/none.png" />';
+	var url = "<?php echo $this->url(array('module'=>'','controller'=>'index','action'=>'check-username-available'));?>";
+	if(type==1){
+		var user_name = $('#s_user_name').val();
+		$('#username_availability_result').html(checking_html);
+	}else{
+		var user_name = $('#email').val();
+		$('#email_availability_result').html(checking_html);
+	}
+	$.ajax({
+        url: url,
+        type: "post",
+        data: {'user_name':user_name,'type':type},
+        success: function(data){
+            val = $.parseJSON(data);
+			if(val==1){
+				if(type==1){
+					$('#username_availability_result').html(unavailable);
+				}else{
+					$('#email_availability_result').html(emilunavailable);
+					$("#email").css("border", "1px solid red"); 
+				}
+				form_valid=1;
+			}else{
+				if(type==1){
+					$('#username_availability_result').html(available);
+				}else{
+					var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+					email_validate = re.test(user_name);
+					if(email_validate==true){
+						$('#email_availability_result').html(available);
+						form_valid=0;
+					}else{
+						$('#email_availability_result').html(not_valid);
+						$("#email").css("border", "1px solid red"); 
+						form_valid=1;
+					}
+					
+				}
+			}
+        },
+        error:function(e){
+           // alert(e);
+        }
+    });
+}
+function loginValidate(){
+	user_name =  $("#user_name").val();
+	password = $("#password").val();
+	if(user_name==""){ 
+        $("#user_name").css("border", "1px solid red"); 
+        validate=1;
+    } else {
+		$("#user_name").css("border", "1px solid #E4E4E4");
+		validate=0;
+	}
+	if(password=="") {  
+        $("#password").css("border", "1px solid red"); 
+        validate=1;
+    } else {
+		$("#password").css("border", "1px solid #E4E4E4");
+		validate=0;
+	}
+
+	if(validate == 1){
+		return false;
+	}else{
+		//alert(1);
+		//$('#signup').submit();
+		document.getElementById("login").submit();
+	}
+}
+
+function formValidate(){
+	user_name =  $("#s_user_name").val();
+	email =  $("#email").val();
+	password = $("#s_password").val();
+	first_name = $("#first_name").val();
+	last_name= $("#last_name").val();
+	phone = $("#phone").val();
+	if(user_name==""){ 
+        $("#s_user_name").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#s_user_name").css("border", "1px solid #E4E4E4");
+	}
+    if(email==""){ 
+        $("#email").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#email").css("border", "1px solid #E4E4E4");
+	}
+    if(password=="") {  
+        $("#s_password").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#s_password").css("border", "1px solid #E4E4E4");
+	}
+    if(first_name=="") {  
+        $("#first_name").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#first_name").css("border", "1px solid #E4E4E4");
+	}
+    if(last_name=="") {  
+        $("#last_name").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#last_name").css("border", "1px solid #E4E4E4");
+	}
+    if(phone=="") {  
+        $("#phone").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#phone").css("border", "1px solid #E4E4E4");
+	}
+	if(form_valid==1){
+		return false;
+	}else{
+		//alert(1);
+		//$('#signup').submit();
+		document.getElementById("signups").submit();
+	}
+}
+$(function() {
+    
+$( "#dob" ).datepicker();
+    $( "#dob" ).change(function() {
+      $( "#dob" ).datepicker( "option","dateFormat", "dd-mm-yy" );
+    });
+    //checkSite();
+  });
+</script>
+ <link rel="stylesheet" href="<?php echo $this->baseUrl();?>/js/js-ui/jquery-ui.css">
+<!--   <script src="//code.jquery.com/jquery-1.10.2.js"></script> -->
+  <script src="<?php echo $this->baseUrl();?>/js/js-ui/jquery-ui.js"></script>

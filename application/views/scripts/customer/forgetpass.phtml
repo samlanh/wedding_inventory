@@ -1,0 +1,50 @@
+<?php
+$this->headTitle('Currency Smart | User change password page'); 
+echo $this->headTitle();
+$frm = $this->frms;
+$link = $this->url;
+?>
+
+<form action="<?php echo $this->url(array('module'=>'','controller'=>'customer','action'=>'forgetpass')); ?>" method="post" enctype="application/x-www-form-urlencoded">
+	<table cellspacing="20" style="margin: 10px auto; width: 480px">
+		<tr>
+			<td>
+				<fieldset>
+					<legend><strong>Forgetm Password</strong></legend>
+					<table cellspacing="20" width="100%">
+						<tr>
+							<td align="center" valign="top">
+								<?php if(empty($link)){?>
+								<table width="100%">
+									<tr>
+										<td>E-mail Address:</td>							
+										<td>
+											<?php echo $frm->getElement("email");?>
+										</td>
+									</tr>
+								</table>
+								<?php }else {?>
+								<table width="100%">
+									<tr>
+										<td>New Password:</td>							
+										<td>
+											<?php echo $frm->getElement("password");?>
+										</td>
+									</tr>
+								</table>
+								<?php }?>
+							</td>							
+						</tr>
+					</table>	
+				</fieldset>
+			</td>			
+		</tr>
+		<tr>
+			<td colspan="2" align="right">
+				<input type="submit" value="send" label="Send" id="submitButton"/> 							
+			</td>
+		</tr>
+	</table>
+	
+			
+</form>

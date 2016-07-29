@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>How to order - Aplus Fresh Shop</title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">How to order</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- page heading-->
+        <h2 class="page-heading">
+            <span class="page-heading-title2">How to order</span>
+        </h2>
+        <!-- ../page heading-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="page-subheading"> <?php //echo $this->googlemap['title'] ;?></h3>
+                    <div class="contact-form-box">
+                       <?php echo stripslashes($this->howtoorder['value']) ;?>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<!-- ./page wapper-->
+
+</body>
+</html>

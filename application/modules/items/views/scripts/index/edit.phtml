@@ -1,0 +1,520 @@
+<?php 
+	  $url_save = $this->url(array('module'=>'items','controller'=>'index','action'=>'add'));
+	  $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+//       $rows_engine=$this->rows_engine;
+//       $rows_type=$this->rows_type;
+//       $rows_tran=$this->rows_tran;
+//       $rows_veh_typ=$this->rows_veh_typ;
+//print_r($this->item_supplier);
+	  if(!empty($this->item_supplier)){
+	  	$result = 1;
+	  }else{
+	  	$result=0;
+	  }
+?>
+<?php $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+ echo '<title>'. $this->tr->translate("PRODUCTS").'</title>';
+// print_r($this->product);exit();
+?>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
+<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
+<style>
+}
+.bg{ background:#eeeeee; border:1px solid #000;}
+select{ width:100%;}
+table tr.head-title{ background: none repeat scroll 0% 0% rgba(213, 249, 244, 1); padding:2px;}
+table tr td.null-border{ background: #fff; border-left:none !important;}
+table .set-style td,table .set-style th{ padding: 5px; border:1px solid #ccc;}
+table .display_form-add{display:none;}
+</style>
+<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<script type="text/javascript">
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.DateTextBox");
+dojo.require("dojo.NodeList-manipulate");
+require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
+//model controll
+dojo.ready(function(){
+	rs = '<?php echo $result?>';
+	if(rs==1){
+		oldRow();
+		
+	}else{
+		addRow();
+// 		alert(2);
+	}
+	new dijit.form.FilteringSelect({
+	   // store: make_store,
+	    autoComplete: true,                        
+	    required: true,
+	    id: "model",
+	    name: "model",           
+	    class: 'fullside',            
+	    onChange: function() {  
+	    	model_id = dijit.byId('model').get('value');
+	    	if(model_id==-1){
+		    	make_id=dijit.byId('make').get('value');
+		    	dijit.byId('txt_makeid').attr('value',make_id);
+				dijit.byId('pop_model').show();
+				//dijit.byId('model').attr('value','');
+		     }else{
+		    	// alert(model_id);
+		    	   getallSubModel(model_id);
+		    	   dijit.byId('submodel').attr('value','');
+		     }
+	    }
+	}, "model");
+	}); 
+
+</script>
+<form id='add_client' action="<?php echo $this->url(array('module'=>'items','controller'=>'index','action'=>'edit')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<table  width="100%" style="margin-top:10px;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend ><strong>Add Product</strong></legend>
+							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
+							    <tr>
+							    	<td></td>
+							    	<td></td>
+							    	<td>Item No.</td>
+									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside" id="product_no" name="product_no" value="<?php echo $this->product['pro_no'];?>" type="text" required="true"></td>
+							    </tr>
+							    <tr>
+									<td>Item Name</td>
+									<td><input tabindex="2"dojoType="dijit.form.ValidationTextBox" class="fullside" id="product_name_kh" name="product_name_kh" value="<?php echo $this->product['pro_name_kh'];?>" type="text" required="true"></td>	
+<!-- 									<td>Item Name In English</td> -->
+<!--									<td><input tabindex="3"dojoType="dijit.form.ValidationTextBox" class="fullside" id="product_name_en" name="product_name_en" value="<?php //echo $this->product['pro_name_en'];?>" type="text" required="true"></td>-->	
+									<td>Category</td>
+									<td>
+										<select tabindex="24" name="make" id="make" dojoType="dijit.form.FilteringSelect" class="fullside" onchange="addCate();">
+										   <option value="-1">Add New</option>
+										   <?php if(!empty($this->all_make)) foreach ($this->all_make as $row){?>
+										    <option value="<?php echo $row['id'];?>"<?php if ($row['id']==$this->product['category_id']) echo "selected='selected'";?>><?php echo $row['name']?></option>
+										    <?php  } ?>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td>Measure :</td>
+									<td>
+										<select tabindex="24" name="unit" id="unit" dojoType="dijit.form.FilteringSelect" class="fullside">
+										   <?php if(!empty($this->unit)) foreach ($this->unit as $row){?>
+										    <option value="<?php echo $row['id'];?>"<?php if ($row['id']==$this->product['unit']) echo "selected='selected'";?>><?php echo $row['name']?></option>
+										    <?php  } ?>
+										</select>
+									</td>
+									<td>Price ($)</td>
+									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="price" name="price" value="<?php echo $this->product['price'];?>" type="text"></td>	
+								</tr>
+								<tr>
+									<td>Status</td>
+									<td>
+									    <select tabindex="24" name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
+										    <?php if(!empty($this->status)) foreach($this->status as $row){?>
+										    <option value="<?php echo $row['key_code']?>"<?php if ($row['key_code']==$this->product['status']) echo "selected='selected'";?> label="<?php echo $row['name_en'];?>"><?php echo $row['name_en'];?></option>
+										    <?php }?>
+										</select>
+									</td>
+									<td>Note:</td>
+									<td>
+										<textarea class="fullside" name="note" value="<?php echo $this->product['description'];?>"> </textarea>
+									</td>
+								</tr>
+								<tr class="bg">
+									<td>Product Image 268x327px</td>
+									<td>
+										<input type="hidden" name="old_front" value="<?php echo $this->product['img_front'];?>"/>
+													<img src="<?php echo $this->baseUrl()."/images/product/".$this->product['img_front'];?>" height="30px" />
+													<input type="file" name="front" id="front" />
+									</td>
+								</tr>
+							   <tr>
+									<td colspan="4">
+										<fieldset>
+											<legend>Supplier</legend>
+												<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
+													<thead>
+														<tr>
+															<td colspan="8" align="left">
+																<input type="button" label="Add Row<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+															 		iconClass="dijitIconEditProperty" onclick="addRow();" />
+																<input type="hidden" name="identity" id="identity"  value="" >
+															 </td>
+														</tr>
+														<tr>
+															<td colspan="8">
+																<table id="table_row" border="1px" style="border-collapse: collapse; border:1px solid #ccc;">
+																	<tr id="head-title" class="head-td" align="right"></tr>
+																</table>
+															</td>
+														</tr>
+														
+													</thead>
+											 	</table>
+									 	</fieldset>
+									</td>
+								</tr>
+									<td colspan="6" align="center">
+									<input type="reset" label="Clear" dojoType="dijit.form.Button" 
+										 iconClass="dijitIconClear" /> 
+								    <input type="submit" value="SAVE_CLOSE" label="Save" id="save_close" dojoType="dijit.form.Button" name="save_close"
+										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+									</td>
+								</tr>
+								
+							</table>
+						
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>
+<div class="dijitHidden">
+				<div data-dojo-type="dijit.Dialog"  id="frm_district" >
+				<form id="form_district" ><table style="margin: 0 auto; width: 100%;" cellspacing="7">
+					<tr>
+						<td>District Name English</td>
+						<td>
+<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="pop_district_name" name="pop_district_name" value="" type="text"></td>
+					</tr>
+								<tr>
+						<td>Province Name English</td>
+						<td>
+<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="pop_district_namekh" name="pop_district_namekh" value="" type="text"></td>
+					</tr>
+					<tr>
+						<td>District Name Khmer</td>
+						<td>
+							<select name="province_names" id="province_names" dojoType="dijit.form.FilteringSelect" class="fullside" onchange="filterDistrict();">
+							    <option value="" label="-----Select Province-----">-----Select Province-----</option>
+							    <option value="1" label="Phnom Penh-áž—áŸ’áž“áŸ†áž–áŸ�áž‰">Phnom Penh-áž—áŸ’áž“áŸ†áž–áŸ�áž‰</option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" align="center">
+						<input type="button" value="Save" label="Save" dojoType="dijit.form.Button"
+						iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addNewDistrict();"/>
+						</td>
+				    </tr>
+				</table></form></div>
+		</div><div class="dijitHidden">
+				<div data-dojo-type="dijit.Dialog"  id="frm_village" >
+					<form id="form_village" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		 <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+        </script>
+		<table style="margin: 0 auto; width: 95%;" cellspacing="10">
+					    <tr>
+							<td>Village KH</td>
+							<td>
+							   <input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="village_namekh" name="village_namekh" value="" type="text"></td>
+						</tr>
+						<tr>
+							<td>Village Name EN</td>
+							<td>
+								<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="village_name" name="village_name" value="" type="text"></td>
+						</tr>
+						<tr>
+							<td>Display By</td>
+							<td>
+								<select name="display" id="display" dojoType="dijit.form.FilteringSelect" class="fullside">
+								    <option value="1" label="Name KH">Name KH</option>
+								    <option value="2" label="Name(Last,First) In English">Name(Last,First) In English</option>
+								</select></td>
+						</tr>
+						<tr>
+							<td>Province Name</td>
+							<td>
+								<select name="province_name" id="province_name" dojoType="dijit.form.FilteringSelect" required="true" class="fullside" onchange="filterDistrict();" invalidMessage="">
+								    <option value="0" label="-----Select Province-----">-----Select Province-----</option>
+								    <option value="1" label="Phnom Penh-áž—áŸ’áž“áŸ†áž–áŸ�áž‰">Phnom Penh-áž—áŸ’áž“áŸ†áž–áŸ�áž‰</option>
+								  
+								</select></td>
+						</tr>
+						<tr>
+							<td>District Name</td>
+							<td>
+								<select name="district_name" id="district_name" dojoType="dijit.form.FilteringSelect" class="fullside" required="true">
+								    <option value="0" label="-----Select District-----">-----Select District-----</option>
+								    <option value="1" label="áž…áŸ†áž€áž¶ážšáž˜áž“-Chamkarmon">áž…áŸ†áž€áž¶ážšáž˜áž“-Chamkarmon</option>
+								   
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Commune Name</td>
+							<td>
+								<select name="commune_name" id="commune_name" dojoType="dijit.form.FilteringSelect" class="fullside" required="true">
+								    <option value="1" label="Tonle Bassak">Tonle Bassak</option>
+								    <option value="2" label="Boeng Keng Kang I">Boeng Keng Kang I</option>
+								    <option value="3" label="Boeng Keng Kang II">Boeng Keng Kang II</option>
+								   
+								</select>
+						  </td>
+						</tr>
+						<tr>
+							<td>Status</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+											<input type="reset" value="ážŸáŸ†áž¢áž¶áž�" label=Clear dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
+											<input type="button" value="save_close" name="save_close" label="Save" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" Onclick="addVillage();"  />
+							</td>
+						</tr>
+					</table></form></div>
+		</div><div class="dijitHidden">
+				<div data-dojo-type="dijit.Dialog"  id="frm_commune" >
+					<form id="form_commune" ><table style="margin: 0 auto; width: 100%;" cellspacing="7">
+					<tr>
+						<td>Commune Name EN</td>
+						<td>
+							<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="commune_nameen" name="commune_nameen" value="" type="text"></td>
+					</tr>
+					<tr>
+						<td>Commune KH</td>
+						<td>
+							<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="commune_namekh" name="commune_namekh" value="" type="text"></td>
+					</tr>
+					<tr>
+						<td>District Name</td>
+						<td>
+							<select name="district_nameen" id="district_nameen" dojoType="dijit.form.FilteringSelect" class="fullside">
+							    <option value="1" label="áž…áŸ†áž€áž¶ážšáž˜áž“-Chamkarmon">áž…áŸ†áž€áž¶ážšáž˜áž“-Chamkarmon</option>
+							    <option value="2" label="ážŠáž¼áž“áž–áŸ�áž‰-Daun Penh">ážŠáž¼áž“áž–áŸ�áž‰-Daun Penh</option>
+							  
+							</select></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center">
+						<input type="button" value="Save" label="Save" dojoType="dijit.form.Button"
+						iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addNewCommune();"/>
+						</td>
+					</tr>
+				</table></form></div>
+			</div><div class="dijitHidden">
+				<div data-dojo-type="dijit.Dialog"  id="frm_clienttype" >
+					<form id="form_clienttype" ><table style="margin: 0 auto; width: 100%;" cellspacing="7">
+					<tr>
+						<td>Document Type EN</td>
+						<td>
+							<input dojoType="dijit.form.TextBox" class="fullside" id="clienttype_nameen" name="clienttype_nameen" value="" type="text"></td>
+					</tr>
+					<tr>
+						<td>Document Type KH</td>
+						<td>
+						<input dojoType="dijit.form.TextBox" class="fullside" id="clienttype_namekh" name="clienttype_namekh" value="" type="text"></td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" align="center">
+						<input type="button" value="Save" label="Save" dojoType="dijit.form.Button"
+						iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addNewDocumentType();"/>
+						</td>
+					</tr>
+				</table>
+</form>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_make" >
+		<form id='frm_make' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td>Make Title</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_make" name="txt_make" value="" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="SAVE" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addMake();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_model" >
+		<form id='frm_model' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td>Model Title</td>
+				<td>
+				<input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_model" name="txt_model" value="" type="text">
+				<input dojoType="dijit.form.TextBox" id="txt_makeid" name="txt_makeid" type="hidden"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="SAVE" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addModel();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_submodel" >
+		<form id='frm_sub_model' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td>Sub Model</td>
+				<td>
+					<input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_submodel" name="txt_submodel" value="" type="text">
+					<input dojoType="dijit.form.TextBox" id="txt_model_id" name="txt_model_id" type="hidden">
+					<input dojoType="dijit.form.TextBox" id="txt_make_id" name="txt_make_id" type="hidden">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="ážšáž€áŸ’ážŸáž¶áž‘áž»áž€" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addSubModel();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+dojo.require("dijit.form.Textarea"); 
+</script>
+<script type="text/javascript">
+var url_make = '<?php echo $this->url(array('module'=>'items','controller'=>'model','action'=>'add-make')); ?>';
+function addMake(){
+	if(dijit.byId('frm_make').validate()){
+		dojo.xhrPost({
+			url:url_make,
+			form: dojo.byId("frm_make"),
+			handleAs:"json",
+			load: function(data) {
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('txt_make').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('make'), make_store, Itemmake, data);
+				dijit.byId('frm_make').reset();
+				dijit.byId("pop_make").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+var url_model = '<?php echo $this->url(array('module'=>'items','controller'=>'model','action'=>'add-model')); ?>';
+function addModel(){
+	if(dijit.byId('frm_model').validate()){
+		dojo.xhrPost({
+			url:url_model,
+			form: dojo.byId("frm_model"),
+			handleAs:"json",
+			load: function(data) {
+				//alert(data);
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('txt_model').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('model'), model_store, Itemmake, data);
+				dijit.byId('frm_model').reset();
+				dijit.byId("pop_model").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+function addCate(){
+	make_id = dijit.byId('make').get('value');
+	if(make_id==-1){
+		dijit.byId('pop_make').show();
+     }
+}
+tmps = '';
+tem='';
+title=0;
+function oldRow(){
+// 	alert(1);
+	<?php foreach ($this->item_supplier as $key => $row){ $i = $key + 1;?>
+	col++;no++;
+	var templates = '';
+	if(title!=1){
+		tem+='<th>DEL</th>';
+		tem+='<th>N_O</th>';
+		tem+='<th >COMPANY_NAME</th>';
+		dojo.query("#head-title").append(tem);
+		title=1;
+	}
+		templates+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
+		templates+='<td align="center">'+col+'</td>';
+		templates+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemPrice('+col+');" id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;">';
+			templates+='<option value="-1">Select product</option>';
+		<?php foreach($this->supplier as $key){?>
+			templates+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["su_id"]){ echo "selected=".'"selected"';}?>><?php echo $key['company_name'];?></option>';
+		<?php }?>
+		templates+='</td>';
+		
+	tmps='<tr id="row'+col+'">';
+	tmps+="</tr>";
+	
+	dojo.query("#table_row").append(tmps);
+	if($("#identity").val()!='') {
+		var identity = $("#identity").val();
+		$("#identity").val(identity+','+col);
+	} else {$("#identity").val(col);}
+	dojo.html.set(dojo.byId("row"+col),templates , {
+	     parseContent: true,
+	});
+	<?php }?>
+}
+var col = 0;
+var no = 0;
+var title = 0;
+func='';
+tmp = '';
+temp='';
+function addRow() {
+	col++;no++;
+	template='';
+	if(title!=1){
+		temp+='<th>DEL</th>';
+		temp+='<th>N_O</th>';
+		temp+='<th>COMPANY_NAME</th>';
+		dojo.query("#head-title").append(temp);
+		title=1;
+	}
+		template+='<td width="5%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
+		template+='<td width="5%" align="center">'+no+'</td>';
+		template+='<td><select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" placeHolder="Select Supplier">';
+			template+='<option value="" label="Select Supplier"></option>';
+		<?php foreach($this->supplier as $key){?>
+			template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['company_name'];?></option>';
+		<?php }?>
+		template+='</td>';
+	tmp='<tr id="row'+col+'">';
+	tmp+="</tr>";
+	dojo.query("#table_row").append(tmp);
+	if($("#identity").val()!='') {
+		var identity = $("#identity").val();
+		$("#identity").val(identity+','+col);
+	} else {$("#identity").val(col);}
+	dojo.html.set(dojo.byId("row"+col),template , {
+	     parseContent: true,
+	});
+}
+</script>

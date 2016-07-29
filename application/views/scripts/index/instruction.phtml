@@ -1,0 +1,35 @@
+<title>Booking Instruction</title>
+<section class="content">
+	<div class="container">
+		<div class="inner-page row">
+			<div class="row">
+				<div class="car_listings boxed boxed_left col-md-9 col-lg-push-3 col-md-push-3"><!-- start right -->
+					<div class="blog-content">
+                    <div class="post-entry clearfix">
+					<div class="col-lg-12">
+					   <?php if(!empty($this->detail)){?>    
+					        <blockquote><?php echo $this->detail['title'];?></blockquote>
+					        <p><?php echo $this->detail['description'];?></p>        
+					   <?php }?>
+					</div>
+				   </div>
+				   </div>
+					<div class="clearfix"></div>
+				</div>
+				<div class=" col-md-3 col-sm-12 col-lg-pull-9 col-md-pull-9 left-sidebar">
+			         <div class="left_inventory">
+				               <div class="side-content row">
+		                            <div class="list col-md-12 col-sm-3 padding-bottom-50">
+		                                <ul>
+		                                	<?php if(!empty($this->row))foreach($this->row as $row){?>
+						                    <li id="home-active" class="active"><a href="<?php echo $this->baseUrl();?>/index/instruction/id/<?php echo $row['id'];?>"><?php echo $row['title'];?></a></li>
+					                        <?php }?>  
+						                </ul>
+		                            </div>
+	                        	</div>
+			         </div>
+			    </div>
+			 </div>
+		</div>
+	</div>
+</section>

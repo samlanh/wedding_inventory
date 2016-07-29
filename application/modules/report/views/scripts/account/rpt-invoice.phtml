@@ -1,0 +1,171 @@
+<?php $filter = $this->frm_search;
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$frm=$this->frm;
+$db = new Application_Model_DbTable_DbGlobal();
+$logo = $db->getLogo();
+?>
+<script>
+dojo.require("dijit.form.DateTextBox");
+</script>
+<meta charset="utf-8">
+<title><?php echo $tr->translate("ACCOUNT STATEMENT");?></title>
+<style>
+.absolute{ position: absolute !important; top: 210px !important;}
+.tbl_first{width:20% !important;}
+.tbl_second{width:60% !important;}
+</style>
+<div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+<div id="divPrint" style="width: 100%;">
+<style>
+.style{
+	line-height: 20px; font-size: 10px !important;
+	font-family: 'Khmer OS Battambang';
+}
+
+.invoice p{ }
+th{padding: 5px;}
+</style>
+<table style="font-family: 'Khmer OS Content'; width:100%;">
+	<tr>
+    	<td align="center">
+    		<table width="100%" style="font-family: 'Khmer OS Battambang';" style="margin:0; padding:0;border:none;">
+            	<tr>
+                	<td colspan="2" width="20%"></td>
+                    <td width="70%" valign="top">
+                		<h2 style="text-align:center; font-size:18px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("Invoice វិក័យប័ត្រ");?></label></h2>
+                	</td>
+                </tr> 
+                <tr>
+                	<td class="tbl_first" width="25%"><img style="width: 230px; " alt="Aplus Fresh Shop" src="<?php echo $this->baseUrl()?>/slider/<?php echo $logo['photo_name'];?>" /></td>
+                	<td class="tbl_second" width="50%" valign="top" class="invoice">
+	                	 	<table cellpadding="0" width="100%" style=" font-size:14px; font-family: 'Khmer OS Battambang';line-height:16px; margin:0; padding:0;border:none;">
+	                	 		<tr>
+	                	 			<td style="font-family:'Khmer MEF2'">APlus Fresh Shop (ហាងលក់បន្លែផ្លែឈើ និងផ្កាស្រស់)</td>
+	                	 		</tr>
+	                	 		<tr>
+	                	 			<td><?php echo $this->address['value'];?></td>
+	                	 		</tr>
+	                	 		<tr>
+	                	 			<td><?php echo $this->tel_cambodian['value'];?></td>
+	                	 		</tr>
+	                	 		<tr>
+	                	 			<td><?php echo $this->email['value'];?></td>
+	                	 		</tr>
+	                		</table>
+                		</td>
+                	 <td width="25%" ></td>
+                </tr> 
+                <tr>
+                	<td width="10%"></td>
+                	<td width="10%"></td>
+			         <td width="80%" valign="top" align="right">
+			         		<table class="absolute" cellpadding="0" width="100%" style=" position: absolute; top: 116px; z-index: 11;font-family: 'Khmer OS Battambang';line-height:16px; margin:0; padding:0;border:none;">
+		                	 		<tr>
+		                	 			<td>Date :<?php echo date('d-M-Y',strtotime($this->order['order_date']));?></td>
+		                	 		</tr>
+		                	 		<tr>
+		                	 			<td>Invoice No : <?php echo $this->order['invoice_no'];?></td>
+		                	 		</tr>
+		                	</table>
+	                </td>
+		        </tr> 
+		          <tr>
+                	<td width="10%">
+                		<table cellpadding="0" width="100%" style=" font-size:14px; font-family: 'Khmer OS Battambang';line-height:16px; margin:0; padding:0;border:none;">
+		                	 		<tr>
+		                	 			<td>Bill To : <?php if(!empty($this->order['branch'])){echo $this->order['branch']; }else{ echo $this->order['name'];}?></td>
+		                	 		</tr>
+		                	 		<tr>
+		                	 			<td><?php echo "St.".$this->order['street']." #".$this->order['house_no']." , ".$this->order['district']." ,".$this->order['province'];?></td>
+		                	 		</tr>
+		                	</table>
+                	</td>
+                	<td width="10%"></td>
+			        <td valign="top" align="right">
+			         	<table cellpadding="0" width="100%" style=" font-size:14px; font-family: 'Khmer OS Battambang';line-height:16px; margin:0; padding:0;border:none;">
+		                	 		<tr>
+		                	 			<td>Ship To : <?php if(!empty($this->order['branch'])){echo $this->order['branch']; }else{ echo $this->order['name'];}?></td>
+		                	 		</tr>
+		                	 		<tr>
+		                	 			<td><?php echo "St.".$this->order['street']." #".$this->order['house_no']." , ".$this->order['district']." ,".$this->order['province'];?></td>
+		                	 		</tr>
+		                </table>
+	                </td>
+		        </tr> 
+            </table>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <table id="exportExcel" border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:10px; white-space: nowrap;" width="100%" cellspacing="0">
+                 <tr bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:5px 0px; ">
+                    <th>&nbsp;<?php echo $tr->translate("No");?>&nbsp;</th>
+                    <th >&nbsp;<?php echo $tr->translate("Item");?>&nbsp;</th>
+                    <th >&nbsp;<?php echo $tr->translate("Description");?>&nbsp;</th>
+                    <th >&nbsp;<?php echo $tr->translate("Qty");?>&nbsp;</th>
+                    <th >&nbsp;<?php echo $tr->translate("Unit Price");?>&nbsp;</th>
+                    <th >&nbsp;<?php echo $tr->translate("Total");?>&nbsp;</th>
+                 </tr>
+               <?php  $i=0; if (!empty($this->orderdetail))  foreach($this->orderdetail as $row){ $i++;
+                //for($i=0; $i<10; $i++){?>
+              
+					<tr style="line-height: 18px;">
+						<td align="center">&nbsp;<?php echo $i?>&nbsp;</td>
+						<td align="center">&nbsp;<?php echo $row['pro_no'];?>&nbsp;</td>
+						<td>&nbsp;<?php echo $row['pro_name'];?>&nbsp;</td>
+						<td align="center">&nbsp;<?php echo $row['qty']." ".$row['unit'];?>&nbsp;</td>
+						<td align="right">&nbsp;$ <?php echo number_format($row['price'],2);?>&nbsp;</td>
+						<td align="right">&nbsp;$ <?php echo number_format($row['amount'],2);?>&nbsp;</td>
+					</tr>
+				<?php  } ?>
+				<?php if (!empty($this->order['discount_login'])|| $this->order['discount_login']>0){?>
+				<tr style="line-height:16px;">
+					<td colspan="5" style="text-align:right; font-size:12px; font-weight:bold; border-left: #fff solid 1px; border-right: #fff solid 1px; border-bottom: #fff solid 1px;">Discount</td>
+					<td style=" text-align:right; font-size:12px; font-weight:bold; border-right: #fff solid 1px; border-bottom: #fff solid 1px;  ">&nbsp;<?php echo $this->order['discount_login']."%";?>&nbsp;</td>
+				</tr>
+				<?php }?>
+				<tr style="line-height:16px;">
+					<td colspan="5" style="text-align:right; font-size:12px; font-weight:bold; border-left: #fff solid 1px; border-right: #fff solid 1px; border-bottom: #fff solid 1px;">Total</td>
+					<td style=" text-align:right; font-size:12px; font-weight:bold; border-right: #fff solid 1px; border-bottom: #fff solid 1px; ">&nbsp;$<?php echo number_format($this->order['grand_total'],2);?>&nbsp;</td>
+				</tr>
+				<tr style="line-height:16px;">
+					<td colspan="5" style="text-align:right; font-size:12px; font-weight:bold; border-left: #fff solid 1px; border-right: #fff solid 1px; border-bottom: #fff solid 1px;">Book</td>
+					<td style=" text-align:right; font-size:12px; font-weight:bold; border-right: #fff solid 1px; border-bottom: #fff solid 1px;  ">&nbsp;$<?php echo number_format($this->order['book'],2);?>&nbsp;</td>
+				</tr>
+				<tr style="line-height:16px;">
+					<td colspan="5" style="text-align:right; font-size:12px; font-weight:bold; border-left: #fff solid 1px; border-right: #fff solid 1px; border-bottom: #fff solid 1px;">Balance Due</td>
+					<td style=" text-align:right; font-size:12px; font-weight:bold; border-right: #fff solid 1px; border-bottom: #fff solid 1px;  ">&nbsp;$<?php echo number_format($this->order['balance_due'],2);?>&nbsp;</td>
+				</tr>
+            </table>
+    	</td>
+    </tr>
+    <tr>
+			<td colspan="3" valign="top" align="left">
+			   		<table cellpadding="0" width="65%" style="font-family: 'Khmer OS Battambang';line-height:16px; margin:0; padding:0;border:none;">
+		             	 <tr>
+		                	<td colspan="5">Please contact us for more information about payment option.</td>
+		                 </tr>
+		               	 <tr>
+		               	 	<td>Telephone :</td>
+		         	 		<td><?php echo $this->tel_cambodian['value'];?></td>
+		         	 		<td>Email:</td>
+		         	 		<td><?php echo $this->email['value'];?></td>
+		         	 		<td>www.apitgroups.com</td>
+		          		</tr>
+		         </table>
+	        </td>
+	</tr> 
+	<tr>
+		<td colspan="3" valign="top" align="left">
+               <table align="center" width="100%">
+				   <tr style="font-size: 12px;">
+				        <th style="width:20%;text-align:center;  font-family:'Khmer MEF2'"><?php echo $tr->translate('Reciever Sign');?></th>
+				        <th></th>
+				        <th style="width:20%;text-align:center;font-family:'Khmer MEF2'"><?php echo $tr->translate('Authority Sign');?></th>
+				   </tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</div>
+</div>

@@ -1,0 +1,41 @@
+<form action="" method="post">
+	<table width="50%">
+		<tr>
+			<td colspan="2">Do you want to forward this URL to your Friend</td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="hidden" name="txt_url" id="txt_url"><p id="url"></p></td>
+		</tr>
+		<tr>
+			<td>Fisrt Name :</td>
+			<td><input type="text" name="first_name"></td>
+		</tr>
+		<tr>
+			<td>Last Name :</td>
+			<td><input type="text" name="last_name"></td>
+		</tr>
+		<tr>
+			<td>Your Email :</td>
+			<td><input type="text" name="your_email"></td>
+		</tr>
+		<tr>
+			<td>Friend Email :</td>
+			<td><input type="text" name="friend_email"></td>
+		</tr>
+		<tr>
+			<td>Comment :</td>
+			<td><textarea name="comment"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align: center;"><button type="submit">Submit</button></td>
+		</tr>
+	</table>
+</form>
+<script>
+var urls      = window.location.href;
+$( document ).ready(function() {
+	document.getElementById('url').innerHTML=urls;
+	$('#txt_url').val(urls);
+});
+	
+</script>

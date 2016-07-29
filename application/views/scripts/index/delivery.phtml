@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/select2/css/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/jquery.bxslider/jquery.bxslider.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/owl.carousel/owl.carousel.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/animate.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/responsive.css" />
+    <title>Delivery Information</title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">Delivery Information</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- row -->
+        <div class="row">
+            <!-- Left colunm -->
+            <div class="column col-xs-12 col-sm-3" id="left_column">
+                <!-- block category -->
+                <div class="block left-module">
+                    <p class="title_block">Infomations</p>
+                    <div class="block_content">
+                        <!-- layered -->
+                        <div class="layered layered-category">
+                            <div class="layered-content">
+                                <ul class="tree-menu">
+                                    <li><span></span><a href="<?php echo $this->baseUrl().'/index/about-us'?>">About Us</a></li>
+                                    <li class="active"><span></span><a href="<?php echo $this->baseUrl().'/index/delivery'?>">Delivery Information</a></li>
+                                    <li><span></span><a href="<?php echo $this->baseUrl().'/index/policy'?>">Privacy Policy</a></li>
+                                    <li><span></span><a href="<?php echo $this->baseUrl().'/index/termcondition'?>">Terms &amp; Conditions</a></li>
+                                    <li><span></span><a href="<?php echo $this->baseUrl().'/index/contact-us'?>">Contact Us</a></li>
+                                    <li><span></span><a href="<?php echo $this->baseUrl().'/index/faq-us'?>">FAQ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- ./layered -->
+                    </div>
+                </div>
+                <!-- ./block category  -->
+                <!-- Banner silebar -->
+                <div class="block left-module">
+                   <!-- <div class="banner-opacity">
+                        <a href="#"><img src="<?php echo $this->baseUrl()?>/assets/data/slide-left.jpg" alt="ads-banner"></a>
+                    </div> -->
+                </div>
+                <!-- ./Banner silebar -->
+            </div>
+            <!-- ./left colunm -->
+            <?php if(!empty($this->rows)) foreach($this->rows as $rows){?>  
+            <!-- Center colunm-->
+            <div class="center_column col-xs-12 col-sm-9" id="center_column">
+                <!-- page heading-->
+                <h2 class="page-heading">
+                    <span class="page-heading-title2"><?php echo $rows['title'];?></span>
+                </h2>
+                <!-- Content page -->
+                <div class="content-text clearfix">
+                   <!--<img src="<?php //echo $this->baseUrl()?>/assets/data/aplus fresh shop.png" class="alignleft" width="310" alt="">-->
+					<!-- <blockquote><?php //echo $rows['title'];?></blockquote>-->
+					  <?php echo $rows['description'];?>
+                </div>
+               
+                <!-- ./Content page -->
+            </div>
+            <!-- ./ Center colunm -->
+             <?php }?>
+        </div>
+        <!-- ./row-->
+    </div>
+</div>
+<!-- ./page wapper-->
+
+<!-- Script-->
+<script type="text/javascript" src="assets/lib/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/lib/select2/js/select2.min.js"></script>
+<script type="text/javascript" src="assets/lib/jquery.bxslider/jquery.bxslider.min.js"></script>
+<script type="text/javascript" src="assets/lib/owl.carousel/owl.carousel.min.js"></script>
+<script type="text/javascript" src="assets/lib/jquery.countdown/jquery.countdown.min.js"></script>
+<script type="text/javascript" src="assets/lib/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="assets/js/jquery.actual.min.js"></script>
+<script type="text/javascript" src="assets/js/theme-script.js"></script>
+</body>
+</html>

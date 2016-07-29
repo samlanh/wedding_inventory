@@ -1,0 +1,72 @@
+<?php 
+   $tr = Application_Form_FrmLanguages::getCurrentlanguage();
+   echo $this->headTitle($tr->translate("ADD_CATEGORY"));
+   $rows_owner= $this->rows_owner;
+   $rows_cus=$this->rows_cus;
+?>
+<script type="text/javascript">
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.DateTextBox");
+dojo.require("dijit.form.Textarea");
+require(["dijit/form/CheckBox","dijit/Dialog"]);
+
+dojo.ready(function(){
+});
+
+</script>
+<form id='add_season' enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+	<div >
+		<table  width="100%" style="background:#D6E5F8;">
+			<tr>
+				<td width="90%" valign="top">
+						<fieldset style="border:1px solid #FFF; "><legend align="center" ><strong>ADD CATEGORY</strong></legend>
+						<table>
+							<tr>
+								<td>Category Name*</td>
+								<td><input dojoType="dijit.form.ValidationTextBox" required="required"  type="text" name="category_name" id="category_name" class="fullside" /></td>
+								<td width="100px">Choose Parent</td>
+								<td><select name="category" id="category" dojoType="dijit.form.FilteringSelect" class="fullside" onchange="getOwner();">
+									    <option value="-1">No Parent</option>
+									   <?php if (!empty($this->category)) foreach($this->category as $row){?>
+									    <option value="<?php echo $row['id']?>"><?php echo $row['category_name'];?></option>
+									    <?php }?>
+									</select>
+								</td>
+								<td width="100px">Status</td>
+								<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside" onchange="getOwner();">
+									    <?php if (!empty($this->status)) foreach($this->status as $row){?>
+									    <option value="<?php echo $row['key_code']?>"><?php echo $row['name_en']?></option>
+									   <?php }?>
+									</select>
+								</td>
+							</tr>
+							<tr >
+								<td >Description</td>
+								<td colspan="5">
+										<textarea class="fullside"  dojoType="dijit.form.ValidationTextBox" style="height: 60px !important;"
+										tabindex="8" dojoType=""  id="description" name="description" ></textarea>
+								</td>
+							</tr>
+							</table>
+							</fieldset>
+					
+					
+			<tr>
+				<td colspan="3" align="center" >
+					<input dojoType="dijit.form.Button" type="submit" id="btn_save_close" name="btn_save_close" label="Save&Close"  value="submit" >									
+					<input dojoType="dijit.form.Button" type="submit" id="btn_save_new" name="save_new" label="Save&New"  value="submit" >									
+					<!-- <input dojoType="dijit.form.Button" type="button" name="btn_save_close" label="Print Agreement"  value="submit" onclick="showReciept();" >	 -->								
+				</td>
+			</tr>
+			
+		</table>	
+	</div>
+</form>

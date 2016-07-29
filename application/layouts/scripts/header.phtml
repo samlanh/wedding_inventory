@@ -1,0 +1,139 @@
+<?php 
+	  $tr=Application_Form_FrmLanguages::getCurrentlanguage();
+	  $home=$this->url(array('module'=>'home','controller'=>'index','action'=>'index'), null, true);
+	  $group=$this->url(array('module'=>'group','controller'=>'index','action'=>'index'), null, true);
+	  $supplier=$this->url(array('module'=>'supplier','controller'=>'index','action'=>'index'), null, true);
+	  $other=$this->url(array('module'=>'other','controller'=>'index','action'=>'index'), null, true);
+	  $location=$this->url(array('module'=>'location','controller'=>'index','action'=>'index'), null, true);
+	  $report=$this->url(array('module'=>'report','controller'=>'index','action'=>'index'), null, true);
+	  $items=$this->url(array('module'=>'items','controller'=>'index','action'=>'index'), null, true);
+	  $food=$this->url(array('module'=>'food','controller'=>'index','action'=>'index'), null, true);
+	  $order=$this->url(array('module'=>'order','controller'=>'index','action'=>'index'), null, true);
+	  $stuff=$this->url(array('module'=>'stuff','controller'=>'index','action'=>'index'), null, true);
+	  
+	  //$booking=$this->url(array('module'=>'booking','controller'=>'index','action'=>'index'), null, true);
+      $booking=$this->url(array('module'=>'booking','controller'=>'order','action'=>'index'), null, true);
+	  $payroll_view=$this->url(array('module'=>'payroll','controller'=>'index','action'=>'index'), null, true);
+	  $callecterall=$this->url(array('module'=>'callecterall','controller'=>'index','action'=>'index'), null, true);
+	  $capital=$this->url(array('module'=>'capital','controller'=>'index','action'=>'index'), null, true);
+	  $backup=$this->url(array('module'=>'backup','controller'=>'index','action'=>'index'), null, true);
+      $driver=$this->url(array('module'=>'driverguide','controller'=>'index','action'=>'index'), null, true);
+      $acl=$this->url(array('module'=>'user','controller'=>'index','action'=>'index'), null, true);
+      $setting=$this->url(array('module'=>'setting','controller'=>'database','action'=>'index'), null, true);
+      $agreement=$this->url(array('module'=>'agreement','controller'=>'index','action'=>'index'), null, true);
+      
+      
+	  $module=Zend_Controller_Front::getInstance()->getRequest()->getModuleName();
+	  $item_arr=array(
+		'home'=>'<li class="link">
+							<a title="ទំព័រដើម" href="'.$home.'">
+								<span>'.$tr->translate("HOME").'</span>
+							</a>
+						</li>',
+	  	'other'=>'<li class="link">
+			  		<a title="Parameter" href="'.$other.'">
+			  		<span>'.$tr->translate("Parameter").'</span>
+			  		</a>
+			  		</li>',
+	  	'items'=>'<li class="link">
+						<a href="'.$items.'">
+							<span>'.$tr->translate("Item Info").'</span>
+						</a>
+					</li>',
+	  	'food'=>'<li class="link">
+						<a href="'.$food.'">
+							<span>'.$tr->translate("Food Info").'</span>
+						</a>
+					</li>',
+	  
+	  	'group'=>'<li class="link">
+						<a title="ព័ត៏មានរបស់អតិថិជន" href="'.$group.'">
+							<span>'.$tr->translate("Customer Info").'</span>
+						</a>
+					</li>',
+	  	'supplier'=>'<li class="link">
+						<a title="ព័ត៏មានរបស់អ្នកផ្គត់ផ្គង់" href="'.$supplier.'">
+							<span>'.$tr->translate("Supplier Info").'</span>
+						</a>
+					</li>',
+	
+	  	'booking'=>'<li class="link">
+			  		<a title="កម្មង់ម្ហូប" href="'.$order.'">
+			  			<span>'.$tr->translate("Order").'</span>
+			  		</a>
+	  			</li>',
+	  	'report'=>'<li class="link">
+			  		<a title="" href="'.$report.'">
+			  			<span>'.$tr->translate("Reports").'</span>
+			  		</a>
+	  			</li>',
+ 	  
+	  /*	'report'=>'<li class="link">
+			  		<a title="Report" href="'.$report.'">
+			  			<span>'.$tr->translate("Reports").'</span>
+			  		</a>
+			  		</li>',*/
+	  	'user'=>'<li class="link">
+			  		<a title="acl" href="'.$acl.'">
+			  			<span>'.$tr->translate("User").'</span>
+			  		</a>
+			  		</li>',
+	 /*   'backup'=>'<li class="link">
+						<a title="BACKUP DATABASE" href="'.$backup.'">
+							<span>'.$tr->translate("BACKUP_DB").'</span>
+						</a>
+					 </li>',	*/  
+	  
+	  'setting'=>'<li class="link">
+	  		<a title="USER" href="'.$setting.'">
+	  		<span>'.$tr->translate("SETTING").'</span>
+	  </a>
+	  		</li>',
+	  );
+?>  
+<?php if($module=="default"){?>
+<?php }?>
+<div id="menu">
+	<ul>
+		<?php
+		
+		
+		$session_user=new Zend_Session_Namespace('auth');
+		$modules_access = $session_user->arr_module;
+// 		print_r($modules_access);exit();
+			foreach($item_arr as $key=>$value){
+// 				$access = array_search($key,$modules_access);
+// 				if($access!=''){
+					if($module==$key){
+						echo str_replace('class="link"', 'class="current"', $value);
+					}
+					else{
+						echo $value;
+					}
+// 				}
+			} 
+		?>
+		<li style="float: right;">
+			<a href="<?php echo $this->baseUrl();?>" target="_blank">View Web Site</a>
+		</li>
+	</ul>
+</div>
+<script>
+		
+var url_changelang = '<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'changelange'));?> ';
+function changeLange(lang){
+	dojo.xhrPost({
+		url: url_changelang,
+	    content :{ 
+			    'lange':lang,
+		},	
+		handleAs:"json",
+		load: function(data) {
+			location.reload();
+		},
+		error: function(err) {
+			
+		}
+	});
+}
+	</script>

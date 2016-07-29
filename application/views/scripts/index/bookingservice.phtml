@@ -1,0 +1,253 @@
+<title>Our Service</title>
+<div class="clearfix"></div>
+<style>
+	.controlblog{padding-top:10px; padding-bottom:10px}
+.col-md-3{width: 24% !important;}
+.overflow {height: 432px;}
+.detail {overflow: scroll;height: 386px;}
+.car_listings.boxed.boxed_right{margin-right: 0px;margin-left: 0px;}
+</style>
+<section class="content">
+    <div class="container" >
+    	<h4 style="background:#e3c4d4;background: linear-gradient(to bottom, #ffffff 0%,#e3c4d4 100%);padding:10px;color:red; " class="margin-bottom-25 margin-top-none"><strong>OUR </strong><span style="text-transform: uppercase;">Services</span></h4>
+	    <div class="car_listings boxed boxed_right col-md-8">
+	     		<div style="display: inline-block; text-align: center;text-align: center;border:1px solid #DBDBDB;border-radius: 5px !important;padding: 19px 0px 0 0 !important;" class="col-md-3 suv hardtop mix margin-right-5 margin-bottom-10">
+		            <div id="carrental_icon" onmouseover="serviceDetail(1)" style="border: 8px solid #B000BA;width: 100px;height:100px;display: block;text-align: center;border-radius:50px;margin:0 auto;font-size: 50px;padding: 10px;">
+		                 <img src="<?php echo $this->baseUrl()."/images/1.-Car-Rental.png"?>" />
+		            </div>
+		             <a href="<?php echo $this->baseUrl()."/carbooking/index"?>" target="_blank"><strong>Car Rental Service</strong></a>
+		       		<div style="text-align:center;color:#fff;font-weight: bold; text-align: center;margin-top: 10px; border-top: 1px solid #DBDBDB;background-color: #F8F8F8;;padding: 13px 0 !important;">
+		                       <a style="background: rgb(176, 0, 186) none repeat scroll 0% 0% !important;padding: 7px 10px !important;border-radius: 5px;color: white;" href="<?php echo $this->baseUrl()."/carbooking/index"?>" target="_blank">Book Now</a>
+		            </div>
+		        </div>
+		        <div style="display: inline-block;text-align: center;border:1px solid #DBDBDB;border-radius: 5px !important;padding: 19px 0px 0 0 !important;" class="col-md-3 suv hardtop mix margin-right-5 margin-bottom-10">
+		            <a href="<?php echo $this->baseUrl()."/index/citytour"?>" target="_blank" onmouseover="serviceDetail(2)">
+		            <div style="width: 100px;height:100px;display: block;text-align: center;border-radius:50px;margin:0 auto;font-size: 50px;border: 1px solid #B000BA;">
+		                 <img src="<?php echo $this->baseUrl()."/images/3.-City-Tour1.gif"?>" />
+		            </div>
+		             <strong>City Tour Service</strong></a>
+		        	<div style="text-align:center;color:#fff;font-weight: bold; text-align: center;margin-top: 10px; border-top: 1px solid #DBDBDB;background-color: #F8F8F8;;padding: 13px 0 !important;">
+		                       <a style="background: rgb(176, 0, 186) none repeat scroll 0% 0% !important;padding: 7px 10px !important;border-radius: 5px;color: white;" href="<?php echo $this->baseUrl()."/index/citytour"?>" target="_blank">Book Now</a>
+		            </div>
+		        </div>
+		        <div style="display: inline-block;text-align: center;border:1px solid #DBDBDB;border-radius: 5px !important;padding: 19px 0px 0 0 !important;" class="col-md-3 suv hardtop mix margin-right-5 margin-bottom-10">
+		            <div onmouseover="serviceDetail(3)" style="border: 10px solid #B000BA;width: 100px;height:100px;display: block;text-align: center;border-radius:50px;margin:0 auto;font-size: 50px;padding: 10px;">
+		                 <img src="<?php echo $this->baseUrl()."/images/6. Tour Guide Rental.png"?>" />
+		            </div>
+		             <a href="<?php echo $this->baseUrl()."/guidebooking"?>" target="_blank"><strong>Tour Guide Rental</strong></a>
+		       		<div style="text-align:center;color:#fff;font-weight: bold; text-align: center;margin-top: 10px; border-top: 1px solid #DBDBDB;background-color: #F8F8F8;;padding: 13px 0 !important;">
+		                       <a style="background: rgb(176, 0, 186) none repeat scroll 0% 0% !important;padding: 7px 10px !important;border-radius: 5px;color: white;" href="<?php echo $this->baseUrl()."/guidebooking"?>" target="_blank">Book Now</a>
+		            </div>
+		        </div>
+		        <div style="display: inline-block;text-align: center;border:1px solid #DBDBDB;border-radius: 5px !important;padding: 19px 0px 0 0 !important;" class="col-md-3 suv hardtop mix margin-right-5 margin-bottom-20">
+		            <div onmouseover="serviceDetail(4)" style="border: 8px solid #B000BA;width: 100px;height:100px;display: block;text-align: center;border-radius:50px;margin:0 auto;font-size: 50px;padding: 10px;">
+		                 <img src="<?php echo $this->baseUrl()."/images/taxiservice.png" ?>" />
+		            </div>
+		             <a href="<?php echo $this->baseUrl()."/taxi/index"?>" target="_blank"><strong>Taxi Service</strong></a>
+		        	<div style="text-align:center;color:#fff;font-weight: bold; text-align: center;margin-top: 10px; border-top: 1px solid #DBDBDB;background-color: #F8F8F8;;padding: 13px 0 !important;">
+		                       <a style="background: rgb(176, 0, 186) none repeat scroll 0% 0% !important;padding: 7px 10px !important;border-radius: 5px;color: white;" href="<?php echo $this->baseUrl()."/taxi/index"?>" target="_blank">Book Now</a>
+		            </div>
+		        </div>
+		        <div onmouseover="serviceDetail(5)" style="display: inline-block;text-align: center;border:1px solid #DBDBDB;border-radius: 5px !important;padding: 19px 0px 0 0 !important;" class="col-md-3 suv hardtop mix margin-right-5 margin-bottom-10">
+		            <div style="border: 8px solid #B000BA;width: 100px;height:100px;display: block;text-align: center;border-radius:50px;margin:0 auto;font-size: 50px;padding: 10px;">
+		                 <img src="<?php echo $this->baseUrl()."/images/product rental.png"?>" />
+		            </div>
+		            <a href="<?php echo $this->baseUrl()."/stuffbooking"?>" target="_blank"><strong>Product Rental</strong></a>
+		        	<div style="text-align:center;color:#fff;font-weight: bold; text-align: center;margin-top: 10px; border-top: 1px solid #DBDBDB;background-color: #F8F8F8;; padding: 13px 0 !important;">
+		                       <a style="background: rgb(176, 0, 186) none repeat scroll 0% 0% !important;padding: 7px 10px !important;border-radius: 5px;color: white;" href="<?php echo $this->baseUrl()."/stuffbooking"?>" target="_blank">Book Now</a>
+		            </div>
+		        </div>
+		        <div style="display: inline-block;text-align: center;border:1px solid #DBDBDB;border-radius: 5px !important;padding: 19px 0px 0 0 !important;" class="col-md-3 suv hardtop mix margin-right-5 margin-bottom-20">
+		            <div onmouseover="serviceDetail(6)" style="border: 8px solid #B000BA;;width: 100px;height:100px;display: block;text-align: center;border-radius:50px;margin:0 auto;font-size: 50px;padding: 10px;">
+		                 <img src="<?php echo $this->baseUrl()."/images/DriverRental.png"?>" />
+		            </div>
+		            <a href="<?php echo $this->baseUrl()."/guidebooking"?>" target="_blank"><strong>Driver Rental</strong></a>
+		        	<div style="text-align:center;color:#fff;font-weight: bold; text-align: center;margin-top: 10px; border-top: 1px solid #DBDBDB;background-color: #F8F8F8;;padding: 13px 0!important;">
+		                       <a  style="background: rgb(176, 0, 186) none repeat scroll 0% 0% !important;padding: 7px 10px !important;border-radius: 5px;color: white;"href="<?php echo $this->baseUrl()."/guidebooking"?>" target="_blank">Book Now</a>
+		            </div>
+		        </div>
+		        <!-- EEEE -->
+		        <div style="margin:0 auto;display: inline-block;text-align: center;border:1px solid #DBDBDB;border-radius: 5px !important;padding: 19px 0px 0 0 !important;" class="col-md-3 suv hardtop mix margin-right-5 margin-bottom-10">
+		            <div onmouseover="serviceDetail(8)" style="border: 8px solid #B000BA;;width: 100px;height:100px;display: block;text-align: center;border-radius:50px;margin:0 auto;font-size: 50px;">
+		                 <img src="<?php echo $this->baseUrl()."/images/Booking-Instruction-Icon.png"?>" />
+		            </div>
+		            <a href="<?php echo $this->baseUrl()."/index/instruction"?>" target="_blank"><strong>Booking Instruction</strong></a>
+		        	<div style="text-align:center;color:#fff;font-weight: bold; text-align: center;margin-top: 10px; border-top: 1px solid #DBDBDB;background-color: #F8F8F8;;padding: 13px 0!important;">
+		                       <a <?php echo $this->baseUrl()."/index/instruction"?> style="background: rgb(176, 0, 186) none repeat scroll 0% 0% !important;padding: 7px 10px !important;border-radius: 5px;color: white;"href="<?php echo $this->baseUrl()."/index/instruction"?>" target="_blank">Read Now</a>
+		            </div>
+		        </div>
+		        <div style="margin:0 auto;display: inline-block;text-align: center;border:1px solid #DBDBDB;border-radius: 5px !important;padding: 19px 0px 0 0 !important;" class="col-md-3 suv hardtop mix margin-right-5 margin-bottom-10">
+		            <div onmouseover="serviceDetail(7)" style="border: 8px solid #B000BA;;width: 100px;height:100px;display: block;text-align: center;border-radius:50px;margin:0 auto;font-size: 50px;padding-top: 7px;">
+		                 <img src="<?php echo $this->baseUrl()."/images/payonline.png"?>" />
+		            </div>
+		            <a href="<?php echo $this->baseUrl()."/index/otherbook"?>" target="_blank"><strong>Online Payment</strong></a>
+		        	<div style="text-align:center;color:#fff;font-weight: bold; text-align: center;margin-top: 10px; border-top: 1px solid #DBDBDB;background-color: #F8F8F8;;padding: 13px 0!important;">
+		                       <a  href="<?php echo $this->baseUrl()."/index/otherbook"?>" style="background: rgb(176, 0, 186) none repeat scroll 0% 0% !important;padding: 7px 10px !important;border-radius: 5px;color: white;"href="<?php echo $this->baseUrl()."/guidebooking"?>" target="_blank">Pay Now</a>
+		            </div>
+		        </div>
+		        <div style="margin:0 auto;display: inline-block;text-align: center;border-radius: 5px !important;padding: 19px 0px 0 0 !important;" class="col-md-3 suv hardtop mix margin-right-60 margin-bottom-20">
+		        </div>
+	    	</div>
+	    	<div class="overflow car_listings boxed boxed_right col-md-4" style="display: inline-block;border:1px solid rgb(176, 0, 186); border-radius:5px;" id="defualt">
+	    		<div style="display: inline-block;background:rgb(176, 0, 186);color:white;font-weight:800;text-align: center;" class="col-md-12 suv hardtop mix margin-bottom-5">
+	    			<h6>Information Box!</h6>
+	    		</div>
+	    		 <div style="display: inline-block;" class="detail col-md-12 suv hardtop mix margin-bottom-5">
+	    			<?php echo $this->defual_guide;?>
+	    		</div>
+	    	</div>
+	    	<div class="overflow car_listings boxed boxed_right col-md-4" style="display: inline-block;border:1px solid rgb(176, 0, 186); border-radius:5px;display:none;" id="carreantal">
+	    		<div style="display: inline-block;background:rgb(176, 0, 186);color:white;font-weight:800;text-align: center;" class="col-md-12 suv hardtop mix margin-bottom-5">
+	    			<h6>Car Rental Service!</h6>
+	    		</div>
+	    		 <div style="display: inline-block;" class="detail col-md-12 suv hardtop mix margin-bottom-5">
+	    			<?php echo $this->carrental;?>
+	    		</div>
+	    	</div>
+	    	<div class="overflow car_listings boxed boxed_right col-md-4" style="display: inline-block;border:1px solid rgb(176, 0, 186); border-radius:5px;display:none;" id="citytour">
+	    		<div style="display: inline-block;background:rgb(176, 0, 186);color:white;font-weight:800;text-align: center;" class="col-md-12 suv hardtop mix margin-bottom-5">
+	    			<h6>City Tour Service!</h6>
+	    		</div>
+	    		 <div style="display: inline-block;" class="detail col-md-12 suv hardtop mix margin-bottom-5">
+	    			<?php echo $this->citytour;?>
+	    		</div>
+	    	</div>
+	    	<div class="overflow car_listings boxed boxed_right col-md-4" style="display: inline-block;border:1px solid rgb(176, 0, 186); border-radius:5px;display:none;" id="taxi">
+	    		<div style="display: inline-block;background:rgb(176, 0, 186);color:white;font-weight:800;text-align: center;" class="col-md-12 suv hardtop mix margin-bottom-5">
+	    			<h6>Taxi Service!</h6>
+	    		</div>
+	    		 <div style="display: inline-block;" class="detail col-md-12 suv hardtop mix margin-bottom-5">
+	    			<?php echo $this->taxi;?>
+	    		</div>
+	    	</div>
+	    	<div class="overflow car_listings boxed boxed_right col-md-4" style="display: inline-block;border:1px solid rgb(176, 0, 186); border-radius:5px;display:none;" id="product">
+	    		<div style="display: inline-block;background:rgb(176, 0, 186);color:white;font-weight:800;text-align: center;" class="col-md-12 suv hardtop mix margin-bottom-5">
+	    			<h6>Product Rental!</h6>
+	    		</div>
+	    		 <div style="display: inline-block;" class="detail col-md-12 suv hardtop mix margin-bottom-5">
+	    			<?php echo $this->product;?>
+	    		</div>
+	    	</div>
+	    	<div class="overflow car_listings boxed boxed_right col-md-4" style="display: inline-block;border:1px solid rgb(176, 0, 186); border-radius:5px;display:none;" id="guide">
+	    		<div style="display: inline-block;background:rgb(176, 0, 186);color:white;font-weight:800;text-align: center;" class="col-md-12 suv hardtop mix margin-bottom-5">
+	    			<h6>Tour Guide Rental!</h6>
+	    		</div>
+	    		 <div style="display: inline-block;" class="detail col-md-12 suv hardtop mix margin-bottom-5">
+	    			<?php echo $this->guide;?>
+	    		</div>
+	    	</div>
+	    	<div class="overflow car_listings boxed boxed_right col-md-4" style="display: inline-block;border:1px solid rgb(176, 0, 186); border-radius:5px;display:none;" id="driver">
+	    		<div style="display: inline-block;background:rgb(176, 0, 186);color:white;font-weight:800;text-align: center;" class="col-md-12 suv hardtop mix margin-bottom-5">
+	    			<h6>Driver Rental!</h6>
+	    		</div>
+	    		 <div style="display: inline-block;" class="detail col-md-12 suv hardtop mix margin-bottom-5">
+	    			<?php echo $this->drive;?>
+	    		</div>
+	    	</div>
+	    	<div class="overflow car_listings boxed boxed_right col-md-4" style="display: inline-block;border:1px solid rgb(176, 0, 186); border-radius:5px;display:none;" id="instruction">
+	    		<div style="display: inline-block;background:rgb(176, 0, 186);color:white;font-weight:800;text-align: center;" class="col-md-12 suv hardtop mix margin-bottom-5">
+	    			<h6>Booking Instruction!</h6>
+	    		</div>
+	    		 <div style="display: inline-block;" class="detail detail col-md-12 suv hardtop mix margin-bottom-5">
+	    			<?php echo $this->instruction;?>
+	    		</div>
+	    	</div>
+	    	<div class="overflow car_listings boxed boxed_right col-md-4" style="display: inline-block;border:1px solid rgb(176, 0, 186); border-radius:5px;display:none;" id="onlinepay">
+	    		<div style="display: inline-block;background:rgb(176, 0, 186);color:white;font-weight:800;text-align: center;" class="col-md-12 suv hardtop mix margin-bottom-5">
+	    			<h6>Online Payment!</h6>
+	    		</div>
+	    		 <div style="display: inline-block;" class="detail col-md-12 suv hardtop mix margin-bottom-5">
+	    			<?php echo $this->online_pay;?>
+	    		</div>
+	    	</div>
+    	</div>
+</section>
+<style>
+.showcarrental{position: relative;}
+</style>
+
+<script>
+	function serviceDetail(type){
+		if(type==1){
+			document.getElementById('carreantal').style.display = "block";
+			document.getElementById('driver').style.display = "none";
+			document.getElementById('guide').style.display = "none";
+			document.getElementById('product').style.display = "none";
+			document.getElementById('taxi').style.display = "none";
+			document.getElementById('citytour').style.display = "none";
+			document.getElementById('defualt').style.display = "none";
+			document.getElementById('instruction').style.display = "none";
+			document.getElementById('onlinepay').style.display = "none";
+		}else if(type==2){
+			document.getElementById('carreantal').style.display = "none";
+			document.getElementById('driver').style.display = "none";
+			document.getElementById('guide').style.display = "none";
+			document.getElementById('product').style.display = "none";
+			document.getElementById('taxi').style.display = "none";
+			document.getElementById('citytour').style.display = "block";
+			document.getElementById('defualt').style.display = "none";
+			document.getElementById('instruction').style.display = "none";
+			document.getElementById('onlinepay').style.display = "none";
+		}else if(type==3){
+			document.getElementById('carreantal').style.display = "none";
+			document.getElementById('driver').style.display = "none";
+			document.getElementById('guide').style.display = "block";
+			document.getElementById('product').style.display = "none";
+			document.getElementById('taxi').style.display = "none";
+			document.getElementById('citytour').style.display = "none";
+			document.getElementById('defualt').style.display = "none";
+			document.getElementById('instruction').style.display = "none";
+			document.getElementById('onlinepay').style.display = "none";
+		}else if(type==4){
+			document.getElementById('carreantal').style.display = "none";
+			document.getElementById('driver').style.display = "none";
+			document.getElementById('guide').style.display = "none";
+			document.getElementById('product').style.display = "none";
+			document.getElementById('taxi').style.display = "block";
+			document.getElementById('citytour').style.display = "none";
+			document.getElementById('defualt').style.display = "none";
+			document.getElementById('instruction').style.display = "none";
+			document.getElementById('onlinepay').style.display = "none";
+		}else if(type==5){
+			document.getElementById('carreantal').style.display = "none";
+			document.getElementById('driver').style.display = "none";
+			document.getElementById('guide').style.display = "none";
+			document.getElementById('product').style.display = "block";
+			document.getElementById('taxi').style.display = "none";
+			document.getElementById('citytour').style.display = "none";
+			document.getElementById('defualt').style.display = "none";
+			document.getElementById('instruction').style.display = "none";
+			document.getElementById('onlinepay').style.display = "none";
+		}else if(type==6){
+			document.getElementById('carreantal').style.display = "none";
+			document.getElementById('driver').style.display = "block";
+			document.getElementById('guide').style.display = "none";
+			document.getElementById('product').style.display = "none";
+			document.getElementById('taxi').style.display = "none";
+			document.getElementById('citytour').style.display = "none";
+			document.getElementById('defualt').style.display = "none";
+			document.getElementById('instruction').style.display = "none";
+			document.getElementById('onlinepay').style.display = "none";
+		}else if(type==7){
+			document.getElementById('carreantal').style.display = "none";
+			document.getElementById('driver').style.display = "none";
+			document.getElementById('guide').style.display = "none";
+			document.getElementById('product').style.display = "none";
+			document.getElementById('taxi').style.display = "none";
+			document.getElementById('citytour').style.display = "none";
+			document.getElementById('defualt').style.display = "none";
+			document.getElementById('instruction').style.display = "none";
+			document.getElementById('onlinepay').style.display = "block";
+		}else if(type==8){
+			document.getElementById('carreantal').style.display = "none";
+			document.getElementById('driver').style.display = "none";
+			document.getElementById('guide').style.display = "none";
+			document.getElementById('product').style.display = "none";
+			document.getElementById('taxi').style.display = "none";
+			document.getElementById('citytour').style.display = "none";
+			document.getElementById('defualt').style.display = "none";
+			document.getElementById('instruction').style.display = "block";
+			document.getElementById('onlinepay').style.display = "none";
+		}
+	}
+</script>

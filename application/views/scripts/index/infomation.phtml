@@ -1,0 +1,54 @@
+<title>Other Infomation</title>
+<section class="content">
+	<div class="container">
+           <h4 style="background:#e3c4d4;background: linear-gradient(to bottom, #ffffff 0%,#e3c4d4 100%);padding:10px;color:red; " class="margin-bottom-25 margin-top-none"><strong>OTHER </strong><span style="text-transform: uppercase;">INFORMATION</span></h4>
+		<div class="inner-page row">
+			<div class="row">
+				<div class="car_listings boxed boxed_left col-md-9 col-lg-push-3 col-md-push-3"><!-- start right -->
+				            <div class="accodian_panel">
+		                        <div class="panel-group description-accordion faq-sort margin-bottom-none" id="accordion"> 
+		                            <!--description-->
+		                            <?php if(!empty($this->rows)) foreach ($this->rows as $key => $row){?>
+		                            <div class="panel panel-default  padding-bottom-15" data-categories="Electrical,Navigational,Wiring">
+		                                <div class="panel-heading padding-vertical-10 padding-horizontal-15">
+		                                    <h4 class="panel-title padding-left-30"> <a style="font-size:14px;" class="collapsed"><?php echo $row['title'];?></a> </h4>
+		                                    <p><?php echo substr($row['description'], 0,450)?>&nbsp;&nbsp;</p>
+		                                    <div style="clear:both;"><a href="<?php echo $this->baseUrl().'/index/detailinfo/id/'.$row['id'];?>">&nbsp;&nbsp;Read More...</a></div>
+		                                </div>
+		                                <div class="panel-collapse collapse" style="height: 0px;">
+		                                    <div class="panel-body"> 
+		                                        <!--Panel_body-->
+		                                        <div class="faq_post padding-left-40">
+		                                            <div class="post-entry clearfix margin-top-10"> <!--<img src="http://demo.themesuite.com/automotive/images/faq-img1.jpg" alt="" class="alignleft"> -->
+		                                            </div>
+		                                        </div>
+		                                        <!--Panel_body--> 
+		                                    </div>
+		                                </div>
+		                            </div>
+		                            <?php }?>
+		                            <!--description--> 
+		                            
+		                        </div>
+		                    </div>           
+				     <!-- end right -->
+				<div class="clearfix"></div>
+				</div>
+				<div class=" col-md-3 col-sm-12 col-lg-pull-9 col-md-pull-9 left-sidebar">
+			         <div class="left_inventory">
+				               <div class="side-content row">
+		                            <div class="list col-md-12 col-sm-3 padding-bottom-50">
+		                                <ul>
+						                    <li id="home-active" class="active"><a href="<?php echo $this->baseUrl();?>">HOME</a></li>
+						                   <?php if(!empty($this->rows)) foreach ($this->rows as $key => $row){?>
+						                    	<li id="contact-active"><a href="<?php echo $this->baseUrl()?>/index/detailinfo/id/<?php echo $row['id']; ?>"><?php echo $row['title']; ?> </a></li>
+						                   <?php } ?>
+						                </ul>
+		                            </div>
+	                        	</div>
+			         </div>
+			    </div>
+			 </div>
+		</div>
+	</div>
+</section>

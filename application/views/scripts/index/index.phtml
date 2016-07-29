@@ -1,0 +1,237 @@
+<?php 
+$product_session = new Zend_Session_Namespace('product_add_cart');
+$itemArray = $product_session->cart_item;
+$count = count($itemArray);
+//echo $itemArray;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/select2/css/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/jquery.bxslider/jquery.bxslider.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/owl.carousel/owl.carousel.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/lib/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/animate.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/css/responsive.css" />
+    <script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/js/theme-script.js"></script>
+    <title>Aplus Fresh Shop</title>
+</head>
+<body class="home">
+<!-- Home slideder-->
+<div id="home-slider">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 slider-left"></div>
+            <div class="col-sm-9 header-top-right">
+                <div class="homeslider">
+                    <div class="content-slide">
+                        <ul id="contenhomeslider">
+                        <?php if (!empty($this->slide)) foreach ($this->slide as $row){?>
+                           <li><img alt="<?php echo $row['title']?>" src="<?php if (!empty($row['img'])){ echo $this->baseUrl()."/images/slideshow/".$row['img'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" title="<?php echo $row['title']?>" /></li>
+                      	<?php }?>	
+                        </ul>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Home slideder-->
+<div class="page-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <h2 class="page-heading">
+                    <span class="page-heading-title">LATEST PRODUCTS</span>
+                </h2>
+                <div class="latest-deals-product">
+                    <ul class="product-list owl-carousel" data-dots="false" data-loop="true" data-nav = "true" data-margin = "10" data-autoplayTimeout="1000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":1},"600":{"items":3},"1000":{"items":5}}'>
+                           <!--<li>
+                            <div class="left-block">
+                                <a href="#"><img class="img-responsive" alt="product" src="<?php echo $this->baseUrl()?>/images/product/product1.jpg" /></a>
+                             <div class="quick-view">
+                                        <a title="Add to my wishlist" class="heart" href="#"></a>
+                                        <a title="Add to compare" class="compare" href="#"></a>
+                                        <a title="Quick view" class="search" href="#"></a>
+                                </div>
+                                <div class="add-to-cart">
+                                    <a title="Add to Cart" href="#">Add to Cart</a>
+                                </div>
+                                <div class="price-percent-reduction2">
+                                    -30% OFF
+                                </div>
+                            </div>
+                            <div class="right-block">
+                                <h5 class="product-name"><a href="#">Luxury Perfume</a></h5>
+                                <div class="content_price">
+                                    <span class="price product-price">$38,95</span>
+                                    <span class="price old-price">$52,00</span>
+                                </div>
+                            </div>
+                        </li>-->
+                       <?php if (!empty($this->newproduct)) foreach($this->newproduct as $row){?>
+                        <li>
+                            <div class="left-block">
+                                <a href="<?php echo $this->baseUrl().'/index/detail/id/'.$row['id'];?>"><img class="img-responsive" alt="product" src="<?php if (!empty($row['img_front'])){ echo $this->baseUrl()."/images/product/".$row['img_front'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" /></a>
+                                <div id="alert_<?php echo $row["id"]?>" style="display:none;background: rgba(150, 219, 37, 0.63) ;padding:20px 55px;;position: absolute;top: 50%;"><p style="color: white;opacity:1 !important;">Product Added</p></div>
+                                <div class="add-to-cart">
+                                	<input type="button" id="add_<?php echo $row['id'];?>" onClick = "cartAction('add','<?php echo $row["pro_no"];?>','<?php echo $row["id"];?>')" value="Add to Cart">
+                                </div>
+                            </div>
+                            <div class="right-block">
+                                <h5 class="product-name"><a href="<?php echo $this->baseUrl().'/index/detail/id/'.$row['id'];?>"><?php echo $row['pro_name'];?></a></h5>
+                                <div class="qty">
+                                 <label>Qty:</label>
+                                  	<input type="text" class="option-product-qty"  value="1" id="qty_<?php echo $row['id'];?>" name="qty<?php echo $row['id'];?>" onkeyup="default_value('<?php echo $row["id"];?>');" onkeypress="default_value('<?php echo $row["id"];?>'); return isNumber(event);" style=" border: #ccc 1px solid; color: #F36; width: 50%; text-align: center;" />
+                                 </div>
+                                <div class="content_price">
+                                    <span class="price product-price">$<?php echo $row['price'].' / '.$row['unit'];?></span>
+                                </div>
+                            </div>
+                        </li>
+                         <?php }?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!---->
+<div class="content-page">
+    <div class="container">
+        <!-- featured category fashion -->
+       <?php if (!empty($this->cate)) $i=0; foreach($this->cate as $row){ $i++?>
+       <?php 
+       			$cat_di = $row['id'];
+                $db = new Application_Model_DbTable_DbProduct();
+                $product= $db->getAllProByID($cat_di);
+                $hotsale = $db->getHotSaleProductByCatID($cat_di);
+                $cate_corlor = array(
+                		'1'        => 'nav-menu-red',
+                		'2'  => 'nav-menu-green',
+                		'3'      => 'nav-menu-blue',
+                		'4'     => 'nav-menu-orange',
+                		'5' => 'nav-menu-blue2',
+                		'6' => 'nav-menu-gray',
+                );
+        if (!empty($product)){
+        ?>
+        <div class="category-featured">
+            <nav class="navbar nav-menu <?php echo $cate_corlor[$i];?> show-brand">
+              <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                  <div class="navbar-brand"><a href="<?php echo $this->baseUrl().'/index/category/id/'.$row['id'];?>"><img alt="<?php echo $row['name']; ?>" src="<?php echo $this->baseUrl()?>/assets/data/fashion.png" /><?php echo $row['name'];?></a></div>
+                  <span class="toggle-menu"></span>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse">           
+                  <ul class="nav navbar-nav">
+                    <li class="active"><a data-toggle="tab" href="#tab-A<?php echo $row['id']?>"><?php $all="All"; echo $all." ".$row['name'];?></a></li>
+                    <li><a data-toggle="tab" href="#tab-<?php echo $row['id']?>">Hot Sales</a></li>
+                   <!-- <li><a href="#tab-5">Discount</a></li>-->
+                  </ul>
+                </div><!-- /.navbar-collapse -->
+              </div><!-- /.container-fluid -->
+              <div id="elevator-<?php echo $i;?>" class="floor-elevator">
+                    <a href="#elevator-<?php if($i==1){ $class ="btn-elevator up disabled fa fa-angle-up"; echo $j=1;} else { $class ="btn-elevator up fa fa-angle-up";  echo $i-1; }?>" class="<?php echo $class;?>"></a>
+                    <a href="#elevator-<?php echo $i+1;?>" class="btn-elevator down fa fa-angle-down"></a>
+              </div>
+            </nav>
+           <div class="product-featured clearfix">
+                <div class="banner-featured">
+                    <!--<div class="featured-text"><span>featured</span></div>-->
+                    <div class="banner-img">
+                        <a href="<?php echo $this->baseUrl().'/index/category/id/'.$row['id'];?>"><img alt="<?php echo $row['name']; ?>" src="<?php if(!empty($row['img_feature'])){ echo $this->baseUrl()."/images/product/".$row['img_feature'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" /></a>
+                    </div>
+                </div>
+                <div class="product-featured-content">
+                    <div class="product-featured-list">
+                        <div class="tab-container">
+                            <!-- tab product -->
+                            <div class="tab-panel active" id="tab-A<?php echo $row['id']?>">
+                                <ul class="product-list owl-carousel" data-dots="false" data-loop="true" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":1},"600":{"items":3},"1000":{"items":4}}'>
+                                   <?php if (!empty($product)) foreach($product as $rows){?>
+                                    <li>
+                                        <div class="left-block">
+                                            <a href="<?php echo $this->baseUrl().'/index/detail/id/'.$rows['id'];?>">
+                                            <img class="img-responsive" alt="product" src="<?php if(!empty($rows['img_front'])){ echo $this->baseUrl()."/images/product/".$rows['img_front'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" /></a>
+                              				<div id="alert_<?php echo $row["id"]?>" style="display:none;background: rgba(150, 219, 37, 0.63) ;padding:20px 55px;;position: absolute;top: 50%;"><p style="color: white;opacity:1 !important;">Product Added</p></div>
+                              			<div class="add-to-cart">
+                                            	<input type="button" id="add_<?php echo $rows['id'];?>" onClick = "cartAction('add','<?php echo $rows["pro_no"];?>','<?php echo $rows["id"];?>')" value="Add to Cart">
+                                            </div>
+                                        </div>
+                                        <div class="right-block">
+                                            <h5 class="product-name"><a href="<?php echo $this->baseUrl().'/index/detail/id/'.$rows['id'];?>"><?php echo $rows['pro_name'];?></a></h5>
+                                            <div class="qty">
+			                                 <label>Qty:</label>
+			                                  	<input type="text" class="option-product-qty"  value="1" id="qty_<?php echo $row['id'];?>" name="qty<?php echo $row['id'];?>" onkeyup="default_value('<?php echo $row["id"];?>');" onkeypress="default_value('<?php echo $row["id"];?>'); return isNumber(event);" style=" border: #ccc 1px solid; color: #F36; width: 50%; text-align: center;" />
+			                                 </div>
+                                            <div class="content_price">
+                                                <span class="price product-price">$<?php echo $rows['price']." / ".$rows['unit']; ?></span>
+                                                <!--<span class="price old-price">$00,00</span>-->
+                                            </div>
+                                           
+                                        </div>
+                                    </li>
+                                    <?php }?>
+                                </ul>
+                            </div>
+                            <!-- tab product -->
+                          <div class="tab-panel" id="tab-<?php echo $row['id']?>">
+                                <ul class="product-list owl-carousel" data-dots="false" data-loop="true" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":1},"600":{"items":3},"1000":{"items":4}}'>
+                                    
+                                    <?php if (!empty($hotsale)) foreach($hotsale as $record){?>
+                                    <li>
+                                        <div class="left-block">
+                                            <a href="<?php echo $this->baseUrl().'/index/detail/id/'.$record['id'];?>">
+                                            <img class="img-responsive" alt="product" src="<?php if(!empty($record['img_front'])){ echo $this->baseUrl()."/images/product/".$record['img_front'];} else{ echo $this->baseUrl()."/images/product/no_image.jpg"; }?>" /></a>
+                                            
+                              			<div class="add-to-cart">
+                                            	<input type="button" id="add_<?php echo $record['id'];?>" onClick = "cartAction('add','<?php echo $record["pro_no"];?>','<?php echo $record["id"];?>')" value="Add to Cart">
+                                            </div>
+                                        </div>
+                                        <div class="right-block">
+                                            <h5 class="product-name"><a href="<?php echo $this->baseUrl().'/index/detail/id/'.$record['id'];?>"><?php echo $record['pro_name'];?></a></h5>
+                                            <div class="qty">
+			                                 <label>Qty:</label>
+			                                  	<input type="text" class="option-product-qty"  value="1" id="qty_<?php echo $row['id'];?>" name="qty<?php echo $row['id'];?>" onkeyup="default_value('<?php echo $row["id"];?>');" onkeypress="default_value('<?php echo $row["id"];?>'); return isNumber(event);" style=" border: #ccc 1px solid; color: #F36; width: 50%; text-align: center;" />
+			                                 </div>
+                                            <div class="content_price">
+                                                <span class="price product-price">$<?php echo $record['price'] ." / ".$record['unit'];?></span>
+                                                <!--<span class="price old-price">$00,00</span>-->
+                                            </div>
+                                           
+                                        </div>
+                                    </li>
+                                    <?php }?>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+           </div>
+        </div>
+        <?php }}?>
+        <!-- end featured category fashion -->
+    </div>
+ </div>
+
+ <div id="cart-item"></div>
+</body>
+<script>
+         var count = '<?php echo $count?>';
+	document.getElementById('item_count').innerHTML = count;
+	document.getElementById('count_item').innerHTML = count+' items';
+	document.getElementById('item_title').innerHTML = count+' Items in my cart';
+	cartAction('','');
+
+</script>
+</html>
+

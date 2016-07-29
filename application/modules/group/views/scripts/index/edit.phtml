@@ -1,0 +1,308 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate('ADD_CUSTOMER'));
+?>	
+<?php  $frm = $this->frm_client;?>
+<style>
+fieldset{border: 1px solid #ccc; }
+fieldset table td input ,fieldset table td select{color: #000 !important; }
+tr .display_branch{display:none;}
+</style>
+<script>
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.DateTextBox");
+dojo.require("dijit.form.Textarea");
+require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
+
+
+dojo.ready(function(){
+	$('#is_new_cu').click();
+	isNewCustomer();
+	//$('#old_cu').show();
+// 	try{	
+// 		Showbranch();
+// 	}catch(e){
+// 		alert(e);
+// 	}
+	var province_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->province));?> );
+	new dijit.form.FilteringSelect({
+	    store: province_store,
+	    autoComplete: true,                        
+	    required: true,
+	    placeHolder:"Select province...",
+	    id: "province",
+	    name: "province",           
+	    class: 'fullside',            
+	    onChange: function() { 
+	    	getAllDistrict();      
+	    } 
+	}, "province");
+	new dijit.form.FilteringSelect({
+	    autoComplete: true,                        
+	    id: "district",
+	    name: "district",         
+	    class: 'fullside',  
+	    placeHolder:"Selected district...",          
+	    onChange: function() {  
+		    distric_id = dijit.byId('district').get('value');
+		    if(distric_id == -1){
+			   
+	    		dijit.byId("pop_district").show();
+		    }
+	    }
+	}, "district");
+
+});
+</script>
+<form id='add_client' action="<?php echo $this->url(array('module'=>'group','controller'=>'index','action'=>'edit')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			}else{
+				return false;
+			}
+</script>
+			<table style=" width: 100%">
+							<tr>
+								<td valign="top" width="34%" style="white-space: nowrap;">
+										<fieldset>
+											<legend align="center"><strong>Customer Name</strong></legend>
+											<table style="margin: 0 auto;" cellspacing="10">
+												<tr>
+													<td>អតិថិជនថ្មី :</td>
+													<td><input type="checkbox" name="is_new_cu" id="is_new_cu" value="1" onClick="isNewCustomer()" ></td>
+												</tr>
+													<tr>
+													   <td><?php echo $tr->translate("Name")?>*</td>
+													   <td>
+													   		<span id="new_cu">
+													   			<input type="text" dojoType="dijit.form.TextBox" name="first_name"  id="first_name" value="<?php echo $this->cusbyID["first_name"];?>" class="fullside">
+													   		</span>
+													   		<span id="old_cu">
+													   			<select dojoType='dijit.form.FilteringSelect' id="cu_id" name="cu_id" onChange="getCustomer()" class="fullside">
+														   			<option value="">Mr</option>
+														   			<?php foreach ($this->cu_name as $rs){?>
+														   			<option value="<?php echo $rs["id"]?>" <?php if($this->cusbyID["id"]== $rs["id"]){ echo 'selected="selected"';}?>><?php echo $rs["first_name"]?></option>
+														   			<?php }?>
+													   			</select>
+													   		</span>
+													   		
+													   	</td>
+													   <td><?php echo $tr->translate("Customer's ID")?></td>
+													   <td><input type="text" dojoType="dijit.form.TextBox" readonly="readonly" name="client_no"  id="client_no" value="<?php echo $this->cusbyID["customer_code"];?>" class="fullside"></td>
+													</tr>
+													<tr>
+													   <td><?php echo $tr->translate("Title")?></td>
+													   <td><select dojoType='dijit.form.FilteringSelect' id="title" name="title" class="fullside">
+													   			<option value="1" <?php if($this->cusbyID["title"]==1){echo 'selected="selected"';}?>>Mr</option>
+													   			<option value="2" <?php if($this->cusbyID["title"]==2){echo 'selected="selected"';}?>>Ms</option>
+													   			<option value="3" <?php if($this->cusbyID["title"]==3){echo 'selected="selected"';}?>>Mss</option>
+													   		</select>
+													   	</td>
+													   <td><?php echo $tr->translate("Phone")?>*</td>
+													   <td><input type="text" dojoType="dijit.form.TextBox" required="required" name="phone"  id="phone" value="<?php echo $this->cusbyID["phone"]?>" class="fullside"></td>
+													</tr>
+													<tr>
+														<td><?php echo $tr->translate("Email*")?></td>
+											   			<td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->cusbyID["email"]?>" required="required"  id="email" name="email" class="fullside" /></td>
+											   			<td><?php echo $tr->translate("Address*")?></td>
+											   			<td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->cusbyID["address"]?>" required="required"  id="address" name="address" class="fullside" /></td>
+													</tr>
+													
+											</table>
+										</fieldset>
+								</td>
+							</tr>
+							<tr>
+								<td width="100%" align="top">
+									<fieldset><legend align="center"><strong>Ceremony Info</strong></legend>
+									   <table style="padding-left:10px;" cellspacing="10">
+											<!-- <tr>
+												 <td><?php //echo $tr->translate("Province")?></td>
+											    <td><input id="province"></td>
+												<td><?php //echo $tr->translate("District")?></td>
+											    <td><input id="district"></td>
+											   <td><?php //echo $tr->translate("Home No*")?></td>
+											    <td><input type="text" dojoType="dijit.form.TextBox" value="" required="required"  id="house_no" name="house_no" class="fullside" /></td>
+											</tr>
+											<tr>
+											    <td><?php //echo $tr->translate("Street No*")?></td>
+											    <td><input type="text" dojoType="dijit.form.TextBox" value="" required="required"  id="street" name="street" class="fullside" /></td>
+											</tr> -->
+											
+											<tr>
+												<td><?php echo $tr->translate("Ceremony Date")?></td>
+												<td><input type="text" dojoType="dijit.form.DateTextBox" value="<?php echo $this->cusbyID["ceremony_date"]?>"  id="ceremony_date" name="ceremony_date" class="fullside" /></td>
+												<td><?php echo $tr->translate("STATUS")?></td>
+												<td><select dojoType='dijit.form.FilteringSelect' id="status" name="status" onchange="Showbranch();" class="fullside">
+													   <option value="1" <?php if($this->cusbyID["status"]==1){echo 'selected="selected"';}?>>Active</option>
+													   <option value="0" <?php if($this->cusbyID["status"]==0){echo 'selected="selected"';}?>>Deactive</option>
+													 </select>
+												</td>
+											</tr>
+											<tr>
+												<td><?php echo $tr->translate("Ceremony Address")?></td>
+												<td><input type="text" dojoType="dijit.form.TextBox" required="required" name="ceremony_add"  id="ceremony_add" value="<?php echo $this->cusbyID["ceremony_add"]?>" class="fullside"></td>
+												<td><?php echo $tr->translate("MEETING")?></td>
+												<td><select dojoType='dijit.form.FilteringSelect' id="meeting" name="meeting" class="fullside">
+													   	<option value="0" <?php if($this->cusbyID["is_meeting"]==0){echo 'selected="selected"';}?>>Not yet Meeting</option>
+													   	<option value="1" <?php if($this->cusbyID["is_meeting"]==1){echo 'selected="selected"';}?>>Has Meeting</option>
+													 </select>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</td>
+							</tr>
+							<tr align="center">
+								<td valign="top">
+										<input type="reset" style="color:#000;" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" 
+											iconClass="dijitIconClear" /> 
+										<input type="submit" value="SAVE_CLOSE" label="<?php echo $tr->translate('SAVECLOSE');?>" style="color:#000;" id="save_close" dojoType="dijit.form.Button" name="save_close"
+											iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+										<input type="submit" value="SAVE_NEW" label="<?php echo $tr->translate('SAVENEW');?>" id="save_new" style="color:#000;" dojoType="dijit.form.Button" name="save_new"
+											iconClass="dijitEditorIcon dijitEditorIconSave"/>
+								</td>
+							</tr>
+							<tr style="background: #711A7B">
+									<td colspan="3" align="center">
+										
+								     </td>
+							</tr>
+					</table>	
+</form>
+
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_district" >
+		<form id='frm_district' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td>District Name</td>
+					<td><input  dojoType="dijit.form.ValidationTextBox" class="fullside"  id="district_name" name="district_name" value="" type="text" required="true"></td>
+				</tr>
+				<tr>
+					<td>Province</td>
+					<td>
+					    <select  name="province_id" id="province_id" dojoType="dijit.form.FilteringSelect" class="fullside">
+						    <?php if(!empty($this->province)) foreach($this->province as $row){?>
+						    <option value="<?php echo $row['id']?>" label="<?php echo $row['name'];?>"><?php echo $row['name'];?></option>
+						    <?php }?>
+						</select>
+					</td>
+				</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="SAVE" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addDistrict();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">  
+
+var url_addDistrict = '<?php echo $this->url(array('module'=>'group','controller'=>'index','action'=>'insert-district')); ?>';
+function addDistrict(){
+	if(dijit.byId('frm_district').validate()){
+		dojo.xhrPost({
+			url:url_addDistrict,
+			form: dojo.byId("frm_district"),
+			handleAs:"json",
+			load: function(data) {
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('district_name').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('district'), district_store, Itemmake, data);
+				dijit.byId('frm_district').reset();
+				dijit.byId("pop_district").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+
+
+
+var district_store  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
+var url_district = '<?php echo $this->url(array('module'=>'group','controller'=>'index','action'=>'get-district')); ?>';
+	function getAllDistrict(){
+		province_id = dijit.byId('province').get('value');
+		//alert(province_id);
+			dojo.xhrPost({
+				url:url_district,
+				content:{
+					'province_id':province_id
+					},
+				handleAs:"json",
+				load: function(data) {
+					//alert(data);
+					dijit.byId('district').reset('value');
+					district_store  = getDataStorefromJSON('id','name', data);
+				    dijit.byId('district').set('store',district_store);   
+
+				},
+				error: function(err) {
+					alert(err);
+				}
+			});
+	}
+
+function showPopupclientdtype(){
+	dijit.byId('frm_clienttype').show();
+}
+function Showbranch(){
+	 type_cus = dijit.byId('cus_type').get('value');
+	 var a = document.getElementById("branch");
+					//alert(data);
+					if(type_cus==1){
+						//alert(1);
+						a.classList.add("display_branch");
+						
+					}else{
+						a.classList.remove("display_branch");
+						
+					}
+}
+
+var url_customer = '<?php echo $this->url(array('module'=>'group','controller'=>'index','action'=>'get-customer')); ?>';
+function getCustomer(){
+	id = dijit.byId('cu_id').get('value');
+		dojo.xhrPost({
+			url: url_customer,
+			content:{
+				'id':id
+				},
+			handleAs:"json",
+			load: function(data) {
+				dijit.byId('client_no').attr('value',data.customer_code);
+				dijit.byId('title').attr('value',data.title);
+				dijit.byId('first_name').attr('value',data.first_name);
+				dijit.byId('phone').attr('value',data.phone);
+				dijit.byId('email').attr('value',data.email);
+				dijit.byId('address').attr('value',data.address);
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+}
+
+function isNewCustomer(){
+	is_new = $('#is_new_cu').val();
+	if($('#is_new_cu').is(':checked')){
+		//dijit.byId('first_name').attr('required',"required");
+		$('#old_cu').show();
+		$('#new_cu').hide();
+	}else{
+		$('#old_cu').hide();
+		$('#new_cu').show();
+	}
+	
+}
+</script>

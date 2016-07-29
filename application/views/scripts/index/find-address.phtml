@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<?php 
+$db = new Application_Model_DbTable_DbGlobal();
+$office_no = $db->getParameter('Office_Phone');
+
+?>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/css/default.css"/>
+    <title>Add Address</title>
+</head>
+<body class="category-page">
+<!-- page wapper-->
+<div class="columns-container">
+    <div class="container" id="columns">
+        <!-- breadcrumb -->
+        <div class="breadcrumb clearfix">
+            <a class="home" href="<?php echo $this->baseUrl().'/index'?>" title="Return to Home">Home</a>
+            <span class="navigation-pipe">&nbsp;</span>
+            <span class="navigation_page">Find Address</span>
+        </div>
+        <!-- ./breadcrumb -->
+        <!-- page heading-->
+        <h2 class="page-heading">
+            <span class="page-heading-title2">Find Address</span>
+        </h2>
+        <!-- ../page heading-->
+        <div class="page-content">
+            <div class="row">
+                <div class="col-sm-8">
+                <div class="box-authentication_address">
+                	 <h3>Address details</h3>
+                    			<table class="find-address">
+                    				<tr>	
+                    					<td class="address-title"><label for="name">Province*</label></td>
+                    					<td>
+	                    					<select id="province" name="province" required="required" onchange="getDistrict(); provinceChange();" class="form-control">
+											   <option value="-1">Select province</option>
+											  <?php if (!empty($this->province)) foreach($this->province as $row){?>
+											  <option value="<?php echo $row['id'];?>"><?php echo $row['province_name'];?></option>
+											<?php }?>
+											</select>
+										</td>
+                    				</tr>
+                    				<tr>	
+                    					<td class="address-title"><label for="name">District*</label></td>
+                    					<td>
+	                    					<select id="district" name="district" required="required" disabled="disabled" onchange="districtChange(); comfirmCondiction();" class="form-control" >
+											  <option value="-1">Select district</option>
+											</select>
+										</td>
+                    				</tr>
+                    				<tr>
+                    					<td class="address-title">
+                    					<label for="name">House Name / House Number / Flat Number*</label>
+                    					</td>
+                    					<td>
+                    					<input id="house_no" name="house_no" type="text" disabled="disabled" required="required" class="form-control">
+                    					</td>
+                    				</tr>
+                    				<tr>
+                    					<td>
+                    					<label for="name">Road Name / Road No*</label>
+                    					</td>
+                    					<td>
+                    					<input id="road_no" name="road_no" type="text" disabled="disabled" required="required" class="form-control">
+                    					</td>
+                    				</tr>
+                    				<tr>
+                    					<td align="right" colspan="2"><button class="btn_condiction" disabled="disabled" id="btn_submit" onclick="getValue();">Comfirm</button></td>
+                    				</tr>
+                    			</table>
+                    </div>
+                    <div id="dispaly_contact_detail" class="box-authentication_address  display-contact">
+                	 <h3>Contact details</h3>
+                	 <br/>
+                	 <h4>Your Address</h4>
+                	  
+                	 <table class="contact-detail">
+                	 	<tr><td><label id="houseno_detail"></label>&nbsp;<label id="roadno_detail"></label></td></tr>
+                	 	<tr><td><label id="district_detail"></label></td ></tr>
+                	 	<tr><td><label id="province_detail"></label></td></tr>
+                	 </table>
+                	 <button class="button" id="btn_change_address" onclick="removeClass();">Change Address</button>
+                   <form action="<?php echo $this->url(array('controller'=>'index','action'=>'find-address')); ?>" method="post">
+                    			<table class="find-address">
+                    				<tr>
+                    					<td class="address-title">
+                    					<label for="name">Address Nickname*</label>
+                    					</td>
+                    					<td>
+                    					<input id="address_nickname" name="address_nickname" type="text" required="required" class="form-control">
+                    					</td>
+                    					<td>Please enter a nickname for this address, e.g. 'home'</td>
+                    				</tr>
+                    				<tr>
+                    					<td>
+                    						<label for="name">Phone Number*</label>
+                    					</td>
+                    					<td>
+                    						<input id="road_hidden" name="road_hidden" type="hidden" >
+                    						<input id="house_hidden" name="house_hidden" type="hidden" >
+                    						<input id="district_hidden" name="district_hidden" type="hidden" >
+                    						<input id="province_hidden" name="province_hidden" type="hidden" >
+                    						<input id="phone_no" name="phone_no" type="text" required="required" class="form-control">
+                    					</td>
+                    				</tr>
+                    				<tr>
+                    					<td align="right" colspan="3"><button class="button" id="btn_submit">Comfirm Registeration</button></td>
+                    				</tr>
+                    			</table>
+                    </form>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="box-authentication_address">
+                        <h3>Help</h3>
+                        <h4>Address Details</h4>
+                         <br />
+                        <h5>Can't find your address in the lists?</h5>
+                        <p>Please call customer services on <?php echo $office_no['value'];?> for help.</p>
+                        
+                        <br />
+                        <h4>Contact details</h4>
+                         <br />
+                        <h4>Address</h4>
+                        <p>Please check the address details you have entered. If you want to amend your address please click the ‘Change address’ button.</p>
+                        
+                        <br />
+                        <h4>Telephone number</h4>
+                        <p>We will use the telephone number in case we need to contact you regarding your order.</p>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./page wapper-->
+
+<!-- Script-->
+<script>
+function removeClass(){
+	document.getElementById("dispaly_contact_detail").classList.add("display-contact");
+	document.getElementById('province').disabled=false;
+	$('#province').val('-1');
+	$('#district').val('-1');
+	$('#house_no').val(' ');
+	$('#road_no').val(' ');
+	
+}
+function provinceChange(){
+	document.getElementById('district').disabled=false;
+}
+function districtChange(){
+	document.getElementById('house_no').disabled=false;
+	document.getElementById('road_no').disabled=false;
+	document.getElementById('btn_submit').disabled=false;
+}
+function getValue(){
+	document.getElementById("district_detail").innerHTML = $('#district').find(":selected").text();
+	document.getElementById("province_detail").innerHTML = $('#province').find(":selected").text();
+	document.getElementById("houseno_detail").innerHTML = $('#house_no').val();
+	document.getElementById("roadno_detail").innerHTML = $('#road_no').val();
+
+	var road = $('#road_no').val();  $('#road_hidden').val(road);
+	var house = $('#house_no').val(); $('#house_hidden').val(house);
+	var district = $('#district').val();$('#district_hidden').val(district);
+	var province =  $('#province').val(); $('#province_hidden').val(province);
+	
+	document.getElementById('btn_submit').disabled=true;
+	document.getElementById('province').disabled=true;
+	document.getElementById('district').disabled=true;
+	document.getElementById('house_no').disabled=true;
+	document.getElementById('road_no').disabled=true;
+	document.getElementById("dispaly_contact_detail").classList.remove("display-contact");
+}
+var url_district='<?php echo $this->url(array('controller'=>'index','action'=>'get-district')); ?>';
+function getDistrict(){
+	province_id = $('#province').val();
+	$.ajax({
+        url: url_district,
+        type: "post",
+        data: {'province_id':province_id},
+        success: function(data){
+        	val = $.parseJSON(data);
+			//alert(val);
+			document.getElementById('district').innerHTML= val;
+		},
+		error: function(err) {
+			//alert(err);
+		}
+	});
+}
+
+
+function checkPass()
+{
+    //Store the password field objects into variables ...
+    var pass1 = document.getElementById('password');
+    var pass2 = document.getElementById('c_password');
+    //Store the Confimation Message Object ...
+    var message = document.getElementById('confirmMessage');
+    //Set the colors we will be using ...
+    var goodColor = "#66cc66";
+    var badColor = "#ff6666";
+    //Compare the values in the password field 
+    //and the confirmation field
+    if(pass1.value == pass2.value){
+        //The passwords match. 
+        //Set the color to the good color and inform
+        //the user that they have entered the correct password 
+    	document.getElementById('btn_submit').disabled=false;
+        pass2.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+        message.innerHTML = "Passwords Match!"
+    }else{
+        //The passwords do not match.
+        //Set the color to the bad color and
+        //notify the user.
+    	document.getElementById('btn_submit').disabled=true;
+        pass2.style.backgroundColor = badColor;
+        message.style.color = badColor;
+        message.innerHTML = "Passwords Do Not Match!"
+    }
+}  
+var url_email = '<?php echo $this->url(array('controller'=>'customer','action'=>'get-cus-email')); ?>';
+function getEmail(){
+	email = $('#emmail_register').val();
+	 var message = document.getElementById('error');
+	//alert(1);
+	$.ajax({
+        url: url_email,
+        type: "post",
+        data: {'email':email},
+        success: function(data){
+            val = $.parseJSON(data);
+				if(val==1){
+					//alert(1);
+					document.getElementById('btn_submit').disabled=true;
+					 message.innerHTML = "  Email already use !";
+				}
+				else{
+					document.getElementById('btn_submit').disabled=false;
+					message.innerHTML = "";
+				}
+
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+}
+function comfirmCondiction(){ //alert(1);
+
+	document.getElementById('btn_submit').disabled=false;
+	document.getElementById("btn_submit").classList.remove("btn_condiction");
+	document.getElementById("btn_submit").classList.add("button");
+	
+	//document.getElementById("btn_submit").classList.remove("display-contact");
+}
+</script>
+</body>
+</html>

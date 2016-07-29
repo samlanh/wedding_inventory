@@ -1,0 +1,172 @@
+<div class="clearfix"></div>
+<section class="banner-wrap">
+    <div class="banner">
+        <div class="tp-banner-container">
+            <div class="tp-banner" >
+                <ul>
+                <?php 
+                $db = new Application_Model_DbTable_DbGlobal();
+                $rows= $db->getAllSlider();
+                
+                if(!empty($rows))foreach ($rows as $row){
+                	
+                $arr  = explode(".",$row['caption']);
+                 
+                ?>
+                 <li data-transition="fade" data-slotamount="5" data-masterspeed="700"  style="list-style: none;"> 
+                        <img src="<?php echo $this->baseUrl()."/images/".$row['img'];?>"   alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat"> 
+                        <div class="tp-caption mediumlarge_light_white_center domainate customin customout start"
+						data-x="0"
+						data-hoffset="0"
+						data-y="214"
+
+						data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+						data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+						data-speed="1000"
+						data-start="500"
+						data-easing="Back.easeInOut"
+						data-endspeed="300"><span style="text-transform: uppercase; font-size: 60px;"><?php echo $row['title'];?></span></div>
+                        
+                        <!-- LAYER NR. 1 -->
+                        <div class="tp-caption internet  fade"
+						data-x="0"
+						data-y="282"
+						data-speed="500"
+						data-start="800"
+						data-easing="Power4.easeOut"
+						data-endspeed="300"
+						data-endeasing="Power1.easeIn"
+						data-captionhidden="off"
+						style="z-index: 6; letter-spacing: -3px; text-transform: uppercase;color:gold;font-size: 35px;"><?php echo (!empty($arr[0]))?$arr[0]:""?></div>
+                        <!-- LAYER NR. 2 -->
+                        <div class="tp-caption attract sfl"
+						data-x="0"
+						data-y="369"
+						data-speed="500"
+						data-start="1200"
+						data-easing="Power4.easeOut"
+						data-endspeed="300"
+						data-endeasing="Power1.easeIn"
+						data-captionhidden="off"
+						style="z-index: 6; top: 371px; "><?php echo (!empty($arr[1]))?$arr[1]:""?></div>
+                        <!-- LAYER NR. 3 -->
+                        <div class="tp-caption more skewfromright "
+						data-x="0"
+						data-y="425"
+						data-speed="800"
+						data-start="1900"
+						data-easing="Elastic.easeOut"
+						data-endspeed="300"
+						data-endeasing="Power1.easeIn"
+						data-captionhidden="off"
+						style="z-index: 6; left:186px; font-size: 45px;"><?php echo (!empty($arr[2]))?$arr[2]:""?> </div>
+                        <!-- LAYER NR. 4 -->
+                        <div class="tp-caption qualified skewfromright"
+						data-x="0"
+						data-y="476"
+						data-speed="800"
+						data-start="2600"
+						data-easing="Power4.easeOut"
+						data-endspeed="300"
+						data-endeasing="Power1.easeIn"
+						data-captionhidden="off"
+						style="z-index: 6"><?php echo (!empty($arr[3]))?$arr[3]:""?> </div>
+                    </li>
+                <?php }?>
+                    <!-- SLIDE  -->
+<!--                    <li data-transition="fade" data-slotamount="5" data-masterspeed="700" >  -->
+                        <!-- MAIN IMAGE --> 
+<!--                         <img src="http://demo.themesuite.com/automotive/images/slide-show1.jpg"   alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat"> -->
+                        
+                        <!-- LAYERS -->
+<!--                        <div class="tp-caption mediumlarge_light_white_center domainate customin customout start"  -->
+<!-- 						data-x="0"  -->
+<!--  						data-hoffset="0"  -->
+<!--  						data-y="214"  -->
+
+<!--  						data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"  -->
+<!-- 						data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"  -->
+<!--  						data-speed="1000"  -->
+<!-- 						data-start="500"  -->
+<!--  						data-easing="Back.easeInOut"  -->
+<!--  						data-endspeed="300">SLIDE SHOW 2 </div>  -->
+                        
+<!--                          LAYER NR. 1  -->
+<!--                          <div class="tp-caption internet  fade"  -->
+<!--  						data-x="0"  -->
+<!--  						data-y="282"  -->
+<!-- 						data-speed="500"  -->
+<!--  						data-start="800"  -->
+<!--  						data-easing="Power4.easeOut"  -->
+<!--  						data-endspeed="300"  -->
+<!--  						data-endeasing="Power1.easeIn"  -->
+<!--  						data-captionhidden="off"  -->
+<!-- 						style="z-index: 6; letter-spacing: -3px;">THE INTERNET </div> -->
+<!--                          LAYER NR. 2  -->
+<!--                          <div class="tp-caption attract sfl"  -->
+<!--  						data-x="0"  -->
+<!--  						data-y="369"  -->
+<!--  						data-speed="500"  -->
+<!--  						data-start="1200"  -->
+<!--  						data-easing="Power4.easeOut"  -->
+<!--  						data-endspeed="300"  -->
+<!--  						data-endeasing="Power1.easeIn"  -->
+<!--  						data-captionhidden="off"  -->
+<!-- 						style="z-index: 6; top: 371px; ">Attract, Engage, &amp; Convert </div> -->
+<!--                          LAYER NR. 3  -->
+<!--                          <div class="tp-caption more skewfromright "  -->
+<!--  						data-x="100"  -->
+<!--  						data-y="425"  -->
+<!--  						data-speed="800"  -->
+<!--  						data-start="1900"  -->
+<!--  						data-easing="Elastic.easeOut"  -->
+<!--  						data-endspeed="300"  -->
+<!--  						data-endeasing="Power1.easeIn"  -->
+<!--  						data-captionhidden="off" -->
+<!-- 						style="z-index: 6; left:186px;">more </div> -->
+<!--                          LAYER NR. 4  -->
+<!--                          <div class="tp-caption qualified skewfromright"  -->
+<!--  						data-x="0"  -->
+<!--  						data-y="476"  -->
+<!--  						data-speed="800"  -->
+<!--  						data-start="2600"  -->
+<!--  						data-easing="Power4.easeOut"  -->
+<!--  						data-endspeed="300"  -->
+<!--  						data-endeasing="Power1.easeIn"  -->
+<!--  						data-captionhidden="off"  -->
+<!-- 						style="z-index: 6">qualified vehicle shoppers </div> -->
+<!--                      </li>  -->
+                </ul>
+            </div>
+        </div>
+        <script type="text/javascript">
+
+				var revapi;
+
+				jQuery(document).ready(function() {
+
+					   revapi = jQuery('.tp-banner').revolution(
+						{
+							delay:8000,
+							startwidth:1170,
+							startheight:530,
+							hideThumbs:10,
+							fullWidth:"off",
+							fullScreen:"off",
+							fullScreenOffsetContainer: "",
+							hideTimerBar: "on",
+							navigationType:"none",
+							stopAtSlide: 1
+
+						});
+
+				});	//ready
+
+			</script> 
+        
+        <!-- END REVOLUTION SLIDER --> 
+        
+        <!-- Content End  -->
+        
+    </div>
+</section>

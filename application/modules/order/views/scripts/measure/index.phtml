@@ -1,0 +1,39 @@
+<?php 
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$request=Zend_Controller_Front::getInstance()->getRequest();
+echo $this->headTitle($tr->translate("PRODUCTS"));
+ $status = $request->getParam('search_status');
+ if(empty($status)) $status=-1;
+ $make=$request->getParam('make');
+ $model=$request->getParam('model');
+ $submodel=$request->getParam('submodel');
+?>
+<script type="text/javascript">
+dojo.require("dojo.data.ObjectStore");
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dojo.store.Memory");
+dojo.require("dojo.data.ObjectStore");
+
+dojo.ready(function(){
+
+
+	}); 
+
+</script>
+
+<form id="list" name="list" action="<?php echo $this->url(array('module'=>'items','controller'=>'measure','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
+   <table>
+	  <tr> 
+		   <td><input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $this->translate("Search");?>" type="text" ></td>
+		   <td>
+		        <select name="search_status" id="search_status" dojoType="dijit.form.FilteringSelect" class="fullside">
+		                <option value="-1" <?php if($status==-1){ echo"selected='selected'";} ?>>Status all</option>
+					    <option value="1" <?php if($status==1){ echo"selected='selected'";} ?> >Active</option>
+					    <option value="0"  <?php if($status==0){ echo"selected='selected'";} ?>>Deactive</option>
+				</select>
+		   </td>
+		   <td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>
+   	  </tr>
+   </table>
+   <?php echo $this->list;?>
+</form>

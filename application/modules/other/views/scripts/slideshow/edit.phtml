@@ -1,0 +1,54 @@
+<title>Edit Slide show</title>
+<form id='add_slide' action="<?php echo $this->url(array('module'=>'other','controller'=>'slideshow','action'=>'edit')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<table  width="100%" style="margin-top:-5px;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend ><strong>Edit Slide show</strong></legend>
+					<table style="margin: 0 auto; width:100%;" cellspacing="10">
+						<tr>
+							<td>Title<input dojoType="dijit.form.TextBox" class="fullside" id="id" name="id" value="<?php echo $this->row['id'];?>" type="hidden"></td>
+							<td><input dojoType="dijit.form.ValidationTextBox" required="true" class="fullside" id="title" name="title" value="<?php echo $this->row['title'];?>" type="text"></td>
+							
+							<td>Slide Image</td>
+							<td><input class="fullside" id="photo" name="photo" type="file">
+							<input id="old_photo" name="old_photo" type="hidden" value="<?php echo $this->row['img'];?>"></td>	
+							</tr>
+						<tr>
+							<td>Ordering</td>
+							<td><input dojoType="dijit.form.NumberTextBox" required="true" class="fullside" id="ordering" name="ordering" type="text" value="<?php echo $this->row['ordering'];?>"></td>
+							<td>Status</td>
+							<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
+								    <option value="1" <?php if($this->row['status']==1){echo'selected="selected"';}?> >Active</option>
+								    <option value="0" <?php if($this->row['status']==0){echo'selected="selected"';}?> >Deactive</option>
+								</select></td>
+							<td valign="top">
+								<img src="<?php echo $this->baseUrl().'/images/slideshow/'.$this->row['img'];?>" style="max-height:40px;"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="6" align="center">
+							<input type="reset" label="Clear" dojoType="dijit.form.Button" 
+								 iconClass="dijitIconClear" />
+							 <input type="submit" value="SAVE_CLOSE" label="Edit" id="save_close" dojoType="dijit.form.Button" name="save_close"
+								 iconClass="dijitEditorIcon dijitEditorIconSave" />  
+							</td>
+						</tr>
+					</table>	
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>
+<script type="text/javascript">
+dojo.require("dijit.form.NumberTextBox"); 
+dojo.require("dijit.form.CheckBox"); 
+require(["dijit/Editor"]);
+</script>			

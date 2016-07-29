@@ -1,0 +1,43 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate("ORDER LIST"));
+?>	
+<script>
+dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.DateTextBox");
+</script>
+
+<form id="list" name="list" action="<?php echo $this->url(array('module'=>'booking','controller'=>'order','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
+	<table>
+	  <tr>	
+	  		<td><label>Advand Search</label></td>
+	  		<td><input type="text" dojoType="dijit.form.TextBox" value="<?php if (!empty($this->txtsearch)){ echo $this->txtsearch;}else{ echo "";}?>" name="search" id="search" /></td>
+	  		<td><label>Search By Company</label></td>
+	  		<td>
+	  			<select dojoType='dijit.form.FilteringSelect' id="company" name="company" class="fullside">
+							<option value="-1">Select Company</option>
+							<?php if (!empty($this->partner)) foreach($this->partner as $row){?>
+							<option value="<?php echo $row['id'];?>" <?php if ($row['id']==$this->txtcompany){echo "selected='selected'";}?>><?php echo $row['title'];?></option>
+							<?php }?>
+				</select>
+			</td>
+	  		<td><input type="submit"  label="<?php echo $tr->translate('SEARCH');?>" dojoType="dijit.form.Button" 
+										iconClass="dijitSearchIcon dijitSearchIcon" /></td>
+	  </tr>
+	  <tr>
+	  		<td><label>From Date</label></td>
+	  		<td><input  dojoType="dijit.form.DateTextBox" name="from_date" id="from_date" value="<?php if (!empty($this->from_date)){echo $this->from_date;}else{ echo "now";}?>" /></td>
+	  		<td><label>End Date</label></td>
+	  		<td><input  dojoType="dijit.form.DateTextBox" name="end_date" id="end_date" value="<?php if (!empty($this->end_date)){echo $this->end_date;}else{ echo "now";}?>" /></td>
+	  		<td><label>Pending</label></td>
+	  		<td>
+	  			<select dojoType='dijit.form.FilteringSelect' id="pending" name="pending" class="fullside">
+							<option value="-1">Search by pending</option>
+							<option value="1" <?php if($this->txtpending==1){echo "selected='selected'";}?>>Pending</option>
+							<option value="2" <?php if($this->txtpending==2){echo "selected='selected'";}?>>Deliveried</option>
+				</select>
+			</td>
+	  </tr>
+  	</table>
+  <?php echo $this->list;?>
+</form>
