@@ -57,5 +57,17 @@ class Report_indexController extends Zend_Controller_Action {
  	$this->view->rows = $db->getPurchaseDetailById($id,$su_id);
  	$this->view->supplier = $db_order->getSupplier();
  }
+ function rptFoodAction(){
+ 	$db = new Report_Model_DbTable_DbPurchase();
+ 	$this->view->rows = $db->getPurchase();
+ 	$gat=new Report_Model_DbTable_DbFoodGategory();
+ 	$this->view->gategory=$gat->getGategory(); 
+ }
+ function rptItemFoodAction(){
+ 	$db = new Report_Model_DbTable_DbPurchase();
+ 	$this->view->rows = $db->getPurchase();
+ 	$gat=new Report_Model_DbTable_DbFoodGategory();
+ 	$this->view->gategory=$gat->getGategory();
+ }
 }
 

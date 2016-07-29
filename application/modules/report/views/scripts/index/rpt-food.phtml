@@ -1,0 +1,40 @@
+<title>All Gategory Food</title>
+<style>
+tr.normal td,tr.alternate td {
+     font-size: 13px;
+}
+</style>
+    <?php $food=new Report_Model_DbTable_DbFoodGategory();?>
+	<?php if(!empty($this->gategory)) foreach ($this->gategory As $gategory){?>
+	 
+	            <br>
+	            <table style="width:100%">
+	                <tr>
+	                	<td  style="background-color:#CCCCCC;"><strong style="font-weight:bold;font-family: Arial Black;color:#3F51B5; font-size: 13px;font-family:'Khmer MEF2';padding: 20px;">Category Type( ប្រភេទអាហារ):<?php echo $gategory['name_kh'];?> </strong></td>
+	                </tr>
+	            </table>
+	    
+		<table class="collape tablesorter" id="exportExcel" width="100%" style=" font-size: 14px;">
+			<tr>
+				<th class="tdheader header">No.</th>
+				<th class="tdheader header">Food Code</th>
+				<th class="tdheader header">Food Namer</th>
+				<th class="tdheader header">Price</th>
+				<th class="tdheader header">Image</th>
+				<th class="tdheader header">Date</th>
+				<th class="tdheader header">Status</th>
+			</tr>
+			<?php foreach ($food->getFoodByCategoryId($gategory['id']) As $num =>$rs){ $num=$num+1;?>
+			<tr class="normal">
+				<td class="items-no"><?php echo $num;?></td>
+				<td class="items"><a href="<?php echo $this->baseUrl();?>/report/index/rpt-item-food/id/<?php echo $rs["id"]?>"><?php echo $rs["food_code"]?></a></td>
+				<td class="items"><?php echo $rs["name_kh"]?></td>
+				<td class="items"><?php echo $rs["price"]?></td>
+				<td class="items"><?php echo $rs["img"]?></td>
+				<td class="items"><?php echo $rs["date"]?></td>
+				<td class="items"><?php echo $rs["status"]?></td>
+			</tr>
+			<?php }?>
+		</table>
+		
+	<?php }?>

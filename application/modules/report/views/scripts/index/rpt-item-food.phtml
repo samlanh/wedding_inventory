@@ -1,0 +1,28 @@
+<title>All Gategory Food</title>
+<style>
+tr.normal td,tr.alternate td {
+     font-size: 13px;
+}
+</style>
+	    
+		<table class="collape tablesorter" id="exportExcel" width="100%" style=" font-size: 14px;">
+			<tr>
+				<th class="tdheader header">No.</th>
+				<th class="tdheader header">Food Code</th>
+				<th class="tdheader header">Food Namer</th>
+				<th class="tdheader header">Price</th>
+				<th class="tdheader header">Image</th>
+				<th class="tdheader header">Date</th>
+				<th class="tdheader header">Status</th>
+			</tr>
+			<tr class="normal">
+				<td class="items-no"><?php //echo $num;?></td>
+				<td class="items"><a href="<?php //echo $this->baseUrl();?>/report/index/viewind/id/<?php //echo $rs["id"]?>"><?php //echo $rs["food_code"]?></a></td>
+				<td class="items"><?php //echo $rs["name_kh"]?></td>
+				<td class="items"><?php //echo $rs["price"]?></td>
+				<td class="items"><?php //echo $rs["img"]?></td>
+				<td class="items"><?php //echo $rs["date"]?></td>
+				<td class="items"><?php //echo $rs["status"]?></td>
+			</tr>
+		</table>
+	 
