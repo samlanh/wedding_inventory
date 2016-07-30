@@ -4,9 +4,9 @@ tr.normal td,tr.alternate td {
      font-size: 13px;
 }
 </style>
-    <?php $food=new Report_Model_DbTable_DbFoodGategory();?>
+    <?php $food=new Report_Model_DbTable_DbFoodGategory();$cat_blank='';?>
 	<?php if(!empty($this->gategory)) foreach ($this->gategory As $gategory){?>
-	 
+	 <?php if($gategory['id']!=$cat_blank){?>
 	            <br>
 	            <table style="width:100%">
 	                <tr>
@@ -25,6 +25,7 @@ tr.normal td,tr.alternate td {
 				<th class="tdheader header">Status</th>
 			</tr>
 			<?php foreach ($food->getFoodByCategoryId($gategory['id']) As $num =>$rs){ $num=$num+1;?>
+			<?php if($gategory['id']==$rs['cat_id']){?>
 			<tr class="normal">
 				<td class="items-no"><?php echo $num;?></td>
 				<td class="items"><a href="<?php echo $this->baseUrl();?>/report/index/rpt-item-food/id/<?php echo $rs["id"]?>"><?php echo $rs["food_code"]?></a></td>
@@ -34,7 +35,7 @@ tr.normal td,tr.alternate td {
 				<td class="items"><?php echo $rs["date"]?></td>
 				<td class="items"><?php echo $rs["status"]?></td>
 			</tr>
-			<?php }?>
+			<?php }else{$cat_blank=$rs['cat_id'];} }?>
 		</table>
 		
-	<?php }?>
+	<?php } $cat_blank=1;}?>

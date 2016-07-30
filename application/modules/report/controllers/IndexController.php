@@ -7,6 +7,7 @@ class Report_indexController extends Zend_Controller_Action {
     	header('content-type: text/html; charset=utf8');
     	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
 	}
+	
   function indexAction(){
   	
   }
@@ -68,6 +69,9 @@ class Report_indexController extends Zend_Controller_Action {
  	$this->view->rows = $db->getPurchase();
  	$gat=new Report_Model_DbTable_DbFoodGategory();
  	$this->view->gategory=$gat->getGategory();
+ 	$id=$this->getRequest()->getParam('id');
+ 	$this->view->row_item=$gat->getItermByFoodId($id);
+ 	
  }
 }
 
