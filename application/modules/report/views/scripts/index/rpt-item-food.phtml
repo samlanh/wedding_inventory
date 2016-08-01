@@ -1,13 +1,20 @@
 <title>All Gategory Food</title>
 <?php 
 	$base_url = Application_Form_FrmMessage::getUrl("/");
-	print_r($this->row_item);
+	//print_r($this->row_item);
 ?>
 <style>
 tr.normal td,tr.alternate td {
      font-size: 13px;
 }
+ th,td{ padding:0 1px;}
+body{font-family: "Times New Roman",Arial; }
+table{ border-collapse:collapse; margin:0 auto;
+border-color:#000; }
+.padd tr td{  text-align:center}
+.padd tr th{  background-color: #ccc; }
 </style>
+<div id="divPrint"  >
 		<table class="collape tablesorter" id="exportExcel" width="100%" style=" font-size: 14px;">
 			<?php $old_food='';?>
 			<?php if(!empty($this->row_item)) foreach ($this->row_item As $key=>$rs){ $key=$key+1;?>
@@ -17,10 +24,10 @@ tr.normal td,tr.alternate td {
 				<th class="tdheader header">No.</th>
 				<th class="tdheader header">Product No</th>
 				<th class="tdheader header">Item Name</th>
-				<th class="tdheader header">Measure</th>
+				<th class="tdheader header">Qty</th>
 				<th class="tdheader header">Image</th>
-				<th class="tdheader header">Price($)</th> 
-				<th class="tdheader header">Note</th>
+				<th class="tdheader header">Price</th> 
+				<th class="tdheader header">Amount</th>
 				<th class="tdheader header">Status</th>
 			</tr>
 			<?php }$old_food=$rs['food_id'];?>
@@ -32,14 +39,39 @@ tr.normal td,tr.alternate td {
 			?>
 			<tr class="normal">
 				<td class="items-no"><?php echo $key;?></td>
+				<td class="items"><?php echo $rs["pro_no"]?></td>
 				<td class="items"><?php echo $rs["item_id"]?></td>
-				
+				<td class="items"><?php echo $rs["qty"]?></td>
+				<td class="items"><?php //echo $rs["qty"]?></td>
 				<td class="items"><?php echo $rs["price"]?></td>
-				<td class="items"><?php //echo $rs["img"]?></td>
-				<td class="items"><?php //echo $rs["date"]?></td>
-				<td class="items"><?php //echo $rs["status"]?></td>
+				<td class="items"><?php echo $rs["amount"]?></td>
 				<td class="items"><?php echo $status?></td>
 			</tr>
 			<?php }?>
 		</table>
+</div>
+	
+<script type="text/javascript">
+function doPrint() {
+	window.frames["print_frame"].document.body.innerHTML=dojo.byId('divPrint').innerHTML;
+    window.frames["print_frame"].window.focus();
+    window.frames["print_frame"].window.print();
+    hideDialog();
+}
+function preview()
+{ 
+  var disp_setting="toolbar=no,status=no,resizable=no,location=no,directories=yes,menubar=no,"; 
+      disp_setting+="scrollbars=no,width=1200, height=700, left=100, top=25"; 
+  var content_vlue = document.getElementById("divPrint").innerHTML; 
+  
+  var docprint=window.open("","",disp_setting); 
+   docprint.document.open(); 
+   docprint.document.write('<html><head>'); 
+   docprint.document.write('</head><div style=" font-size:16px !important; margin:0px; font-family:Verdana;"><style>table th {font-size:14px !important;} table td{font-size:12px !important;}</style><center>');          
+   docprint.document.write(content_vlue);          
+   docprint.document.write('</center></div></html>'); 
+   docprint.document.close(); 
+   docprint.focus(); 
+}
+</script>
 	 

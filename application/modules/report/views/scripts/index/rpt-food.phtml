@@ -1,9 +1,12 @@
 <title>All Gategory Food</title>
 <style>
-tr.normal td,tr.alternate td {
-     font-size: 13px;
-}
+ 
+body{font-family: "Times New Roman",Arial; }
+ 
 </style>
+
+<div style="border: 1px dotted #000;background: #fff; margin: 0 auto;min-height: 27cm;">
+<div id="divPrint"  >
     <?php $food=new Report_Model_DbTable_DbFoodGategory();$cat_blank='';?>
 	<?php if(!empty($this->gategory)) foreach ($this->gategory As $gategory){?>
 	 <?php if($gategory['id']!=$cat_blank){?>
@@ -14,7 +17,7 @@ tr.normal td,tr.alternate td {
 	                </tr>
 	            </table>
 	    
-		<table class="collape tablesorter" id="exportExcel" width="100%" style=" font-size: 14px;">
+		<table class="collape tablesorter"  id="exportExcel" width="100%" style=" font-size: 14px;">
 			<tr>
 				<th class="tdheader header">No.</th>
 				<th class="tdheader header">Food Code</th>
@@ -26,9 +29,9 @@ tr.normal td,tr.alternate td {
 			</tr>
 			<?php foreach ($food->getFoodByCategoryId($gategory['id']) As $num =>$rs){ $num=$num+1;?>
 			<?php if($gategory['id']==$rs['cat_id']){?>
-			<tr class="normal">
+			<tr class="normal" >
 				<td class="items-no"><?php echo $num;?></td>
-				<td class="items"><a href="<?php echo $this->baseUrl();?>/report/index/rpt-item-food/id/<?php echo $rs["id"]?>"><?php echo $rs["food_code"]?></a></td>
+				<td class="items" ><a href="<?php echo $this->baseUrl();?>/report/index/rpt-item-food/id/<?php echo $rs["id"]?>"><?php echo $rs["food_code"]?></a></td>
 				<td class="items"><?php echo $rs["name_kh"]?></td>
 				<td class="items"><?php echo $rs["price"]?></td>
 				<td class="items"><?php echo $rs["img"]?></td>
@@ -39,3 +42,28 @@ tr.normal td,tr.alternate td {
 		</table>
 		
 	<?php } $cat_blank=1;}?>
+</div>
+</div>
+<script type="text/javascript">
+function doPrint() {
+	window.frames["print_frame"].document.body.innerHTML=dojo.byId('divPrint').innerHTML;
+    window.frames["print_frame"].window.focus();
+    window.frames["print_frame"].window.print();
+    hideDialog();
+}
+function preview()
+{ 
+  var disp_setting="toolbar=no,status=no,resizable=no,location=no,directories=yes,menubar=no,"; 
+      disp_setting+="scrollbars=no,width=1200, height=700, left=100, top=25"; 
+  var content_vlue = document.getElementById("divPrint").innerHTML; 
+  
+  var docprint=window.open("","",disp_setting); 
+   docprint.document.open(); 
+   docprint.document.write('<html><head>'); 
+   docprint.document.write('</head><div style=" font-size:16px !important; margin:0px; font-family:Verdana;"><style>table th {font-size:14px !important;} table td{font-size:12px !important;}</style><center>');          
+   docprint.document.write(content_vlue);          
+   docprint.document.write('</center></div></html>'); 
+   docprint.document.close(); 
+   docprint.focus(); 
+}
+</script>
