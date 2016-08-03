@@ -80,7 +80,9 @@ function addRowAjax(){
 				old_deliver_addr = null;
 				old_deliver_date = null;
 				old_su_id = null;
+				old_su_ids = null;
 				for(var i=0;i<data.length;i++){
+				new_qty = parseFloat(data[i].qty);
 					inx++;
 					if(su_id != data[i].su_id){
 						indexs++;
@@ -108,25 +110,26 @@ function addRowAjax(){
 						su_id = data[i].su_id;
 		 		    }
 					num++;
-					if(old_su_id == data[i].su_id){
-						if(old_item==data[i].item_id){
-							if(old_address==data[i].deliver_address){
-								if(old_deliver_date == data[i].deliver_date){
-									no = num -1;
-									new_qty = parseFloat(data[i].qty);
+					no = num -1;
+					if((old_su_id == data[i].su_id) && (old_item==data[i].item_id) && (old_address==data[i].deliver_address) && (old_deliver_date == data[i].deliver_date)){
+					//	if(old_item==data[i].item_id){
+						//	if(old_address==data[i].deliver_address){
+							//	if(old_deliver_date == data[i].deliver_date){
+									new_qty = parseFloat($('#item_qty_'+addr_name+"_"+no).val());
 									new_qty = new_qty +parseFloat(data[i].qty);
-									//continue;
-								}
-							}
-						}
+									$('#item_qty_'+addr_name+"_"+no).val(new_qty);
+									document.getElementById('lb_item_qty_'+addr_name+"_"+no).innerHTML = new_qty+"   "+data[i].measure_name_kh;
+									continue;
+							//	}
+						//	}
+					//	}
 					}
 						old_item=data[i].item_id;
 						old_address=data[i].deliver_address;
 						old_deliver_date = data[i].deliver_date;
 						old_su_id = data[i].su_id;
 						
-						if((old_date_deliver != data[i].deliver_date) || (old_deliver_addr != data[i].deliver_address)){
-							//alert(1);
+						if((old_su_ids != data[i].su_id ) || (old_date_deliver != data[i].deliver_date) || (old_deliver_addr != data[i].deliver_address)){
 							temp_date = '<td colspan="3">Deliver Address : '+data[i].deliver_address+'</td>';
 							temp_date += '<td colspan="">Delivery Date : '+data[i].deliver_date+'</td>';
 						temp_a = '<tr id="rows_'+addr_name+'_'+num+'" style="background: rgb(231, 138, 245);color: rgb(255, 255, 255);">';
@@ -136,12 +139,13 @@ function addRowAjax(){
 						
 						old_date_deliver = data[i].deliver_date;
 						old_deliver_addr = data[i].deliver_address;
+						old_su_ids = data[i].su_id;
 						}
 						col++;
 						temp_d='';
 				 		  		temp_d += '<td>'+col+' </td>';
 				 		  		temp_d += '<td>'+data[i].pro_name_kh+'</td>';
-				 		  		temp_d += '<td>'+data[i].qty+'</td>';
+				 		  		temp_d += '<td><label id="lb_item_qty_'+addr_name+"_"+num+'">'+data[i].qty+"   "+data[i].measure_name_kh+'</label><input type="hidden" name="item_qty_'+num+'" id="item_qty_'+addr_name+"_"+num+'" value="'+data[i].qty+'"></td>';
 				 		  		//temp_d += '<td>'+data[i].deliver_address+'</td>';
 				 		  		//temp_d += '<td>'+data[i].deliver_date+'</td>';
 				 		  		temp_d += '<td>'+data[i].note+'</td>';
