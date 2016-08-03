@@ -4,53 +4,66 @@
 	//print_r($this->row_item);
 ?>
 <style>
-tr.normal td,tr.alternate td {
-     font-size: 13px;
-}
- th,td{ padding:0 1px;}
+ 
 body{font-family: "Times New Roman",Arial; }
-table{ border-collapse:collapse; margin:0 auto;
-border-color:#000; }
-.padd tr td{  text-align:center}
-.padd tr th{  background-color: #ccc; }
 </style>
+<style>
+tr.normal td, tr.alternate td {
+    border: 1px solid #0C0C0C;
+    line-height: 14px;
+    padding: 0px 2px 0px 2px;
+    font-size: 11px;
+}
+</style>
+<div style="background: #fff; margin: 0 auto;min-height: 27cm;">
 <div id="divPrint"  >
-		<table class="collape tablesorter" id="exportExcel" width="100%" style=" font-size: 14px;">
+		<table border="1px solide #000;"  id="exportExcel" width="100%" style=" font-size: 11px;">
 			<?php $old_food='';?>
 			<?php if(!empty($this->row_item)) foreach ($this->row_item As $key=>$rs){ $key=$key+1;?>
 			<?php if($rs['food_id']!=$old_food){?>
-			<tr ><td colspan="8" style="background-color:#CCCCCC;"><strong style="font-weight:bold;font-family: Arial Black;color:#3F51B5; font-size: 13px;font-family:'Khmer MEF2';padding: 20px;">Category Type( ប្រភេទអាហារ):<?php echo $rs['food_id'];?> </strong></td></tr>
-			<tr>
-				<th class="tdheader header">No.</th>
-				<th class="tdheader header">Product No</th>
-				<th class="tdheader header">Item Name</th>
-				<th class="tdheader header">Qty</th>
-				<th class="tdheader header">Image</th>
-				<th class="tdheader header">Price</th> 
-				<th class="tdheader header">Amount</th>
-				<th class="tdheader header">Status</th>
+			<tr >
+				<td colspan="8" style="background-color:#CCCCCC;text-align: center;">
+				<style type="text/css">
+											body{font-family: "Times New Roman",Arial; }
+											table{ border-collapse:collapse; margin:0 auto;
+											border-color:#000; }
+											.padd tr td{  text-align:center}
+											.padd tr th{  background-color: #ccc; }
+				</style>
+					<strong style="font-weight:bold;font-family: Arial Black;color:#3F51B5; font-size: 11px;font-family:'Khmer MEF2';padding: 20px;">Category Type( ប្រភេទអាហារ):<?php echo $rs['food_id'];?> </strong>
+				</td>
+			</tr>
+			<tr style="font-size:10px; height: 18px;"​ >
+				<th >&nbsp;No.</th>
+				<th >&nbsp;Product No</th>
+				<th >&nbsp;Item Name</th>
+				<th >&nbsp;Qty</th>
+				<th >&nbsp;Price</th> 
+				<th >&nbsp;Amount</th>
+				<th >&nbsp;Status</th>
 			</tr>
 			<?php }$old_food=$rs['food_id'];?>
 			<?php if( $rs['status']==1){
-				      $status='<img src="'.$base_url.'images/icon/apply2.png"/>';
+				     // $status='<img src="'.$base_url.'images/icon/apply2.png"/>';
+				      $status="Active";
 			       }else{
-			          $status='<img src="'.$base_url.'images/icon/cross.png"/>';
+			          //$status='<img src="'.$base_url.'images/icon/cross.png"/>';
+			          $status="Deactive";
 			       }
 			?>
 			<tr class="normal">
-				<td class="items-no"><?php echo $key;?></td>
-				<td class="items"><?php echo $rs["pro_no"]?></td>
-				<td class="items"><?php echo $rs["item_id"]?></td>
-				<td class="items"><?php echo $rs["qty"]?></td>
-				<td class="items"><?php //echo $rs["qty"]?></td>
-				<td class="items"><?php echo $rs["price"]?></td>
-				<td class="items"><?php echo $rs["amount"]?></td>
-				<td class="items"><?php echo $status?></td>
+				<td class="items-no">&nbsp;<?php echo $key;?></td>
+				<td class="items">&nbsp;<?php echo $rs["pro_no"]?></td>
+				<td class="items">&nbsp;<?php echo $rs["item_id"]?></td>
+				<td class="items">&nbsp;<?php echo $rs["qty"]?></td>
+				<td class="items">&nbsp;<?php echo $rs["price"]?></td>
+				<td class="items">&nbsp;<?php echo $rs["amount"]?></td>
+				<td class="items">&nbsp;<?php echo $status?></td>
 			</tr>
 			<?php }?>
 		</table>
 </div>
-	
+</div>	
 <script type="text/javascript">
 function doPrint() {
 	window.frames["print_frame"].document.body.innerHTML=dojo.byId('divPrint').innerHTML;

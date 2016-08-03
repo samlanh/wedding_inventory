@@ -59,10 +59,33 @@ class Report_indexController extends Zend_Controller_Action {
  	$this->view->supplier = $db_order->getSupplier();
  }
  function rptFoodAction(){
+           try {
+           	    $sea_info=new Report_Model_DbTable_DbFoodGategory();
+	 			if($this->getRequest()->isPost()){
+			 		$search=$this->getRequest()->getPost();
+			 		
+			 	}
+			 	else{
+			 		$search = array(
+			 				'cat_food'=>'',
+			 				'start_date'=> date('Y-m-d'),
+			 				'end_date'=>date('Y-m-d'));
+			 	}
+			 	$sea_info=$sea_info->getGategory($search);
+			 	$this->view->gategory=$sea_info;
+			 	
+		 	}catch (Exception $e){
+		 		Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
+		 	}
  	$db = new Report_Model_DbTable_DbPurchase();
  	$this->view->rows = $db->getPurchase();
- 	$gat=new Report_Model_DbTable_DbFoodGategory();
- 	$this->view->gategory=$gat->getGategory(); 
+//  	$gat=new Report_Model_DbTable_DbFoodGategory();
+//  	$this->view->gategory=$gat->getGategory();
+ 	
+ 	$form=new Report_Form_FrmSearchFood();
+ 	$form=$form->FrmSearchInfo();
+ 	Application_Model_Decorator::removeAllDecorator($form);
+ 	$this->view->form_search=$form;
  }
  function rptItemFoodAction(){
  	$db = new Report_Model_DbTable_DbPurchase();
