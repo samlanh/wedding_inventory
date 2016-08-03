@@ -67,6 +67,7 @@ class Report_indexController extends Zend_Controller_Action {
 			 	}
 			 	else{
 			 		$search = array(
+			 				'adv_search'=>'',
 			 				'cat_food'=>'',
 			 				'start_date'=> date('Y-m-d'),
 			 				'end_date'=>date('Y-m-d'));
@@ -95,6 +96,63 @@ class Report_indexController extends Zend_Controller_Action {
  	$id=$this->getRequest()->getParam('id');
  	$this->view->row_item=$gat->getItermByFoodId($id);
  	
+ }
+ //report customer information 
+ function rptCustomerAction(){
+ 	 try {
+ 	 	$cus=new Report_Model_DbTable_DbCustomer();
+ 	 	if($this->getRequest()->isPost()){
+ 	 		$search=$this->getRequest()->getPost();
+ 	 
+ 	 	}
+ 	 	else{
+ 	 		$search = array(
+ 	 				'adv_search'=>'',
+ 	 				'customer'=>'',
+ 	 				'start_date'=> date('Y-m-d'),
+					'end_date'=>date('Y-m-d'));
+ 	 	}
+ 	 	$this->view->row_cuss=$cus->getCustomerAll($search);
+ 	 		
+ 	 }catch (Exception $e){
+ 	 	Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
+ 	 }
+ 	 
+ 	 
+ 	 
+ 	 $form=new Report_Form_FrmSearchFood();
+ 	 $form=$form->FrmSearchInfo();
+ 	 Application_Model_Decorator::removeAllDecorator($form);
+ 	 $this->view->form_search=$form;
+ }
+ 
+//report supplier infomation 
+ function rptSupplierAction(){
+ 	try {
+ 		$cus=new Report_Model_DbTable_DbCustomer();
+ 		if($this->getRequest()->isPost()){
+ 			$search=$this->getRequest()->getPost();
+ 				
+ 		}
+ 		else{
+ 			$search = array(
+ 					'adv_search'=>'',
+ 					'customer'=>'',
+ 					'start_date'=> date('Y-m-d'),
+ 					'end_date'=>date('Y-m-d'));
+ 		}
+ 		$this->view->row_cuss=$cus->getCustomerAll($search);
+ 		 
+ 	}catch (Exception $e){
+ 		Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
+ 	}
+ 		
+ 		
+ 		
+ 	$form=new Report_Form_FrmSearchFood();
+ 	$form=$form->FrmSearchInfo();
+ 	Application_Model_Decorator::removeAllDecorator($form);
+ 	$this->view->form_search=$form;
  }
 }
 

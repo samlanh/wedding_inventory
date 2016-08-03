@@ -20,7 +20,16 @@ Class Report_Form_FrmSearchFood extends Zend_Dojo_Form {
 		$advance_search = new Zend_Dojo_Form_Element_DateTextBox("adv_search");
 		$advance_search->setValue($request->getParam("adv_search"));
 		$advance_search->setAttribs(array('dojoType'=>'dijit.form.TextBox','class'=>'fullside',));
-		 
+		 //customer infor 
+		$_customer=  new Zend_Dojo_Form_Element_FilteringSelect('customer');
+		$_customer->setAttribs(array('dojoType'=>$this->filter,'class'=>'fullside',));
+		$_cus_opt = array(''=>$this->tr->translate("Select Customer Name..."));
+		$cus=new Report_Model_DbTable_DbCustomer();
+		$cus_rows=$cus->getCustomer();
+		if(!empty($cus_rows)) foreach ($cus_rows As $cus_rs)$_cus_opt[$cus_rs['id']]=$cus_rs['name'];
+		$_customer->setMultiOptions($_cus_opt);
+		$_customer->setValue($request->getParam("customer"));
+		
 		///cotroll search food 
 		$_status=  new Zend_Dojo_Form_Element_FilteringSelect('status_search');
 		$_status->setAttribs(array('dojoType'=>$this->filter,));
@@ -43,6 +52,8 @@ Class Report_Form_FrmSearchFood extends Zend_Dojo_Form {
 		$cat_food->setMultiOptions($opt_cat);
 		
 		$cat_food->setValue($request->getParam("cat_food"));
+		 
+		//date
 		$start_date= new Zend_Dojo_Form_Element_DateTextBox('start_date');
 		$dates = date("Y-m-d");
 		$start_date->setAttribs(array(
@@ -65,8 +76,9 @@ Class Report_Form_FrmSearchFood extends Zend_Dojo_Form {
 		if(empty($_date)){
 			$_date = date("Y-m-d");
 		}
+		$end_date->setValue($_date);
 		
-		$this->addElements(array($cat_food,$_status,$start_date,$end_date,$advance_search));
+		$this->addElements(array($_customer,$cat_food,$_status,$start_date,$end_date,$advance_search));
 		return $this;
 		
 	}
