@@ -90,14 +90,17 @@ class Report_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				  po.`deliver_date`,
 				  po.`measure_id`,
 				  po.`note`,
+				  m.`measure_name_kh`,
 				  (SELECT m.`measure_name_kh` FROM `ldc_measure`AS m WHERE m.`id`=po.`measure_id`) AS measure_name ,
 				  (SELECT s.`company_name` FROM `ldc_supplier` AS s WHERE s.`id`=po.`su_id`) AS supplier_name
 				FROM
 				  `ldc_purchase_order` AS p,
 				  `ldc_purchase_order_item` AS po ,
-				  `ldc_product` AS i
+				  `ldc_product` AS i,
+				  `ldc_measure` AS m
 				WHERE p.`id` = po.`pu_id` 
 				  AND po.`item_id`=i.`id`
+				  AND po.`measure_id`=m.`id`
 				  AND p.`id` = $id";
 		$where = '';
 		if($su_id >-1){
