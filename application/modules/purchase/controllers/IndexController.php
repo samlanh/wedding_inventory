@@ -120,6 +120,36 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->quote_detail = $db_order->getQuoteById($id);
 	}
 	
+	public function editphpajaxAction(){
+		$id = $this->getRequest()->getParam("id");
+		$db_order = new Purchase_Model_DbTable_DbPurchase();
+		if($this->getRequest()->isPost()){
+			$data=$this->getRequest()->getPost();
+			$data['id'] = $id;
+			try {
+				if(isset($data['save_new'])){
+					$db_order->editPurchase($data);
+					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+				}else if(isset($data['save_close'])){
+					$db_order->editPurchase($data);
+					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+				}
+			}catch (Exception $e) {
+				//print_r($e->getMessage());exit();
+				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
+				$err =$e->getMessage();
+				Application_Model_DbTable_DbUserLog::writeMessageError($err);
+			}
+		}
+		$this->view->item = $db_order->getPurchaseOrderDetail($id);
+	
+		//$this->view->qute_code = $db_order-> getQuoteCode();
+		//$this->view->pu_id = $db_order-> getPurchaseID();
+		$this->view->supplier = $db_order->getSupplier();
+		$this->view->items = $db_order->getItem();
+		$this->view->quote_detail = $db_order->getPurchaseOrder($id);
+	}
+	
 	public function addajaxAction(){
 		$db_order = new Purchase_Model_DbTable_DbPurchase();
 		if($this->getRequest()->isPost()){
@@ -176,6 +206,7 @@ class Purchase_indexController extends Zend_Controller_Action {
 	
 		$this->view->QuoteNo = $db_order->getQuoteNo();
 	}	
+	
 	function editAction(){
 		$id=$this->getRequest()->getParam('id');
 		$db_make = new Order_Model_DbTable_DbQuote();
@@ -324,6 +355,16 @@ class Purchase_indexController extends Zend_Controller_Action {
 			$_data = $this->getRequest()->getPost();
 			$db = new Purchase_Model_DbTable_DbPurchase();
 			$row = $db->getItemsPurchaseByQuoteId($_data["id"],4);
+			print_r(Zend_Json::encode($row));
+			exit();
+		}
+	}
+	
+	function getMeasureAction(){
+		if($this->getRequest()->isPost()){
+			$_data = $this->getRequest()->getPost();
+			$db = new Purchase_Model_DbTable_DbPurchase();
+			$row = $db->getMeasureNameByItemId($_data["id"]);
 			print_r(Zend_Json::encode($row));
 			exit();
 		}

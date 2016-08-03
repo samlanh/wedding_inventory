@@ -83,6 +83,12 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     	return $db->fetchAll($sql);
     }
     
+    function getMeasureNameByItemId($id){
+    	$db= $this->getAdapter();
+    	$sql = "SELECT m.`id`,m.`measure_name_kh` FROM `ldc_measure` AS m,`ldc_product` AS p WHERE m.id=p.`unit` AND p.`id`=$id";
+    	return $db->fetchRow($sql);
+    }
+    
     function getItemsPurchaseByQuoteId($id){
     	$db = $this->getAdapter();
     	$sql = "SELECT 
@@ -96,24 +102,24 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				  qt.`qty`,
 				  qt.`su_id`,
 				  qt.`type`,
-				  fi.`deliver_day` 
+				  qt.`deliver_day`,
+				  (SELECT m.id FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_id,
+  				  (SELECT m.`measure_name_kh` FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_name_kh
 				FROM
 				  `ldc_quotation` AS q,
 				  `ldc_quotation_connection` AS qc,
 				  `ldc_quote_item` AS qt,
-				  `ldc_product` AS p,
-				  `ldc_food_ingredients` AS fi 
+				  `ldc_product` AS p
 				WHERE q.id = qc.`quote_id` 
 				  AND qc.id = qt.`qc_id` 
 				  AND qt.`item_id` = p.`id` 
 				  AND q.`id` = $id 
-				  AND qt.`food_id` = fi.`food_id` 
-				GROUP BY qc.`address`,
-				  qt.`item_id`,qt.`type`
+				
 				ORDER BY qc.`address`,
 				  qt.`item_id`,
 				  qc.`date_do`,
-				  qt.`su_id` ASC ";
+				  qt.`su_id` ,
+  				  qt.`deliver_day`";
     	 
     	return $db->fetchAll($sql);
     }
@@ -136,6 +142,47 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				AND q.`ceremony_id`=cc.`id`
 				  AND q.`id` =$id";
     	return ($db->fetchRow($sql));
+    }
+    
+    function getPurchaseOrder($id){
+    	$db = $this->getAdapter();
+    	$sql ="SELECT 
+				  p.`pu_code`,
+				  c.`first_name`,
+				  c.`phone`,
+				  c.`email`,
+				  cc.`address`,
+				  cc.`ceremony_date` 
+				FROM
+				  `ldc_purchase_order` AS p,
+				  `ldc_customers` AS c,
+				  `ldc_customer_ceremony` AS cc 
+				WHERE p.`cu_id` = c.`id` 
+				  AND p.`ce_id` = cc.`id` 
+				  AND p.`id`=$id";
+    	return ($db->fetchRow($sql));
+    }
+    
+    function getPurchaseOrderDetail($id){
+    	$db = $this->getAdapter();
+    	$sql ="SELECT 
+				  po.*,
+				  p.`pro_name_kh`,
+				  m.`measure_name_kh`,
+				  m.`id` AS measure_id 
+				FROM
+				  `ldc_purchase_order_item` AS po,
+				  `ldc_measure` AS m,
+				  `ldc_product` AS p 
+				WHERE po.`pu_id` = $id 
+				  AND po.`measure_id` = m.`id` 
+				  AND p.`id` = po.`item_id` 
+				ORDER BY po.`address_do`,
+				  po.`item_id`,
+				  po.`deliver_date`,
+				  po.`su_id` 
+    	";
+    	return ($db->fetchAll($sql));
     }
     
     function getAllPurchase($search){
@@ -244,7 +291,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     				'su_id'				=>	$data["supplier_name_".$i],
     				'item_id'			=>	$data["item_name_".$i],
     				'qty'				=>	$data["item_qty_".$i],
-    				//'measure_id'		=>	$data["measure_id_".$i],
+    				'measure_id'		=>	$data["measure_id_".$i],
     				'address_do'		=>	$data["addr_".$i],
     				'deliver_address'	=>	$data["location_".$i],
     				'date_do'			=>	$data["date_do_".$i],
@@ -253,10 +300,56 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     			);
     			
     			$this->_name = "ldc_purchase_order_item";
-    			
     			$this->insert($arr_p);
     		}
     		
+    		$db->commit();
+    	}catch (Exception $e){
+    		$db->rollBack();
+    		Application_Model_DbTable_DbUserLog::writeMessageError($e);
+    		echo $e->getMessage();
+    	}
+    }
+    
+    function editPurchase($data){
+    	$db = $this->getAdapter();
+    	$db->beginTransaction();
+    	try {
+    
+//     		$arr = array(
+//     				'pu_code'	=>	$data["pu_code"],
+//     				'order_id'	=>	$data["id"],
+//     				'cu_id'		=>	$data["cu_id"],
+//     				'ce_id'		=>	$data["ceremony_id"],
+//     				'status'	=>	1
+//     		);
+//     		$this->_name="ldc_purchase_order";
+//     		$where = $db->quoteInto("id=?", $data["id"]);
+//     		$this->update($arr, $where);
+    
+    		$sql = "DELETE FROM ldc_purchase_order_item WHERE pu_id=".$data["id"];
+    		$db->query($sql);
+    		
+    		$identity = $data["identity"];
+    		$ids = explode(',', $identity);
+    		foreach ($ids as $i){
+    			$arr_p = array(
+    					'pu_id'				=>	$data["id"],
+    					'su_id'				=>	$data["supplier_name_".$i],
+    					'item_id'			=>	$data["item_name_".$i],
+    					'qty'				=>	$data["item_qty_".$i],
+    					'measure_id'		=>	$data["measure_id_".$i],
+    					'address_do'		=>	$data["addr_".$i],
+    					'deliver_address'	=>	$data["location_".$i],
+    					'date_do'			=>	$data["date_do_".$i],
+    					'deliver_date'		=>	$data["daliver_date_".$i],
+    					'note'				=>	$data["note_".$i],
+    			);
+    			 
+    			$this->_name = "ldc_purchase_order_item";
+    			$this->insert($arr_p);
+    		}
+    
     		$db->commit();
     	}catch (Exception $e){
     		$db->rollBack();
