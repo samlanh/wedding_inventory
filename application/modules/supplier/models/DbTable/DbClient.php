@@ -1,6 +1,6 @@
 <?php
 
-class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
+class Supplier_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'ldc_customer';
@@ -140,16 +140,17 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 					'title'	  			=> $_data['title'],
 					'su_code'	  		=> $_data['su_no'],
 					'first_name'	  	=>$_data['first_name'],
-					'last_name' 		=> $_data['last_name'],
+				//	'last_name' 		=> $_data['last_name'],
 					//'note'	      		=> $_data['desc'],
 					'p_phone'        	=>$_data['p_phone'],
 					'p_email'			=>$_data['p_email'],
 					'c_phone'        	=>$_data['c_phone'],
 					'c_email'			=>$_data['c_email'],
-					'house_num'			=>$_data['house_no'],
-					'street'			=>$_data['street'],
-					'district' 			=> $_data["district"],
-					'province_id'	  	=> $_data['province'],
+				//	'house_num'			=>$_data['house_no'],
+				//	'street'			=>$_data['street'],
+				//	'district' 			=> $_data["district"],
+			        'date'				=> date('Y-m-d'),
+					'note'	  			=> $_data['com_addres'],
 					'status'  			=> $_data['status'],
 					'balance'  			=> $_data['balance'],
 					'company_name'  	=> $_data['company_name'],
@@ -162,8 +163,6 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 				return $_data['id'];
 	
 			}else{
-				
-				echo "true";
 				return  $this->insert($arr);
 			}
 	

@@ -25,9 +25,9 @@ const REDIRECT_URL = '/supplier/index';
 			
 			$rs_rows= $db->getAllSupplier($search);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Supplier Code","First Name","Last Name","Tel","Email","Company","Street","Home","District","Province","status");
+			$collumns = array("Supplier Code","First Name","Last Name","Tel","Email","Company","Company Adress","status");
 			$link=array(
-					'module'=>'group','controller'=>'supplier','action'=>'edit',
+					'module'=>'supplier','controller'=>'index','action'=>'edit',
 			);
 			
 			$this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('customer_code'=>$link,'first_name'=>$link,'last_name'=>$link,'sex'=>$link));
@@ -39,7 +39,7 @@ const REDIRECT_URL = '/supplier/index';
 		}
 	}
 	public function addAction(){
-		$db = new Group_Model_DbTable_DbClient();
+		$db = new Supplier_Model_DbTable_DbClient();
 		if($this->getRequest()->isPost()){
 				$data = $this->getRequest()->getPost();
 				try{
@@ -49,7 +49,7 @@ const REDIRECT_URL = '/supplier/index';
 				}
 				else{
 					$id= $db->addSupplier($data);
-					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/group");
+					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/supplier");
 				}
 				
 			}catch (Exception $e){
@@ -65,14 +65,14 @@ const REDIRECT_URL = '/supplier/index';
 		
 	}
 	public function editAction(){
-		$db = new Group_Model_DbTable_DbClient();
+		$db = new Supplier_Model_DbTable_DbClient();
 		$id = $this->getRequest()->getParam("id");
 		if($this->getRequest()->isPost()){
 			$data = $this->getRequest()->getPost();
 			$data['id']=$id;
 			try{
 					$db->addSupplier($data);
-					Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/group");
+					Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/supplier");
 		
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message("Application Error");

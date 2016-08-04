@@ -23,43 +23,10 @@ dojo.ready(function(){
 // 	}catch(e){
 // 		alert(e);
 // 	}
-	var province_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->province));?> );
-	new dijit.form.FilteringSelect({
-	    store: province_store,
-	    autoComplete: true,                        
-	    required: true,
-	    placeHolder:"Select province...",
-	    id: "province",
-	    name: "province",
-	    value:'<?php echo $this->supplier['province_id'];?>',
-	    labelAttr:"name",           
-	    class: 'fullside',            
-	    onChange: function() { 
-	    	getAllDistrict();      
-	    } 
-	}, "province");
-	getAllDistrict();
-	new dijit.form.FilteringSelect({
-	    autoComplete: true,                        
-	    id: "district",
-	    name: "district",
-	    value:'<?php echo $this->supplier['district'];?>',
-	    labelAttr:"name",          
-	    class: 'fullside',
-	    required: true,  
-	    placeHolder:"Selected district...",          
-	    onChange: function() {  
-		    distric_id = dijit.byId('district').get('value');
-		    if(distric_id == -1){
-			   
-	    		dijit.byId("pop_district").show();
-		    }
-	    }
-	}, "district");
-	
+	 
 });
 </script>
-<form id='add_client' action="<?php echo $this->url(array('module'=>'group','controller'=>'supplier','action'=>'edit')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<form id='add_client' action="<?php echo $this->url(array('module'=>'supplier','controller'=>'index','action'=>'edit')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
 <script type="dojo/method" event="onSubmit">			
 			if(this.validate()) {
 				return true;
@@ -86,8 +53,7 @@ dojo.ready(function(){
 													<tr>
 													   <td><?php echo $tr->translate("First Name")?>*</td>
 													   <td><input type="text" dojoType="dijit.form.TextBox" required="required" name="first_name"  id="first_name" value="<?php echo $this->supplier["first_name"];?>" class="fullside"></td>
-													   <td><?php echo $tr->translate("Last Name")?>*</td>
-													   <td><input type="text" dojoType="dijit.form.TextBox" required="required" name="last_name"  id="last_name" value="<?php echo $this->supplier["last_name"];?>" class="fullside"></td>
+													   
 													</tr>
 													<tr>
 														<td><?php echo $tr->translate("Phone")?></td>
@@ -117,22 +83,17 @@ dojo.ready(function(){
 											<tr>
 												<td><?php echo $tr->translate("Company_Name")?></td>
 											    <td><input id="company_name" name="company_name" type="text" dojoType="dijit.form.TextBox" required="required" class="fullside" value="<?php echo $this->supplier["company_name"];?>"></td>
-												 <td><?php echo $tr->translate("Province")?></td>
-											    <td><input id="province"></td>
-												<td><?php echo $tr->translate("District")?></td>
-											    <td><input id="district"></td>
+												<td title="ទីកន្លែងកំណើត"><?php echo $tr->translate("Address")?></td>
+												<td rowspan="2">
+													<textarea class="fullside" tabindex="8" style=" height: 60px !important;"tabindex="21" dojoType=""   id="com_addres" name="com_addres"  ><?php echo $this->supplier["note"];?></textarea>
+												</td>  
+											     
 											</tr>
 											<tr>
-												<td><?php echo $tr->translate("Home No*")?></td>
-											    <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->supplier['house_num'];?>" required="required"  id="house_no" name="house_no" class="fullside" /></td>
-											    <td><?php echo $tr->translate("Street No*")?></td>
-											    <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->supplier['street'];?>" required="required"  id="street" name="street" class="fullside" /></td>
 											   <td><?php echo $tr->translate("PHONE*")?></td>
 											   <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->supplier['c_phone'];?>" required="required"  id="c_phone" name="c_phone" class="fullside" /></td>
 											</tr>
 											<tr>
-												<td></td>
-											    <td></td>
 												<td><?php echo $tr->translate("Email*")?></td>
 											   <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->supplier['c_email'];?>" required="required"  id="c_email" name="c_email" class="fullside" /></td>
 											    <td><?php echo $tr->translate("BALANCE")?></td>
