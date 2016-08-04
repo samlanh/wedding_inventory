@@ -141,7 +141,7 @@ class Report_indexController extends Zend_Controller_Action {
  					'start_date'=> date('Y-m-d'),
  					'end_date'=>date('Y-m-d'));
  		}
- 		$this->view->row_cuss=$cus->getCustomerAll($search);
+ 		$this->view->row_cuss=$cus->getSupplierRpt($search);
  		 
  	}catch (Exception $e){
  		Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());

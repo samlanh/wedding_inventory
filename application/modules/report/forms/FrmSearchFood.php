@@ -30,6 +30,16 @@ Class Report_Form_FrmSearchFood extends Zend_Dojo_Form {
 		$_customer->setMultiOptions($_cus_opt);
 		$_customer->setValue($request->getParam("customer"));
 		
+		//supplier customer
+		$supplier=  new Zend_Dojo_Form_Element_FilteringSelect('supplier');
+		$supplier->setAttribs(array('dojoType'=>$this->filter,'class'=>'fullside',));
+		$_cus_opt = array(''=>$this->tr->translate("Select Supplier Name..."));
+		$cus=new Report_Model_DbTable_DbCustomer();
+		$cus_rows=$cus->getAllSupplier();
+		if(!empty($cus_rows)) foreach ($cus_rows As $cus_rs)$_cus_opt[$cus_rs['id']]=$cus_rs['name'];
+		$supplier->setMultiOptions($_cus_opt);
+		$supplier->setValue($request->getParam("supplier"));
+		
 		///cotroll search food 
 		$_status=  new Zend_Dojo_Form_Element_FilteringSelect('status_search');
 		$_status->setAttribs(array('dojoType'=>$this->filter,));
@@ -78,7 +88,7 @@ Class Report_Form_FrmSearchFood extends Zend_Dojo_Form {
 		}
 		$end_date->setValue($_date);
 		
-		$this->addElements(array($_customer,$cat_food,$_status,$start_date,$end_date,$advance_search));
+		$this->addElements(array($supplier,$_customer,$cat_food,$_status,$start_date,$end_date,$advance_search));
 		return $this;
 		
 	}

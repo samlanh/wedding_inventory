@@ -21,11 +21,11 @@ require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
  
 
 <div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
-<form  action="<?php echo $this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-customer')); ?>" dojoType="dijit.form.Form" method="post">
+<form  action="<?php echo $this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-supplier')); ?>" dojoType="dijit.form.Form" method="post">
 					   <table style="width:90%">
 						  <tr> 
 						       <td> <?php echo $frm->getElement("adv_search");?></td>
-							   <td> <?php echo $frm->getElement("customer");?></td>
+							   <td> <?php echo $frm->getElement("supplier");?></td>
 							   <td> <?php echo $frm->getElement("start_date");?></td>
 							   <td> <?php echo $frm->getElement("end_date");?></td>
 							   
@@ -47,17 +47,32 @@ require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 th{padding: 3px;font-size: 12px !important;}
 td{padding: 3px;color: #000; font-size: 12px !important;}
 </style>
+<table style="background:#fff;width:90%; margin: 0 auto;width: 100%;">
+										
+<tr>
+	    <td width="28%" align="left">
+		   <!-- <img style="width:70%;" src="/ahs/trunk/public/images/logo.png"><br /><br > -->
+		</td>
+		<td align="center" width="44%">
+			<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">របាយការណ៏​​ អតិថិជន ផ្គុតផ្គុង</strong><br />
+        <span style="font-weight: bold;font-size: 11px;">From &nbsp;04-Aug-2016 &nbsp;To&nbsp; 04-Aug-2016</span><br /><br />
+		</td>
+		<td width="28%" align="right">
+		</td>
+	</tr>
+<tr>
+	<td colspan="3">
     	<table border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:11px !important; white-space: nowrap;" width="100%" cellspacing="0">
 	    	<tr style="font-size:11px; height: 18px;"​ >
 	    		<th>&nbsp;No.</th>
-				<th>&nbsp;Customer Code</th>
-				<th>&nbsp;Customer Name</th>
+				<th>&nbsp;Supplier Code</th>
+				<th>&nbsp;Supplier Name</th>
 				<th>&nbsp;Tel </th>
 				<th>&nbsp;Email</th>
-				<th>&nbsp;Address </th>
-				<th>&nbsp;Ceremony Date</th>
-				<th>&nbsp;Ceremony Address </th>
-				<th>&nbsp;Metting</th>
+				<th>&nbsp;Copany </th>
+				<th>&nbsp;Copany Phone</th>
+				<th>&nbsp;Company Email</th>
+				<th>&nbsp;Date </th>
 				<th>&nbsp;Status</th>
 	    	</tr>
 	    	<?php if(!empty($this->row_cuss)) foreach ($this->row_cuss As $key=>$rs_cus){ $key=$key+1;?>
@@ -65,21 +80,26 @@ td{padding: 3px;color: #000; font-size: 12px !important;}
 	    	         if($rs_cus['status']==1){
 	    	         	$status="Active";
 	    	         }else{ $status="Deactive";}
-	    	         $date= $rs_cus["ceremony_date"]
+	    	         $date= $rs_cus["date"]
 	    	?>
 	    	<tr  style="font-size:10px; height: 18px;"​ >
 	    		<td class="items">&nbsp;<?php echo $key;?></td>
-				<td class="items" >&nbsp;<?php echo $rs_cus["customer_code"]?></td>
+				<td class="items" >&nbsp;<?php echo $rs_cus["su_code"]?></td>
 				<td class="items" >&nbsp;<?php echo $rs_cus["first_name"]?></td>
-				<td class="items">&nbsp;<?php echo $rs_cus["phone"]?></td>
-				<td class="items">&nbsp;<?php echo $rs_cus["email"]?></td>
-				<td class="items">&nbsp;<?php echo $rs_cus["address"]?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["p_phone"]?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["p_email"]?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["company_name"]?></td>
+				
+				<td class="items">&nbsp;<?php echo $rs_cus["c_phone"]?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["c_email"]?></td>
 				<td class="items">&nbsp;<?php echo date('d-m-Y',strtotime($date));?></td>
-				<td class="items">&nbsp;<?php echo $rs_cus["c_address"]?></td>
-				<td class="items">&nbsp;<?php echo $rs_cus["is_meeting"]?></td>
+				
 				<td class="items">&nbsp;<?php echo $status?></td>
 	    	</tr>
 	    	<?php }?>
     	</table>
+    </td>
+  </tr>
+ </table>
 </div>
 </div>

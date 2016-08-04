@@ -28,6 +28,21 @@ tr.normal td, tr.alternate td {
  </form>
 <div style="border: 1px dotted #000;background: #fff; margin: 0 auto;min-height: 27cm;">
 <div id="divPrint"  >
+<table style="background:#fff;width:90%; margin: 0 auto;width: 100%;">
+										
+<tr>
+	    <td width="28%" align="left">
+		   <!-- <img style="width:70%;" src="/ahs/trunk/public/images/logo.png"><br /><br > -->
+		</td>
+		<td align="center" width="44%">
+			<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">របាយការណ៏​​  អតិថិជន</strong><br />
+        <span style="font-weight: bold;font-size: 11px;">From &nbsp;<?php echo date('Y-m-d');?> &nbsp;To&nbsp; 04-Aug-2016</span><br /><br />
+		</td>
+		<td width="28%" align="right">
+		</td>
+	</tr>
+<tr>
+	<td colspan="3">
     <?php $food=new Report_Model_DbTable_DbFoodGategory();$cat_blank='';?>
 	<?php if(!empty($this->gategory)) foreach ($this->gategory As $gategory){?>
 	 <?php if($gategory['id']!=$cat_blank){?>
@@ -75,6 +90,9 @@ tr.normal td, tr.alternate td {
 		</table>
 		
 	<?php } $cat_blank=1;}?>
+  </td>
+  </tr>
+ </table>
 </div>
 </div>
 <script type="text/javascript">

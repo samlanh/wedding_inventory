@@ -51,6 +51,42 @@ class Report_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 		$sql=" SELECT id,customer_code,first_name AS `name` FROM ldc_customers WHERE `status`=1";
 		return $db->fetchAll($sql);
 	}
+	function getSupplierRpt($search=null){
+		$db=$this->getAdapter();
+		$sql="SELECT p.id,p.`su_code`,p.`first_name`,
+		    	p.`p_phone`,p.`p_email`,p.`company_name`,p.c_phone,p.c_email,p.note,p.date,
+		      (SELECT name_en FROM `ldc_view` WHERE key_code = p.`status` AND `type`=2) AS `status` FROM `ldc_supplier` AS p WHERE 1";
+		
+		$where=" ";
+		$from_date =(empty($search['start_date']))? '1': " p.date >= '".$search['start_date']." 00:00:00'";
+		$to_date = (empty($search['end_date']))? '1': " p.date <= '".$search['end_date']." 23:59:59'";
+		$where = " AND ".$from_date." AND ".$to_date;
+		 
+		if(!empty($search['adv_search'])){
+			$s_where=array();
+			$s_search=addslashes(trim($search['adv_search']));
+			$s_where[]= " p.first_name LIKE '%{$s_search}%'";
+			$s_where[]= " p.su_code LIKE '%{$s_search}%'";
+			$s_where[]= " p.p_phone LIKE '%{$s_search}%'";
+			$s_where[]= " p.p_email LIKE '%{$s_search}%'";
+			$s_where[]= " p.c_phone LIKE '%{$s_search}%'";
+			$s_where[]= " p.company_name LIKE '%{$s_search}%'";
+			$s_where[]= " p.c_email LIKE '%{$s_search}%'";
+			$s_where[]= " p.date LIKE '%{$s_search}%'";
+			$where.=' AND ('.implode(' OR ', $s_where).')';
+		}
+		if(!empty($search['supplier'])){
+			$where.=" AND id=".$search['supplier'];
+		}
+		
+		//echo $sql.$where;
+		return $db->fetchAll($sql.$where);
+	}
+	function getAllSupplier(){
+		$db=$this->getAdapter();
+		$sql=" SELECT id,first_name As name FROM ldc_supplier WHERE `status`=1";
+		return $db->fetchAll($sql);
+	}
 
  }
 
