@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="<?php echo $this->baseUrl()?>/assets/bootstrap/cssdashboad/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="<?php echo $this->baseUrl()?>/assets/bootstrap/home-style/css/sb-admin-2.css" rel="stylesheet">
+
+
+    <!-- Custom Fonts -->
+    <link href="<?php echo $this->baseUrl()?>/assets/bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  
+</head>
+
+<body>
+    <div id="wrapper">
+		<div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header" style="text-align:center;">Welcome to Aplus Fresh Shop</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+            	<div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"><?php echo $this->countPending['counter'];?></div>
+                                    <div>Pending Orders!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?php echo $this->baseUrl()?>/report/account/rpt-order" target="blank">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Reports</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"><?php echo $this->orderToday['counter'];?></div>
+                                    <div>Ordering Today!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?php echo $this->baseUrl()?>/report/daily" target="blank">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Reports</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">Hot Sales</div>
+                                    <div>Products!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?php echo $this->baseUrl()?>/report/hotsale" target="blank">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-user fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"><?php echo $this->custmers['counter'];?></div>
+                                    <div>All Customers!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?php echo $this->baseUrl()?>/group" target="blank">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+</body>
+
+</html>
