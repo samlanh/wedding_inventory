@@ -42,8 +42,9 @@ tr.normal td, tr.alternate td {
 		</td>
 	</tr>
 <tr>
-	<td colspan="3">
+	<td colspan="3" style="padding: 0px 20px;">
     <?php $food=new Report_Model_DbTable_DbFoodGategory();$cat_blank='';?>
+    <?php //print_r($this->gategory);?>
 	<?php if(!empty($this->gategory)) foreach ($this->gategory As $gategory){?>
 	 <?php if($gategory['id']!=$cat_blank){?>
 	            <br>
@@ -81,7 +82,7 @@ tr.normal td, tr.alternate td {
 				?>
 			<tr class="normal"  style="font-size:10px; height: 18px;"​ >
 				<td class="items-no">&nbsp;<?php echo $num;?></td>
-				<td class="items" >&nbsp;<a href="<?php echo $this->baseUrl();?>/report/index/rpt-item-food/id/<?php echo $rs["id"]?>"><?php echo $rs["food_code"]?></a></td>
+				<td class="items" >&nbsp;<a  target="_blank" href="<?php echo $this->baseUrl();?>/report/index/rpt-item-food/id/<?php echo $rs["id"]?>"><?php echo $rs["food_code"]?></a></td>
 				<td class="items" >&nbsp;<?php echo $rs["name_kh"]?></td>
 				<td class="items">&nbsp;<?php echo $rs["price"]?></td>
 				<td class="items">&nbsp;<?php echo $status?></td>
@@ -89,7 +90,7 @@ tr.normal td, tr.alternate td {
 			<?php }else{$cat_blank=$rs['cat_id'];} }?>
 		</table>
 		
-	<?php } $cat_blank=1;}?>
+	<?php } }?>
   </td>
   </tr>
  </table>

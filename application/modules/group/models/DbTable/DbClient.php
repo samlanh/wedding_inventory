@@ -285,8 +285,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 		$db = $this->getAdapter();
 		$sql ="SELECT p.id,p.`su_code`,p.`first_name`,
     	p.`last_name`,
-    	p.`p_phone`,p.`p_email`,p.`company_name`,p.`street`,
-    	p.`house_num`,(SELECT d.district_name FROM `ldc_district` AS d WHERE d.id = p.`district` ) AS district,(SELECT k.province_name FROM `ldc_province` AS k WHERE k.id = p.`province_id`)AS province,
+    	p.`p_phone`,p.`p_email`,p.`company_name`,p.note,
     	(SELECT name_en FROM `ldc_view` WHERE key_code = p.`status` AND `type`=2) AS `status` FROM `ldc_supplier` AS p WHERE 1";
 		$where = " ";
 		if(!empty($search['title'])){
@@ -294,7 +293,6 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 			$s_search = addslashes(trim($search['title']));
 			$s_where[] = "p.`su_code` LIKE '%{$s_search}%'";
 			$s_where[] = " first_name LIKE '%{$s_search}%'";
-			$s_where[] = " last_name LIKE '%{$s_search}%'";
 			$s_where[] = "p.p_phone LIKE '%{$s_search}%'";
 			$s_where[] = "p.p_email LIKE '%{$s_search}%'";
 			$s_where[] = " group_num LIKE '%{$s_search}%'";

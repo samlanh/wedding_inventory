@@ -4,19 +4,19 @@ class Report_Model_DbTable_DbFoodGategory extends Zend_Db_Table_Abstract
 	
 	function getGategory($search=null){
 		$db = $this->getAdapter();
-		$sql ="SELECT id,name_en,name_kh FROM ldc_food_cat ";
-		$where=" where status=1 ";
+		$sql ="SELECT fc.id,fc.name_en,fc.name_kh,fc.status FROM ldc_food_cat AS fc,ldc_food WHERE ldc_food.cat_id=fc.id AND fc.status=1";
+		$where="";
 		if($search['adv_search']){
 			$s_where=array();
 			$s_search=addslashes(trim($search['adv_search']));
-			$s_where[]= " name_kh LIKE '%{$s_search}%'";
-			$s_where[]= " name_en LIKE '%{$s_search}%'";
+			$s_where[]= " fc.name_kh LIKE '%{$s_search}%'";
+			$s_where[]= " fc.name_en LIKE '%{$s_search}%'";
 			$where.=' AND ('.implode(' OR ', $s_where).')';
 		}
 		if ($search['cat_food']){
-			$where.=" AND id=".$search['cat_food'];
+			$where.=" AND fc.id=".$search['cat_food'];
 		}
-		echo $sql.$where;
+		//echo $sql.$where;
 		return $db->fetchAll($sql.$where);
 	}
 	function getFoodByCategoryId($cat_id){
