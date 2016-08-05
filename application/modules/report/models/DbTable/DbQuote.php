@@ -29,11 +29,15 @@ class Report_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
 				  c.`first_name`,
 				  c.`phone`,
 				  c.`email`,
-				  c.`address` 
+				  c.`address` ,
+				  cc.`address` as ceremony_addr,
+				  cc.`ceremony_date`
 				FROM
 				  `ldc_quotation` AS q,
-				  `ldc_customers` AS c 
+				  `ldc_customers` AS c,
+				  `ldc_customer_ceremony` AS cc
 				WHERE q.`customer_id` = c.id 
+				AND q.`ceremony_id`=cc.`id`
 				  AND q.id = $id";
 		return $db->fetchRow($sql);
 	}
@@ -71,6 +75,24 @@ class Report_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
 				  `ldc_customers` AS c 
 				WHERE q.`customer_id` = c.id 
 				  AND q.`merge_id`=$id";
+		return $db->fetchAll($sql);
+	}
+	
+	function getQuoteShortForm($id){
+		$db = $this->getAdapter();
+		$sql = "SELECT 
+				  q.`quot_code`,
+				  qd.`address`,
+				  qd.`date_do`,
+				  qd.`num_table`,
+				  qd.`price`,
+				  qd.`total_pay` ,
+				  qd.`type`
+				FROM
+				  `ldc_quotation` AS q,
+				  `ldc_quotation_connection` AS qd 
+				WHERE q.id = qd.`quote_id` 
+				AND q.id=$id";
 		return $db->fetchAll($sql);
 	}
  }

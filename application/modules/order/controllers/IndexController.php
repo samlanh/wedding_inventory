@@ -17,7 +17,7 @@ class Order_indexController extends Zend_Controller_Action {
 				$formdata=$this->getRequest()->getPost();
 				$search = array(
 						'title' => $formdata['title'],
-						'status_search'=>$formdata['status_search'],
+						'search_status'=>$formdata['search_status'],
 						//'company'=>$formdata['company'],
 						'start_date'	=>	$formdata["start_date"],
 						'end_date'		=>	$formdata["end_date"],
@@ -27,7 +27,7 @@ class Order_indexController extends Zend_Controller_Action {
 			else{
 				$search = array(
 					'title' 		=> '',
-					'status_search' => -1,
+					'search_status' => -1,
 					//'company'		=>-1,
 					'start_date'	=>	date("Y-m-d"),
 					'end_date'		=>	date("Y-m-d"),

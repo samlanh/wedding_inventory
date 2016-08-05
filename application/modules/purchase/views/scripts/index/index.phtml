@@ -8,8 +8,8 @@ echo $this->headTitle($tr->translate("PRODUCTS"));
  $model=$request->getParam('model');
  $submodel=$request->getParam('submodel');
  
- $url_merge = $this->url(array('module'=>'order','controller'=>'index','action'=>'merge',
- ));
+ $url_edit = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'editphpajax',));
+ $url_view = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'viewpurchase',));
  $formList = new Application_Form_Frmtable();
 ?>
 <script type="text/javascript">
@@ -44,13 +44,37 @@ dojo.require("dijit.form.DateTextBox");
 				</select>
 		   </td>
 		   <td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>
-   	  	   <td><?php //echo $formList->showMergeBuntton($url_merge);?></td>
+   	  	   <td><?php echo $formList->showEditBuntton($url_edit);?></td>
+   	  	   <td><?php echo $formList->showViewBuntton($url_view);?></td>
    	  </tr>
    </table>
    <?php echo $this->list;?>
 </form>
 <script>
-function mergeRecord(url) {
+function editRecord(url) {
+	 var cbs = $("input:checkbox"); //find all checkboxes
+	 var nbCbs = cbs.size(); //the number of checkboxes
+	 var checked = $("input[@type=checkbox]:checked"); //find all checked checkboxes + radio buttons
+	 var nbChecked = checked.size();
+	 if(nbChecked < 1) {
+	  alert("Please select record to copy!");
+	 } else {
+	  /*var answer = confirm("Are you sure you want to delete it?")
+	     if (answer){*/
+	   id = new Array();
+	   var i = 0;
+	   checked.each(function() {
+	    id[i] = $(this).val();
+	    i++;
+	   });
+	   window.location.href = url+'/id/'+id;
+	     /*} else {
+	      alert("Sorrty can't delete it!");
+	     }*/
+	 }
+	}
+
+function viewRecord(url) {
 	 var cbs = $("input:checkbox"); //find all checkboxes
 	 var nbCbs = cbs.size(); //the number of checkboxes
 	 var checked = $("input[@type=checkbox]:checked"); //find all checked checkboxes + radio buttons

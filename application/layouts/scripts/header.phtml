@@ -9,6 +9,7 @@
 	  $items=$this->url(array('module'=>'items','controller'=>'index','action'=>'index'), null, true);
 	  $food=$this->url(array('module'=>'food','controller'=>'index','action'=>'index'), null, true);
 	  $order=$this->url(array('module'=>'order','controller'=>'index','action'=>'index'), null, true);
+	  $purchase=$this->url(array('module'=>'purchase','controller'=>'index','action'=>'index'), null, true);
 	  $stuff=$this->url(array('module'=>'stuff','controller'=>'index','action'=>'index'), null, true);
 	  
 	  //$booking=$this->url(array('module'=>'booking','controller'=>'index','action'=>'index'), null, true);
@@ -57,9 +58,14 @@
 						</a>
 					</li>',
 	
-	  	'booking'=>'<li class="link">
+	  	'order'=>'<li class="link">
 			  		<a title="កម្មង់ម្ហូប" href="'.$order.'">
 			  			<span>'.$tr->translate("Order").'</span>
+			  		</a>
+	  			</li>',
+	  	'purchase'=>'<li class="link">
+			  		<a title="កម្មង់ទំនិញ" href="'.$purchase.'">
+			  			<span>'.$tr->translate("PURCHASE").'</span>
 			  		</a>
 	  			</li>',
 	  	'report'=>'<li class="link">

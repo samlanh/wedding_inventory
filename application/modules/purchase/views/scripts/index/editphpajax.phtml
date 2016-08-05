@@ -154,7 +154,7 @@ function addRowAjax(){
 						addr_name = myTrim(data_addr.split(' ').join('_')); // Replace all spacial character and space 
 						temp ='<tr style="background: rgb(78, 157, 246) none repeat scroll 0% 0%; color:white; font-weight:800;"><td colspan=""> Ceremony Address : '+data[i].address_do+' <input type="hidden" name="address_'+addr_name+'" id="address_'+addr_name+'" value="'+data[i].address_do+'" /> <input type="hidden" name="date_do_'+addr_name+'" id="date_do_'+addr_name+'" value="'+data[i].date_do+'" />';
 							temp += '<input style="float:right" type="button" label="Add Row" value="Add New Row" dojoType="dijit.form.Button" iconClass="dijitIconEditProperty" onclick="addRow('+"'"+addr_name+"'"+','+indexs+');" />';
-							temp += '<input type="hidden" name="identity_'+addr_name+'" id="identity_'+addr_name+'" value=""> <input type="text" name="index_id_'+addr_name+'" id="index_id_'+addr_name+'" />';
+							temp += '<input type="hidden" name="identity_'+addr_name+'" id="identity_'+addr_name+'" value=""> <input type="hidden" name="index_id_'+addr_name+'" id="index_id_'+addr_name+'" />';
 						temp+= '</td></tr>';
 						
 					   temp_h = '<tr>';

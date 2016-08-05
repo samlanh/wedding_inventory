@@ -38,9 +38,9 @@ class Purchase_indexController extends Zend_Controller_Action {
 			$list = new Application_Form_Frmtable();
 			$collumns = array("PURCHASE_NO","CUSTOMER","PHONE","EMAIL","ADDRESS","DATE_CEREMONY","STATUS");
 			$link=array(
-					'module'=>'order','controller'=>'quote','action'=>'edit',
+					'module'=>'purchase','controller'=>'index','action'=>'editphpajax',
 			);
-			$this->view->list=$list->getCheckList(0, $collumns, $rows,array('pu_code'=>$link,'first_name'=>$link,'date_ceremony'=>$link));
+			$this->view->list=$list->getCheckList(1, $collumns, $rows,array('pu_code'=>$link,'first_name'=>$link,'date_ceremony'=>$link));
 		}catch (Exception $e){
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
@@ -149,7 +149,21 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->items = $db_order->getItem();
 		$this->view->quote_detail = $db_order->getPurchaseOrder($id);
 	}
+	function viewpurchaseAction(){
+		$id = $this->getRequest()->getParam("id");
+		//$db = new Report_Model_DbTable_DbPurchase();
+		$db = new Purchase_Model_DbTable_DbPurchase();
 	
+		if($this->getRequest()->isPost()){
+			$data = $this->getRequest()->getPost();
+			$su_id = $data['supplier_name'];
+		}else{
+			$su_id = -1;
+		}
+	
+		$this->view->rows = $db->getPurchaseDetailById($id,$su_id);
+		$this->view->supplier = $db->getSupplier();
+	}
 	public function addajaxAction(){
 		$db_order = new Purchase_Model_DbTable_DbPurchase();
 		if($this->getRequest()->isPost()){

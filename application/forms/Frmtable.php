@@ -172,6 +172,28 @@ class Application_Form_Frmtable
     					.'</b></a>';
     	return $mergeButton;
     }
+    
+    public function showEditBuntton($url_merge) {
+    	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
+    	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+    
+    	$mergeButton = '&nbsp;<a href="#" class="btn-action" onClick="editRecord(\''.$url_merge.'\')">'
+    			.'<img alt="" src="'.BASE_URL.'/images/icon/merge-cells-icon.png"><b>'
+    					.$tr->translate("EDIT_PURCHASE")
+    					.'</b></a>';
+    	return $mergeButton;
+    }
+    
+    public function showViewBuntton($url_merge) {
+    	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
+    	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+    
+    	$mergeButton = '&nbsp;<a href="#" class="btn-action" onClick="viewRecord(\''.$url_merge.'\')">'
+    			.'<img alt="" src="'.BASE_URL.'/images/icon/merge-cells-icon.png"><b>'
+    					.$tr->translate("VIEW_PURCHASE")
+    					.'</b></a>';
+    	return $mergeButton;
+    }
     /*
      * Recomment usage
      * @Desc: get full list(legend, table list, check for delete, edit, pagebrowser)

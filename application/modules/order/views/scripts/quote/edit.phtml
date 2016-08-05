@@ -48,10 +48,6 @@ dojo.ready(function(){
 	oldRowDinner();
 	oldRowLunch();
 	oldRowService();
-// 	addRow(1);
-// 	addRow(2);
-// 	addRow(3);
-// 	addRow(4);
 new dijit.form.FilteringSelect({
     store: make_store,
     autoComplete: true,                        
@@ -397,10 +393,10 @@ dojo.require("dijit.form.Textarea");
 var url_customer = '<?php echo $this->url(array('module'=>'order','controller'=>'quote','action'=>'get-customer-by-id')); ?>';
 function getCustomer(type){
 	if(type==1){
-		var id = dijit.byId('customer_name').get('value');
+		id = dijit.byId('customer_name').get('value');
 		dijit.byId('customer_code').attr('value',id);
 	}else{
-		var id = dijit.byId('customer_code').get('value');
+		id = dijit.byId('customer_code').get('value');
 		dijit.byId('customer_name').attr('value',id);
 	}
 		dojo.xhrPost({
@@ -885,4 +881,13 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 	 			}
 	 		});
   }
+
+
+
+
+//   no_s =0;
+//   col_s =0;
+//   row_s = "ser_";
+//   title_service=0;
+    
 </script>

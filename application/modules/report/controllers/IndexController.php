@@ -27,6 +27,14 @@ class Report_indexController extends Zend_Controller_Action {
  	$this->view->rows_quote = $rows_quote;
  }
  
+ function viewquoteshortAction(){
+ 	$id = $this->getRequest()->getParam("id");
+ 	$db = new Report_Model_DbTable_DbQuote();
+ 	$rows_quote = $db->getQuoteById($id);
+ 	$this->view->rows_connect = $db->getQuoteShortForm($id);
+ 	$this->view->rows_quote = $rows_quote;
+ }
+ 
  function viewmergeAction(){
  	$id = $this->getRequest()->getParam("id");
  	$db = new Report_Model_DbTable_DbQuote();
