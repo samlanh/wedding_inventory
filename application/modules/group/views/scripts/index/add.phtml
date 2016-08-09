@@ -119,7 +119,7 @@ dojo.ready(function(){
 									   <table style="padding-left:10px;" cellspacing="10">
 											<tr>
 												<td><?php echo $tr->translate("Ceremony Date")?></td>
-												<td><input type="text" dojoType="dijit.form.DateTextBox" value=""  id="ceremony_date" name="ceremony_date" class="fullside" /></td>
+												<td><input type="text" dojoType="dijit.form.DateTextBox" value="<?php echo date('Y-m-d');?>"  id="ceremony_date" name="ceremony_date" class="fullside" /></td>
 												<td><?php echo $tr->translate("MEETING")?></td>
 												<td><select dojoType='dijit.form.FilteringSelect' id="meeting" name="meeting" class="fullside">
 													   	<option value="0">Not yet Meeting</option>
@@ -128,8 +128,8 @@ dojo.ready(function(){
 												</td>
 												<td><?php echo $tr->translate("STATUS")?></td>
 												<td><select dojoType='dijit.form.FilteringSelect' id="status" name="status" onchange="Showbranch();" class="fullside">
-													   <option value="0">Active</option>
-													   <option value="1">Deactive</option>
+													   <option value="1">Active</option>
+													   <option value="0">Deactive</option>
 													 </select>
 												</td>
 											</tr>

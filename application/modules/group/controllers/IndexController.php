@@ -55,11 +55,11 @@ class Group_indexController extends Zend_Controller_Action {
 				try{
 				 if(isset($data['save_new'])){
 					$id= $db->addCustomer($data);
-					//Application_Form_FrmMessage::message("INSERT_SUCCESS");
+					Application_Form_FrmMessage::message("INSERT_SUCCESS");
 				}
 				else{
 					$id= $db->addCustomer($data);
-					//Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/group");
+					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/group");
 				}
 				
 			}catch (Exception $e){

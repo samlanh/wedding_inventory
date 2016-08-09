@@ -84,7 +84,7 @@ td{padding: 3px;color: #000; font-size: 12px !important;}
 	    	?>
 	    	<tr  style="font-size:10px; height: 18px;"​ >
 	    		<td class="items">&nbsp;<?php echo $key;?></td>
-				<td class="items" >&nbsp;<?php echo $rs_cus["customer_code"]?></td>
+				<td class="items" >&nbsp;<a href="<?php echo $this->baseUrl();?>/report/index/rpt-customer-detial/id/<?php echo $rs_cus["id"]?>"><?php echo $rs_cus["customer_code"]?></a></td>
 				<td class="items" >&nbsp;<?php echo $rs_cus["first_name"]?></td>
 				<td class="items">&nbsp;<?php echo $rs_cus["phone"]?></td>
 				<td class="items">&nbsp;<?php echo $rs_cus["email"]?></td>

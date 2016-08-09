@@ -1,9 +1,11 @@
 <?php
 class Report_indexController extends Zend_Controller_Action {
 	private $activelist = array('មិនប្រើ​ប្រាស់', 'ប្រើ​ប្រាស់');
+	const REDIRECT_URL_ADD ='/report/index/rpt-customer';
     public function init()
     {    	
      /* Initialize action controller here */
+    	$this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
     	header('content-type: text/html; charset=utf8');
     	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
 	}
@@ -132,6 +134,21 @@ class Report_indexController extends Zend_Controller_Action {
  	 $form=$form->FrmSearchInfo();
  	 Application_Model_Decorator::removeAllDecorator($form);
  	 $this->view->form_search=$form;
+ }
+// customer detail 
+ function rptCustomerDetialAction(){
+ 	$id = $this->getRequest()->getParam("id");
+ 	$db = new Report_Model_DbTable_DbQuote();
+ 	$rows_quote = $db->getCustomerQuoteById($id);
+ 	$rows_id=$rows_quote['id'];
+ 	if(empty($rows_id)){
+ 		//$rows_connect = $db->getQuoteConnect($id, $type);
+ 		Application_Form_FrmMessage::Sucessfull($this->tr->translate('Customer had not qoute!'),self::REDIRECT_URL_ADD);
+ 		exit();
+ 	}else{
+ 	     $this->view->rows_quote = $rows_quote;
+ 	}
+ 	
  }
  
 //report supplier infomation 

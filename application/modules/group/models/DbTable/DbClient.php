@@ -47,7 +47,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 //     	if($search['company']>-1){
 //     		$where.= " AND company_id = ".$search['company'];
 //     	}
-    	$order=" ORDER BY id DESC";
+    	$order=" ORDER BY first_name DESC";
     	//echo $sql.$where.$order;
 		return $db->fetchAll($sql.$where.$order);	
     }
