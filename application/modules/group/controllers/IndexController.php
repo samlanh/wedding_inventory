@@ -92,6 +92,7 @@ class Group_indexController extends Zend_Controller_Action {
 			}
 		}
 		$this->view->cusbyID = $db->getCustomerByCId($id);
+		$this->view->c_add = $db->getCeremonyAddr($id);
 		$db_branch = new Group_Model_DbTable_DbBranch();
 		$this->view->company = $db_branch->getCompanyName();
 		$db_branch = new Group_Model_DbTable_DbBranch();

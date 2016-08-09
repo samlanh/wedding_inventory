@@ -13,7 +13,6 @@
 <script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
 <link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
 <style>
-}
 .bg{ background:#eeeeee; border:1px solid #000;}
 
 select{ width:100%;}
@@ -22,13 +21,7 @@ table tr td.null-border{ background: #fff; border-left:none !important;}
 table .set-style td,table .set-style th{ padding: 5px; border:1px solid #ccc;}
 table .display_form-add{display:none;}
 </style>
-<script type="dojo/method" event="onSubmit">			
-	if(this.validate()) {
-				return true;
-			} else {
-				return false;
-			}
-</script>
+
 <script type="text/javascript" src="js/dojo/dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
 <script type="text/javascript">
 dojo.require("dojo.data.ItemFileWriteStore");  
@@ -38,13 +31,13 @@ dojo.require("dojo.html");
 dojo.require("dojo.parser");
 dojo.require("dojo.NodeList-manipulate");
 require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
-var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
+//var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
 dojo.ready(function(){
 	//addRow(1);
 // 	addRow(2);
 // 	addRow(3);
 // 	addRow(4);
-new dijit.form.FilteringSelect({
+/*new dijit.form.FilteringSelect({
     store: make_store,
     autoComplete: true,                        
     required: true,
@@ -61,15 +54,18 @@ new dijit.form.FilteringSelect({
     		getallModel(make_id);
     	}           
     }
-}, "make");
+}, "make");*/
 });
-//model controll
-dojo.ready(function(){
-	
-	});  
 
 </script>
 <form id='add_food' action="<?php echo $url_save; ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
 <table  width="100%" style="margin-top:10px;">
 	<tr>
 		<td>
@@ -85,18 +81,18 @@ dojo.ready(function(){
 							    <tr>
 									<td>Customer Name:</td>
 									<td>
-										<select tabindex="24" name="customer_name" id="customer_name" onChange="getCustomer(1); getCeremonyDate();" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Select Customer Name">
-										    <?php if(!empty($this->Customer_name)) foreach($this->Customer_name as $row){?>
+										<select  name="customer_name" id="customer_name" onChange="getCustomer(1); getCeremonyDate();" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Select Customer Name" require="true">
 										    <option value="" label="Select Customer Code"></option>
+											<?php if(!empty($this->Customer_name)) foreach($this->Customer_name as $row){?>
 										    <option value="<?php echo $row['id']?>" label="<?php echo $row['first_name']." ".$row["last_name"];?>"><?php echo $row['first_name']." ".$row["last_name"];?></option>
 										    <?php }?>
 										</select>
 									</td>
 									<td>Customer Code:</td>
 									<td>
-										<select tabindex="24" name="customer_code" id="customer_code" onChange="getCustomer(2)" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Select Customer Code">
-										    <?php if(!empty($this->Customer_code)) foreach($this->Customer_code as $row){?>
-										    <option value="" label="Select Customer Code"></option>
+										<select  name="customer_code" id="customer_code" onChange="getCustomer(2)" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Select Customer Code">
+										   <option value="" label="Select Customer Code"></option>
+										   <?php if(!empty($this->Customer_code)) foreach($this->Customer_code as $row){?>
 										    <option value="<?php echo $row['id']?>" label="<?php echo $row['customer_code'];?>"><?php echo $row['customer_code'];?></option>
 										    <?php }?>
 										</select>
@@ -113,7 +109,7 @@ dojo.ready(function(){
 									<td><input type="text" name="address" id="address" dojoType="dijit.form.ValidationTextBox" class="fullside"></td>
 									<td>Status</td>
 									<td>
-									    <select tabindex="24" name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
+									    <select  name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
 										    <?php if(!empty($this->status)) foreach($this->status as $row){?>
 										    <option value="<?php echo $row['key_code']?>" label="<?php echo $row['name_en'];?>"><?php echo $row['name_en'];?></option>
 										    <?php }?>
@@ -158,7 +154,12 @@ dojo.ready(function(){
 								</tr>
 								<tr>
 									<td>Address Ceremony</td>
-									<td><textarea rows="" cols="" name="address_wedding" id="address_wedding" dojoType="dijit.form.TextBox" class="fullside"></textarea></td>
+									<td>
+<!-- 										<textarea rows="" cols="" name="address_wedding" id="address_wedding" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
+										<select  name=address_wedding id="address_wedding" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Choose Location">
+ 										    <option value="" label="Choose Location">Choose Location</option>
+										</select>
+									</td>
 									<td>Total Amount</td>
 									<td><input type="text" name="amount_wedding" id="amount_wedding" dojoType="dijit.form.TextBox" class="fullside"></td>
 								</tr>
@@ -203,7 +204,12 @@ dojo.ready(function(){
 								</tr>
 								<tr>
 									<td>Address Ceremony</td>
-									<td><textarea rows="" cols="" name="address_breakfast" id="address_breakfast" dojoType="dijit.form.TextBox" class="fullside"></textarea></td>
+									<td>
+<!-- 										<textarea rows="" cols="" name="address_breakfast" id="address_breakfast" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
+										<select  name=address_breakfast id="address_breakfast" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Choose Location">
+											<option value="" label="Choose Location">Choose Location</option>
+										</select>
+									</td>
 									<td>Total Amount</td>
 									<td><input type="text" name="amount_breakfast" id="amount_breakfast" dojoType="dijit.form.TextBox" class="fullside"></td>
 								</tr>
@@ -247,7 +253,12 @@ dojo.ready(function(){
 								</tr>
 								<tr>
 									<td>Address Ceremony</td>
-									<td><textarea rows="" cols="" name="address_lunch" id="address_lunch" dojoType="dijit.form.TextBox" class="fullside"></textarea></td>
+									<td>
+<!-- 									<textarea rows="" cols="" name="address_lunch" id="address_lunch" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
+										<select name=address_lunch id="address_lunch" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Choose Location">
+											<option value="" label="Choose Location">Choose Location</option>
+										</select>
+									</td>
 									<td>Total Amount</td>
 									<td><input type="text" name="amount_lunch" id="amount_lunch" dojoType="dijit.form.TextBox" class="fullside"></td>
 								</tr>
@@ -291,7 +302,12 @@ dojo.ready(function(){
 								</tr>
 								<tr>
 									<td>Address Ceremony</td>
-									<td><textarea rows="" cols="" name="address_dinner" id="address_dinner" dojoType="dijit.form.TextBox" class="fullside"></textarea></td>
+									<td>
+<!-- 									<textarea rows="" cols="" name="address_dinner" id="address_dinner" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
+										<select name=address_dinner id="address_dinner" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Choose Location">
+											<option value="" label="Choose Location">Choose Location</option>
+										</select>
+									</td>
 									<td>Total Amount</td>
 									<td><input type="text" name="amount_dinner" id="amount_dinner" dojoType="dijit.form.NumberTextBox" class="fullside"></td>
 								</tr>
@@ -519,12 +535,12 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 			}
 			template+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td align="center">'+no+'</td>';
-			template+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemPrice('+col+');" id="item_name_'+row+col+'" name="item_name_'+row+col+'" style="width:100%;">';
+			template+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row+col+'" name="item_name_'+row+col+'" style="width:100%;">';
 				template+='<option value="-1">Select Food</option>';
 			<?php foreach($this->food as $key){?>
 				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
 			<?php }?>
-			template+='<td><input type="text" required="true" onKeyup="doAmount('+col+');" name="qty_'+row+col+'" id="qty_'+row+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
+			//template+='<td><input type="text" required="true" name="qty_'+row+col+'" id="qty_'+row+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
 			
 		tmp='<tr id="row'+row+col+'">';
 		tmp+="</tr>";
@@ -613,12 +629,7 @@ function hideDialog() {
 		dojo.query("#row"+index).remove();
 		//calculateDiscount(index);
 }
- function doAmount(index){
-	 price = dijit.byId('price'+index).get('value');
-	 qty = dijit.byId('qty'+index).get('value');
-	 total = parseFloat(price)*parseFloat(qty);
-	 dijit.byId('amount'+index).attr('value',total);
- }
+
 var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'quote','action'=>'get-ceremony-date'));?>';
  var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
   function getCeremonyDate(){
@@ -631,6 +642,7 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
  		    class: 'fullside',  
  		   onChange: function() {  
  	 		   getCAddress();
+ 	 		 getAddr();
  		   }          
  		    
  		}, "ceremony_date");
@@ -663,19 +675,19 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 	 				},
 	 			handleAs:"json",
 	 			load: function(data) {
-	 				dijit.byId('c_address').attr('value',data.address);
+	 				dijit.byId('c_address').attr('value',data.address_1);
 	 				
 	 				dijit.byId('date_wedding').attr('value',data.ceremony_date);
-	 				dijit.byId('address_wedding').attr('value',data.address);
+// 	 				dijit.byId('address_wedding').attr('value',data.address);
 
 	 				dijit.byId('date_breakfast').attr('value',data.ceremony_date);
-	 				dijit.byId('address_breakfast').attr('value',data.address);
+// 	 				dijit.byId('address_breakfast').attr('value',data.address);
 
 	 				dijit.byId('date_lunch').attr('value',data.ceremony_date);
-	 				dijit.byId('address_lunch').attr('value',data.address);
+// 	 				dijit.byId('address_lunch').attr('value',data.address);
 
 	 				dijit.byId('date_dinner').attr('value',data.ceremony_date);
-	 				dijit.byId('address_dinner').attr('value',data.address);
+// 	 				dijit.byId('address_dinner').attr('value',data.address);
 
 	 			},
 	 			error: function(err) {
@@ -683,7 +695,36 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 	 			}
 	 		});
   }
+  var url_addr = '<?php echo $this->url(array('module'=>'order','controller'=>'quote','action'=>'get-all-address'));?>';
+  var addr_store  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
+  function getAddr(){
+	  id = dijit.byId('ceremony_date').get('value');
+	  dojo.xhrPost({
+			url: url_addr,
+			content:{
+				'id':id
+				},
+			handleAs:"json",
+			load: function(data) {
+				addr_store  = getDataStorefromJSON('id','name', data);
+				dijit.byId('address_wedding').reset('value');
+			    dijit.byId('address_wedding').set('store',addr_store);
 
+			    dijit.byId('address_breakfast').reset('value');
+			    dijit.byId('address_breakfast').set('store',addr_store);
+
+			    dijit.byId('address_lunch').reset('value');
+			    dijit.byId('address_lunch').set('store',addr_store);
+
+			    dijit.byId('address_dinner').reset('value');
+			    dijit.byId('address_dinner').set('store',addr_store);   
+
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+  }
   function doAmountService(index){
 	  qty = dijit.byId('qty_ser_'+index).get('value');
 	  price =dijit.byId('price_ser_'+index).get('value');

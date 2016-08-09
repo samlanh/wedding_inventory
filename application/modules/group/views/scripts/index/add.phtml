@@ -117,22 +117,15 @@ dojo.ready(function(){
 								<td width="100%" align="top">
 									<fieldset><legend align="center"><strong>Ceremony Info</strong></legend>
 									   <table style="padding-left:10px;" cellspacing="10">
-											<!-- <tr>
-												 <td><?php //echo $tr->translate("Province")?></td>
-											    <td><input id="province"></td>
-												<td><?php //echo $tr->translate("District")?></td>
-											    <td><input id="district"></td>
-											   <td><?php //echo $tr->translate("Home No*")?></td>
-											    <td><input type="text" dojoType="dijit.form.TextBox" value="" required="required"  id="house_no" name="house_no" class="fullside" /></td>
-											</tr>
-											<tr>
-											    <td><?php //echo $tr->translate("Street No*")?></td>
-											    <td><input type="text" dojoType="dijit.form.TextBox" value="" required="required"  id="street" name="street" class="fullside" /></td>
-											</tr> -->
-											
 											<tr>
 												<td><?php echo $tr->translate("Ceremony Date")?></td>
 												<td><input type="text" dojoType="dijit.form.DateTextBox" value=""  id="ceremony_date" name="ceremony_date" class="fullside" /></td>
+												<td><?php echo $tr->translate("MEETING")?></td>
+												<td><select dojoType='dijit.form.FilteringSelect' id="meeting" name="meeting" class="fullside">
+													   	<option value="0">Not yet Meeting</option>
+													   	<option value="1">Has Meeting</option>
+													 </select>
+												</td>
 												<td><?php echo $tr->translate("STATUS")?></td>
 												<td><select dojoType='dijit.form.FilteringSelect' id="status" name="status" onchange="Showbranch();" class="fullside">
 													   <option value="0">Active</option>
@@ -140,15 +133,18 @@ dojo.ready(function(){
 													 </select>
 												</td>
 											</tr>
+											
 											<tr>
 												<td><?php echo $tr->translate("Ceremony Address")?></td>
-												<td><input type="text" dojoType="dijit.form.TextBox" required="required" name="ceremony_add"  id="ceremony_add" value="" class="fullside"></td>
-												<td><?php echo $tr->translate("MEETING")?></td>
-												<td><select dojoType='dijit.form.FilteringSelect' id="meeting" name="meeting" class="fullside">
-													   	<option value="0">Not yet Meeting</option>
-													   	<option value="1">Has Meeting</option>
-													 </select>
-												</td>
+												<td colspan="3"><input type="text" dojoType="dijit.form.TextBox" required="required" name="ceremony_add1"  id="ceremony_add1" value="" class="fullside"></td>
+											</tr>
+											<tr>
+												<td><?php echo $tr->translate("Home Address")?></td>
+												<td colspan="3"><input type="text" dojoType="dijit.form.TextBox" required="required" name="ceremony_add2"  id="ceremony_add2" value="" class="fullside"></td>
+											</tr>
+											<tr>
+												<td><?php echo $tr->translate("Other Address")?></td>
+												<td colspan="3"><input type="text" dojoType="dijit.form.TextBox" required="required" name="ceremony_add3"  id="ceremony_add3" value="" class="fullside"></td>
 											</tr>
 										</table>
 									</fieldset>

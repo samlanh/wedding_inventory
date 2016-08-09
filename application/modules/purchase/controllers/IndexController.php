@@ -89,7 +89,31 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->supplier = $db_order->getSupplier();
 		$this->view->food = $db_order->getFood();
 	}
+	public function addbysuAction(){
+		$id = $this->getRequest()->getParam("id");
+		$db_order = new Purchase_Model_DbTable_DbPurchase();
+		if($this->getRequest()->isPost()){
+			$data=$this->getRequest()->getPost();
+			if(isset($data["search"])){
+				$su_id = $data["supplier_name"];
+			}elseif(isset($data["save_close"])){
+				
+			}elseif (isset($data["save_new"])){
+				
+			}
+		}
+		else{
+			$su_id = -1;
+		}
+		//$this->view->search = $search;
+		$this->view->item = $db_order->getItemsPurchaseByQuoteIdShortBySu($id,$su_id);
 	
+		$this->view->qute_code = $db_order-> getQuoteCode();
+		$this->view->pu_id = $db_order-> getPurchaseID();
+		$this->view->supplier = $db_order->getSupplier();
+		$this->view->items = $db_order->getItem();
+		$this->view->quote_detail = $db_order->getQuoteById($id);
+	}
 	public function addphpajaxAction(){
 		$id = $this->getRequest()->getParam("id");
 		$db_order = new Purchase_Model_DbTable_DbPurchase();

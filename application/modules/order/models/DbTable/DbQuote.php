@@ -1084,7 +1084,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
 				  q.`quot_code`,
 				c.first_name,
 				cc.`ceremony_date`,
-				  cc.address,
+				  cc.address_1,
 				  (SELECT qc.`num_table` FROM `ldc_quotation_connection` AS qc WHERE q.id=qc.`quote_id` AND qc.`type`=1) AS table_for_wedding,
 				  (SELECT qc.`num_table` FROM `ldc_quotation_connection` AS qc WHERE q.id=qc.`quote_id` AND qc.`type`=2) AS table_for_breakfast,
 				  (SELECT qc.`num_table` FROM `ldc_quotation_connection` AS qc WHERE q.id=qc.`quote_id` AND qc.`type`=3) AS table_for_lunch,
@@ -1218,8 +1218,25 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     
     function getAddress($id){
     	$db=$this->getAdapter();
-    	$sql="SELECT cc.`address`,cc.`ceremony_date` FROM `ldc_customer_ceremony` AS cc WHERE cc.`id`=$id";
+    	$sql="SELECT cc.`address_1`,cc.`address_2`,cc.`address_3`,cc.`ceremony_date` FROM `ldc_customer_ceremony` AS cc WHERE cc.`id`=$id";
     	return $db->fetchRow($sql);
+    }
+    
+    function getAllAddress($id){
+    	$db=$this->getAdapter();
+    	$sql="SELECT  cc.`address_1`,cc.`address_2`,cc.`address_3` FROM `ldc_customer_ceremony` AS cc WHERE cc.`id`=$id";
+    	$row = $db->fetchRow($sql);
+    	$arr = array();
+    	$arr1 = array('id'=>$row["address_1"],'name'=>$row["address_1"]);
+    	$arr2 = array('id'=>$row["address_2"],'name'=>$row["address_2"]);
+    	$arr3 = array('id'=>$row["address_3"],'name'=>$row["address_3"]);
+    	if(!empty($row["address_2"])){
+    		$arr = array_merge(array($arr1,$arr2));
+    	}
+    	if(!empty($row["address_3"])){
+    		$arr = array_merge(array($arr,$arr3));
+    	}
+    	return $arr;
     }
     
     function getAllService(){

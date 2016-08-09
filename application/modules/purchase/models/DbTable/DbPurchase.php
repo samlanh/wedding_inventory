@@ -123,6 +123,47 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     	 
     	return $db->fetchAll($sql);
     }
+    
+    function getItemsPurchaseByQuoteIdShortBySu($id,$su_id){
+    	$db = $this->getAdapter();
+    	$sql = "SELECT
+			    	q.id,
+			    	q.`quot_code`,
+			    	qc.`num_table`,
+			    	qc.`date_do`,
+			    	qc.`address`,
+			    	p.`pro_name_kh`,
+			    	qt.`item_id`,
+			    	qt.`qty`,
+			    	qt.`su_id`,
+			    	qt.`type`,
+			    	qt.`deliver_day`,
+			    	(SELECT m.id FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_id,
+			    	(SELECT m.`measure_name_kh` FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_name_kh
+			    FROM
+			    	`ldc_quotation` AS q,
+			    	`ldc_quotation_connection` AS qc,
+			    	`ldc_quote_item` AS qt,
+			    	`ldc_product` AS p
+			    WHERE q.id = qc.`quote_id`
+			    	AND qc.id = qt.`qc_id`
+			    	AND qt.`item_id` = p.`id`
+			    	AND q.`id` = $id
+			    ";
+    
+    	$where = '';
+    	if($su_id>0){
+    		$where.=" AND qt.`su_id`=$su_id";
+    	}
+    	
+    	$order =" ORDER BY qc.`address`,
+			    	qt.`item_id`,
+			    	qc.`date_do`,
+			    	qt.`su_id` ,
+			    	qt.`deliver_day`";
+    	//echo $sql.$where.$order;
+    	return $db->fetchAll($sql.$where.$order);
+    }
     function getQuoteById($id){
     	$db = $this->getAdapter();
     	$sql ="SELECT 
@@ -195,7 +236,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				  c.`first_name`,
 				  c.`phone`,
 				  c.`email`,
-				  cc.`address`,
+				  cc.`address_1`,
 				  cc.`ceremony_date`,
 				  p.`status`
 				FROM
@@ -237,7 +278,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				  c.`first_name`,
 				  c.`phone`,
 				  c.`email`,
-				  cc.`address`,
+				  cc.`address_1`,
 				  cc.`ceremony_date` ,
     			  q.`status`
 				FROM

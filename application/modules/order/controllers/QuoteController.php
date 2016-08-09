@@ -57,6 +57,7 @@ class Order_quoteController extends Zend_Controller_Action {
 		$db_make = new Order_Model_DbTable_DbQuote();
 		if($this->getRequest()->isPost()){
 			$data=$this->getRequest()->getPost();
+			print_r($data);
 			try {
 				if(isset($data['save_new'])){
 					$db_make->addQuoteNew($data);
@@ -82,6 +83,7 @@ class Order_quoteController extends Zend_Controller_Action {
 		$this->view->food = $db->getFood();
 		$this->view->Customer_name = $db->getCustomer(1);
 		$this->view->Customer_code = $db->getCustomer(2);
+		
 	}
 	
 	public function copyAction(){
@@ -242,6 +244,7 @@ class Order_quoteController extends Zend_Controller_Action {
 			exit();
 		}
 	}
+	
 	function getCeremonyDateAction(){
 		if($this->getRequest()->isPost()){
 			$_data = $this->getRequest()->getPost();
@@ -256,6 +259,16 @@ class Order_quoteController extends Zend_Controller_Action {
 			$_data = $this->getRequest()->getPost();
 			$db = new Order_Model_DbTable_DbQuote();
 			$row = $db->getAddress($_data["id"]);
+			print_r(Zend_Json::encode($row));
+			exit();
+		}
+	}
+
+	function getAllAddressAction(){
+		if($this->getRequest()->isPost()){
+			$_data = $this->getRequest()->getPost();
+			$db = new Order_Model_DbTable_DbQuote();
+			$row = $db->getAllAddress($_data["id"]);
 			print_r(Zend_Json::encode($row));
 			exit();
 		}

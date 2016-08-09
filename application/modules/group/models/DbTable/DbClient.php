@@ -20,7 +20,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     			  c.`email`,
 				  c.`address`,
 				  cc.`ceremony_date`,
-				  cc.`address` AS ceremony_address,
+				  cc.`address_1` AS ceremony_address,
 				  cc.`is_meeting`,
     			  cc.status 
 				FROM
@@ -77,7 +77,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 		    			//'street'			=>$_data['street'],
 		    			//'district' 			=> $_data["district"],
 		    			//'province_id'	  	=> $_data['province'],
-		    			//'status'  			=> $_data['status'],
+		    			'status'  			=> 1,
 		    			//'is_meeting'  		=> $_data['meeting'],
 		    			//'ceremony_date'  	=> $_data['ceremony_date'],
 		    			//'ceremony_address'  => $_data['ceremony_add'],
@@ -101,7 +101,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 		    			//'street'			=>$_data['street'],
 		    			//'district' 			=> $_data["district"],
 		    			//'province_id'	  	=> $_data['province'],
-		    			//'status'  			=> $_data['status'],
+		    			'status'  			=> 1,
 		    			//'is_meeting'  		=> $_data['meeting'],
 		    			//'ceremony_date'  	=> $_data['ceremony_date'],
 		    			//'ceremony_address'  => $_data['ceremony_add'],
@@ -114,13 +114,40 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     		$array = array(
     			'cu_id'				=>	$id,
     			'ceremony_date'		=>	$_data["ceremony_date"],
-    			'address'			=>	$_data["ceremony_add"],
+    			'address_1'			=>	$_data["ceremony_add1"],
+    			'address_2'			=>	$_data["ceremony_add2"],
+    			'address_3'			=>	$_data["ceremony_add3"],
     			'is_meeting'		=>	$_data["meeting"],
     			'status'			=>	$_data["status"],
     		);
     		$this->_name="ldc_customer_ceremony";
-    		$this->insert($array);
-		    	
+    		$cc_id = $this->insert($array);
+    		
+    		if(!empty($_data["ceremony_add1"])){
+    			$arr_cc = array(
+    				'cc_id'		=>	$cc_id,
+    				'addr_name'	=>	$_data["ceremony_add1"]
+    			);
+    			$this->_name = "ldc_ceremony_addr";
+    			$this->insert($arr_cc);
+    		}
+
+    		if(!empty($_data["ceremony_add2"])){
+    			$arr_cc = array(
+    					'cc_id'		=>	$cc_id,
+    					'addr_name'	=>	$_data["ceremony_add2"]
+    			);
+    			$this->_name = "ldc_ceremony_addr";
+    			$this->insert($arr_cc);
+    		}
+    		if(!empty($_data["ceremony_add3"])){
+    			$arr_cc = array(
+    					'cc_id'		=>	$cc_id,
+    					'addr_name'	=>	$_data["ceremony_add3"]
+    			);
+    			$this->_name = "ldc_ceremony_addr";
+    			$this->insert($arr_cc);
+    		}
 // 			    	exit();
     		$db->commit();
     	}catch(Exception $e){
@@ -148,7 +175,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     					//'street'			=>$_data['street'],
     					//'district' 			=> $_data["district"],
     					//'province_id'	  	=> $_data['province'],
-    					//'status'  			=> $_data['status'],
+    					'status'  			=> 1,
     					//'is_meeting'  		=> $_data['meeting'],
     					//'ceremony_date'  	=> $_data['ceremony_date'],
     					//'ceremony_address'  => $_data['ceremony_add'],
@@ -172,7 +199,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     					//'street'			=>$_data['street'],
     					//'district' 			=> $_data["district"],
     					//'province_id'	  	=> $_data['province'],
-    					//'status'  			=> $_data['status'],
+    					'status'  			=> 1,
     					//'is_meeting'  		=> $_data['meeting'],
     					//'ceremony_date'  	=> $_data['ceremony_date'],
     					//'ceremony_address'  => $_data['ceremony_add'],
@@ -186,12 +213,43 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     		$array = array(
     				'cu_id'				=>	$id,
     				'ceremony_date'		=>	$_data["ceremony_date"],
-    				'address'			=>	$_data["ceremony_add"],
+    				'address_1'			=>	$_data["ceremony_add1"],
+	    			'address_2'			=>	$_data["ceremony_add2"],
+	    			'address_3'			=>	$_data["ceremony_add3"],
     				'is_meeting'		=>	$_data["meeting"],
     				'status'			=>	$_data["status"],
     		);
     		$this->_name="ldc_customer_ceremony";
-    		$this->insert($array);
+    		$cc_id = $this->insert($array);
+    		
+    		$sqls= "DELETE FROM ldc_ceremony_addr WHERE id =".$_data["id"];
+    		$db->query($sqls);
+    		
+    		if(!empty($_data["ceremony_add1"])){
+    			$arr_cc = array(
+    					'cc_id'		=>	$cc_id,
+    					'addr_name'	=>	$_data["ceremony_add1"]
+    			);
+    			$this->_name = "ldc_ceremony_addr";
+    			$this->insert($arr_cc);
+    		}
+    		
+    		if(!empty($_data["ceremony_add2"])){
+    			$arr_cc = array(
+    					'cc_id'		=>	$cc_id,
+    					'addr_name'	=>	$_data["ceremony_add2"]
+    			);
+    			$this->_name = "ldc_ceremony_addr";
+    			$this->insert($arr_cc);
+    		}
+    		if(!empty($_data["ceremony_add3"])){
+    			$arr_cc = array(
+    					'cc_id'		=>	$cc_id,
+    					'addr_name'	=>	$_data["ceremony_add3"]
+    			);
+    			$this->_name = "ldc_ceremony_addr";
+    			$this->insert($arr_cc);
+    		}
     		 
     		// 			    	exit();
     		$db->commit();
@@ -321,10 +379,14 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 	
 	function getCustomerByCId($id){
 		$db = $this->getAdapter();
-		$sql ="SELECT c.`id`,c.`address`,c.`phone`,c.`email`,c.`title`,c.`customer_code`,c.`first_name`,cc.`address` AS ceremony_add,cc.`ceremony_date`,cc.`is_meeting`,cc.`status` FROM `ldc_customers` AS c, `ldc_customer_ceremony` AS cc WHERE c.`id`=cc.`cu_id` AND cc.`id` = $id";
+		$sql ="SELECT c.`id`,c.`address`,c.`phone`,c.`email`,c.`title`,c.`customer_code`,c.`first_name`,cc.`address_1`,cc.`address_2`,cc.`address_3`,cc.`ceremony_date`,cc.`is_meeting`,cc.`status` FROM `ldc_customers` AS c, `ldc_customer_ceremony` AS cc WHERE c.`id`=cc.`cu_id` AND cc.`id` = $id";
 		return $db->fetchRow($sql);
 	}
-	
+	function getCeremonyAddr($id){
+		$db = $this->getAdapter();
+		$sql ="SELECT ca.`addr_name` FROM `ldc_ceremony_addr` AS ca WHERE ca.`cc_id`= $id";
+		return $db->fetchAll($sql);
+	}
 	
 }
 
