@@ -31,8 +31,10 @@ class Group_indexController extends Zend_Controller_Action {
 			}
 			
 			$rs_rows= $db->getAllCustomer($search);
+			$row=new Application_Model_GlobalClass();
+			$rs_rows=$row->getImgActive($rs_rows, BASE_URL);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Customer Name","Tel","Email","Address","Ceremony Date","Ceremony Address","Metting","status");
+			$collumns = array("Customer Name","Tel","Email","Customer Address","Ceremony Date","Address One","Address Two","Address Three","Metting","status");
 			$link=array(
 					'module'=>'group','controller'=>'index','action'=>'edit',
 			);

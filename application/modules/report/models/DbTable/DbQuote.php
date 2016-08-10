@@ -44,22 +44,21 @@ class Report_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
 	function getCustomerQuoteById($id){
 		$db = $this->getAdapter();
 		$sql = "SELECT
-		q.`id`,
-		q.`quot_code`,
-		q.`total_pay`,
-		c.`first_name`,
-		c.`phone`,
-		c.`email`,
-		c.`address` ,
-		cc.`address` as ceremony_addr,
-		cc.`ceremony_date`
-		FROM
-		`ldc_quotation` AS q,
-		`ldc_customers` AS c,
-		`ldc_customer_ceremony` AS cc
-		WHERE q.`customer_id` = c.id
-		AND q.`ceremony_id`=cc.`id`
-		AND q.customer_id = $id";
+				  q.`id`,
+				  q.`quot_code`,
+				  q.`total_pay`,
+				  c.`first_name`,
+				  c.`phone`,
+				  c.`email`,
+				  c.`address`,
+				  cc.`address_1`,cc.`address_2`,cc.`address_3`,
+				  cc.`ceremony_date`
+				FROM `ldc_quotation` AS q,
+				  `ldc_customers` AS c,
+				  `ldc_customer_ceremony` AS cc
+				WHERE q.`customer_id` = c.id
+				    AND q.`ceremony_id` = cc.`id`
+				    AND q.customer_id =$id";
 		return $db->fetchRow($sql);
 	}
 	

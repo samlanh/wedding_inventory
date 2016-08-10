@@ -69,9 +69,11 @@ td{padding: 3px;color: #000; font-size: 12px !important;}
 				<th>&nbsp;Customer Name</th>
 				<th>&nbsp;Tel </th>
 				<th>&nbsp;Email</th>
-				<th>&nbsp;Address </th>
+				<th>&nbsp;Customer Address </th>
 				<th>&nbsp;Ceremony Date</th>
-				<th>&nbsp;Ceremony Address </th>
+				<th>&nbsp;Address One</th>
+				<th>&nbsp;Address Two</th>
+				<th>&nbsp;Address Three</th>
 				<th>&nbsp;Metting</th>
 				<th>&nbsp;Status</th>
 	    	</tr>
@@ -89,8 +91,10 @@ td{padding: 3px;color: #000; font-size: 12px !important;}
 				<td class="items">&nbsp;<?php echo $rs_cus["phone"]?></td>
 				<td class="items">&nbsp;<?php echo $rs_cus["email"]?></td>
 				<td class="items">&nbsp;<?php echo $rs_cus["address"]?></td>
-				<td class="items">&nbsp;<?php echo date('d-m-Y',strtotime($date));?></td>
-				<td class="items">&nbsp;<?php echo $rs_cus["c_address"]?></td>
+				<td class="items">&nbsp;<?php echo date('m-d-Y',strtotime($date));?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["address_1"]?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["address_2"]?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["address_3"]?></td>
 				<td class="items">&nbsp;<?php echo $rs_cus["is_meeting"]?></td>
 				<td class="items">&nbsp;<?php echo $status?></td>
 	    	</tr>

@@ -13,19 +13,18 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     	$db = $this->getAdapter();
     	$start_date = $search["start_date"];
     	$end_date = $search["end_date"];
-    	$sql ="SELECT 
+    	$sql ="SELECT
 				  cc.`id`,
 				  c.`first_name`,
 				  c.`phone`,
-    			  c.`email`,
+				  c.`email`,
 				  c.`address`,
 				  cc.`ceremony_date`,
-				  cc.`address_1` AS ceremony_address,
+				  cc.`address_1`,cc.address_2,cc.address_3,
 				  cc.`is_meeting`,
-    			  cc.status 
-				FROM
-				  `ldc_customers` AS c,
-				  `ldc_customer_ceremony` AS cc 
+				  cc.status
+				  FROM `ldc_customers` AS c,
+				  `ldc_customer_ceremony` AS cc
 				WHERE c.id = cc.`cu_id` AND cc.ceremony_date >='$start_date' AND cc.ceremony_date <='$end_date' ";
     	$where = "";
     	if(!empty($search['title'])){

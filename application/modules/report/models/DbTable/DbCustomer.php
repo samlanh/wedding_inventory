@@ -21,7 +21,7 @@ class Report_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 	 function getCustomerAll($search=null){
 	 	$db=$this->getAdapter();
 	 	$sql="SELECT c.id,c.customer_code,c.first_name,c.phone,c.email,c.address,
-			      cc.ceremony_date,cc.address AS c_address,cc.is_meeting,cc.status
+			      cc.ceremony_date,cc.address_1,cc.address_2,cc.address_3,cc.is_meeting,cc.status
 			      FROM ldc_customers AS c,ldc_customer_ceremony AS cc 
 			      WHERE c.id=cc.cu_id  AND cc.status=1";
 	 	$where=" ";
