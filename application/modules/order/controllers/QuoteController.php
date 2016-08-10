@@ -57,7 +57,6 @@ class Order_quoteController extends Zend_Controller_Action {
 		$db_make = new Order_Model_DbTable_DbQuote();
 		if($this->getRequest()->isPost()){
 			$data=$this->getRequest()->getPost();
-			print_r($data);
 			try {
 				if(isset($data['save_new'])){
 					$db_make->addQuoteNew($data);
@@ -183,6 +182,8 @@ class Order_quoteController extends Zend_Controller_Action {
 		}
 		$this->view->status = $db_make->getStatus();
 		
+		
+		
 // 		$this->view->quote_wedding = $db_make->getQuoteDetailByid($id,1);
 // 		$this->view->quote_breakfast = $db_make->getQuoteDetailByid($id,2);
 // 		$this->view->quote_lunch = $db_make->getQuoteDetailByid($id,3);
@@ -194,11 +195,17 @@ class Order_quoteController extends Zend_Controller_Action {
 		$this->view->quote_dinner = $db_make->getQuoteOrderDetail($id,4);
 		$this->view->quote_service = $db_make->getQuoteOrderDetail($id,5);
 		
-		$this->view->quote = $db_make->getQuoteOrderById($id);
+		$row_quote = $db_make->getQuoteOrderById($id);
+		$this->view->quote = $row_quote;
+		
+		$row_addr = $db_make->getAllAddress($row_quote["ceremony_id"]);
+		
+		$this->view->alladdr = $row_addr;
 		
 		$this->view->food = $db->getFood();
 		$this->view->Customer_name = $db->getCustomer(1);
 		$this->view->Customer_code = $db->getCustomer(2);
+		$this->view->service = $db_make->getAllService();
 	}
 	
 	function mergeAction(){

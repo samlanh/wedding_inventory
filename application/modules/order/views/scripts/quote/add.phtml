@@ -81,7 +81,7 @@ dojo.ready(function(){
 							    <tr>
 									<td>Customer Name:</td>
 									<td>
-										<select  name="customer_name" id="customer_name" onChange="getCustomer(1); getCeremonyDate();" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Select Customer Name" require="true">
+										<select  name="customer_name" id="customer_name" onChange="getCustomer(1); getCeremonyDate();" dojoType="dijit.form.FilteringSelect" required="true" class="fullside" placeHolder="Select Customer Name">
 										    <option value="" label="Select Customer Code"></option>
 											<?php if(!empty($this->Customer_name)) foreach($this->Customer_name as $row){?>
 										    <option value="<?php echo $row['id']?>" label="<?php echo $row['first_name']." ".$row["last_name"];?>"><?php echo $row['first_name']." ".$row["last_name"];?></option>
@@ -90,7 +90,7 @@ dojo.ready(function(){
 									</td>
 									<td>Customer Code:</td>
 									<td>
-										<select  name="customer_code" id="customer_code" onChange="getCustomer(2)" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Select Customer Code">
+										<select  name="customer_code" id="customer_code" onChange="getCustomer(2)" dojoType="dijit.form.FilteringSelect" required="true" class="fullside" placeHolder="Select Customer Code">
 										   <option value="" label="Select Customer Code"></option>
 										   <?php if(!empty($this->Customer_code)) foreach($this->Customer_code as $row){?>
 										    <option value="<?php echo $row['id']?>" label="<?php echo $row['customer_code'];?>"><?php echo $row['customer_code'];?></option>
@@ -156,7 +156,7 @@ dojo.ready(function(){
 									<td>Address Ceremony</td>
 									<td>
 <!-- 										<textarea rows="" cols="" name="address_wedding" id="address_wedding" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
-										<select  name=address_wedding id="address_wedding" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Choose Location">
+										<select  name=address_wedding id="address_wedding" dojoType="dijit.form.FilteringSelect" class="fullside" >
  										    <option value="" label="Choose Location">Choose Location</option>
 										</select>
 									</td>
@@ -206,7 +206,7 @@ dojo.ready(function(){
 									<td>Address Ceremony</td>
 									<td>
 <!-- 										<textarea rows="" cols="" name="address_breakfast" id="address_breakfast" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
-										<select  name=address_breakfast id="address_breakfast" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Choose Location">
+										<select  name=address_breakfast id="address_breakfast" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
 											<option value="" label="Choose Location">Choose Location</option>
 										</select>
 									</td>
@@ -255,7 +255,7 @@ dojo.ready(function(){
 									<td>Address Ceremony</td>
 									<td>
 <!-- 									<textarea rows="" cols="" name="address_lunch" id="address_lunch" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
-										<select name=address_lunch id="address_lunch" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Choose Location">
+										<select name=address_lunch id="address_lunch" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
 											<option value="" label="Choose Location">Choose Location</option>
 										</select>
 									</td>
@@ -304,7 +304,7 @@ dojo.ready(function(){
 									<td>Address Ceremony</td>
 									<td>
 <!-- 									<textarea rows="" cols="" name="address_dinner" id="address_dinner" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
-										<select name=address_dinner id="address_dinner" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Choose Location">
+										<select name=address_dinner id="address_dinner" dojoType="dijit.form.FilteringSelect" required="false" class="fullside" >
 											<option value="" label="Choose Location">Choose Location</option>
 										</select>
 									</td>
@@ -355,22 +355,18 @@ dojo.ready(function(){
 									</table>
 								</td>
 							</tr>
-							
 						</thead>
 				 </table>
 				</div>
 			</div>		
 			<table>
 				<tr>
-									<td colspan="6" align="center">
-									<input type="reset" label="Clear" dojoType="dijit.form.Button" 
-										 iconClass="dijitIconClear" /> 
-								    <input type="submit" value="SAVE_CLOSE" label="Save&Close" id="save_close" dojoType="dijit.form.Button" name="save_close"
-										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
-									<input type="submit" value="SAVE_NEW" label="Save&New" id="save_new" dojoType="dijit.form.Button" name="save_new"
-										 iconClass="dijitEditorIcon dijitEditorIconSave"/>
-									</td>
-								</tr>
+					<td colspan="6" align="center">
+						<input type="reset" label="Clear" dojoType="dijit.form.Button" iconClass="dijitIconClear" /> 
+						<input type="submit" value="SAVE_CLOSE" label="Save&Close" id="save_close" dojoType="dijit.form.Button" name="save_close" iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+						<input type="submit" value="SAVE_NEW" label="Save&New" id="save_new" dojoType="dijit.form.Button" name="save_new" iconClass="dijitEditorIcon dijitEditorIconSave"/>
+					</td>
+				</tr>
 			</table>
 		</fieldset>		
 		</td>
@@ -718,7 +714,13 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 
 			    dijit.byId('address_dinner').reset('value');
 			    dijit.byId('address_dinner').set('store',addr_store);   
-
+				var arr = data.length;
+				for(i=0;i<arr;i++){
+					dijit.byId('address_wedding').attr('value',data[0].name);
+					dijit.byId('address_breakfast').attr('value',data[0].name);
+					dijit.byId('address_lunch').attr('value',data[0].name);
+					dijit.byId('address_dinner').attr('value',data[0].name);
+				}
 			},
 			error: function(err) {
 				alert(err);

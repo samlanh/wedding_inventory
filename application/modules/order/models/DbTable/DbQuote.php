@@ -215,7 +215,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_wedding_'.$i],
-    						'qty'		=>	$data['qty_wedding_'.$i],
+    						//'qty'		=>	$data['qty_wedding_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
     				$this->insert($arr_ins);
@@ -268,7 +268,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_breakfast_'.$i],
-    						'qty'		=>	$data['qty_breakfast_'.$i],
+    						//'qty'		=>	$data['qty_breakfast_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
     				$this->insert($arr_ins);
@@ -318,7 +318,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>$qc_id,
     						'food_id'		=>$data['item_name_lunch_'.$i],
-    						'qty'			=>$data['qty_lunch_'.$i],
+    						//'qty'			=>$data['qty_lunch_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
     				$this->insert($arr_ins);
@@ -367,7 +367,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>$qc_id,
     						'food_id'	=>$data['item_name_dinner_'.$i],
-    						'qty'		=>$data['qty_dinner_'.$i],
+    						//'qty'		=>$data['qty_dinner_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
     				$this->insert($arr_ins);
@@ -399,7 +399,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     		if($data['identity_service']){
     		
     			$arr_in = array(
-    					'quote_id'		=>	$qc_id,
+    					'quote_id'		=>	$id,
     					//'num_table'		=>	$data['t_number_dinner'],
     					'type'			=>	5,
     					//'price'			=>	$data['t_price_dinner'],
@@ -441,7 +441,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				//'quot_code'		=>	$data['qutoe_code'],
     				'customer_id'	=>	$data['customer_name'],
     				'ceremony_id'	=>	$data["ceremony_date"],
-    				'total_pay'		=>	$data["amount_wedding"]+$data["amount_breakfast"]+$data["amount_lunch"]+$data["amount_dinner"],
+    				'total_pay'		=>	$data["amount_wedding"]+$data["amount_breakfast"]+$data["amount_lunch"]+$data["amount_dinner"]+$data["amount_service"],
     				'status'		=>	$data['status'],
     		);
     		$this->_name ="ldc_quotation";
@@ -479,27 +479,29 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     		$sql = "DELETE FROM ldc_quote_item WHERE quote_id=".$data["id"];
     		$db->query($sql);
     
-    		if($data['identity_wedding']!=""){
-    			 
-    			$arr_in = array(
-    					'quote_id'		=>	$data['id'],
-    					'num_table'		=>	$data['t_number_wedding'],
-    					'type'			=>	1,
-    					'price'			=>	$data['t_price_wedding'],
-    					'address'		=>	$data['address_wedding'],
-    					'date_do'		=>	$data["date_wedding"],
-    					'time_do'		=>	$data["time_wedding"],
-    					'total_pay'		=>	$data["amount_wedding"]
-    			);
-    			$this->_name ='ldc_quotation_connection';
-    			$qc_id = $this->insert($arr_in);
-    			 
+    	if($data['identity_wedding']!=""){
+    			
+    				$arr_in = array(
+    						'quote_id'		=>	$data["id"],
+    						'num_table'		=>	$data['t_number_wedding'],
+    		    			'type'			=>	1,
+    		    			'price'			=>	$data['t_price_wedding'],
+    		    			'address'		=>	$data['address_wedding'],
+    		    			'date_do'		=>	$data["date_wedding"],
+    		    			'time_do'		=>	$data["time_wedding"],
+    						'total_pay'		=>	$data["amount_wedding"]
+    				);
+    				$this->_name ='ldc_quotation_connection';
+    				$qc_id = $this->insert($arr_in);
+    			
     			$ids = explode(',', $data['identity_wedding']);
+    			
+    			
     			foreach ($ids as $i){
     				$arr_ins = array(
-    						'qc_id'	=>	$qc_id,
+    						'qc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_wedding_'.$i],
-    						'qty'		=>	$data['qty_wedding_'.$i],
+    						//'qty'		=>	$data['qty_wedding_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
     				$this->insert($arr_ins);
@@ -510,19 +512,23 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     						$deliver_day = $row_ind["deliver_day"];
     						$do_date_wed = new DateTime($data["date_wedding"]);
     						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
-    						$arr_w = array(
-    								'quote_id'		=> $data['id'],
-    								'qc_id'			=>	$qc_id,
-    								'type'			=>	3,
-    								'food_id'		=>	$data['item_name_wedding_'.$i],
-    								'item_id'		=>	$row_ind["item_id"],
-    								'qty'			=>	$row_ind["qty"],
-    								'su_id'			=>	$row_ind["su_id"],
-    								'measure_id'	=>	$row_ind["measure_id"],
-    								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    						$arr_d = array(
+    							'quote_id'		=> $data["id"],
+    							'qc_id'			=>	$qc_id,
+    							'type'			=>	1,
+    							'food_id'		=>	$data['item_name_wedding_'.$i],
+    							'item_id'		=>	$row_ind["item_id"],
+    							'qty'			=>	$row_ind["qty"],
+    							'su_id'			=>	$row_ind["su_id"],
+    							'measure_id'	=>	$row_ind["measure_id"],
+    							'deliver_day'	=>	$deliver_date->format('Y-m-d'),
     						);
     						$this->_name = "ldc_quote_item";
-    						$this->insert($arr_w);
+//     						$db->getProfiler()->setEnabled(true);
+    						$this->insert($arr_d);
+//     						Zend_Debug::dump($db->getProfiler()->getLastQueryProfile()->getQuery());
+//     						Zend_Debug::dump($db->getProfiler()->getLastQueryProfile()->getQueryParams());
+//     						$db->getProfiler()->setEnabled(false);
     					}
     				}
     			}
@@ -530,7 +536,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     
     		if($data['identity_breakfast']!=""){
     			$arr_in = array(
-    					'quote_id'		=>	$data['id'],
+    					'quote_id'		=>	$data["id"],
     					'num_table'		=>	$data['t_number_breakfast'],
     					'type'			=>	2,
     					'price'			=>	$data['t_price_breakfast'],
@@ -541,14 +547,14 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     			);
     			$this->_name ='ldc_quotation_connection';
     			$qc_id = $this->insert($arr_in);
-    			 
+    			
     
     			$ids = explode(',', $data['identity_breakfast']);
     			foreach ($ids as $i){
     				$arr_ins = array(
     						'qc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_breakfast_'.$i],
-    						'qty'		=>	$data['qty_breakfast_'.$i],
+    						//'qty'		=>	$data['qty_breakfast_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
     				$this->insert($arr_ins);
@@ -557,12 +563,12 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				if(!empty($row_food_ind)){
     					foreach ($row_food_ind as $row_ind){
     						$deliver_day = $row_ind["deliver_day"];
-    						$do_date_wed = new DateTime($data["time_breakfast"]);
+    						$do_date_wed = new DateTime($data["date_breakfast"]);
     						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
-    						$arr_b = array(
-    								'quote_id'		=> $data['id'],
+    						$arr_d = array(
+    								'quote_id'		=> $data["id"],
     								'qc_id'			=>	$qc_id,
-    								'type'			=>	3,
+    								'type'			=>	2,
     								'food_id'		=>	$data['item_name_breakfast_'.$i],
     								'item_id'		=>	$row_ind["item_id"],
     								'qty'			=>	$row_ind["qty"],
@@ -571,16 +577,16 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
     						);
     						$this->_name = "ldc_quote_item";
-    						$this->insert($arr_b);
+    						$this->insert($arr_d);
     					}
     				}
     			}
     		}
     
     		if($data['identity_lunch']!=""){
-    			 
+    			
     			$arr_in = array(
-    					'quote_id'		=>	$data['id'],
+    					'quote_id'		=>	$data["id"],
     					'num_table'		=>	$data['t_number_lunch'],
     					'type'			=>	3,
     					'price'			=>	$data['t_price_lunch'],
@@ -591,14 +597,14 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     			);
     			$this->_name ='ldc_quotation_connection';
     			$qc_id = $this->insert($arr_in);
-    			 
+    			
     
     			$ids = explode(',', $data['identity_lunch']);
     			foreach ($ids as $i){
     				$arr_ins = array(
     						'qc_id'		=>$qc_id,
     						'food_id'		=>$data['item_name_lunch_'.$i],
-    						'qty'			=>$data['qty_lunch_'.$i],
+    						//'qty'			=>$data['qty_lunch_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
     				$this->insert($arr_ins);
@@ -609,8 +615,8 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     						$deliver_day = $row_ind["deliver_day"];
     						$do_date_wed = new DateTime($data["date_lunch"]);
     						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
-    						$arr_l = array(
-    								'quote_id'		=> $data['id'],
+    						$arr_d = array(
+    								'quote_id'		=> $data["id"],
     								'qc_id'			=>	$qc_id,
     								'type'			=>	3,
     								'food_id'		=>	$data['item_name_lunch_'.$i],
@@ -621,16 +627,16 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
     						);
     						$this->_name = "ldc_quote_item";
-    						$this->insert($arr_l);
+    						$this->insert($arr_d);
     					}
     				}
     			}
     		}
     		 
     		if($data['identity_dinner']){
-    			 
+    			
     			$arr_in = array(
-    					'quote_id'		=>	$data['id'],
+    					'quote_id'		=>	$data["id"],
     					'num_table'		=>	$data['t_number_dinner'],
     					'type'			=>	4,
     					'price'			=>	$data['t_price_dinner'],
@@ -641,13 +647,13 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     			);
     			$this->_name ='ldc_quotation_connection';
     			$qc_id = $this->insert($arr_in);
-    			 
+    			
     			$ids = explode(',', $data['identity_dinner']);
     			foreach ($ids as $i){
     				$arr_ins = array(
     						'qc_id'		=>$qc_id,
     						'food_id'	=>$data['item_name_dinner_'.$i],
-    						'qty'		=>$data['qty_dinner_'.$i],
+    						//'qty'		=>$data['qty_dinner_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
     				$this->insert($arr_ins);
@@ -659,9 +665,9 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     						$do_date_wed = new DateTime($data["date_dinner"]);
     						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
     						$arr_d = array(
-    								'quote_id'		=> $data['id'],
+    								'quote_id'		=> $data["id"],
     								'qc_id'			=>	$qc_id,
-    								'type'			=>	3,
+    								'type'			=>	4,
     								'food_id'		=>	$data['item_name_dinner_'.$i],
     								'item_id'		=>	$row_ind["item_id"],
     								'qty'			=>	$row_ind["qty"],
@@ -675,11 +681,11 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				}
     			}
     		}
-    		
+    		 
     		if($data['identity_service']){
     		
     			$arr_in = array(
-    					'quote_id'		=>	$data['id'],
+    					'quote_id'		=>	$data["id"],
     					//'num_table'		=>	$data['t_number_dinner'],
     					'type'			=>	5,
     					//'price'			=>	$data['t_price_dinner'],
@@ -699,11 +705,10 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     						'qty'		=>$data['qty_ser_'.$i],
     						'price'		=>$data['qty_ser_'.$i],
     						'note'		=>$data['qty_ser_'.$i],
-    						
+    		
     				);
     				$this->_name ='ldc_quotation_detail';
     				$this->insert($arr_ins);
-    				
     			}
     		}
     		$db->commit();
@@ -1176,7 +1181,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
 				  q.`customer_id`,
 				  q.`total_pay`,
 				  q.`status`,
-				  (SELECT c.`address` FROM `ldc_customer_ceremony` AS c WHERE c.`id`=q.`ceremony_id`) AS address
+				  (SELECT c.`address_1` FROM `ldc_customer_ceremony` AS c WHERE c.`id`=q.`ceremony_id`) AS address
 				FROM
 				  `ldc_quotation` AS q
 				WHERE q.`id`=1";

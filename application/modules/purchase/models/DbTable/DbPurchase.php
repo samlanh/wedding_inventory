@@ -132,6 +132,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 			    	qc.`num_table`,
 			    	qc.`date_do`,
 			    	qc.`address`,
+			    	f.`name_kh`,
 			    	p.`pro_name_kh`,
 			    	qt.`item_id`,
 			    	qt.`qty`,
@@ -144,10 +145,12 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 			    	`ldc_quotation` AS q,
 			    	`ldc_quotation_connection` AS qc,
 			    	`ldc_quote_item` AS qt,
-			    	`ldc_product` AS p
+			    	`ldc_product` AS p,
+			    	`ldc_food` AS f
 			    WHERE q.id = qc.`quote_id`
 			    	AND qc.id = qt.`qc_id`
 			    	AND qt.`item_id` = p.`id`
+			    	AND qt.`food_id`=f.`id`
 			    	AND q.`id` = $id
 			    ";
     
@@ -173,7 +176,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				  c.`phone`,
 				  c.`email`,
 				  cc.`id` AS ce_id,
-				  cc.`address`,
+				  cc.`address_1` AS address,
 				  cc.`ceremony_date`
 				FROM
 				  `ldc_quotation` AS q,

@@ -51,47 +51,11 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->all_make=$model;
 		
 	}
-	public function addAction(){
-		$id = $this->getRequest()->getParam("id");
-		$db_order = new Purchase_Model_DbTable_DbPurchase();
-		if($this->getRequest()->isPost()){
-			$formdata=$this->getRequest()->getPost();
-			$search = array(
-					'title' => $formdata['adv_search'],
-					'status_search'=>$formdata['search_status'],
-					//'company'=>$formdata['company'],
-					'start_date'	=>	$formdata["start_date"],
-					'end_date'		=>	$formdata["end_date"],
-		
-			);
-		}
-		else{
-			$search = array(
-					'title' 		=> '',
-					'status_search' => -1,
-					//'company'		=>-1,
-					'start_date'	=>	date("Y-m-d"),
-					'end_date'		=>	date("Y-m-d"),
-			);
-		}
-		$this->view->search = $search;
-		$rows = $db_order->getQuoteForPurchase($search);
-		$glClass = new Application_Model_GlobalClass();
-		$rows = $glClass->getImgActive($rows, BASE_URL, true);
-		$list = new Application_Form_Frmtable();
-		$collumns = array("QOUTE_NO","CUSTOMER","PHONE","EMAIL","ADDRESS","DATE_CEREMONY","STATUS");
-		$link=array(
-				'module'=>'purchase','controller'=>'index','action'=>'addphpajax',
-		);
-		$this->view->list=$list->getCheckList(0, $collumns, $rows,array('quot_code'=>$link,'first_name'=>$link,'phone'=>$link,'date_ceremony'=>$link));
-		
-		$this->view->qute_code = $db_order-> getQuoteCode();
-		$this->view->supplier = $db_order->getSupplier();
-		$this->view->food = $db_order->getFood();
-	}
+	
 	public function addbysuAction(){
 		$id = $this->getRequest()->getParam("id");
 		$db_order = new Purchase_Model_DbTable_DbPurchase();
+		$db_make = new Order_Model_DbTable_DbQuote();
 		if($this->getRequest()->isPost()){
 			$data=$this->getRequest()->getPost();
 			if(isset($data["search"])){
@@ -112,11 +76,49 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->pu_id = $db_order-> getPurchaseID();
 		$this->view->supplier = $db_order->getSupplier();
 		$this->view->items = $db_order->getItem();
-		$this->view->quote_detail = $db_order->getQuoteById($id);
+		
+		$row_quote_detail = $db_order->getQuoteById($id);
+		$this->view->quote_detail = $row_quote_detail;
+		
+		$row_addr = $db_make->getAllAddress($row_quote_detail["ce_id"]);
+		$this->view->alladdr = $row_addr;
+	}
+	
+	public function addAction(){
+		$id = $this->getRequest()->getParam("id");
+		$db_order = new Purchase_Model_DbTable_DbPurchase();
+		$db_make = new Order_Model_DbTable_DbQuote();
+		if($this->getRequest()->isPost()){
+			$data=$this->getRequest()->getPost();
+			if(isset($data["search"])){
+				$su_id = $data["supplier_name"];
+			}elseif(isset($data["save_close"])){
+	
+			}elseif (isset($data["save_new"])){
+	
+			}
+		}
+		else{
+			$su_id = -1;
+		}
+		$this->view->search = $su_id;
+		$this->view->item = $db_order->getItemsPurchaseByQuoteIdShortBySu($id,$su_id);
+	
+		$this->view->qute_code = $db_order-> getQuoteCode();
+		$this->view->pu_id = $db_order-> getPurchaseID();
+		$this->view->supplier = $db_order->getSupplier();
+		$this->view->items = $db_order->getItem();
+	
+		$row_quote_detail = $db_order->getQuoteById($id);
+		$this->view->quote_detail = $row_quote_detail;
+	
+		$row_addr = $db_make->getAllAddress($row_quote_detail["ce_id"]);
+		$this->view->alladdr = $row_addr;
 	}
 	public function addphpajaxAction(){
 		$id = $this->getRequest()->getParam("id");
 		$db_order = new Purchase_Model_DbTable_DbPurchase();
+		$db_make = new Order_Model_DbTable_DbQuote();
 		if($this->getRequest()->isPost()){
 			$data=$this->getRequest()->getPost();
 			$data['id'] = $id;
@@ -141,7 +143,11 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->pu_id = $db_order-> getPurchaseID();
 		$this->view->supplier = $db_order->getSupplier();
 		$this->view->items = $db_order->getItem();
-		$this->view->quote_detail = $db_order->getQuoteById($id);
+		$row_quote_detail = $db_order->getQuoteById($id);
+		$this->view->quote_detail = $row_quote_detail;
+		
+		$row_addr = $db_make->getAllAddress($row_quote_detail["ce_id"]);
+		$this->view->alladdr = $row_addr;
 	}
 	
 	public function editphpajaxAction(){
@@ -188,31 +194,6 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->rows = $db->getPurchaseDetailById($id,$su_id);
 		$this->view->supplier = $db->getSupplier();
 	}
-	public function addajaxAction(){
-		$db_order = new Purchase_Model_DbTable_DbPurchase();
-		if($this->getRequest()->isPost()){
-			$data=$this->getRequest()->getPost();
-			try {
-				if(isset($data['save_new'])){
-					//$db_order->addOrder($data);
-					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
-				}else if(isset($data['save_close'])){
-					//$db_order->addOrder($data);
-					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
-				}
-			}catch (Exception $e) {
-				//print_r($e->getMessage());exit();
-				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
-				$err =$e->getMessage();
-				Application_Model_DbTable_DbUserLog::writeMessageError($err);
-			}
-		}
-		$this->view->item = $db_order->getItemPurchaseByQuoteId();
-	
-		$this->view->qute_code = $db_order-> getQuoteCode();
-		$this->view->supplier = $db_order->getSupplier();
-		$this->view->food = $db_order->getFood();
-	}
 	
 	public function copyAction(){
 		$db_order = new Order_Model_DbTable_DbOrder();
@@ -245,45 +226,6 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->QuoteNo = $db_order->getQuoteNo();
 	}	
 	
-	function editAction(){
-		$id=$this->getRequest()->getParam('id');
-		$db_make = new Order_Model_DbTable_DbQuote();
-		$db = new Application_Model_DbTable_DbGlobal();
-		if($this->getRequest()->isPost()){
-			$data=$this->getRequest()->getPost();
-			$data['id'] = $id;
-			try{
-				
-				if(isset($data['save_close'])){
-					$db_make->updateQuote($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("EDIT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
-				}elseif(isset($data['save_new'])){
-					$db_make->updateQuote($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("EDIT_SUCCESS"),self::REDIRECT_URL_ADD);
-				}elseif(isset($data['convert_to_order'])){
-					$db_make->convertToOrder($id);
-					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("EDIT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
-				}
-			}catch (Exception $e) {
-				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
-				$err =$e->getMessage();
-				Application_Model_DbTable_DbUserLog::writeMessageError($err);
-			}
-		}
-		$this->view->status = $db_make->getStatus();
-		
-		$this->view->quote_wedding = $db_make->getQuoteDetailByid($id,1);
-		$this->view->quote_breakfast = $db_make->getQuoteDetailByid($id,2);
-		$this->view->quote_lunch = $db_make->getQuoteDetailByid($id,3);
-		$this->view->quote_dinner = $db_make->getQuoteDetailByid($id,4);
-		
-		$this->view->quote = $db_make->getQuoteByid($id);
-		
-		$this->view->food = $db->getFood();
-		$this->view->Customer_name = $db->getCustomer(1);
-		$this->view->Customer_code = $db->getCustomer(2);
-	}
-	
 	function mergeAction(){
 		$id=$this->getRequest()->getParam('id');
 		$db_make = new Order_Model_DbTable_DbQuote();
@@ -292,7 +234,6 @@ class Purchase_indexController extends Zend_Controller_Action {
 			$data=$this->getRequest()->getPost();
 			$data['id'] = $id;
 			try{
-	
 				if(isset($data['save_close'])){
 					$db_make->updateQuote($data);
 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("EDIT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
