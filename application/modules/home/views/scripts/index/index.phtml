@@ -1,44 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<?php 
-     // $base_url = Application_Form_FrmMessage::getUrl("/");
-?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <head>
+<style>
+ .metro-destaque-rodape{
+          background: #ccc;
+}
+.metro span {
+    color:#fff;
+    font-weight: 800;
+}
+.metro span {
+    position:relative;
+    height:20px;
+    text-decoration:none;
+    color:rgba(255, 255, 255, 1.0);
+    float:left;
+    text-align:center;
+    clear:both;
+    width:100%;
+    bottom:0px;
+    background:#ccc;
+    padding:7px 0px 7px 0px ;
+    
+}
+</style>
+    <title>Home Page</title>
+    <link href="<?php echo $this->baseUrl()?>/assets/assets-home/Style/Interacao.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo $this->baseUrl()?>/assets/assets-home/Style/jq-metro.css" rel="stylesheet" type="text/css" />
+    <script src="<?php echo $this->baseUrl()?>/assets/assets-home/Script/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="<?php echo $this->baseUrl()?>/assets/assets-home/Script/jquery.metro-btn.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#metroaqui").AddMetroSimpleButton('bt3', 'metro-vermelho', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Vermelho' );
+            $("#metroaqui").AddMetroSingleLabeledButton('bt6', 'metro-roxo', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', '30' );
+			
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+			$("#metroaqui_novo").AddMetroDoubleWithTrailer('bt6', 'metro-azul', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/admin.png', 'Customer Information','window.open("http://localhost/wedding_system/trunk/public/group","_blank")' , "_blank" );
+			$("#metroaqui_novo").AddMetroDoubleWithTrailerWithBG('bt6', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/item-1.jpg', 'Manage Foods ','window.open("http://localhost/wedding_system/trunk/public/food","_blank")', "_blank");
+			$("#metroaqui_novo").AddMetroSimpleButton('bt1', 'metro-verde', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Manage Items', 'window.open("http://localhost/wedding_system/trunk/public/items","_blank")' , "_blank" );
+            $("#metroaqui_novo").AddMetroSimpleButton('bt2', 'metro-laranja', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'All Report','window.open("http://localhost/wedding_system/trunk/public/report","_blank")', "_blank"    );
+            $("#metroaqui_novo").AddMetroDoubleButton('bt4', 'metro-azul', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Supplier Information','window.open("http://localhost/wedding_system/trunk/public/supplier","_blank")', "_blank" );
+            $("#metroaqui_novo").AddMetroSimpleButton('bt5', 'metro-laranja', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Laranja' );
+			$("#metroaqui_novo").AddMetroSimpleButton('bt1', 'metro-verde', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/admin.png', 'Teste Roger', '');
+            $("#metroaqui_novo").AddMetroSimpleButton('bt2', 'metro-laranja', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Laranja', '');
+			$("#metroaqui_novo").AddMetroSimpleButton('bt1', 'metro-verde', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Teste Roger', '');
+        });
+    </script>
 
-    <title></title>
-
-    <!-- Bootstrap Core CSS -->
-   
-
-    <!-- Custom CSS -->
-    <link href="<?php echo $this->baseUrl()?>/css/sb-admin-2.css" rel="stylesheet">
-
-
-    <!-- Custom Fonts -->
-    <link href="<?php echo $this->baseUrl()?>/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-  
 </head>
 
 <body>
-    <div id="wrapper">
-		<div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header" style="text-align:center;">Welcome to Wedding System</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-                </div>
-          
+    <div class="cabecalho">
+        <!--<img src="Style/Imagem/logo.png" alt="Interação Sistemas" height="150" />-->
+        <h1 class="page-header" style="text-align:center;">Welcome to Wedding System</h1>
     </div>
-</div>
 
+    <div id="metroaqui_novo" class="metro-panel  active">
+	    
+	</div>
+	
+    <div id="metroaqui" class="metro-panel"></div>
+	
+	<div class="center" style="position:fixed; bottom:30px; left:0px; width:100%;text-decoration:none;font-weight: bold; font-size: 17px;text-shadow: 1px 1px 1px #0B404A;">Developer:By Cam App Technology - <a href="http://www.cam-app.com" target="_blank">http://www.cam-app.com</a></div>
 </body>
-
 </html>

@@ -702,6 +702,7 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 				},
 			handleAs:"json",
 			load: function(data) {
+				//alert(data);
 				addr_store  = getDataStorefromJSON('id','name', data);
 				dijit.byId('address_wedding').reset('value');
 			    dijit.byId('address_wedding').set('store',addr_store);

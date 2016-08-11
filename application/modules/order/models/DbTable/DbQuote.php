@@ -1235,12 +1235,12 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     	$arr1 = array('id'=>$row["address_1"],'name'=>$row["address_1"]);
     	$arr2 = array('id'=>$row["address_2"],'name'=>$row["address_2"]);
     	$arr3 = array('id'=>$row["address_3"],'name'=>$row["address_3"]);
-    	if(!empty($row["address_2"])){
-    		$arr = array_merge(array($arr1,$arr2));
+    	if(!empty($row["address_2"]) OR !empty($row["address_3"])){
+    		$arr = array_merge(array($arr1,$arr2,$arr3));
     	}
-    	if(!empty($row["address_3"])){
-    		$arr = array_merge(array($arr,$arr3));
-    	}
+//     	if(!empty($row["address_3"])){
+//     		$arr = array_merge(array($arr,$arr3));
+//     	}
     	return $arr;
     }
     
