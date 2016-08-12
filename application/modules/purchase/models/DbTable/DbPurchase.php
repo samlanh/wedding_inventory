@@ -9,8 +9,9 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     	return $session_user->user_id;
     
     }
-    public function getPurchaseID(){
+    public function getPurchaseID($id){
     	$db =$this->getAdapter();
+    	$old_pu = $this->getPuCode($id);
     	$sql=" SELECT id FROM ldc_purchase_order ORDER BY id DESC LIMIT 1 ";
     	$acc_no = $db->fetchOne($sql);
     	$new_acc_no= (int)$acc_no+1;
@@ -19,7 +20,18 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     	for($i = $acc_no;$i<4;$i++){
     		$pre.='0';
     	}
-    	return $pre.$new_acc_no;
+    	if(empty($old_pu)){
+    		return $pre.$new_acc_no;
+    	}else {
+    		return $old_pu;
+    	}
+    	
+    }
+    
+    function getPuCode($id){
+    	$db = $this->getAdapter();
+    	$sql = "SELECT p.`pu_code` FROM `ldc_purchase_order` AS p WHERE p.`order_id` = $id LIMIT 1";
+    	return $db->fetchOne($sql);
     }
     public function getOrderID(){
     	$db =$this->getAdapter();
@@ -133,6 +145,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 			    	qc.`date_do`,
 			    	qc.`address`,
 			    	f.`name_kh`,
+			    	f.id as food_id,
 			    	p.`pro_name_kh`,
 			    	qt.`item_id`,
 			    	qt.`qty`,
@@ -250,6 +263,31 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				  AND p.`ce_id` = cc.`id`
     			  AND cc.`ceremony_date` >= '$start_date' AND cc.`ceremony_date` <= '$end_date'
     			";
+
+//     	$sql = "SELECT 
+//     			  pc.`id`,
+// 				  p.`pu_code` ,
+// 				  c.`first_name`,
+// 				  c.`phone`,
+// 				  c.`email`,
+// 				  cc.`address_1`,
+// 				  cc.`ceremony_date`,
+// 				  s.`company_name`,
+//     			  p.`status`
+// 				FROM
+// 				  `ldc_purchase_order` AS p,
+// 				  `ldc_purchase_connection` AS pc,
+// 				  `ldc_purchase_order_item` AS poi ,
+// 				  `ldc_supplier` AS s,
+// 				  `ldc_customers` AS c,
+// 				  `ldc_customer_ceremony` AS cc
+// 				WHERE p.`id` = pc.`pu_id` 
+// 				  AND pc.`id` = poi.`puc_id` 
+// 				  AND poi.`su_id`=s.`id`
+// 				  AND p.`cu_id`=c.`id`
+// 				  AND p.`ce_id`=cc.`id`
+//     			  AND cc.`ceremony_date` >= '$start_date' AND cc.`ceremony_date` <= '$end_date'
+// 				  ";
     	$where='';
     	if($search['status_search']>-1){
     		$where.= " AND status = ".$search['status_search'];
@@ -267,10 +305,36 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     		$where.=' AND ('.implode(' OR ', $s_where).')';
     	}
     	$order = " ORDER BY id DESC";
-    	//$group_by ="GROUP BY q.`quot_code`";
+    	//$group_by =" GROUP BY poi.`su_id`";
     	return $db->fetchAll($sql.$where.$order);
     }
     
+    function getPurchaseDetail($id,$su_id){
+    	$db = $this->getAdapter();
+    	$sql ="SELECT 
+    	          p.`pro_name_kh`,
+				  f.`name_kh`,
+				  f.`id` AS food_id,
+				  m.`measure_name_kh`,
+				  poi.* 
+				FROM
+				  `ldc_purchase_order_item` AS poi,
+				  `ldc_product` AS p,
+				  `ldc_food` AS f ,
+				  `ldc_measure` AS m
+				WHERE poi.`pu_id` = $id 
+				  AND poi.`item_id` = p.`id` 
+				  AND poi.`food_id` = f.id 
+				  AND poi.`measure_id`= m.`id`
+				";
+    	$where = '';
+    	if($su_id>0){
+    		$where.=" AND poi.`su_id`=$su_id";
+    	}
+    	$order = " ORDER BY poi.`address_do` ,poi.`food_id`";
+    	//echo $sql.$where.$order;
+    	return $db->fetchAll($sql.$where.$order);
+    }
     function getQuoteForPurchase($search){
     	$db = $this->getAdapter();
     	$start_date = $search["start_date"];
@@ -402,6 +466,136 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     	}
     }
     
+    
+    // New Purchase By SU and Not group item
+    
+    function addPurchaseBySuLong($data){
+    	$db = $this->getAdapter();
+    	$db->beginTransaction();
+    	try {
+    		$old_pu = $this->getPuCode($data["id"]);
+    		if(empty($old_pu)){
+	    		$arr = array(
+	    				'pu_code'	=>	$data["pu_code"],
+	    				'order_id'	=>	$data["id"],
+	    				'cu_id'		=>	$data["cu_id"],
+	    				'ce_id'		=>	$data["ceremony_id"],
+	    				'status'	=>	1
+	    		);
+	    		$this->_name="ldc_purchase_order";
+	    		$id = $this->insert($arr);
+    		}else {
+    			$id = $data["id"];
+    		}
+    		$arr_cc = array(
+    			'pu_id'		=>	$id,
+    			'su_id'		=>	$data["supplier_name"],
+    			
+    		);
+    		$this->_name= "ldc_purchase_connection";
+    		$pc_id = $this->insert($arr_cc);
+    		
+    		$identity = $data["identity"];
+    		$ids = explode(',', $identity);
+    		foreach ($ids as $i){
+    			$arr_p = array(
+    					'pu_id'				=>	$id,
+    					'puc_id'			=>	$pc_id,
+    					'su_id'				=>	$data["supplier_name_".$i],
+    					'item_id'			=>	$data["item_name_".$i],
+    					'food_id'			=>	$data["food_name_".$i],
+    					'qty'				=>	$data["item_qty_".$i],
+    					'measure_id'		=>	$data["measure_id_".$i],
+    					'address_do'		=>	$data["addr_".$i],
+    					'deliver_address'	=>	$data["location_".$i],
+    					'date_do'			=>	$data["date_do_".$i],
+    					'deliver_date'		=>	$data["daliver_date_".$i],
+    					'note'				=>	$data["note_".$i],
+    			);
+    			 
+    			$this->_name = "ldc_purchase_order_item";
+    			$this->insert($arr_p);
+    		}
+    
+    		$db->commit();
+    	}catch (Exception $e){
+    		$db->rollBack();
+    		Application_Model_DbTable_DbUserLog::writeMessageError($e);
+    		echo $e->getMessage();
+    	}
+    }
+    
+    function updatePurchaseBySuLong($data){
+    	$db = $this->getAdapter();
+    	$db->beginTransaction();
+    	try {
+// //     		$old_pu = $this->getPuCode($data["id"]);
+// //     		if(empty($old_pu)){
+//     			$arr = array(
+//     					'pu_code'	=>	$data["pu_code"],
+//     					'order_id'	=>	$data["id"],
+//     					'cu_id'		=>	$data["cu_id"],
+//     					'ce_id'		=>	$data["ceremony_id"],
+//     					'status'	=>	1
+//     			);
+//     			$this->_name="ldc_purchase_order";
+//     			$where = $db->quoteInto("id=?", $data["id"]);
+//     			$this->update($arr, $where);
+//     		}else {
+//     			$id = $data["id"];
+//     		}
+			if($data["supplier_name"] > -1){
+				$sql = "DELETE FROM ldc_purchase_connection WHERE pu_id=".$data["id"]." AND su_id=".$data["supplier_name"];
+				$db->query($sql);
+					
+				$sqls = "DELETE FROM ldc_purchase_order_item WHERE pu_id=".$data["id"]." AND su_id=".$data["supplier_name"];
+				$db->query($sqls);
+			}else {
+				$sql = "DELETE FROM ldc_purchase_connection WHERE pu_id=".$data["id"];
+				$db->query($sql);
+					
+				$sqls = "DELETE FROM ldc_purchase_order_item WHERE pu_id=".$data["id"];
+				$db->query($sqls);
+			}
+			
+    		$arr_cc = array(
+    				'pu_id'		=>	$data["id"],
+    				'su_id'		=>	$data["supplier_name"],
+    				 
+    		);
+    		$this->_name= "ldc_purchase_connection";
+    		$pc_id = $this->insert($arr_cc);
+    
+    		$identity = $data["identity"];
+    		$ids = explode(',', $identity);
+    		foreach ($ids as $i){
+    			$arr_p = array(
+    					'pu_id'				=>	$data["id"],
+    					'puc_id'			=>	$pc_id,
+    					'su_id'				=>	$data["supplier_name_".$i],
+    					'item_id'			=>	$data["item_name_".$i],
+    					'food_id'			=>	$data["food_name_".$i],
+    					'qty'				=>	$data["item_qty_".$i],
+    					'measure_id'		=>	$data["measure_id_".$i],
+    					'address_do'		=>	$data["addr_".$i],
+    					'deliver_address'	=>	$data["location_".$i],
+    					'date_do'			=>	$data["date_do_".$i],
+    					'deliver_date'		=>	$data["daliver_date_".$i],
+    					'note'				=>	$data["note_".$i],
+    			);
+    
+    			$this->_name = "ldc_purchase_order_item";
+    			$this->insert($arr_p);
+    		}
+    
+    		$db->commit();
+    	}catch (Exception $e){
+    		$db->rollBack();
+    		Application_Model_DbTable_DbUserLog::writeMessageError($e);
+    		echo $e->getMessage();
+    	}
+    }
+    
     function getPurchaseDetailById($id,$su_id){
     	$db = $this->getAdapter();
     	$sql ="SELECT
@@ -436,6 +630,20 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     $order = " ORDER BY po.`su_id`,po.`deliver_date`,po.`deliver_address`";
     echo $sql.$where.$order;
     		return $db->fetchAll($sql.$where.$order);
+	}
+	
+	function getFoodByItem($id){
+		$db = $this->getAdapter();
+		$sql ="SELECT 
+				  f.`id`,
+				  f.`name_kh` as name 
+				FROM
+				  `ldc_food` AS f,
+				  `ldc_food_ingredients` AS fd 
+				WHERE f.id = fd.`food_id` 
+				  AND fd.`item_id` = $id";
+		
+		return $db->fetchAll($sql);
 	}
 }  
 	  

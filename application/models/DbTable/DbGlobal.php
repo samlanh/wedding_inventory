@@ -692,7 +692,7 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 	
 	function getCustomerById($id){
 		$db = $this->getAdapter();
-		$sql = "SELECT c.`phone`,c.`email`,c.address,c.`house_num`,c.`street`,(SELECT d.`district_name` FROM `ldc_district` AS d WHERE d.`id`=c.`district`) AS district,(SELECT p.`province_name` FROM `ldc_province` AS p WHERE p.`id`=c.`province_id`) AS province FROM `ldc_customers` AS c WHERE c.`id`=$id";
+		$sql = "SELECT c.`phone`,c.`email`,c.address FROM `ldc_customers` AS c WHERE c.`id`=$id";
 		return $db->fetchRow($sql);
 	}
 }

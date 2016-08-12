@@ -12,12 +12,12 @@
 	<?php foreach ($this->rows as $key=>$rs){ $num = $key+1;?>
 	<tr class="normal">
 		<td class="items-no"><?php echo $num;?></td>
-		<td class="items"><a href="<?php echo $this->baseUrl();?>/report/index/viewpurchase/id/<?php echo $rs["id"]?>"><?php echo $rs["pu_code"]?></a></td>
-		<td class="items"><a href="<?php echo $this->baseUrl();?>/report/index/viewpurchase/id/<?php echo $rs["id"]?>"><?php echo $rs["first_name"]?></a></td>
+		<td class="items"><a href="<?php echo $this->baseUrl();?>/report/index/viewind/id/<?php echo $rs["id"]?>"><?php echo $rs["pu_code"]?></a></td>
+		<td class="items"><?php echo $rs["first_name"]?></td>
 		<td class="items"><?php echo $rs["phone"]?></td>
 		<td class="items"><?php echo $rs["email"]?></td>
 		<td class="items"><?php echo $rs["ceremony_date"]?></td>
-		<td class="items"><?php echo $rs["address_1"]?></td>
+		<td class="items"><?php echo $rs["address"]?></td>
 	</tr>
 	<?php }?>
 </table>

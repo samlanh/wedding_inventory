@@ -1,8 +1,8 @@
 <?php
-class Order_indexController extends Zend_Controller_Action {
+class Purchase_indexController extends Zend_Controller_Action {
 	private $activelist = array('áž˜áž·áž“áž”áŸ’ážšáž¾â€‹áž”áŸ’ážšáž¶ážŸáŸ‹', 'áž”áŸ’ážšáž¾â€‹áž”áŸ’ážšáž¶ážŸáŸ‹');
-	const REDIRECT_URL_ADD ='/food/index/add';
-	const REDIRECT_URL_ADD_CLOSE ='/food/index/';
+	const REDIRECT_URL_ADD ='/purchase/index/add';
+	const REDIRECT_URL_ADD_CLOSE ='/purchase/index/';
     public function init()
     {    	
      /* Initialize action controller here */
@@ -12,37 +12,35 @@ class Order_indexController extends Zend_Controller_Action {
 	}
 	public function indexAction(){
 		try{
-			$db_make = new Order_Model_DbTable_DbOrder();
+			$db_make = new Purchase_Model_DbTable_DbPurchase();
 			if($this->getRequest()->isPost()){
 				$formdata=$this->getRequest()->getPost();
 				$search = array(
-						'title' => $formdata['adv_search'],
-						'search_status'=>$formdata['search_status'],
-						//'company'=>$formdata['company'],
+						'title' 		=> 	$formdata['adv_search'],
+						'status_search'	=>	$formdata['search_status'],
 						'start_date'	=>	$formdata["start_date"],
 						'end_date'		=>	$formdata["end_date"],
-						
-						);
+				);
 			}
 			else{
 				$search = array(
 					'title' 		=> '',
-					'search_status' => -1,
-					//'company'		=>-1,
+					'status_search' => -1,
 					'start_date'	=>	date("Y-m-d"),
 					'end_date'		=>	date("Y-m-d"),
 				);
 			}
+			
 			$this->view->search = $search;
-			$rows=$db_make->getAllOrder($search);
+			$rows=$db_make->getAllPurchase($search);
 			$glClass = new Application_Model_GlobalClass();
 			$rows = $glClass->getImgActive($rows, BASE_URL, true);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("ORDER NO","CUSTOMER","PHONE","ADDRESS","CEREMONY_DATE","TOTAL_AMOUNT","STATUS");
+			$collumns = array("PURCHASE_NO","CUSTOMER","PHONE","EMAIL","ADDRESS","DATE_CEREMONY","STATUS");
 			$link=array(
 					'module'=>'order','controller'=>'quote','action'=>'edit',
 			);
-			$this->view->list=$list->getCheckList(1, $collumns, $rows,array('quot_code'=>$link,'customer'=>$link,'date_ceremony'=>$link));
+			$this->view->list=$list->getCheckList(0, $collumns, $rows,array('pu_code'=>$link,'first_name'=>$link,'date_ceremony'=>$link));
 		}catch (Exception $e){
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
@@ -54,16 +52,56 @@ class Order_indexController extends Zend_Controller_Action {
 		
 	}
 	public function addAction(){
-		$db_order = new Order_Model_DbTable_DbOrder();
-		$db_make = new Order_Model_DbTable_DbQuote();
+		$id = $this->getRequest()->getParam("id");
+		$db_order = new Purchase_Model_DbTable_DbPurchase();
+		if($this->getRequest()->isPost()){
+			$formdata=$this->getRequest()->getPost();
+			$search = array(
+					'title' => $formdata['adv_search'],
+					'status_search'=>$formdata['search_status'],
+					//'company'=>$formdata['company'],
+					'start_date'	=>	$formdata["start_date"],
+					'end_date'		=>	$formdata["end_date"],
+		
+			);
+		}
+		else{
+			$search = array(
+					'title' 		=> '',
+					'status_search' => -1,
+					//'company'		=>-1,
+					'start_date'	=>	date("Y-m-d"),
+					'end_date'		=>	date("Y-m-d"),
+			);
+		}
+		$this->view->search = $search;
+		$rows = $db_order->getQuoteForPurchase($search);
+		$glClass = new Application_Model_GlobalClass();
+		$rows = $glClass->getImgActive($rows, BASE_URL, true);
+		$list = new Application_Form_Frmtable();
+		$collumns = array("QOUTE_NO","CUSTOMER","PHONE","EMAIL","ADDRESS","DATE_CEREMONY","STATUS");
+		$link=array(
+				'module'=>'purchase','controller'=>'index','action'=>'addphpajax',
+		);
+		$this->view->list=$list->getCheckList(0, $collumns, $rows,array('quot_code'=>$link,'first_name'=>$link,'phone'=>$link,'date_ceremony'=>$link));
+		
+		$this->view->qute_code = $db_order-> getQuoteCode();
+		$this->view->supplier = $db_order->getSupplier();
+		$this->view->food = $db_order->getFood();
+	}
+	
+	public function addphpajaxAction(){
+		$id = $this->getRequest()->getParam("id");
+		$db_order = new Purchase_Model_DbTable_DbPurchase();
 		if($this->getRequest()->isPost()){
 			$data=$this->getRequest()->getPost();
+			$data['id'] = $id;
 			try {
 				if(isset($data['save_new'])){
-					$db_order->addOrder($data);
+					$db_order->addPurchase($data);
 					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
 				}else if(isset($data['save_close'])){
-					$db_order->addOrder($data);
+					$db_order->addPurchase($data);
 					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
 				}
 			}catch (Exception $e) {
@@ -73,18 +111,39 @@ class Order_indexController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
-		$this->view->quote_id = $db_order->getOrderID();
-		
-		$this->view->status = $db_order->getStatus();
-		$db = new Application_Model_DbTable_DbGlobal();
-		
-		$this->view->food = $db->getFood();
-		$this->view->Customer_name = $db->getCustomer(1);
-		$this->view->Customer_code = $db->getCustomer(2);
-		
-		$this->view->service = $db_make->getAllService();
-		
-		$this->view->QuoteNo = $db_order->getQuoteNo();
+		$this->view->item = $db_order->getItemsPurchaseByQuoteId($id);
+	
+		$this->view->qute_code = $db_order-> getQuoteCode();
+		$this->view->pu_id = $db_order-> getPurchaseID();
+		$this->view->supplier = $db_order->getSupplier();
+		$this->view->items = $db_order->getItem();
+		$this->view->quote_detail = $db_order->getQuoteById($id);
+	}
+	
+	public function addajaxAction(){
+		$db_order = new Purchase_Model_DbTable_DbPurchase();
+		if($this->getRequest()->isPost()){
+			$data=$this->getRequest()->getPost();
+			try {
+				if(isset($data['save_new'])){
+					//$db_order->addOrder($data);
+					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+				}else if(isset($data['save_close'])){
+					//$db_order->addOrder($data);
+					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+				}
+			}catch (Exception $e) {
+				//print_r($e->getMessage());exit();
+				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
+				$err =$e->getMessage();
+				Application_Model_DbTable_DbUserLog::writeMessageError($err);
+			}
+		}
+		$this->view->item = $db_order->getItemPurchaseByQuoteId();
+	
+		$this->view->qute_code = $db_order-> getQuoteCode();
+		$this->view->supplier = $db_order->getSupplier();
+		$this->view->food = $db_order->getFood();
 	}
 	
 	public function copyAction(){
@@ -260,22 +319,11 @@ class Order_indexController extends Zend_Controller_Action {
 			exit();
 		}
 	}
-	
-	function getQuoteServiceAction(){
+	function getItemPurchaseAction(){
 		if($this->getRequest()->isPost()){
 			$_data = $this->getRequest()->getPost();
-			$db = new Order_Model_DbTable_DbQuote();
-			$row = $db->getQuoteDetailByid($_data["id"],5);
-			print_r(Zend_Json::encode($row));
-			exit();
-		}
-	}
-	
-	function getCeremonyAction(){
-		if($this->getRequest()->isPost()){
-			$_data = $this->getRequest()->getPost();
-			$db = new Order_Model_DbTable_DbQuote();
-			$row = $db->getCeremony($_data["id"]);
+			$db = new Purchase_Model_DbTable_DbPurchase();
+			$row = $db->getItemsPurchaseByQuoteId($_data["id"],4);
 			print_r(Zend_Json::encode($row));
 			exit();
 		}

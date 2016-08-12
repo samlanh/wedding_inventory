@@ -36,9 +36,9 @@ class Purchase_indexController extends Zend_Controller_Action {
 			$glClass = new Application_Model_GlobalClass();
 			$rows = $glClass->getImgActive($rows, BASE_URL, true);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("PURCHASE_NO","CUSTOMER","PHONE","EMAIL","ADDRESS","DATE_CEREMONY","STATUS");
+			$collumns = array("PURCHASE_NO","CUSTOMER","PHONE","EMAIL","ADDRESS","DATE_CEREMONY","SUPPLIER","STATUS");
 			$link=array(
-					'module'=>'purchase','controller'=>'index','action'=>'editphpajax',
+					'module'=>'purchase','controller'=>'index','action'=>'editbysulong',
 			);
 			$this->view->list=$list->getCheckList(1, $collumns, $rows,array('pu_code'=>$link,'first_name'=>$link,'date_ceremony'=>$link));
 		}catch (Exception $e){
@@ -51,7 +51,44 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->all_make=$model;
 		
 	}
+	public function addAction(){
+		$id = $this->getRequest()->getParam("id");
+		$db_order = new Purchase_Model_DbTable_DbPurchase();
+		if($this->getRequest()->isPost()){
+			$formdata=$this->getRequest()->getPost();
+			$search = array(
+					'title' => $formdata['adv_search'],
+					'status_search'=>$formdata['search_status'],
+					//'company'=>$formdata['company'],
+					'start_date'	=>	$formdata["start_date"],
+					'end_date'		=>	$formdata["end_date"],
 	
+			);
+		}
+		else{
+			$search = array(
+					'title' 		=> '',
+					'status_search' => -1,
+					//'company'		=>-1,
+					'start_date'	=>	date("Y-m-d"),
+					'end_date'		=>	date("Y-m-d"),
+			);
+		}
+		$this->view->search = $search;
+		$rows = $db_order->getQuoteForPurchase($search);
+		$glClass = new Application_Model_GlobalClass();
+		$rows = $glClass->getImgActive($rows, BASE_URL, true);
+		$list = new Application_Form_Frmtable();
+		$collumns = array("QOUTE_NO","CUSTOMER","PHONE","EMAIL","ADDRESS","DATE_CEREMONY","STATUS");
+		$link=array(
+				'module'=>'purchase','controller'=>'index','action'=>'addbysulong',
+		);
+		$this->view->list=$list->getCheckList(0, $collumns, $rows,array('quot_code'=>$link,'first_name'=>$link,'phone'=>$link,'date_ceremony'=>$link));
+	
+		$this->view->qute_code = $db_order-> getQuoteCode();
+		$this->view->supplier = $db_order->getSupplier();
+		$this->view->food = $db_order->getFood();
+	}
 	public function addbysuAction(){
 		$id = $this->getRequest()->getParam("id");
 		$db_order = new Purchase_Model_DbTable_DbPurchase();
@@ -84,18 +121,21 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->alladdr = $row_addr;
 	}
 	
-	public function addAction(){
+	public function addbysulongAction(){
 		$id = $this->getRequest()->getParam("id");
 		$db_order = new Purchase_Model_DbTable_DbPurchase();
 		$db_make = new Order_Model_DbTable_DbQuote();
+		
 		if($this->getRequest()->isPost()){
-			$data=$this->getRequest()->getPost();
+			
+			$data = $this->getRequest()->getPost();
+			$data['id'] = $id;
 			if(isset($data["search"])){
 				$su_id = $data["supplier_name"];
 			}elseif(isset($data["save_close"])){
-	
+				$db_order->addPurchaseBySuLong($data);
 			}elseif (isset($data["save_new"])){
-	
+				$db_order->addPurchaseBySuLong($data);
 			}
 		}
 		else{
@@ -105,7 +145,42 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$this->view->item = $db_order->getItemsPurchaseByQuoteIdShortBySu($id,$su_id);
 	
 		$this->view->qute_code = $db_order-> getQuoteCode();
-		$this->view->pu_id = $db_order-> getPurchaseID();
+		$this->view->pu_id = $db_order-> getPurchaseID($id);
+		$this->view->supplier = $db_order->getSupplier();
+		$this->view->items = $db_order->getItem();
+	
+		$row_quote_detail = $db_order->getQuoteById($id);
+		$this->view->quote_detail = $row_quote_detail;
+	
+		$row_addr = $db_make->getAllAddress($row_quote_detail["ce_id"]);
+		$this->view->alladdr = $row_addr;
+	}
+	
+	public function editbysulongAction(){
+		$id = $this->getRequest()->getParam("id");
+		$db_order = new Purchase_Model_DbTable_DbPurchase();
+		$db_make = new Order_Model_DbTable_DbQuote();
+	
+		if($this->getRequest()->isPost()){
+				
+			$data = $this->getRequest()->getPost();
+			$data['id'] = $id;
+			if(isset($data["search"])){
+				$su_id = $data["supplier_name"];
+			}elseif(isset($data["save_close"])){
+				$db_order->updatePurchaseBySuLong($data);
+			}elseif (isset($data["save_new"])){
+				$db_order->updatePurchaseBySuLong($data);
+			}
+		}
+		else{
+			$su_id = -1;
+		}
+		$this->view->search = $su_id;
+		$this->view->item = $db_order->getPurchaseDetail($id,$su_id);
+	
+		$this->view->qute_code = $db_order-> getQuoteCode();
+		$this->view->pu_id = $db_order-> getPurchaseID($id);
 		$this->view->supplier = $db_order->getSupplier();
 		$this->view->items = $db_order->getItem();
 	
@@ -344,6 +419,16 @@ class Purchase_indexController extends Zend_Controller_Action {
 			$_data = $this->getRequest()->getPost();
 			$db = new Purchase_Model_DbTable_DbPurchase();
 			$row = $db->getMeasureNameByItemId($_data["id"]);
+			print_r(Zend_Json::encode($row));
+			exit();
+		}
+	}
+	
+	function getFoodAction(){
+		if($this->getRequest()->isPost()){
+			$_data = $this->getRequest()->getPost();
+			$db = new Purchase_Model_DbTable_DbPurchase();
+			$row = $db->getFoodByItem($_data["id"]);
 			print_r(Zend_Json::encode($row));
 			exit();
 		}

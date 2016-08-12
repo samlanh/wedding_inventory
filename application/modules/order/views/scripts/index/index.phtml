@@ -17,6 +17,8 @@ dojo.require("dojo.data.ObjectStore");
 dojo.require("dojo.data.ItemFileWriteStore");  
 dojo.require("dojo.store.Memory");
 dojo.require("dojo.data.ObjectStore");
+dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.DateTextBox");
 
 var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
 dojo.ready(function(){
@@ -35,7 +37,8 @@ new dijit.form.FilteringSelect({
     		//getallModel(make_id);
     }
 }, "make");	
-
+dijit.byId('start_date').attr('value','<?php echo $this->search["start_date"];?>');
+dijit.byId('end_date').attr('value','<?php echo $this->search["end_date"];?>');
 	}); 
 
 </script>
@@ -43,11 +46,16 @@ new dijit.form.FilteringSelect({
 	.btn-action{background: rgb(168, 18, 246) none repeat scroll 0% 0%;padding: 3px 10px;border-radius: 5px;}
 	.btn-action b{color: white;padding: 0px 4px;}
 </style>
-<form id="list" name="list" action="<?php echo $this->url(array('module'=>'items','controller'=>'index','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
+<form id="list" name="list" action="<?php echo $this->url(array('module'=>'order','controller'=>'index','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
    <table>
 	  <tr> 
-		   <td><input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $this->translate("Search");?>" type="text" ></td>
-		   <td><input id="make" /></td>
+		   <td><input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $this->search["title"];?>" placeholder="<?php echo $this->translate("Search");?>" type="text" ></td>
+		   <td>
+		   		<input dojoType="dijit.form.DateTextBox" name="start_date" id="start_date" class="fullside" >
+	    	</td>
+	    	<td>
+		   		<input dojoType="dijit.form.DateTextBox" name="end_date" id="end_date" class="fullside" >
+	    	</td>
 		   <td>
 		        <select name="search_status" id="search_status" dojoType="dijit.form.FilteringSelect" class="fullside">
 		                <option value="-1" <?php if($status==-1){ echo"selected='selected'";} ?>>Status all</option>
@@ -56,7 +64,6 @@ new dijit.form.FilteringSelect({
 				</select>
 		   </td>
 		   <td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>
-   	  	   <td><?php echo $formList->showMergeBuntton($url_merge);?></td>
    	  </tr>
    </table>
    <?php echo $this->list;?>

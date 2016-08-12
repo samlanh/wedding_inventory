@@ -5,7 +5,7 @@
 //       $rows_type=$this->rows_type;
 //       $rows_tran=$this->rows_tran;
 //       $rows_veh_typ=$this->rows_veh_typ;
- print_r($this->alladdr);
+ //print_r($this->alladdr);
 
  
 ?>
@@ -184,7 +184,7 @@ dojo.ready(function(){
 										<td colspan="8" align="left">
 											<input type="button" label="Add Row<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
 										 		iconClass="dijitIconEditProperty" onclick="addRow(1);" />
-											<input type="text" name="identity_wedding" id="identity_wedding"  value="" >
+											<input type="hidden" name="identity_wedding" id="identity_wedding"  value="" >
 										 </td>
 									</tr>
 									<tr>
@@ -994,7 +994,7 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 
 			    dijit.byId('address_dinner').reset('value');
 			    dijit.byId('address_dinner').set('store',addr_store);  
-alert(addr_data.length);				
+//alert(addr_data.length);				
 				var arr = addr_data.length;
 				for(i=0;i<arr;i++){
 					//alert();

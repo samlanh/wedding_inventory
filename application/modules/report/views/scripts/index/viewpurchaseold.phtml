@@ -11,7 +11,7 @@ $url_save = $this->url(array('module'=>'report','controller'=>'index','action'=>
 </style>
 
 <div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
-
+<div id="divPrint" style="width: 100%;">
 <style>
 .bg{ background:#eeeeee; border:1px solid #000;}
 
@@ -46,29 +46,26 @@ dojo.ready(function(){
     				<td><input type="text" value="" namr="pu_code" dojoType="dijit.form.TextBox" class="fullside"></td>
     				<td>Supplier :</td>
     				<td>
-    					<select dojoType="dijit.form.FilteringSelect" id="supplier_name" name="supplier_name" style="width:100%;" placeHolder="Select Supplier">
-							<option value="-1" label="Select Supplier">All Supplier</option>
+    					<select dojoType="dijit.form.FilteringSelect" id="supplier_name" name="supplier_name" style="width:100%;" placeHolder="Select Supplier">';
+							<option value="-1" label="Select Supplier">All Supplier</option>';
 							<?php foreach($this->supplier as $key){?>
-							<option value="<?php echo $key['id']?>"><?php echo $key['company_name'];?></option>
+							<option value="<?php echo $key['id']?>"><?php echo $key['company_name'];?></option>';
 							<?php }?>
-						</select>
     				</td>
     				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="SEARCH" label="SEARCH" id="save_close" dojoType="dijit.form.Button" name="save_close" iconClass="dijitEditorIcon dijitEditorIconSearch" /> </td>
     			</tr>
     		</table>
     		
+    		<table id="table_data" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;">
+				
+			</table>
         </td>
     </tr>
      
 </table>
-<div id="divPrint" style="width: 100%;">
-    		<table id="table_data" class="set-style" border="2px" style="font-family: 'Khmer OS Content';border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;">
-				
-			</table>
-</div>
 </form>
 </div>
-
+</div>
 
 <script>
 function addRowAjax(){
@@ -83,9 +80,7 @@ function addRowAjax(){
 				old_deliver_addr = null;
 				old_deliver_date = null;
 				old_su_id = null;
-				old_su_ids = null;
 				for(var i=0;i<data.length;i++){
-				new_qty = parseFloat(data[i].qty);
 					inx++;
 					if(su_id != data[i].su_id){
 						indexs++;
@@ -112,28 +107,26 @@ function addRowAjax(){
 						dojo.query("#table_data").append(temp_h);
 						su_id = data[i].su_id;
 		 		    }
-					
-					
-					if((old_su_id == data[i].su_id) && (old_item==data[i].item_id) && (old_address==data[i].deliver_address) && (old_deliver_date == data[i].deliver_date)){
-					//	if(old_item==data[i].item_id){
-						//	if(old_address==data[i].deliver_address){
-							//	if(old_deliver_date == data[i].deliver_date){
-									new_qty = parseFloat($('#item_qty_'+addr_name+"_"+num).val());
-									new_qty = new_qty +parseFloat(data[i].qty);
-									$('#item_qty_'+addr_name+"_"+num).val(new_qty);
-									document.getElementById('lb_item_qty_'+addr_name+"_"+num).innerHTML = new_qty+"   "+data[i].measure_name_kh;
-									continue;
-							//	}
-						//	}
-					//	}
-					}
 					num++;
+					if(old_su_id == data[i].su_id){
+						if(old_item==data[i].item_id){
+							if(old_address==data[i].deliver_address){
+								if(old_deliver_date == data[i].deliver_date){
+									no = num -1;
+									new_qty = parseFloat(data[i].qty);
+									new_qty = new_qty +parseFloat(data[i].qty);
+									//continue;
+								}
+							}
+						}
+					}
 						old_item=data[i].item_id;
 						old_address=data[i].deliver_address;
 						old_deliver_date = data[i].deliver_date;
 						old_su_id = data[i].su_id;
 						
-						if((old_su_ids != data[i].su_id ) || (old_date_deliver != data[i].deliver_date) || (old_deliver_addr != data[i].deliver_address)){
+						if((old_date_deliver != data[i].deliver_date) || (old_deliver_addr != data[i].deliver_address)){
+							//alert(1);
 							temp_date = '<td colspan="3">Deliver Address : '+data[i].deliver_address+'</td>';
 							temp_date += '<td colspan="">Delivery Date : '+data[i].deliver_date+'</td>';
 						temp_a = '<tr id="rows_'+addr_name+'_'+num+'" style="background: rgb(231, 138, 245);color: rgb(255, 255, 255);">';
@@ -143,13 +136,12 @@ function addRowAjax(){
 						
 						old_date_deliver = data[i].deliver_date;
 						old_deliver_addr = data[i].deliver_address;
-						old_su_ids = data[i].su_id;
 						}
 						col++;
 						temp_d='';
 				 		  		temp_d += '<td>'+col+' </td>';
 				 		  		temp_d += '<td>'+data[i].pro_name_kh+'</td>';
-				 		  		temp_d += '<td><label id="lb_item_qty_'+addr_name+"_"+num+'">'+data[i].qty+"   "+data[i].measure_name_kh+'</label><input type="hidden" name="item_qty_'+num+'" id="item_qty_'+addr_name+"_"+num+'" value="'+data[i].qty+'"></td>';
+				 		  		temp_d += '<td>'+data[i].qty+'</td>';
 				 		  		//temp_d += '<td>'+data[i].deliver_address+'</td>';
 				 		  		//temp_d += '<td>'+data[i].deliver_date+'</td>';
 				 		  		temp_d += '<td>'+data[i].note+'</td>';

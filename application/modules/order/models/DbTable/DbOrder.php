@@ -21,45 +21,99 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     	}
     	return $pre.$new_acc_no;
     }
+    
+    function getFoodIngrediant($id){
+    	$db = $this->getAdapter();
+    	$sql = "SELECT
+			    	fi.`item_id`,
+			    	fi.`qty`,
+			    	fi.`su_id`,
+			    	fi.deliver_day,
+			    	m.`id` AS measure_id
+			    FROM
+			    	`ldc_food_ingredients` AS fi,
+			    	`ldc_product` AS p,
+			    	ldc_measure AS m
+			    WHERE fi.`food_id` = $id
+			    	AND p.unit = m.`id`
+			    	AND p.id = fi.`item_id` ";
+    	 
+    	return $db->fetchAll($sql);
+    }
    
     function addOrder($data){
     	$db = $this->getAdapter();
     	$db->beginTransaction();
     	try{
+    		$arr =array(
+    				'order_code'	=>	$data['order_code'],
+    				'quote_id'		=>	$data["quote_no"],
+    				'customer_id'	=>	$data['customer_name'],
+    				'ceremony_id'	=>	$data["ceremony_date"],
+    				'total_pay'		=>	$data["amount_wedding"]+$data["amount_breakfast"]+$data["amount_lunch"]+$data["amount_dinner"]+$data["amount_service"],
+    				'status'		=>	$data['status'],
+    		);
+    		$this->_name ="ldc_order";
+    		$id = $this->insert($arr);
+    		
     		if($data['identity_wedding']!=""){
-    			$arr =array(
-    					'order_code'	=>	$data['qutoe_code'],
-    					'customer_id'	=>	$data['customer_name'],
-    					'num_table'		=>	$data['t_number_wedding'],
-    					'type'			=>	1,
-    					'price'			=>	$data['t_price_wedding'],
-    					'address'		=>	$data['address_wedding'],
-    					'date_do'		=>	$data["date_wedding"],
-    					'time_do'		=>	$data["time_wedding"],
-    					'total_pay'		=>	$data["amount_wedding"],
-    					//'balance'		=>	$data[""],
-    					'status'		=>	$data['status'],
-    					//'desc'			=>	$data['note']
-    			);
-    			$this->_name ="ldc_order";
-    			$id = $this->insert($arr);
+    			
+    				$arr_in = array(
+    						'order_id'		=>	$id,
+    						'num_table'		=>	$data['t_number_wedding'],
+    		    			'type'			=>	1,
+    		    			'price'			=>	$data['t_price_wedding'],
+    		    			'address'		=>	$data['address_wedding'],
+    		    			'date_do'		=>	$data["date_wedding"],
+    		    			'time_do'		=>	$data["time_wedding"],
+    						'total_pay'		=>	$data["amount_wedding"]
+    				);
+    				$this->_name ='ldc_order_connection';
+    				$qc_id = $this->insert($arr_in);
     			
     			$ids = explode(',', $data['identity_wedding']);
+    			
+    			
     			foreach ($ids as $i){
-    				$arr_in = array(
-    						'Order_id'	=>	$id,
+    				$arr_ins = array(
+    						'oc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_wedding_'.$i],
-    						'qty'		=>	$data['qty_wedding_'.$i],
+    						//'qty'		=>	$data['qty_wedding_'.$i],
     				);
     				$this->_name ='ldc_order_detail';
-    				$this->insert($arr_in);
+    				$this->insert($arr_ins);
+    				
+    				$row_food_ind = $this->getFoodIngrediant($data['item_name_wedding_'.$i]);
+    				if(!empty($row_food_ind)){
+    					foreach ($row_food_ind as $row_ind){
+    						$deliver_day = $row_ind["deliver_day"];
+    						$do_date_wed = new DateTime($data["date_wedding"]);
+    						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
+    						$arr_d = array(
+    							'order_id'		=> $id,
+    							'oc_id'			=>	$qc_id,
+    							'type'			=>	1,
+    							'food_id'		=>	$data['item_name_wedding_'.$i],
+    							'item_id'		=>	$row_ind["item_id"],
+    							'qty'			=>	$row_ind["qty"],
+    							'su_id'			=>	$row_ind["su_id"],
+    							'measure_id'	=>	$row_ind["measure_id"],
+    							'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    						);
+    						$this->_name = "ldc_order_item";
+//     						$db->getProfiler()->setEnabled(true);
+    						$this->insert($arr_d);
+//     						Zend_Debug::dump($db->getProfiler()->getLastQueryProfile()->getQuery());
+//     						Zend_Debug::dump($db->getProfiler()->getLastQueryProfile()->getQueryParams());
+//     						$db->getProfiler()->setEnabled(false);
+    					}
+    				}
     			}
     		}
-    		
+    
     		if($data['identity_breakfast']!=""){
-    			$arr =array(
-    					'order_code'		=>	$data['qutoe_code'],
-    					'customer_id'	=>	$data['customer_name'],
+    			$arr_in = array(
+    					'order_id'		=>	$id,
     					'num_table'		=>	$data['t_number_breakfast'],
     					'type'			=>	2,
     					'price'			=>	$data['t_price_breakfast'],
@@ -67,29 +121,49 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     					'date_do'		=>	$data["date_breakfast"],
     					'time_do'		=>	$data["time_breakfast"],
     					'total_pay'		=>	$data["amount_breakfast"],
-    					//'balance'		=>	$data[""],
-    					'status'		=>	$data['status'],
-    					//'desc'			=>	$data['note']
     			);
-    			$this->_name ="ldc_order";
-    			$id = $this->insert($arr);
-    			 
+    			$this->_name ='ldc_order_connection';
+    			$qc_id = $this->insert($arr_in);
+    			
+    
     			$ids = explode(',', $data['identity_breakfast']);
     			foreach ($ids as $i){
-    				$arr_in = array(
-    						'Order_id'=>$id,
-    						'food_id'=>$data['item_name_breakfast_'.$i],
-    						'qty'=>$data['qty_breakfast_'.$i],
+    				$arr_ins = array(
+    						'oc_id'		=>	$qc_id,
+    						'food_id'	=>	$data['item_name_breakfast_'.$i],
+    						//'qty'		=>	$data['qty_breakfast_'.$i],
     				);
     				$this->_name ='ldc_order_detail';
-    				$this->insert($arr_in);
+    				$this->insert($arr_ins);
+    				
+    				$row_food_ind = $this->getFoodIngrediant($data['item_name_breakfast_'.$i]);
+    				if(!empty($row_food_ind)){
+    					foreach ($row_food_ind as $row_ind){
+    						$deliver_day = $row_ind["deliver_day"];
+    						$do_date_wed = new DateTime($data["date_breakfast"]);
+    						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
+    						$arr_d = array(
+    								'order_id'		=> $id,
+    								'oc_id'			=>	$qc_id,
+    								'type'			=>	2,
+    								'food_id'		=>	$data['item_name_breakfast_'.$i],
+    								'item_id'		=>	$row_ind["item_id"],
+    								'qty'			=>	$row_ind["qty"],
+    								'su_id'			=>	$row_ind["su_id"],
+    								'measure_id'	=>	$row_ind["measure_id"],
+    								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    						);
+    						$this->_name = "ldc_order_item";
+    						$this->insert($arr_d);
+    					}
+    				}
     			}
     		}
-    		
+    
     		if($data['identity_lunch']!=""){
-    			$arr =array(
-    					'order_code'		=>	$data['qutoe_code'],
-    					'customer_id'	=>	$data['customer_name'],
+    			
+    			$arr_in = array(
+    					'order_id'		=>	$id,
     					'num_table'		=>	$data['t_number_lunch'],
     					'type'			=>	3,
     					'price'			=>	$data['t_price_lunch'],
@@ -97,29 +171,49 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     					'date_do'		=>	$data["date_lunch"],
     					'time_do'		=>	$data["time_lunch"],
     					'total_pay'		=>	$data["amount_lunch"],
-    					//'balance'		=>	$data[""],
-    					'status'		=>	$data['status'],
-    					//'desc'			=>	$data['note']
     			);
-    			$this->_name ="ldc_order";
-    			$id = $this->insert($arr);
-    		
+    			$this->_name ='ldc_order_connection';
+    			$qc_id = $this->insert($arr_in);
+    			
+    
     			$ids = explode(',', $data['identity_lunch']);
     			foreach ($ids as $i){
-    				$arr_in = array(
-    						'Order_id'=>$id,
-    						'food_id'=>$data['item_name_lunch_'.$i],
-    						'qty'=>$data['qty_lunch_'.$i],
+    				$arr_ins = array(
+    						'oc_id'		=>$qc_id,
+    						'food_id'		=>$data['item_name_lunch_'.$i],
+    						//'qty'			=>$data['qty_lunch_'.$i],
     				);
     				$this->_name ='ldc_order_detail';
-    				$this->insert($arr_in);
+    				$this->insert($arr_ins);
+    				
+    				$row_food_ind = $this->getFoodIngrediant($data['item_name_lunch_'.$i]);
+    				if(!empty($row_food_ind)){
+    					foreach ($row_food_ind as $row_ind){
+    						$deliver_day = $row_ind["deliver_day"];
+    						$do_date_wed = new DateTime($data["date_lunch"]);
+    						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
+    						$arr_d = array(
+    								'order_id'		=> $id,
+    								'oc_id'			=>	$qc_id,
+    								'type'			=>	3,
+    								'food_id'		=>	$data['item_name_lunch_'.$i],
+    								'item_id'		=>	$row_ind["item_id"],
+    								'qty'			=>	$row_ind["qty"],
+    								'su_id'			=>	$row_ind["su_id"],
+    								'measure_id'	=>	$row_ind["measure_id"],
+    								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    						);
+    						$this->_name = "ldc_order_item";
+    						$this->insert($arr_d);
+    					}
+    				}
     			}
     		}
-	    	 
+    		 
     		if($data['identity_dinner']){
-    			$arr =array(
-    					'order_code'		=>	$data['qutoe_code'],
-    					'customer_id'	=>	$data['customer_name'],
+    			
+    			$arr_in = array(
+    					'order_id'		=>	$id,
     					'num_table'		=>	$data['t_number_dinner'],
     					'type'			=>	4,
     					'price'			=>	$data['t_price_dinner'],
@@ -127,26 +221,74 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     					'date_do'		=>	$data["date_dinner"],
     					'time_do'		=>	$data["time_dinner"],
     					'total_pay'		=>	$data["amount_dinner"],
-    					//'balance'		=>	$data[""],
-    					'status'		=>	$data['status'],
-    					//'desc'			=>	$data['note']
     			);
-    			$this->_name ="ldc_order";
-    			$id = $this->insert($arr);
-    		
+    			$this->_name ='ldc_order_connection';
+    			$qc_id = $this->insert($arr_in);
+    			
     			$ids = explode(',', $data['identity_dinner']);
     			foreach ($ids as $i){
-    				$arr_in = array(
-    						'Order_id'=>$id,
-    						'food_id'=>$data['item_name_dinner_'.$i],
-    						'qty'=>$data['qty_dinner_'.$i],
+    				$arr_ins = array(
+    						'oc_id'		=>$qc_id,
+    						'food_id'	=>$data['item_name_dinner_'.$i],
+    						//'qty'		=>$data['qty_dinner_'.$i],
     				);
-    				$this->_name ='ldc_order_detail';
-    				$this->insert($arr_in);
+    				$this->_name ='ldc_qorder_detail';
+    				$this->insert($arr_ins);
+    				
+    				$row_food_ind = $this->getFoodIngrediant($data['item_name_dinner_'.$i]);
+    				if(!empty($row_food_ind)){
+    					foreach ($row_food_ind as $row_ind){
+    						$deliver_day = $row_ind["deliver_day"];
+    						$do_date_wed = new DateTime($data["date_dinner"]);
+    						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
+    						$arr_d = array(
+    								'order_id'		=> $id,
+    								'oc_id'			=>	$qc_id,
+    								'type'			=>	4,
+    								'food_id'		=>	$data['item_name_dinner_'.$i],
+    								'item_id'		=>	$row_ind["item_id"],
+    								'qty'			=>	$row_ind["qty"],
+    								'su_id'			=>	$row_ind["su_id"],
+    								'measure_id'	=>	$row_ind["measure_id"],
+    								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    						);
+    						$this->_name = "ldc_order_item";
+    						$this->insert($arr_d);
+    					}
+    				}
     			}
     		}
-	    		
-	    	$db->commit();
+    		 
+    		if($data['identity_service']){
+    		
+    			$arr_in = array(
+    					'order_id'		=>	$id,
+    					//'num_table'		=>	$data['t_number_dinner'],
+    					'type'			=>	5,
+    					//'price'			=>	$data['t_price_dinner'],
+    					//'address'		=>	$data['address_dinner'],
+    					//'date_do'		=>	$data["date_dinner"],
+    					//'time_do'		=>	$data["time_dinner"],
+    					'total_pay'		=>	$data["amount_service"],
+    			);
+    			$this->_name ='ldc_order_connection';
+    			$qc_id = $this->insert($arr_in);
+    		
+    			$ids = explode(',', $data['identity_service']);
+    			foreach ($ids as $i){
+    				$arr_ins = array(
+    						'oc_id'		=>$qc_id,
+    						'food_id'	=>$data['item_name_ser_'.$i],
+    						'qty'		=>$data['qty_ser_'.$i],
+    						'price'		=>$data['qty_ser_'.$i],
+    						'note'		=>$data['qty_ser_'.$i],
+    		
+    				);
+    				$this->_name ='ldc_order_detail';
+    				$this->insert($arr_ins);
+    			}
+    		}
+    		$db->commit();
     	}catch (Exception $e){
     		$db->rollBack();
     		Application_Model_DbTable_DbUserLog::writeMessageError($e);
@@ -433,39 +575,43 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     
     function getAllOrder($search){
     	$db = $this->getAdapter();
+    	$start_date = $search["start_date"];
+    	$end_date = $search["end_date"];
     	$sql ="SELECT 
-				  q.`order_code` AS id,
-				  q.`order_code`,
-				  
-				  (SELECT CONCAT(c.`first_name`,' ',c.`last_name`) FROM `ldc_customers` AS c WHERE c.id=q.`customer_id`) AS customer,
-				  (SELECT c.`ceremony_date` FROM `ldc_customers` AS c WHERE c.id=q.`customer_id`) AS date_ceremony,
-				  (SELECT qs.`num_table` FROM `ldc_order` AS qs WHERE qs.`order_code`=q.`order_code` AND qs.`type`=1) AS wedding_food_table,
-    			 
-				  (SELECT qs.`num_table` FROM `ldc_order` AS qs WHERE qs.`order_code`=q.`order_code` AND qs.`type`=2) AS breakfast_food_table,
-				  (SELECT qs.`num_table` FROM `ldc_order` AS qs WHERE qs.`order_code`=q.`order_code` AND qs.`type`=3) AS lunch_food_table,
-				  (SELECT qs.`num_table` FROM `ldc_order` AS qs WHERE qs.`order_code`=q.`order_code` AND qs.`type`=4) AS dinner_food_table,
-    			 q.`status`
+				  o.`id`,
+				  o.`order_code`,
+				  c.`first_name`,
+				  c.`phone`,
+				  cc.`address_1`,
+				  cc.`ceremony_date` ,
+    			 o.`total_pay`,
+				  o.`status`
 				FROM
-				  `ldc_order` AS q WHERE 1
+				  `ldc_order` AS o,
+				  `ldc_customers` AS c,
+				  `ldc_customer_ceremony` AS cc 
+				WHERE o.`customer_id` = c.`id` 
+				  AND o.`ceremony_id` = cc.`id`
+    			AND cc.ceremony_date >= '$start_date' AND cc.ceremony_date <='$end_date' 
 				  ";
     	$where ="";
     	if($search['search_status']>-1){
-			$where.= " AND status = ".$search['search_status'];
+			$where.= " AND o.status = ".$search['search_status'];
 		}
 		if(!empty($search['adv_search'])){
 			$s_where=array();
 			$s_search=$search['adv_search'];
-			$s_where[]= " pro_no LIKE '%{$s_search}%'";
-			$s_where[]=" pro_name LIKE '%{$s_search}%'";
-			$s_where[]= " bar_code LIKE '%{$s_search}%'";
-			$s_where[]= " price LIKE '%{$s_search}%'";
+			$s_where[]= "  o.`order_code` LIKE '%{$s_search}%'";
+			$s_where[]=" c.`first_name` LIKE '%{$s_search}%'";
+			$s_where[]= " c.`phone` LIKE '%{$s_search}%'";
+			$s_where[]= " cc.`address_1` LIKE '%{$s_search}%'";
 			//$s_where[]= " cate LIKE '%{$s_search}%'";
 			$where.=' AND ('.implode(' OR ', $s_where).')';
 		}
-		$order = " ORDER BY id DESC";
-		$group_by ="GROUP BY q.`order_code`";
+		$order = " ORDER BY o.id DESC";
+		//$group_by ="GROUP BY q.`order_code`";
 		//echo $sql.$where;		
-		return $db->fetchAll($sql.$where.$group_by.$order);	
+		return $db->fetchAll($sql.$where.$order);	
     }
     function getOrderDetailByid($id,$type){
     	$db = $this->getAdapter();
@@ -533,7 +679,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     
     function getQuoteNo(){
     	$db = $this->getAdapter();
-    	$sql = "SELECT q.`quot_code` FROM `ldc_quotation` AS q WHERE q.`status`=1 GROUP BY q.`quot_code`";
+    	$sql = "SELECT q.id,q.`quot_code` FROM `ldc_quotation` AS q WHERE q.`status`=1 GROUP BY q.`quot_code`";
     	return $db->fetchAll($sql);
     }
     
@@ -544,15 +690,12 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
 				  c.`phone`,
 				  c.`email`,
 				  c.`ceremony_date`,
-				  c.`house_num`,
-				  c.`street`,
-				  (SELECT p.`province_name` FROM `ldc_province` AS p WHERE p.`id`=c.`province_id`) AS province,
-				  (SELECT p.`province_id` FROM `ldc_district` AS p WHERE p.`id`=c.`district`) AS district
+				  c.`address`
 				FROM
 				  `ldc_customers` AS c,
 				  `ldc_quotation` AS q 
 				WHERE c.`id` = q.`customer_id` 
-				  AND q.`quot_code` ='$code' 
+				  AND q.`id` ='$code' 
 				GROUP BY q.`quot_code`";
     	return $db->fetchRow($sql);
     }
