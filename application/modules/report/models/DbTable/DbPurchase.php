@@ -108,7 +108,7 @@ class Report_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 		}
 		
 		$order = " ORDER BY po.`su_id`,po.`deliver_date`,po.`deliver_address`,po.`item_id`";
-		echo $sql.$where.$order;
+		//echo $sql.$where.$order;
 		return $db->fetchAll($sql.$where.$order);
 	}
  }

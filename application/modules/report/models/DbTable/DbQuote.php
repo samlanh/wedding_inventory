@@ -30,7 +30,7 @@ class Report_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
 				  c.`phone`,
 				  c.`email`,
 				  c.`address` ,
-				  cc.`address` as ceremony_addr,
+				  cc.`address_1` as ceremony_addr,
 				  cc.`ceremony_date`
 				FROM
 				  `ldc_quotation` AS q,
