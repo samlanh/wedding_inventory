@@ -88,6 +88,14 @@ class Report_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 		$sql=" SELECT id,first_name As name FROM ldc_supplier WHERE `status`=1";
 		return $db->fetchAll($sql);
 	}
+	function getSupplierItem($id){
+		$db=$this->getAdapter();
+		$sql="SELECT id,pro_no,pro_name_en,pro_name_kh,price,category_id,
+		        (SELECT first_name FROM ldc_supplier WHERE ldc_supplier.id=ldc_product.unit) AS  unit,
+		       img_front,bar_code,`date`,`status`  
+		       FROM ldc_product WHERE unit=$id AND `status`=1";
+		return $db->fetchAll($sql);
+	}
 
  }
 

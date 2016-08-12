@@ -2,6 +2,7 @@
 <?php 
      $frm=$this->form_search;
      $tr = Application_Form_FrmLanguages::getCurrentlanguage();
+     
 ?>
 <style>
 tr.normal td, tr.alternate td {
@@ -82,7 +83,7 @@ tr.normal td, tr.alternate td {
 				?>
 			<tr class="normal"  style="font-size:10px; height: 18px;"​ >
 				<td class="items-no">&nbsp;<?php echo $num;?></td>
-				<td class="items" >&nbsp;<a  target="_blank" href="<?php echo $this->baseUrl();?>/report/index/rpt-item-food/id/<?php echo $rs["id"]?>"><?php echo $rs["food_code"]?></a></td>
+				<td class="items" >&nbsp;<a  target="blank" href="<?php echo $this->baseUrl();?>/report/index/rpt-item-food/id/<?php echo $rs["id"]?>"><?php echo $rs["food_code"]?></a></td>
 				<td class="items" >&nbsp;<?php echo $rs["name_kh"]?></td>
 				<td class="items">&nbsp;<?php echo $rs["price"]?></td>
 				<td class="items">&nbsp;<?php echo $status?></td>

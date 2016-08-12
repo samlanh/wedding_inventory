@@ -1,4 +1,4 @@
-<title>All Gategory Food</title>
+<title>Supplier Item</title>
 <?php 
 	$base_url = Application_Form_FrmMessage::getUrl("/");
 	//print_r($this->row_item);
@@ -24,7 +24,7 @@ tr.normal td, tr.alternate td {
 		   <!-- <img style="width:70%;" src="/ahs/trunk/public/images/logo.png"><br /><br > -->
 		</td>
 		<td align="center" width="44%">
-			<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">របាយការណ៏​​  គ្រឿងផ្សំម្ហូប</strong><br />
+			<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">របាយការណ៏​​ ​ អ្នកផ្គត់ផ្គុង​  គ្រឿងផ្សំម្ហូប​</strong><br />
         <span style="font-weight: bold;font-size: 11px;">From &nbsp;04-Aug-2016 &nbsp;To&nbsp; 04-Aug-2016</span><br /><br />
 		</td>
 		<td width="28%" align="right">
@@ -35,7 +35,7 @@ tr.normal td, tr.alternate td {
 		<table border="1px solide #000;"  id="exportExcel" width="100%" style=" font-size: 11px;">
 			<?php $old_food='';?>
 			<?php if(!empty($this->row_item)) foreach ($this->row_item As $key=>$rs){ $key=$key+1;?>
-			<?php if($rs['food_id']!=$old_food){?>
+			<?php if($rs['unit']!=$old_food){?>
 			<tr >
 				<td colspan="8" style="background-color:#CCCCCC;text-align: center;">
 				<style type="text/css">
@@ -45,19 +45,18 @@ tr.normal td, tr.alternate td {
 											.padd tr td{  text-align:center}
 											.padd tr th{  background-color: #ccc; }
 				</style>
-					<strong style="font-weight:bold;font-family: Arial Black;color:#3F51B5; font-size: 11px;font-family:'Khmer MEF2';padding: 20px;">Category Type( ប្រភេទអាហារ):<?php echo $rs['food_id'];?> </strong>
+					<strong style="font-weight:bold;font-family: Arial Black;color:#3F51B5; font-size: 11px;font-family:'Khmer MEF2';padding: 20px;"> Supplier Name( អ្នកផ្គត់ផ្គុង):<?php echo $rs['unit'];?> </strong>
 				</td>
 			</tr>
 			<tr style="font-size:10px; height: 18px;"​ >
 				<th >&nbsp;No.</th>
 				<th >&nbsp;Product No</th>
 				<th >&nbsp;Item Name</th>
-				<th >&nbsp;Qty</th>
 				<th >&nbsp;Price</th> 
 				<th >&nbsp;Amount</th>
 				<th >&nbsp;Status</th>
 			</tr>
-			<?php }$old_food=$rs['food_id'];?>
+			<?php }$old_food=$rs['unit'];?>
 			<?php if( $rs['status']==1){
 				     // $status='<img src="'.$base_url.'images/icon/apply2.png"/>';
 				      $status="Active";
@@ -69,10 +68,10 @@ tr.normal td, tr.alternate td {
 			<tr class="normal">
 				<td class="items-no">&nbsp;<?php echo $key;?></td>
 				<td class="items">&nbsp;<?php echo $rs["pro_no"]?></td>
-				<td class="items">&nbsp;<?php echo $rs["item_id"]?></td>
-				<td class="items">&nbsp;<?php echo $rs["qty"].",".$rs['measur_names'];?></td>
-				<td class="items">&nbsp;<?php echo $rs["price"]?></td>
-				<td class="items">&nbsp;<?php echo $rs["amount"]?></td>
+				<td class="items">&nbsp;<?php echo $rs["pro_name_kh"]?></td>
+				<td class="items">&nbsp;<?php echo $rs["price"];?></td>
+				<td class="items">&nbsp;<?php //echo $rs["price"]?></td>
+				<td class="items">&nbsp;<?php echo $rs["date"]?></td>
 				<td class="items">&nbsp;<?php echo $status?></td>
 			</tr>
 			<?php }?>

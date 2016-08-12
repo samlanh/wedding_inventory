@@ -69,6 +69,7 @@ class Report_indexController extends Zend_Controller_Action {
  	$this->view->supplier = $db_order->getSupplier();
  }
  function rptFoodAction(){
+ 	
            try {
            	    $sea_info=new Report_Model_DbTable_DbFoodGategory();
 	 			if($this->getRequest()->isPost()){
@@ -83,13 +84,14 @@ class Report_indexController extends Zend_Controller_Action {
 			 				'end_date'=>date('Y-m-d'));
 			 	}
 			 	$sea_info=$sea_info->getGategory($search);
-			 	$this->view->gategory=$sea_info;
+			 	$data=$this->view->gategory=$sea_info;
+			 
 			 	
 		 	}catch (Exception $e){
 		 		Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 		 	}
- 	$db = new Report_Model_DbTable_DbPurchase();
- 	$this->view->rows = $db->getPurchase();
+//  	$db = new Report_Model_DbTable_DbPurchase();
+//  	$this->view->rows = $db->getPurchase();
 //  	$gat=new Report_Model_DbTable_DbFoodGategory();
 //  	$this->view->gategory=$gat->getGategory();
  	
@@ -100,7 +102,7 @@ class Report_indexController extends Zend_Controller_Action {
  }
  function rptItemFoodAction(){
  	$db = new Report_Model_DbTable_DbPurchase();
- 	$this->view->rows = $db->getPurchase();
+ 	//$this->view->rows = $db->getPurchase();
  	$gat=new Report_Model_DbTable_DbFoodGategory();
  	$this->view->gategory=$gat->getGategory();
  	$id=$this->getRequest()->getParam('id');
@@ -178,6 +180,12 @@ class Report_indexController extends Zend_Controller_Action {
  	$form=$form->FrmSearchInfo();
  	Application_Model_Decorator::removeAllDecorator($form);
  	$this->view->form_search=$form;
+ }
+ function rptSupplierItemsAction(){
+ 	$id=$this->getRequest()->getParam('id');
+ 	$sup_item=new Report_Model_DbTable_DbCustomer();
+ 	$this->view->row_item=$sup_item->getSupplierItem($id);
+ 	
  }
 }
 
