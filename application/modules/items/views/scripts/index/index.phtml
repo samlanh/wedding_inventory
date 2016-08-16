@@ -19,7 +19,7 @@ dojo.ready(function(){
 new dijit.form.FilteringSelect({
     store: make_store,
     autoComplete: true,                        
-   // required: true,
+    required: false,
     id: "make",
     name: "make",    
     placeHolder:"Selected category",       
@@ -42,9 +42,9 @@ new dijit.form.FilteringSelect({
 		   <td><input id="make" /></td>
 		   <td>
 		        <select name="search_status" id="search_status" dojoType="dijit.form.FilteringSelect" class="fullside">
-		                <option value="-1" <?php if($status==-1){ echo"selected='selected'";} ?>>Status all</option>
-					    <option value="1" <?php if($status==1){ echo"selected='selected'";} ?> >Active</option>
-					    <option value="0"  <?php if($status==0){ echo"selected='selected'";} ?>>Deactive</option>
+		                <option value="-1" <?php if($this->search_status['search_status']==-1){ echo"selected='selected'";} ?>>Status all</option>
+					    <option value="1" <?php if($this->search_status['search_status']==1){ echo"selected='selected'";} ?> >Active</option>
+					    <option value="0"  <?php if($this->search_status['search_status']==0){ echo"selected='selected'";} ?>>Deactive</option>
 				</select>
 		   </td>
 		   <td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>

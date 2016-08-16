@@ -550,7 +550,8 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
   	$this->_name='ldc_item_cat';
   	$db = $this->getAdapter();
 	  	$arr = array(
-	  			'title'=>$data['txt_make'],
+	  			'name_kh'=>$data['txt_make'],
+	  			'name_en'=>'',
 	  			'status'=>1
 	  			
 	  	);

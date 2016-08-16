@@ -85,14 +85,14 @@ dojo.ready(function(){
 													</tr>
 													<tr>
 														<td><?php echo $tr->translate("Phone")?></td>
-														<td><input type="text" dojoType="dijit.form.TextBox" value=""  id="p_phone" name="p_phone" class="fullside" /></td>
+														<td><input type="text" dojoType="dijit.form.TextBox" value="" required="required"  id="p_phone" name="p_phone" class="fullside" /></td>
 														<td><?php echo $tr->translate("Email")?></td>
-														<td><input type="text" dojoType="dijit.form.TextBox" required="required" name="p_email"  id="p_email" value="" class="fullside"></td>
+														<td><input type="text" dojoType="dijit.form.TextBox" ​ name="p_email"  id="p_email" value="" class="fullside"></td>
 														
 													</tr>
 													<tr>
-														<td><?php echo $tr->translate("Posotion")?></td>
-														<td><input type="text" dojoType="dijit.form.TextBox" required="required" name="position"  id="position" value="" class="fullside"></td>
+														<td><?php echo $tr->translate("Position")?></td>
+														<td><input type="text" dojoType="dijit.form.TextBox"  name="position"  id="position" value="" class="fullside"></td>
 														<td><?php echo $tr->translate("STATUS")?></td>
 														<td><select dojoType='dijit.form.FilteringSelect' id="status" name="status" onchange="Showbranch();" class="fullside">
 													   			<option value="1">Active</option>
@@ -123,7 +123,7 @@ dojo.ready(function(){
 											</tr>
 											<tr>
 											   <td><?php echo $tr->translate("Email*")?></td>
-											   <td><input type="text" dojoType="dijit.form.TextBox" value="" required="required"  id="c_email" name="c_email" class="fullside" /></td>
+											   <td><input type="text" dojoType="dijit.form.TextBox" value="" id="c_email" name="c_email" class="fullside" /></td>
 											    <td><?php echo $tr->translate("BALANCE")?></td>
 											   <td><input type="text" dojoType="dijit.form.TextBox" value="0" required="required"  id="balance" name="balance" class="fullside" /></td>
 											</tr>

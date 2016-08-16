@@ -338,10 +338,9 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 		$row=$db->fetchRow($sql);
 		return $row;
 	}
-	public function getAllSupplier($search){
+	public function getAllSupplier($search=null){
 		$db = $this->getAdapter();
 		$sql ="SELECT p.id,p.`su_code`,p.`first_name`,
-    	p.`last_name`,
     	p.`p_phone`,p.`p_email`,p.`company_name`,p.note,
     	(SELECT name_en FROM `ldc_view` WHERE key_code = p.`status` AND `type`=2) AS `status` FROM `ldc_supplier` AS p WHERE 1";
 		$where = " ";
@@ -349,19 +348,19 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 			$s_where = array();
 			$s_search = addslashes(trim($search['title']));
 			$s_where[] = "p.`su_code` LIKE '%{$s_search}%'";
-			$s_where[] = " first_name LIKE '%{$s_search}%'";
-			$s_where[] = "p.p_phone LIKE '%{$s_search}%'";
-			$s_where[] = "p.p_email LIKE '%{$s_search}%'";
-			$s_where[] = " group_num LIKE '%{$s_search}%'";
-			$s_where[] = " house_num LIKE '%{$s_search}%'";
-			$s_where[] = " commune LIKE '%{$s_search}%'";
-			$s_where[] = " district LIKE '%{$s_search}%'";
+			$s_where[] = "p.`first_name` LIKE '%{$s_search}%'";
+			$s_where[] = "p.`p_phone` LIKE '%{$s_search}%'";
+			$s_where[] = "p.`p_email` LIKE '%{$s_search}%'";
+			$s_where[] = "p.`company_name` LIKE '%{$s_search}%'";
+			$s_where[] = "p.`note` LIKE '%{$s_search}%'";
+			
 			$where .=' AND ('.implode(' OR ',$s_where).')';
 		}
 		if($search['status_search']>-1){
 			$where.= " AND status = ".$search['status_search'];
 		}
 		$order=" ORDER BY id DESC";
+		//echo $sql.$where;
 		return $db->fetchAll($sql.$where.$order);
 	}
 	

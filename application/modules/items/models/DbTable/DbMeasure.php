@@ -20,18 +20,20 @@ class Items_Model_DbTable_DbMeasure extends Zend_Db_Table_Abstract
     			);
     	$this->insert($arr);
     }
-    public function getMeasure($search){
+    public function getMeasure($search=null){
     	$db=$this->getAdapter();
-    	$sql = 'SELECT p.id,p.`measure_name_kh`,p.`measure_name_en`,( SELECT c.name_en FROM ldc_view AS c WHERE c.`type`=2 AND c.key_code = p.`status` LIMIT 1) AS `status`,p.`description` FROM `ldc_measure` AS p WHERE 1';
+    	$sql = 'SELECT p.id,p.`measure_name_kh`,p.`measure_name_en`,p.`description`,( SELECT c.name_en FROM ldc_view AS c WHERE c.`type`=2 AND c.key_code = p.`status` LIMIT 1) AS `status` FROM `ldc_measure` AS p WHERE 1';
     	$where ="";
     	if($search['search_status']>-1){
     		$where.= " AND status = ".$search['search_status'];
     	}
     	if(!empty($search['adv_search'])){
     		$s_where=array();
-    		$s_search=$search['adv_search'];
-    		$s_where[]= " measure_name LIKE '%{$s_search}%'";
-    		$s_where[]=" description LIKE '%{$s_search}%'";
+    		$s_search = addslashes(trim($search['adv_search']));
+    		$s_where[]= " p.`measure_name_kh` LIKE '%{$s_search}%'";
+    		$s_where[]= " p.`measure_name_en` LIKE '%{$s_search}%'";
+    		$s_where[]= " p.`description` LIKE '%{$s_search}%'";
+    		 
     		$where.=' AND ('.implode(' OR ', $s_where).')';
     	}
     	$order = " ORDER BY p.id DESC";

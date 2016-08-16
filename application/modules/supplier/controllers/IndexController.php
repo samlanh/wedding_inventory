@@ -11,6 +11,7 @@ const REDIRECT_URL = '/supplier/index';
 			$db = new Group_Model_DbTable_DbClient();
 			if($this->getRequest()->isPost()){
 				$formdata=$this->getRequest()->getPost();
+				$this->view->row_search=$formdata;
 				$search = array(
 						'title' => $formdata['title'],
 						'status_search'=>$formdata['status_search'],
@@ -25,7 +26,7 @@ const REDIRECT_URL = '/supplier/index';
 			
 			$rs_rows= $db->getAllSupplier($search);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Supplier Code","First Name","Last Name","Tel","Email","Company","Company Adress","status");
+			$collumns = array("Supplier Code","First Name","Tel","Email","Company","Company Adress","status");
 			$link=array(
 					'module'=>'supplier','controller'=>'index','action'=>'edit',
 			);

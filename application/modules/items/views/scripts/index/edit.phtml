@@ -145,7 +145,7 @@ dojo.ready(function(){
 													<thead>
 														<tr>
 															<td colspan="8" align="left">
-																<input type="button" label="Add Row<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+																<input type="button" label="Add Supplier<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
 															 		iconClass="dijitIconEditProperty" onclick="addRow();" />
 																<input type="hidden" name="identity" id="identity"  value="" >
 															 </td>
@@ -394,7 +394,8 @@ dojo.ready(function(){
 dojo.require("dijit.form.Textarea"); 
 </script>
 <script type="text/javascript">
-var url_make = '<?php echo $this->url(array('module'=>'items','controller'=>'model','action'=>'add-make')); ?>';
+var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
+var url_make = '<?php echo $this->url(array('module'=>'items','controller'=>'index','action'=>'add-make')); ?>';
 function addMake(){
 	if(dijit.byId('frm_make').validate()){
 		dojo.xhrPost({

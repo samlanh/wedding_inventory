@@ -15,6 +15,7 @@ class Items_indexController extends Zend_Controller_Action {
 			$db_make = new Items_Model_DbTable_DbVehicle();
 			if($this->getRequest()->isPost()){
 				$search=$this->getRequest()->getPost();
+				$this->view->search_status=$search;
 				//print_r($search);exit();
 			}
 			else{
@@ -30,7 +31,7 @@ class Items_indexController extends Zend_Controller_Action {
 			$glClass = new Application_Model_GlobalClass();
 			$rows = $glClass->getImgActive($rows, BASE_URL, true);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("PRODUCT NO","PRODUCT NAME KH","PRODUCT NAME EN","BAR CODE","PRICE","CATEGORY","STATUS");
+			$collumns = array("PRODUCT NO","PRODUCT NAME ","BAR CODE","PRICE","CATEGORY","STATUS");
 			$link=array(
 					'module'=>'items','controller'=>'index','action'=>'edit',
 			);
@@ -43,7 +44,7 @@ class Items_indexController extends Zend_Controller_Action {
 		$this->view->rs = $rows;
 		$db = new Application_Model_DbTable_DbGlobal();
 		$model = $db->getAllItemCat();
-		//array_unshift($model, array ( 'id' => -1, 'name' => 'Selected Make') );
+		array_unshift($model, array ( 'id' => -1, 'name' => 'Selected Category') );
 		$this->view->all_make=$model;
 		
 	}

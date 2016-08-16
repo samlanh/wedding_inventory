@@ -124,7 +124,7 @@ class Items_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     
     function getAllproduct($search){
     	$db = $this->getAdapter();
-    	$sql ="SELECT id,`pro_no`,`pro_name_kh`,`pro_name_en`,`bar_code`,`price`,(SELECT CONCAT(name_kh,' ',name_en) FROM `ldc_item_cat` WHERE id = category_id ) AS `cate`,`status` FROM `ldc_product` WHERE 1";
+    	$sql ="SELECT id,`pro_no`,`pro_name_kh`,`bar_code`,`price`,(SELECT CONCAT(name_kh,' ',name_en) FROM `ldc_item_cat` WHERE id = category_id ) AS `cate`,`status` FROM `ldc_product` WHERE 1";
     	$where ="";
     	if($search['search_status']>-1){
 			$where.= " AND status = ".$search['search_status'];
@@ -134,7 +134,7 @@ class Items_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
 		}
 		if(!empty($search['adv_search'])){
 			$s_where=array();
-			$s_search=$search['adv_search'];
+			$s_search = addslashes(trim($search['adv_search']));
 			$s_where[]= " pro_no LIKE '%{$s_search}%'";
 			$s_where[]=" pro_name_kh LIKE '%{$s_search}%'";
 			$s_where[]=" pro_name_en LIKE '%{$s_search}%'";
@@ -144,7 +144,7 @@ class Items_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
 			$where.=' AND ('.implode(' OR ', $s_where).')';
 		}
 		$order = " ORDER BY id DESC";
-		echo $sql.$where;		
+		//echo $sql.$where;		
 		return $db->fetchAll($sql.$where.$order);	
     }
     function getProductByid($id){

@@ -52,9 +52,21 @@ class Items_Model_DbTable_DbMake extends Zend_Db_Table_Abstract
     function getAllMake($search=null){
     	$db = $this->getAdapter();
     	$sql='SELECT id,name_en,name_kh,img_feature,(SELECT name_en FROM ldc_view WHERE TYPE=2 AND key_code=status) AS status
-    	FROM ldc_item_cat WHERE status=1 ';
+    	FROM ldc_item_cat WHERE ';
+    	$where=" 1";
+    	if(!empty($search['title'])){
+    		$s_where=array();
+    		$s_search = addslashes(trim($search['title']));
+    		$s_where[]= " name_en LIKE '%{$s_search}%'";
+    		$s_where[]= " name_kh LIKE '%{$s_search}%'";
+    		$where.=' AND ('.implode(' OR ', $s_where).')';
+    	}
+    	if($search['status_search']>-1){
+    		$where.= " AND status = ".$search['status_search'];
+    	}
     	$order=' ORDER BY id DESC';
-        return $db->fetchAll($sql.$order);
+    	//echo $sql.$where;
+        return $db->fetchAll($sql.$where.$order);
     }
     
  function getMakeById($id){

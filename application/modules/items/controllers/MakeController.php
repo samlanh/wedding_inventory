@@ -12,20 +12,36 @@ class Items_makeController extends Zend_Controller_Action {
     	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
 	}
 	public function indexAction(){
-		$db_make = new Items_Model_DbTable_DbMake();
-		$rows=$db_make->getAllMake();
+		
         try{
+        	$db_make = new Items_Model_DbTable_DbMake();
+        	if($this->getRequest()->isPost()){
+        		$search=$this->getRequest()->getPost();
+        		//print_r($search);exit();
+        	}
+        	else{
+        		$search = array(
+        				'title' 	=> '',
+        				'status_search' =>-1,
+        		);
+        	}
+        $rows=$db_make->getAllMake($search);
         $list = new Application_Form_Frmtable();
         $collumns = array("NAME EN","NAME KH","IMAGE FEATURE","STATUS");
         $link=array(
         		'module'=>'items','controller'=>'make','action'=>'edit',
         );
+        
         $this->view->rows = $rows;
         $this->view->list=$list->getCheckList(0, $collumns, $rows,array('name_en'=>$link,'name_kh'=>$link));
         }catch (Exception $e){
         	Application_Form_FrmMessage::message("Application Error");
         	Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
         }
+        $form=new Items_Form_FrmSearchInfo();
+        $form=$form->FrmDepartment();
+        Application_Model_Decorator::removeAllDecorator($form);
+        $this->view->form_search=$form;
         
 	}
 	

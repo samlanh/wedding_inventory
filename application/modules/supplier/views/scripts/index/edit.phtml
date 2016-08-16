@@ -59,12 +59,12 @@ dojo.ready(function(){
 														<td><?php echo $tr->translate("Phone")?></td>
 														<td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->supplier["p_phone"];?>"  id="p_phone" name="p_phone" class="fullside" /></td>
 														<td><?php echo $tr->translate("Email")?></td>
-														<td><input type="text" dojoType="dijit.form.TextBox" required="required" name="p_email"  id="p_email" value="<?php echo $this->supplier["p_email"];?>" class="fullside"></td>
+														<td><input type="text" dojoType="dijit.form.TextBox"   name="p_email"  id="p_email" value="<?php echo $this->supplier["p_email"];?>" class="fullside"></td>
 														
 													</tr>
 													<tr>
 														<td><?php echo $tr->translate("Posotion")?></td>
-														<td><input type="text" dojoType="dijit.form.TextBox" required="required" name="position"  id="position" value="<?php echo $this->supplier["position"];?>" class="fullside"></td>
+														<td><input type="text" dojoType="dijit.form.TextBox"   name="position"  id="position" value="<?php echo $this->supplier["position"];?>" class="fullside"></td>
 														<td><?php echo $tr->translate("STATUS")?></td>
 														<td><select dojoType='dijit.form.FilteringSelect' id="status" name="status" onchange="Showbranch();" class="fullside">
 													   			<option value="1" <?php if($this->supplier['status']==1) {echo "selected='selected'";} ?>>Active</option>
@@ -95,7 +95,7 @@ dojo.ready(function(){
 											</tr>
 											<tr>
 												<td><?php echo $tr->translate("Email*")?></td>
-											   <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->supplier['c_email'];?>" required="required"  id="c_email" name="c_email" class="fullside" /></td>
+											   <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->supplier['c_email'];?>"    id="c_email" name="c_email" class="fullside" /></td>
 											    <td><?php echo $tr->translate("BALANCE")?></td>
 											   <td><input type="text" dojoType="dijit.form.TextBox" value="0" required="required"  id="balance" name="balance" class="fullside" value="<?php echo $this->supplier["balance"];?>"/></td>
 											</tr>

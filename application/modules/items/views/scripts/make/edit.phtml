@@ -25,14 +25,15 @@
 							<td align="center" valign="top">
 								<table style="margin: 0 auto; width:100%;" cellspacing="10">
 									<tr>
-										<td>Name In English</td>
-										<input name="id" value="<?php echo $row['id']?>" type="hidden">
-										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="name_en" name="name_en" value="<?php echo $row['name_en']?>" type="text" required="required"></td>
-									</tr>
-									<tr>
 										<td>Name In Khmer</td>
 										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="name_kh" name="name_kh" value="<?php echo $row['name_kh']?>" type="text" required="required"></td>
 									</tr>
+									<tr>
+										<td>Name In English</td>
+										<input name="id" value="<?php echo $row['id']?>" type="hidden">
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="name_en" name="name_en" value="<?php echo $row['name_en']?>" type="text" ></td>
+									</tr>
+									
 									<tr>
 										<td>Status</td>
 										<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true" missingMessage="Invalid Module!" class="fullside">

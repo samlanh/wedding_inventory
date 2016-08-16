@@ -1,7 +1,7 @@
 <?php $tr = Application_Form_FrmLanguages::getCurrentlanguage();?>
 <?php
 	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
-	echo $this->headTitle($tr->translate("Customer List"));
+	echo $this->headTitle($tr->translate("Supplier List"));
 ?>	<script type="dojo/method" event="onSubmit">			
 	if(this.validate()) {
 				return true;
@@ -15,8 +15,8 @@ dojo.require("dijit.form.TextBox");
 //require(["dojo/parser", "dijit/form/TimeTextBox"]);
 </script>
 <?php //$frm =  $this->frm_search;?>
-<form id="list" name="list" action="<?php echo $this->url(array('module'=>'group','controller'=>'index','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
- 		<input type="text" dojoType="dijit.form.TextBox" name="title" id="title" placeholder="Advand search" />
+<form id="list" name="list" action="<?php echo $this->url(array('module'=>'supplier','controller'=>'index','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
+ 		<input type="text" dojoType="dijit.form.TextBox" name="title" id="title" placeholder="Advand search" value="<?php echo $this->row_search['title']?>" />
  		<select name="company" id="company" dojoType="dijit.form.FilteringSelect">
  			<option value="-1">Company</option>
  			<?php if (!empty($this->company)) foreach($this->company as $row){?>
@@ -24,9 +24,9 @@ dojo.require("dijit.form.TextBox");
  			<?php }?>
  		</select>
  		<select name="status_search" id="status_search" dojoType="dijit.form.FilteringSelect">
- 			<option value="-1">Status</option>
- 			<option value="1">Active</option>
- 			<option value="0">Deactive</option>
+ 			<option value="-1">Status All</option>
+ 			<option value="1" <?php if($this->row_search['status_search']==1) echo 'selected="selected"';?> >Active</option>
+ 			<option value="0" <?php if($this->row_search['status_search']==0) echo 'selected="selected"';?> >Deactive</option>
  		</select>
   <?php //echo $frm->getElement("title");?>
   <?php //echo $frm->getElement('status_search');?>
