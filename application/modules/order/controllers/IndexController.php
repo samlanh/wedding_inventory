@@ -1,8 +1,8 @@
 <?php
 class Order_indexController extends Zend_Controller_Action {
 	private $activelist = array('áž˜áž·áž“áž”áŸ’ážšáž¾â€‹áž”áŸ’ážšáž¶ážŸáŸ‹', 'áž”áŸ’ážšáž¾â€‹áž”áŸ’ážšáž¶ážŸáŸ‹');
-	const REDIRECT_URL_ADD ='/food/index/add';
-	const REDIRECT_URL_ADD_CLOSE ='/food/index/';
+	const REDIRECT_URL_ADD ='/order/index/add';
+	const REDIRECT_URL_ADD_CLOSE ='/order/index/';
     public function init()
     {    	
      /* Initialize action controller here */
@@ -61,10 +61,10 @@ class Order_indexController extends Zend_Controller_Action {
 			try {
 				if(isset($data['save_new'])){
 					$db_order->addOrder($data);
-					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
 				}else if(isset($data['save_close'])){
 					$db_order->addOrder($data);
-					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
 				}
 			}catch (Exception $e) {
 				//print_r($e->getMessage());exit();
@@ -157,6 +157,7 @@ class Order_indexController extends Zend_Controller_Action {
 		$this->view->service = $db_order->getAllService();
 		
 		$this->view->food = $db->getFood();
+		$this->view->food_cat = $db_order->getFoodCat();
 		$this->view->Customer_name = $db->getCustomer(1);
 		$this->view->Customer_code = $db->getCustomer(2);
 	}

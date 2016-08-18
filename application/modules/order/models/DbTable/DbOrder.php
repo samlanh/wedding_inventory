@@ -54,6 +54,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
 				  oc.`time_do`,
 				  oc.`total_pay`,
 				  od.`food_id`,
+				  od.cat_id,
 				  od.`qty`,
 				  od.`price` AS price_d
 				FROM
@@ -103,6 +104,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'oc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_wedding_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_wedding_'.$i],
     						//'qty'		=>	$data['qty_wedding_'.$i],
     				);
     				$this->_name ='ldc_order_detail';
@@ -156,6 +158,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'oc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_breakfast_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_breakfast_'.$i],
     						//'qty'		=>	$data['qty_breakfast_'.$i],
     				);
     				$this->_name ='ldc_order_detail';
@@ -204,8 +207,9 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     			$ids = explode(',', $data['identity_lunch']);
     			foreach ($ids as $i){
     				$arr_ins = array(
-    						'oc_id'		=>$qc_id,
+    						'oc_id'			=>$qc_id,
     						'food_id'		=>$data['item_name_lunch_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_lunch_'.$i],
     						//'qty'			=>$data['qty_lunch_'.$i],
     				);
     				$this->_name ='ldc_order_detail';
@@ -255,6 +259,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'oc_id'		=>$qc_id,
     						'food_id'	=>$data['item_name_dinner_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_dinner_'.$i],
     						//'qty'		=>$data['qty_dinner_'.$i],
     				);
     				$this->_name ='ldc_qorder_detail';
@@ -389,6 +394,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'oc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_wedding_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_wedding_'.$i],
     						//'qty'		=>	$data['qty_wedding_'.$i],
     				);
     				$this->_name ='ldc_order_detail';
@@ -442,6 +448,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'oc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_breakfast_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_breakfast_'.$i],
     						//'qty'		=>	$data['qty_breakfast_'.$i],
     				);
     				$this->_name ='ldc_order_detail';
@@ -492,6 +499,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'oc_id'			=>$qc_id,
     						'food_id'		=>$data['item_name_lunch_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_lunch_'.$i],
     						//'qty'			=>$data['qty_lunch_'.$i],
     				);
     				$this->_name ='ldc_order_detail';
@@ -541,6 +549,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'oc_id'		=>$qc_id,
     						'food_id'	=>$data['item_name_dinner_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_dinner_'.$i],
     						//'qty'		=>$data['qty_dinner_'.$i],
     				);
     				$this->_name ='ldc_qorder_detail';
