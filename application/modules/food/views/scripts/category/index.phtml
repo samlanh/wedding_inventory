@@ -20,10 +20,10 @@
  </form>
 <table width="100%" border='1' style="border:1px solid #ccc; border-collapse:collapse;">
 	  <tr>
-	    <th class="tdheader header">No.</th>
-	    <th class="tdheader header">Name In Khmer</th>
-	    <th class="tdheader header">Name In Engkish</th>
-	    <th class="tdheader header">Status</th>
+	    <th class="tdheader header"><?php echo $tr->translate("N_O");?></th>
+	    <th class="tdheader header"><?php echo $tr->translate("NAME_CATEGORY_KH");?></th>
+	    <th class="tdheader header"><?php echo $tr->translate("NAME_CATEGORY_EN");?></th>
+	    <th class="tdheader header"><?php echo $tr->translate("STATUS");?></th>
 	  </tr>
 	  <?php 
 		if(!empty($this->rows))foreach ($this->rows as $key =>$row){

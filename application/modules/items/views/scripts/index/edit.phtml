@@ -80,20 +80,20 @@ dojo.ready(function(){
 	<tr>
 		<td>
 		<fieldset>
-					<legend ><strong>Add Product</strong></legend>
+					<legend ><strong><?php echo $this->tr->translate("ADD_ITEM");?></strong></legend>
 							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 							    <tr>
 							    	<td></td>
 							    	<td></td>
-							    	<td>Item No.</td>
+							    	<td><?php echo $this->tr->translate("ITEM_NO");?></td>
 									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside" id="product_no" name="product_no" value="<?php echo $this->product['pro_no'];?>" type="text" required="true"></td>
 							    </tr>
 							    <tr>
-									<td>Item Name</td>
+									<td><?php echo $this->tr->translate("ITEM_NAME");?></td>
 									<td><input tabindex="2"dojoType="dijit.form.ValidationTextBox" class="fullside" id="product_name_kh" name="product_name_kh" value="<?php echo $this->product['pro_name_kh'];?>" type="text" required="true"></td>	
 <!-- 									<td>Item Name In English</td> -->
 <!--									<td><input tabindex="3"dojoType="dijit.form.ValidationTextBox" class="fullside" id="product_name_en" name="product_name_en" value="<?php //echo $this->product['pro_name_en'];?>" type="text" required="true"></td>-->	
-									<td>Category</td>
+									<td><?php echo $this->tr->translate("MANAGE_CATEGORY");?></td>
 									<td>
 										<select tabindex="24" name="make" id="make" dojoType="dijit.form.FilteringSelect" class="fullside" onchange="addCate();">
 										   <option value="-1">Add New</option>
@@ -104,7 +104,7 @@ dojo.ready(function(){
 									</td>
 								</tr>
 								<tr>
-									<td>Measure :</td>
+									<td><?php echo $this->tr->translate("MANAGE_MEASURE");?></td>
 									<td>
 										<select tabindex="24" name="unit" id="unit" dojoType="dijit.form.FilteringSelect" class="fullside">
 										   <?php if(!empty($this->unit)) foreach ($this->unit as $row){?>
@@ -112,11 +112,11 @@ dojo.ready(function(){
 										    <?php  } ?>
 										</select>
 									</td>
-									<td>Price ($)</td>
+									<td><?php echo $this->tr->translate("PRICE");?> ($)</td>
 									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="price" name="price" value="<?php echo $this->product['price'];?>" type="text"></td>	
 								</tr>
 								<tr>
-									<td>Status</td>
+									<td><?php echo $this->tr->translate("STATUS");?></td>
 									<td>
 									    <select tabindex="24" name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
 										    <?php if(!empty($this->status)) foreach($this->status as $row){?>
@@ -124,13 +124,13 @@ dojo.ready(function(){
 										    <?php }?>
 										</select>
 									</td>
-									<td>Note:</td>
+									<td><?php echo $this->tr->translate("NOTE");?></td>
 									<td>
 										<textarea class="fullside" name="note" value="<?php echo $this->product['description'];?>"> </textarea>
 									</td>
 								</tr>
 								<tr class="bg">
-									<td>Product Image 268x327px</td>
+									<td><?php echo $this->tr->translate("IMG");?> 268x327px</td>
 									<td>
 										<input type="hidden" name="old_front" value="<?php echo $this->product['img_front'];?>"/>
 													<img src="<?php echo $this->baseUrl()."/images/product/".$this->product['img_front'];?>" height="30px" />
@@ -140,12 +140,12 @@ dojo.ready(function(){
 							   <tr>
 									<td colspan="4">
 										<fieldset>
-											<legend>Supplier</legend>
+											<legend><?php echo $this->tr->translate("SUPPLIER");?></legend>
 												<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 													<thead>
 														<tr>
 															<td colspan="8" align="left">
-																<input type="button" label="Add Supplier<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+																<input type="button" label=" <?php echo $this->tr->translate("ADD_SUPPLIER");?>" dojoType="dijit.form.Button" 
 															 		iconClass="dijitIconEditProperty" onclick="addRow();" />
 																<input type="hidden" name="identity" id="identity"  value="" >
 															 </td>
@@ -455,9 +455,9 @@ function oldRow(){
 	col++;no++;
 	var templates = '';
 	if(title!=1){
-		tem+='<th>DEL</th>';
-		tem+='<th>N_O</th>';
-		tem+='<th >COMPANY_NAME</th>';
+		tem+='<th><?php echo $this->tr->translate("DEL");?></th>';
+		tem+='<th><?php echo $this->tr->translate("N_O");?></th>';
+		tem+='<th ><?php echo $this->tr->translate("COMPANY_NAME");?></th>';
 		dojo.query("#head-title").append(tem);
 		title=1;
 	}
@@ -493,9 +493,9 @@ function addRow() {
 	col++;no++;
 	template='';
 	if(title!=1){
-		temp+='<th>DEL</th>';
-		temp+='<th>N_O</th>';
-		temp+='<th>COMPANY_NAME</th>';
+		temp+='<th><?php echo $this->tr->translate("DEL");?></th>';
+		temp+='<th><?php echo $this->tr->translate("N_O");?></th>';
+		temp+='<th><?php echo $this->tr->translate("COMPANY_NAME");?></th>';
 		dojo.query("#head-title").append(temp);
 		title=1;
 	}

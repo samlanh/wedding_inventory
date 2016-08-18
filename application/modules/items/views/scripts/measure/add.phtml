@@ -20,18 +20,18 @@ require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 	<tr>
 		<td>
 		<fieldset>
-					<legend ><strong>Add Measure</strong></legend>
+					<legend ><strong><?php echo  $this->tr->translate("ADD_MEASURE");?> </strong></legend>
 							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 							    <tr>
-									<td>Measure Name In Khmer</td>
+									<td><?php echo  $this->tr->translate("MEASURE_NAME_KH");?> </td>
 									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside"  id="measure_name_kh" name="measure_name_kh" value="" type="text" required="true"></td>
 								</tr>
 								<tr>
-									<td>Measure Name In English</td>
+									<td><?php echo  $this->tr->translate("MEASURE_NAME_EN");?> </td>
 									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside"  id="measure_name_en" name="measure_name_en" value="" type="text" ​></td>
 								</tr>
 								<tr>
-									<td>Status</td>
+									<td><?php echo  $this->tr->translate("STATUS");?> </td>
 									<td>
 									    <select tabindex="24" name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
 										    <?php if(!empty($this->status)) foreach($this->status as $row){?>
@@ -41,7 +41,7 @@ require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 									</td>
 								</tr>
 								 <tr>
-									<td>Description</td>
+									<td><?php echo  $this->tr->translate("DESCRIPTION");?> </td>
 									<td><input tabindex="1" dojoType="dijit.form.TextBox" class="fullside"  id="description" name="description" value="" type="text"></td>
 								</tr>
 								<tr>

@@ -71,31 +71,31 @@ dojo.ready(function(){
 	<tr>
 		<td>
 		<fieldset>
-					<legend ><strong>Add Food</strong></legend>
+					<legend ><strong><?php echo $this->tr->translate("ADD_FOOD")?></strong></legend>
 					<div id="mainTabContainer" style="max-width:1110px; height: 540px;" dojoType="dijit.layout.TabContainer" region="center"  >
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Food Info">
+						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("FOOD_INFO")?>">
 							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 							    <tr>
 							    	<td></td>
 							    	<td></td>
-							    	<td>Food No.</td>
+							    	<td><?php echo $this->tr->translate("FOOD_NO")?></td>
 									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside" readonly="readonly" id="food_no" name="food_no" value="<?php echo $this->porid ?>" type="text" required="true"></td>
 							    </tr>
 							    <tr>
-									<td>Food Name In Khmer</td>
+									<td><?php echo $this->tr->translate("FOOD_NAME")?></td>
 									<td><input tabindex="2"dojoType="dijit.form.ValidationTextBox" class="fullside" id="name_kh" name="name_kh" value="" type="text" required="true"></td>	
 <!-- 									<td>Food Name In English</td> -->
 <!-- 									<td><input tabindex="3"dojoType="dijit.form.ValidationTextBox" class="fullside" id="name_kh" name="name_kh" value="" type="text" required="true"></td>	 -->
-									<td>Category</td>
+									<td><?php echo $this->tr->translate("MANAGE_CATEGORY")?></td>
 									<td><input id="make" /></td>
 								</tr>
 								<tr>
-									<td>Note</td>
+									<td><?php echo $this->tr->translate("NOTE")?></td>
 <!-- 									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="price" name="price" value="" type="text"></td>	 -->
 									<td>
 											<textarea class="fullside" name="note"> </textarea>
 									</td>
-									<td>Status</td>
+									<td><?php echo $this->tr->translate("STATUS")?></td>
 									<td>
 									    <select tabindex="24" name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
 										    <?php if(!empty($this->status)) foreach($this->status as $row){?>
@@ -105,18 +105,18 @@ dojo.ready(function(){
 									</td>
 								</tr>
 								<tr class="bg">
-									<td>Food Image 268x327px</td>
+									<td><?php echo $this->tr->translate("IMG")?></td>
 									<td valign="middle"><input type="file" name="front" id="front" class="fullside"/></td>
 								</tr>
 							   <tr>
 									<td colspan="4">
 										<fieldset>
-												<legend>Ingredients</legend>
+												<legend><?php echo $this->tr->translate("INGREDIENTS")?></legend>
 												<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 													<thead>
 														<tr>
 															<td colspan="8" align="left">
-																<input type="button" label="Add Row<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+																<input type="button" label="<?php echo $this->tr->translate("ADD_INGREDIENTS");?>" dojoType="dijit.form.Button" 
 															 		iconClass="dijitIconEditProperty" onclick="addRow();" />
 																<input type="hidden" name="identity" id="identity"  value="" >
 															 </td>
@@ -233,13 +233,13 @@ function addRow() {
 		col++;no++;
 		template='';
 		if(title!=1){
-			temp+='<th>DEL</th>';
-			temp+='<th>N_O</th>';
-			temp+='<th >PRODUCT_NAME</th>';
-			temp+='<th>PRICE</th>';
-			temp+='<th>QTY</th>';
-			temp+='<th>Supplier</th>';
-			temp+='<th>Deliver Day</th>';
+			temp+='<th><?php echo $this->tr->translate("DEL")?></th>';
+			temp+='<th><?php echo $this->tr->translate("N_O")?></th>';
+			temp+='<th ><?php echo $this->tr->translate("ITEM_NAME")?></th>';
+			temp+='<th><?php echo $this->tr->translate("PRICE")?></th>';
+			temp+='<th><?php echo $this->tr->translate("QTY")?></th>';
+			temp+='<th><?php echo $this->tr->translate("SUPPLIER")?></th>';
+			temp+='<th><?php echo $this->tr->translate("DELIVER_DAY")?> </th>';
 			dojo.query("#head-title").append(temp);
 			title=1;
 		}

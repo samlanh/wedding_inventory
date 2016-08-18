@@ -4,6 +4,7 @@
      $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
      $row=$this->row;
      $status_view=$this->status_view;
+     $tr = Application_Form_FrmLanguages::getCurrentlanguage();
     // print_r($status_view);exit();
 ?>
 <title><?php echo $this->tr->translate("CATEGORY")?></title>
@@ -19,23 +20,23 @@
 		<tr>
 			<td>
 				<fieldset>
-					<legend align="center"><strong>Add Category</strong></legend>
+					<legend align="center"><strong><?php echo $tr->translate("ADD_CATEGORY");?></strong></legend>
 					<table cellspacing="20" width="100%" >
 						<tr>
 							<td align="center" valign="top">
 								<table style="margin: 0 auto; width:100%;" cellspacing="10">
 									<tr>
-										<td>Name In Khmer</td>
+										<td><?php echo $tr->translate("NAME_CATEGORY_KH");?></td>
 										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="name_kh" name="name_kh" value="<?php echo $row['name_kh']?>" type="text" required="required"></td>
 									</tr>
 									<tr>
-										<td>Name In English</td>
+										<td><?php echo $tr->translate("NAME_CATEGORY_EN");?></td>
 										<input name="id" value="<?php echo $row['id']?>" type="hidden">
 										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="name_en" name="name_en" value="<?php echo $row['name_en']?>" type="text" ></td>
 									</tr>
 									
 									<tr>
-										<td>Status</td>
+										<td><?php echo $tr->translate("STATUS");?></td>
 										<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true" missingMessage="Invalid Module!" class="fullside">
 											<?php foreach ($status_view as $rs){?>
 												<option value="<?php echo $rs['key_code'];?>" label="Active" selected="selected"><?php echo $rs['name_en'];?></option>
@@ -44,7 +45,7 @@
 										</td>
 									</tr>
 									<tr class="bg">
-									<td>Feature Image 234x350px</td>
+									<td><?php echo $tr->translate("IMG");?> 234x350px</td>
 									
 									<td valign="middle">
 										<input type="hidden" name="old_photo" value="<?php echo $row['img_feature'];?>"/>

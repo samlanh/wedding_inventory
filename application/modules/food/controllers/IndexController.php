@@ -31,7 +31,7 @@ class Food_indexController extends Zend_Controller_Action {
 			$rows = $glClass->getImgActive($rows, BASE_URL, true);
 			$list = new Application_Form_Frmtable();
 			//$list->showAddBuntton($url_new);
-			$collumns = array("FOOD NO","FOOD NAME","CATEGORY","STATUS");
+			$collumns = array("FOOD_NO","FOOD_NAME","MANAGE_CATEGORY","STATUS");
 			$link=array(
 					'module'=>'food','controller'=>'index','action'=>'edit',
 			);

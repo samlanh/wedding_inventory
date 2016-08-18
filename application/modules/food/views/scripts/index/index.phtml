@@ -47,7 +47,7 @@ new dijit.form.FilteringSelect({
 <form id="list" name="list" action="<?php echo $this->url(array('module'=>'food','controller'=>'index','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
    <table>
 	  <tr> 
-		   <td><input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $this->translate("Search");?>" type="text" ></td>
+		   <td><input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $tr->translate("SEARCH");?>" type="text" ></td>
 		   <td><input id="make" /></td>
 		   <td>
 		         <td> <?php echo $frm->getElement("status_search");?></td>
