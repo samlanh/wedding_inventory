@@ -68,6 +68,8 @@ class Report_indexController extends Zend_Controller_Action {
  	$this->view->rows = $db->getPurchaseDetailById($id,$su_id);
  	$this->view->supplier = $db_order->getSupplier();
  }
+ 
+ // Food Report
  function rptFoodAction(){
  	
            try {
@@ -146,11 +148,43 @@ class Report_indexController extends Zend_Controller_Action {
  	if(empty($rows_id)){
  		//$rows_connect = $db->getQuoteConnect($id, $type);
  		Application_Form_FrmMessage::Sucessfull($this->tr->translate('Customer had not qoute!'),self::REDIRECT_URL_ADD);
- 		exit();
+ 		//exit();
  	}else{
  	     $this->view->rows_quote = $rows_quote;
  	}
  	
+ }
+ 
+ function rptcustomermeetingAction(){
+ 	try {
+ 		$cus=new Report_Model_DbTable_DbCustomer();
+ 		if($this->getRequest()->isPost()){
+ 			$data = $this->getRequest()->getPost();
+ 			$search = array(
+ 					'adv_search'	=>	$data['adv_search'],
+ 					'customer'		=>	$data['customer'],
+ 					'start_date'	=> 	$data['start_date'],
+ 					'end_date'		=>	$data['end_date']
+ 			);
+ 				
+ 		}
+ 		else{
+ 			$search = array(
+ 					'adv_search'	=>'',
+ 					'customer'		=>'',
+ 					'start_date'	=> 	date('Y-m-d'),
+ 					'end_date'		=>	date('Y-m-d'));
+ 		}
+ 		
+ 		$this->view->row_cuss=$cus->getCustomerMeeting($search);
+ 		$form=new Report_Form_FrmSearchFood();
+ 		$form=$form->FrmSearchInfo();
+ 		Application_Model_Decorator::removeAllDecorator($form);
+ 		$this->view->form_search=$form;
+ 		 
+ 	}catch (Exception $e){
+ 		Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
+ 	}
  }
  
 //report supplier infomation 

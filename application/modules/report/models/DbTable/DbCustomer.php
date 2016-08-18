@@ -52,6 +52,46 @@ class Report_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 		$sql=" SELECT id,customer_code,first_name AS `name` FROM ldc_customers WHERE `status`=1";
 		return $db->fetchAll($sql);
 	}
+	
+	function getCustomerMeeting($search){
+		$db=$this->getAdapter();
+		$start_date = $search["start_date"];
+		$end_date = $search["end_date"];
+		$sql="SELECT 
+				  c.id,
+				  c.`customer_code`,
+				  c.`first_name`,
+				  c.`phone` ,
+				  c.`email`,
+				  c.`address`,
+				  cc.`address_1`,
+				  cc.`ceremony_date`,
+				  cc.`is_meeting`
+				FROM
+				  `ldc_customers` AS c,
+				  `ldc_customer_ceremony` AS cc 
+				  WHERE c.id = cc.`cu_id` AND cc.`is_meeting`=0 AND c.`status`=1
+				AND cc.`ceremony_date` >= '$start_date' AND cc.`ceremony_date` <= '$end_date'";
+		
+		$where='';
+// 		if($search['status_search']>-1){
+// 			$where.= " AND status = ".$search['status_search'];
+// 		}
+		if(!empty($search['title'])){
+			$s_where=array();
+			$s_search=$search['adv_search'];
+			$s_where[]= " c.first_name LIKE '%{$s_search}%'";
+			$s_where[]= " c.phone LIKE '%{$s_search}%'";
+			$s_where[]= " c.email LIKE '%{$s_search}%'";
+			$s_where[]= " cc.ceremony_date LIKE '%{$s_search}%'";
+			$s_where[]= " cc.address_1 LIKE '%{$s_search}%'";
+			//$s_where[]= " cate LIKE '%{$s_search}%'";
+			$where.=' AND ('.implode(' OR ', $s_where).')';
+		}
+		//$order = " ORDER BY id DESC";
+		echo $sql.$where;
+		return $db->fetchAll($sql.$where);
+	}
 	function getSupplierRpt($search=null){
 		$db=$this->getAdapter();
 		$sql="SELECT p.id,p.`su_code`,p.`first_name`,
