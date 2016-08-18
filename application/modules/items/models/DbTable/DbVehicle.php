@@ -124,7 +124,7 @@ class Items_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     
     function getAllproduct($search){
     	$db = $this->getAdapter();
-    	$sql ="SELECT id,`pro_no`,`pro_name_kh`,`bar_code`,`price`,(SELECT CONCAT(name_kh,' ',name_en) FROM `ldc_item_cat` WHERE id = category_id ) AS `cate`,`status` FROM `ldc_product` WHERE 1";
+    	$sql ="SELECT id,`pro_no`,`pro_name_kh`,`price`,(SELECT CONCAT(name_kh,' ',name_en) FROM `ldc_item_cat` WHERE id = category_id ) AS `cate`,`status` FROM `ldc_product` WHERE 1";
     	$where ="";
     	if($search['search_status']>-1){
 			$where.= " AND status = ".$search['search_status'];

@@ -24,12 +24,12 @@ dojo.ready(function(){
 <form id="list" name="list" action="<?php echo $this->url(array('module'=>'items','controller'=>'measure','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
    <table>
 	  <tr> 
-		   <td><input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $this->translate("Search");?>" type="text" ></td>
+		   <td><input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $this->translate("SEARCH");?>" type="text" ></td>
 		   <td>
 		        <select name="search_status" id="search_status" dojoType="dijit.form.FilteringSelect" class="fullside">
-		                <option value="-1" <?php if($status==-1){ echo"selected='selected'";} ?>>Status all</option>
-					    <option value="1" <?php if($status==1){ echo"selected='selected'";} ?> >Active</option>
-					    <option value="0"  <?php if($status==0){ echo"selected='selected'";} ?>>Deactive</option>
+		                <option value="-1" <?php if($status==-1){ echo"selected='selected'";} ?>><?php echo $tr->translate("STATUS");?></option>
+					    <option value="1" <?php if($status==1){ echo"selected='selected'";} ?> ><?php echo $tr->translate("ACTIVE");?></option>
+					    <option value="0"  <?php if($status==0){ echo"selected='selected'";} ?>><?php echo $tr->translate("DEACTIVE");?></option>
 				</select>
 		   </td>
 		   <td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>

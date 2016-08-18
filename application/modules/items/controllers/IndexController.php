@@ -20,18 +20,19 @@ class Items_indexController extends Zend_Controller_Action {
 			}
 			else{
 				$search = array(
+						'search_status' => -1,
 						'adv_search' 	=> '',
 						'make'			=> -1,
 				//		'model'=> -1,
 				// 		'submodel'=> -1,
-						'search_status' =>-1,
+						
 				);
 			}
 			$rows=$db_make->getAllproduct($search);
 			$glClass = new Application_Model_GlobalClass();
 			$rows = $glClass->getImgActive($rows, BASE_URL, true);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("PRODUCT NO","PRODUCT NAME ","BAR CODE","PRICE","CATEGORY","STATUS");
+			$collumns = array("ITEM_NO","ITEM_NAME","PRICE","MANAGE_CATEGORY","STATUS");
 			$link=array(
 					'module'=>'items','controller'=>'index','action'=>'edit',
 			);
@@ -44,7 +45,7 @@ class Items_indexController extends Zend_Controller_Action {
 		$this->view->rs = $rows;
 		$db = new Application_Model_DbTable_DbGlobal();
 		$model = $db->getAllItemCat();
-		array_unshift($model, array ( 'id' => -1, 'name' => 'Selected Category') );
+		//array_unshift($model, array ( 'id' => -1, 'name' => 'Selected Category') );
 		$this->view->all_make=$model;
 		
 	}

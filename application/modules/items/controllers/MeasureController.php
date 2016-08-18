@@ -24,7 +24,7 @@ class Items_measureController extends Zend_Controller_Action {
 			}
 			$rows=$db->getMeasure($search);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("MEASURE NAME IN KHMER","MEASURE NAME IN ENGLISH","DESCRIPTION","STATUS");
+			$collumns = array("MEASURE_NAME_KH","MEASURE_NAME_EN","DESCRIPTION","STATUS");
 			$link=array(
 					'module'=>'items','controller'=>'measure','action'=>'edit',
 			);
