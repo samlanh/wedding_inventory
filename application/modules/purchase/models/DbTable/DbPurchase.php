@@ -510,6 +510,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     					'deliver_address'	=>	$data["location_".$i],
     					'date_do'			=>	$data["date_do_".$i],
     					'deliver_date'		=>	$data["daliver_date_".$i],
+    					'time_deliver'		=>	$data["deliver_time_".$i],
     					'note'				=>	$data["note_".$i],
     			);
     			 
@@ -581,6 +582,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     					'deliver_address'	=>	$data["location_".$i],
     					'date_do'			=>	$data["date_do_".$i],
     					'deliver_date'		=>	$data["daliver_date_".$i],
+    					'time_deliver'		=>	$data["deliver_time_".$i],
     					'note'				=>	$data["note_".$i],
     			);
     
@@ -628,7 +630,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     }
     
     $order = " ORDER BY po.`su_id`,po.`deliver_date`,po.`deliver_address`";
-    echo $sql.$where.$order;
+    //echo $sql.$where.$order;
     		return $db->fetchAll($sql.$where.$order);
 	}
 	

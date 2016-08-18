@@ -130,6 +130,8 @@ class Purchase_indexController extends Zend_Controller_Action {
 			
 			$data = $this->getRequest()->getPost();
 			$data['id'] = $id;
+// 			print_r($data);exit();
+			$su_id = $data["supplier_name"];
 			if(isset($data["search"])){
 				$su_id = $data["supplier_name"];
 			}elseif(isset($data["save_close"])){
