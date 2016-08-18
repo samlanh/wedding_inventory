@@ -20,7 +20,7 @@ dojo.require("dijit.form.TextBox");
  		<select name="company" id="company" dojoType="dijit.form.FilteringSelect">
  			<option value="-1">Company</option>
  			<?php if (!empty($this->company)) foreach($this->company as $row){?>
- 			<option value="<?php echo $row['id'];?>"><?php echo $row['title'];?></option>
+ 			<option value="<?php echo $row['id'];?>" <?php if($this->row_search['company']==$row['id']) echo 'selected="selected"';?> ><?php echo $row['name'];?></option>
  			<?php }?>
  		</select>
  		<select name="status_search" id="status_search" dojoType="dijit.form.FilteringSelect">

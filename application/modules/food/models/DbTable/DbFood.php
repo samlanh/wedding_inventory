@@ -43,7 +43,7 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
 	    	 $arr =array(
 	    	 		'food_code'=>$data['food_no'],
 	    	 		'name_kh'=>$data['name_kh'],
-	    	 		'name_en'=>$data['name_en'],
+	    	 		//'name_en'=>$data['name_en'],
 	    	 		'cat_id'=>$data['make'],
 	    	 		'price'=>$data['price'],
 	    	 		'img'=>$data['front'],
@@ -195,15 +195,15 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
 				  `ldc_food` AS f 
 				WHERE 1 ";
     	$where ="";
-    	if($search['search_status']>-1){
-			$where.= " AND status = ".$search['search_status'];
+    	if($search['status_search']>-1){
+			$where.= " AND status = ".$search['status_search'];
 		}
 		if($search['make']>0){
 			$where.=" AND cat_id = ".$search['make'];
 		}
 		if(!empty($search['adv_search'])){
 			$s_where=array();
-			$s_search=$search['adv_search'];
+			$s_search = addslashes(trim($search['adv_search']));
 			$s_where[]= " name_en LIKE '%{$s_search}%'";
 			$s_where[]=" name_kh LIKE '%{$s_search}%'";
 			$s_where[]= " food_code LIKE '%{$s_search}%'";

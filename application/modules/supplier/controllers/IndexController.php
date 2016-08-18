@@ -10,16 +10,13 @@ const REDIRECT_URL = '/supplier/index';
 		try{
 			$db = new Group_Model_DbTable_DbClient();
 			if($this->getRequest()->isPost()){
-				$formdata=$this->getRequest()->getPost();
-				$this->view->row_search=$formdata;
-				$search = array(
-						'title' => $formdata['title'],
-						'status_search'=>$formdata['status_search'],
-						);
+				$search=$this->getRequest()->getPost();
+				$this->view->row_search=$search;
 			}
 			else{
 				$search = array(
 					'title' => '',
+				    'company' => '',
 					'status_search' => -1,
 				);
 			}
@@ -38,6 +35,8 @@ const REDIRECT_URL = '/supplier/index';
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 		}
+		$db_branch = new Group_Model_DbTable_DbClient();
+		$this->view->company = $db_branch->getSupCompany();
 	}
 	public function addAction(){
 		$db = new Supplier_Model_DbTable_DbClient();

@@ -1,9 +1,23 @@
 <?php $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
- echo '<title>'. $this->tr->translate("CATEGORY").'</title>';
+ echo '<title>'. $this->tr->translate("CATEGORY_FOOD").'</title>';
+ 
 ?>
-
-
-<?php //echo $this->list;?>
+<?php 
+    $request=Zend_Controller_Front::getInstance()->getRequest();
+    $tr = Application_Form_FrmLanguages::getCurrentlanguage();
+    $frm =  $this->form_search;
+?>
+<meta charset="utf-8">
+ <form  action="<?php echo $this->url(array('module'=>'food','controller'=>'category','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
+					   <table style="width:50%">
+						  <tr> 
+							   <td> <?php echo $frm->getElement("title");?></td>
+							   <td> <?php echo $frm->getElement("status_search");?></td>
+							   <td> <?php //echo $frm->getElement("time");?></td>
+							   <td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>
+					   	  </tr>
+					   </table>
+ </form>
 <table width="100%" border='1' style="border:1px solid #ccc; border-collapse:collapse;">
 	  <tr>
 	    <th class="tdheader header">No.</th>

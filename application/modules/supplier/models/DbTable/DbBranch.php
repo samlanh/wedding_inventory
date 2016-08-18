@@ -98,6 +98,7 @@ class Group_Model_DbTable_DbBranch extends Zend_Db_Table_Abstract
     	$sql='SELECT p.`id`,p.`title` FROM `ldc_partner` AS p WHERE `status`=1';
     	return $db->fetchAll($sql);
     }
+    
     public function getNewCustomerId(){
      	$this->_name='ldc_customers';
    	$db = $this->getAdapter();

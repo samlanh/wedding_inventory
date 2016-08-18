@@ -9,7 +9,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     	return $session_user->user_id;
     	 
     }
-    public function getAllCustomer($search){
+    public function getAllCustomer($search=null){
     	$db = $this->getAdapter();
     	$start_date = $search["start_date"];
     	$end_date = $search["end_date"];
@@ -25,29 +25,30 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 				  cc.status
 				  FROM `ldc_customers` AS c,
 				  `ldc_customer_ceremony` AS cc
-				WHERE c.id = cc.`cu_id` AND cc.ceremony_date >='$start_date' AND cc.ceremony_date <='$end_date' ";
+				WHERE c.id = cc.`cu_id` ";
     	$where = "";
+    	$from_date =(empty($search['start_date']))? '1': " cc.ceremony_date >= '".$search['start_date']." 00:00:00'";
+    	$to_date = (empty($search['end_date']))? '1': " cc.ceremony_date <= '".$search['end_date']." 23:59:59'";
+    	$where = " AND ".$from_date." AND ".$to_date;
+    	
     	if(!empty($search['title'])){
     		$s_where = array();
     		$s_search = addslashes(trim($search['title']));
-    		$s_where[] = " c.customer_code LIKE '%{$s_search}%'";
     		$s_where[] = " c.first_name LIKE '%{$s_search}%'";
-    		$s_where[] = " c.last_name LIKE '%{$s_search}%'";
     		$s_where[] = " c.phone LIKE '%{$s_search}%'";
-    		//$s_where[] = " c.pob LIKE '%{$s_search}%'";
     		$s_where[] = " c.email LIKE '%{$s_search}%'";
     		$s_where[] = " c.address LIKE '%{$s_search}%'";
-    		$s_where[] = " cc.address LIKE '%{$s_search}%'";
+    		$s_where[] = " cc.`address_1` LIKE '%{$s_search}%'";
+    		$s_where[] = " cc.`address_2` LIKE '%{$s_search}%'";
+    		$s_where[] = "cc.`address_3` LIKE '%{$s_search}%'";
+    		
     		$where .=' AND ('.implode(' OR ',$s_where).')';
     	}
     	if($search['status_search']>-1){
     		$where.= " AND cc.status = ".$search['status_search'];
     	}
-//     	if($search['company']>-1){
-//     		$where.= " AND company_id = ".$search['company'];
-//     	}
     	$order=" ORDER BY first_name DESC";
-    	//echo $sql.$where.$order;
+    	 //echo $sql.$where.$order;
 		return $db->fetchAll($sql.$where.$order);	
     }
 //     public function getCustomerById($id){
@@ -359,6 +360,9 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 		if($search['status_search']>-1){
 			$where.= " AND status = ".$search['status_search'];
 		}
+		if(!empty($search['company'])){
+			$where.= " AND id = ".$search['company'];
+		}
 		$order=" ORDER BY id DESC";
 		//echo $sql.$where;
 		return $db->fetchAll($sql.$where.$order);
@@ -384,6 +388,12 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 		$db = $this->getAdapter();
 		$sql ="SELECT ca.`addr_name` FROM `ldc_ceremony_addr` AS ca WHERE ca.`cc_id`= $id";
 		return $db->fetchAll($sql);
+	}
+	public function getSupCompany(){
+		$db=$this->getAdapter();
+		$sql="SELECT id,company_name AS `name` FROM ldc_supplier WHERE `status`=1";
+		$order=" ORDER BY id DESC";
+		return $db->fetchAll($sql.$order);
 	}
 	
 }

@@ -97,10 +97,25 @@ class Food_Model_DbTable_DbCategory extends Zend_Db_Table_Abstract
     	$sql = "SELECT id,type,status FROM $this->_name  WHERE id=".$id;
    		return $db->fetchRow($sql);
     }
-    function getAllCategory(){
+    function getAllCategory($search=null){
     	$db=$this->getAdapter();
-    	$sql="SELECT id,name_kh,name_en,status FROM ldc_food_cat WHERE `status`=1 ";
-    return $db->fetchAll($sql);
+    	$sql="SELECT id,name_kh,name_en,(SELECT name_en FROM ldc_view WHERE `type`=2 AND key_code=ldc_food_cat.status) AS  `status` 
+      			 FROM ldc_food_cat WHERE  1 ";
+    	$where ="";
+    	if($search['status_search']>-1){
+    		$where.= " AND status = ".$search['status_search'];
+    	}
+    	if(!empty($search['title'])){
+    		$s_where=array();
+    		$s_search = addslashes(trim($search['title']));
+    		$s_where[]= "name_kh LIKE '%{$s_search}%'";
+    		$s_where[]= " name_en LIKE '%{$s_search}%'";
+    		 
+    		$where.=' AND ('.implode(' OR ', $s_where).')';
+    	}
+    	$order=" ORDER BY id DESC";
+    	//echo $sql.$where;
+   		 return $db->fetchAll($sql.$where.$order);
     }
 
 }  

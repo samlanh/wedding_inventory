@@ -10,22 +10,13 @@ class Group_indexController extends Zend_Controller_Action {
 		try{
 			$db = new Group_Model_DbTable_DbClient();
 			if($this->getRequest()->isPost()){
-				$formdata=$this->getRequest()->getPost();
-				$search = array(
-						'title' => $formdata['title'],
-						'status_search'=>$formdata['status_search'],
-						//'company'=>$formdata['company'],
-						'start_date'	=>	$formdata["start_date"],
-						'end_date'		=>	$formdata["end_date"],
-						
-						);
+				$search=$this->getRequest()->getPost();
 			}
 			else{
 				$search = array(
 					'title' 		=> '',
 					'status_search' => -1,
-					//'company'		=>-1,
-					'start_date'	=>	date("Y-m-d"),
+					'start_date'	=>	date("Y-m-01"),
 					'end_date'		=>	date("Y-m-d"),
 				);
 			}
@@ -48,6 +39,10 @@ class Group_indexController extends Zend_Controller_Action {
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 		}
+		$form=new Items_Form_FrmSearchInfo();
+		$form=$form->FrmDepartment();
+		Application_Model_Decorator::removeAllDecorator($form);
+		$this->view->form_search=$form;
 	}
 	public function addAction(){
 		$db = new Group_Model_DbTable_DbClient();

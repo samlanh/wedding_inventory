@@ -23,7 +23,7 @@ class Food_indexController extends Zend_Controller_Action {
 						'make'=> -1,
 						// 					'model'=> -1,
 				// 					'submodel'=> -1,
-						'search_status' =>-1,
+						'status_search' =>-1,
 				);
 			}
 			$rows=$db_make->getAllFood($search);
@@ -44,6 +44,10 @@ class Food_indexController extends Zend_Controller_Action {
 		$model = $db->getAllFoodCat();
 		//array_unshift($model, array ( 'id' => -1, 'name' => 'Selected Make') );
 		$this->view->all_make=$model;
+		$form=new Items_Form_FrmSearchInfo();
+		$form=$form->FrmDepartment();
+		Application_Model_Decorator::removeAllDecorator($form);
+		$this->view->form_search=$form;
 		
 	}
 	public function addAction(){
@@ -53,10 +57,10 @@ class Food_indexController extends Zend_Controller_Action {
 				$db_make = new Food_Model_DbTable_DbFood();
 				if(isset($data['save_new'])){
 					$db_make->addFood($data);
-					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
 				}else if(isset($data['save_close'])){
 					$db_make->addFood($data);
-					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
 				}
 			}catch (Exception $e) {
 				//print_r($e->getMessage());exit();

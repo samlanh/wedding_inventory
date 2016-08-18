@@ -13,8 +13,17 @@ class Food_CategoryController extends Zend_Controller_Action {
 	}
 	public function indexAction(){
 		$db_make = new Food_Model_DbTable_DbCategory();
-		$rows=$db_make->getAllCategory();
         try{
+        	if($this->getRequest()->isPost()){
+        		$search=$this->getRequest()->getPost();
+        	}
+        	else{
+        		$search = array(
+        				'title' => '',
+        				'status_search' =>-1,
+        		);
+        	}
+        $rows=$db_make->getAllCategory($search);
         $list = new Application_Form_Frmtable();
         $collumns = array("NAME EN","NAME KH","IMAGE FEATURE","STATUS");
         $link=array(
@@ -26,7 +35,10 @@ class Food_CategoryController extends Zend_Controller_Action {
         	Application_Form_FrmMessage::message("Application Error");
         	Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
         }
-        
+        $form=new Items_Form_FrmSearchInfo();
+        $form=$form->FrmDepartment();
+        Application_Model_Decorator::removeAllDecorator($form);
+        $this->view->form_search=$form;
 	}
 	
 	public function addAction(){
