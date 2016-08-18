@@ -175,7 +175,7 @@ dojo.ready(function(){
 										</select>
 									</td>
 									<td>Total Amount</td>
-									<td><input type="text" name="amount_wedding" id="amount_wedding" dojoType="dijit.form.TextBox" class="fullside"><input type="text" name="id_wedding" id="id_wedding" dojoType="dijit.form.TextBox"></td>
+									<td><input type="text" name="amount_wedding" id="amount_wedding" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_wedding" id="id_wedding" dojoType="dijit.form.TextBox"></td>
 								</tr>
 							</table>
 							<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
@@ -228,7 +228,7 @@ dojo.ready(function(){
 										</select>
 									</td>
 									<td>Total Amount</td>
-									<td><input type="text" name="amount_breakfast" id="amount_breakfast" dojoType="dijit.form.TextBox" class="fullside"><input type="text" name="id_breakfast" id="id_breakfast" dojoType="dijit.form.TextBox"></td>
+									<td><input type="text" name="amount_breakfast" id="amount_breakfast" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_breakfast" id="id_breakfast" dojoType="dijit.form.TextBox"></td>
 								</tr>
 					</table>
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
@@ -280,7 +280,7 @@ dojo.ready(function(){
 										</select>
 									</td>
 									<td>Total Amount</td>
-									<td><input type="text" name="amount_lunch" id="amount_lunch" dojoType="dijit.form.TextBox" class="fullside"><input type="text" name="id_lunch" id="id_lunch" dojoType="dijit.form.TextBox"></td>
+									<td><input type="text" name="amount_lunch" id="amount_lunch" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_lunch" id="id_lunch" dojoType="dijit.form.TextBox"></td>
 								</tr>
 					</table>
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
@@ -332,7 +332,7 @@ dojo.ready(function(){
 										</select>
 									</td>
 									<td>Total Amount</td>
-									<td><input type="text" name="amount_dinner" id="amount_dinner" dojoType="dijit.form.TextBox" class="fullside"><input type="text" name="id_dinner" id="id_dinner" dojoType="dijit.form.TextBox"></td>
+									<td><input type="text" name="amount_dinner" id="amount_dinner" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_dinner" id="id_dinner" dojoType="dijit.form.TextBox"></td>
 								</tr>
 					</table>
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
@@ -482,6 +482,7 @@ function oldRowWedding(){
 	col_wedding++;no_wedding++;
 	template='';
 	temp='';
+	row_wedding = "wedding_";
 	addr_w = '<?php echo $row["address"]?>';
 	if(title_wedding!=1){
 			dijit.byId('t_number_wedding').attr('value',<?php echo $row["num_table"]?>);
@@ -493,6 +494,7 @@ function oldRowWedding(){
 			dijit.byId('id_wedding').attr('value','<?php echo $row["id"]?>');
 			temp+='<th>DEL</th>';
 			temp+='<th>N_O</th>';
+			temp+='<th>Food Category</th>';
 			temp+='<th>PRODUCT_NAME</th>';
 // 			temp+='<th>QTY</th>';
 		dojo.query("#head-title-wedding").append(temp);
@@ -500,6 +502,12 @@ function oldRowWedding(){
 	}
 	template+='<td width="3%" align="center"><img onclick="deleteRecord('+col_wedding+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 	template+='<td align="center">'+no_wedding+'</td>';
+	template+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_wedding_'+col_wedding+'" onChange="getFoodByCat('+"'"+row_wedding+"'"+','+col_wedding+')" name="food_cat_name_wedding_'+col_wedding+'" style="width:100%;">';
+			template+='<option value="-1">Select Food Category</option>';
+				<?php foreach($this->food_cat as $key){?>
+					template+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
+				<?php }?>
+	template+='</select>';
 	template+='<td><select dojoType="dijit.form.FilteringSelect"  id="item_name_wedding_'+col_wedding+'" name="item_name_wedding_'+col_wedding+'" style="width:100%;">';
 		template+='<option value="-1">Select Food</option>';
 	<?php foreach($this->food as $key){?>
@@ -526,6 +534,7 @@ function oldRowBreakFast(){
 	col_breakfast++;no_breakfast++;
 	template_b='';
 	temp_b='';
+	row_breakfast = "breakfast_";
 	if(title_breakfast!=1){
 			dijit.byId('t_number_breakfast').attr('value',<?php echo $row["num_table"]?>);
 			dijit.byId('t_price_breakfast').attr('value',<?php echo $row["price"]?>);
@@ -536,6 +545,7 @@ function oldRowBreakFast(){
 			dijit.byId('id_breakfast').attr('value','<?php echo $row["id"]?>');
 			temp_b+='<th>DEL</th>';
 			temp_b+='<th>N_O</th>';
+			temp_b+='<th>Food Category</th>';
 			temp_b+='<th>PRODUCT_NAME</th>';
 			//temp_b+='<th>QTY</th>';
 		dojo.query("#head-title-breakfast").append(temp_b);
@@ -543,6 +553,12 @@ function oldRowBreakFast(){
 	}
 	template_b+='<td width="3%" align="center"><img onclick="deleteRecord('+col_breakfast+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 	template_b+='<td align="center">'+no_breakfast+'</td>';
+	template_b+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_breakfast_'+col_breakfast+'" onChange="getFoodByCat('+"'"+row_breakfast+"'"+','+col_breakfast+')" name="food_cat_name_breakfast_'+col_breakfast+'" style="width:100%;">';
+			template_b+='<option value="-1">Select Food Category</option>';
+				<?php foreach($this->food_cat as $key){?>
+					template_b+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
+				<?php }?>
+	template_b+='</select>';
 	template_b+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_breakfast_'+col_breakfast+'" name="item_name_breakfast_'+col_breakfast+'" style="width:100%;">';
 	template_b+='<option value="-1">Select Food</option>';
 	<?php foreach($this->food as $key){?>
@@ -568,6 +584,7 @@ function oldRowLunch(){
 	col_lunch++;no_lunch++;
 	template_l=''; 
 	temp_l='';
+	row_lunch = "lunch_";
 	if(title_lunch!=1){
 			dijit.byId('t_number_lunch').attr('value',<?php echo $row["num_table"]?>);
 			dijit.byId('t_price_lunch').attr('value',<?php echo $row["price"]?>);
@@ -577,7 +594,8 @@ function oldRowLunch(){
 			dijit.byId('amount_lunch').attr('value','<?php echo $row["total_pay"]?>');
 			dijit.byId('id_lunch').attr('value','<?php echo $row["id"]?>');
 			temp_l+='<th>DEL</th>';
-			temp_l+='<th>N_O</th>';
+			temp_l+='<th>N_O</th
+			temp_l+='<th>Food Category</th>';
 			temp_l+='<th>PRODUCT_NAME</th>';
 			//temp_l+='<th>QTY</th>';
 		dojo.query("#head-title-lunch").append(temp_l);
@@ -585,6 +603,12 @@ function oldRowLunch(){
 	}
 	template_l+='<td width="3%" align="center"><img onclick="deleteRecord('+col_lunch+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 	template_l+='<td align="center">'+no_lunch+'</td>';
+	template_l+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_lunch_'+col_lunch+'" onChange="getFoodByCat('+"'"+row_lunch+"'"+','+col_lunch+')" name="food_cat_name_lunch_'+col_lunch+'" style="width:100%;">';
+			template_l+='<option value="-1">Select Food Category</option>';
+				<?php foreach($this->food_cat as $key){?>
+					template_l+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
+				<?php }?>
+	template_l+='</select>';
 	template_l+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_lunch_'+col_lunch+'" name="item_name_lunch_'+col_lunch+'" style="width:100%;">';
 	template_l+='<option value="-1">Select Food</option>';
 	<?php foreach($this->food as $key){?>
@@ -611,6 +635,7 @@ function oldRowDinner(){
 	col_dinner++;no_dinner++;
 	template_d='';
 	temp_d='';
+	row_dinner = "dinner_";
 	if(title_dinner!=1){
 			dijit.byId('t_number_dinner').attr('value',<?php echo $row["num_table"]?>);
 			dijit.byId('t_price_dinner').attr('value',<?php echo $row["price"]?>);
@@ -621,6 +646,7 @@ function oldRowDinner(){
 			dijit.byId('id_dinner').attr('value','<?php echo $row["id"]?>');
 			temp_d+='<th>DEL</th>';
 			temp_d+='<th>N_O</th>';
+			temp_d+='<th>Food Category</th>';
 			temp_d+='<th>PRODUCT_NAME</th>';
 			//temp_d+='<th>QTY</th>';
 		dojo.query("#head-title-dinner").append(temp_d);
@@ -628,6 +654,12 @@ function oldRowDinner(){
 	}
 	template_d+='<td width="3%" align="center"><img onclick="deleteRecord('+col_dinner+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 	template_d+='<td align="center">'+no_dinner+'</td>';
+	template_d+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row_dinner+col_dinner+'" onChange="getFoodByCat('+"'"+row_dinner+"'"+','+col_dinner+')" name="food_cat_name_dinner_'+col_dinner+'" style="width:100%;">';
+			template_d+='<option value="-1">Select Food Category</option>';
+				<?php foreach($this->food_cat as $key){?>
+					template_d+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
+				<?php }?>
+			template_d+='</select>';
 	template_d+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_dinner_'+col_dinner+'" name="item_name_dinner_'+col_dinner+'" style="width:100%;">';
 	template_d+='<option value="-1">Select Food</option>';
 	<?php foreach($this->food as $key){?>
@@ -746,8 +778,9 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 		temp='';
 			temp+='<th>DEL</th>';
 			temp+='<th>N_O</th>';
+			temp+='<th>Food Category</th>';
 			temp+='<th>PRODUCT_NAME</th>';
-			temp+='<th>QTY</th>';
+			//temp+='<th>QTY</th>';
 			if(type==1){
 				if(title_wedding!=1){
 					dojo.query("#head-title-wedding").append(temp);
@@ -774,6 +807,12 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 			}
 			template+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td align="center">'+no+'</td>';
+			template+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row+col+'" onChange="getFoodByCat('+"'"+row+"'"+','+col+')" name="food_cat_name_'+row+col+'" style="width:100%;">';
+			template+='<option value="-1">Select Food Category</option>';
+				<?php foreach($this->food_cat as $key){?>
+					template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
+				<?php }?>
+			template+='</select>';
 			template+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row+col+'" name="item_name_'+row+col+'" style="width:100%;">';
 				template+='<option value="-1">Select Food</option>';
 			<?php foreach($this->food as $key){?>
@@ -1004,5 +1043,28 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 					dijit.byId('address_dinner').attr('value',addr_data[0].name);
 				}
 			
+  }
+  
+  var url_food_cat = '<?php echo $this->url(array('module'=>'order','controller'=>'quote','action'=>'get-food-by-cat'));?>';
+  var food_store  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
+  function getFoodByCat(row,inx){
+	  //alert(row);
+	  id = dijit.byId('food_cat_name_'+row+inx).get('value');
+	  dojo.xhrPost({
+			url: url_food_cat,
+			content:{
+				'id':id
+				},
+			handleAs:"json",
+			load: function(data) {
+				//alert(data);
+				food_store  = getDataStorefromJSON('id','name', data);
+				dijit.byId('item_name_'+row+inx).reset('value');
+			    dijit.byId('item_name_'+row+inx).set('store',food_store);
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
   }
 </script>

@@ -47,6 +47,12 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     	$sql="SELECT p.id,CONCAT(p.`measure_name_kh`,' ',p.`measure_name_en`) as name FROM `ldc_measure` AS p WHERE p.`status`=1 ORDER BY p.`id`DESC";
     	return $db->fetchAll($sql);
     }
+    
+   	public function getFoodCat(){
+   		$db = $this->getAdapter();
+    	$sql="SELECT fc.`id`,fc.`name_kh` FROM `ldc_food_cat` AS fc WHERE fc.`status`=1";
+    	return $db->fetchAll($sql);
+   	}
     function addQuote($data){
     	$db = $this->getAdapter();
     	$db->beginTransaction();
@@ -215,6 +221,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_wedding_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_wedding_'.$i],
     						//'qty'		=>	$data['qty_wedding_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
@@ -268,6 +275,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_breakfast_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_breakfast_'.$i],
     						//'qty'		=>	$data['qty_breakfast_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
@@ -318,6 +326,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>$qc_id,
     						'food_id'		=>$data['item_name_lunch_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_lunch_'.$i],
     						//'qty'			=>$data['qty_lunch_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
@@ -367,6 +376,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>$qc_id,
     						'food_id'	=>$data['item_name_dinner_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_dinner_'.$i],
     						//'qty'		=>$data['qty_dinner_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
@@ -501,6 +511,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_wedding_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_wedding_'.$i],
     						//'qty'		=>	$data['qty_wedding_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
@@ -554,6 +565,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>	$qc_id,
     						'food_id'	=>	$data['item_name_breakfast_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_breakfast_'.$i],
     						//'qty'		=>	$data['qty_breakfast_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
@@ -604,6 +616,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>$qc_id,
     						'food_id'		=>$data['item_name_lunch_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_lunch_'.$i],
     						//'qty'			=>$data['qty_lunch_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
@@ -653,6 +666,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_ins = array(
     						'qc_id'		=>$qc_id,
     						'food_id'	=>$data['item_name_dinner_'.$i],
+    						'cat_id'	=>	$data['food_cat_name_dinner_'.$i],
     						//'qty'		=>$data['qty_dinner_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
@@ -1146,7 +1160,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     
     function getQuoteOrderDetail($id,$type){
     	$db = $this->getAdapter();
-    	$sql = "SELECT qc.*,qd.`food_id`,qd.`qty`,qd.price as price_d FROM `ldc_quotation_connection` AS qc,`ldc_quotation_detail` AS qd WHERE qc.`id`=qd.`qc_id` AND qc.`type`=$type AND qc.`quote_id`=$id ";
+    	$sql = "SELECT qc.*,qd.cat_id,qd.`food_id`,qd.`qty`,qd.price as price_d FROM `ldc_quotation_connection` AS qc,`ldc_quotation_detail` AS qd WHERE qc.`id`=qd.`qc_id` AND qc.`type`=$type AND qc.`quote_id`=$id ";
     	return $db->fetchAll($sql);
     }
     

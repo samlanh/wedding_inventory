@@ -2,7 +2,7 @@
 class Order_quoteController extends Zend_Controller_Action {
 	private $activelist = array('áž˜áž·áž“áž”áŸ’ážšáž¾â€‹áž”áŸ’ážšáž¶ážŸáŸ‹', 'áž”áŸ’ážšáž¾â€‹áž”áŸ’ážšáž¶ážŸáŸ‹');
 	const REDIRECT_URL_ADD ='/order/quote/add';
-	const REDIRECT_URL_ADD_CLOSE ='/quote/index/';
+	const REDIRECT_URL_ADD_CLOSE ='order/quote/index/';
     public function init()
     {    	
      /* Initialize action controller here */
@@ -60,10 +60,10 @@ class Order_quoteController extends Zend_Controller_Action {
 			try {
 				if(isset($data['save_new'])){
 					$db_make->addQuoteNew($data);
-					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
 				}else if(isset($data['save_close'])){
 					$db_make->addQuoteNew($data);
-					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
 				}
 			}catch (Exception $e) {
 				//print_r($e->getMessage());exit();
@@ -80,6 +80,7 @@ class Order_quoteController extends Zend_Controller_Action {
 		$db = new Application_Model_DbTable_DbGlobal();
 		
 		$this->view->food = $db->getFood();
+		$this->view->food_cat = $db_make->getFoodCat();
 		$this->view->Customer_name = $db->getCustomer(1);
 		$this->view->Customer_code = $db->getCustomer(2);
 		
@@ -121,6 +122,7 @@ class Order_quoteController extends Zend_Controller_Action {
 		$this->view->quote_id = $db_make->getQuoteID();
 		
 		$this->view->food = $db->getFood();
+		$this->view->food_cat = $db_make->getFoodCat();
 		$this->view->Customer_name = $db->getCustomer(1);
 		$this->view->Customer_code = $db->getCustomer(2);
 	}
@@ -203,6 +205,7 @@ class Order_quoteController extends Zend_Controller_Action {
 		$this->view->alladdr = $row_addr;
 		
 		$this->view->food = $db->getFood();
+		$this->view->food_cat = $db_make->getFoodCat();
 		$this->view->Customer_name = $db->getCustomer(1);
 		$this->view->Customer_code = $db->getCustomer(2);
 		$this->view->service = $db_make->getAllService();
@@ -276,6 +279,16 @@ class Order_quoteController extends Zend_Controller_Action {
 			$_data = $this->getRequest()->getPost();
 			$db = new Order_Model_DbTable_DbQuote();
 			$row = $db->getAllAddress($_data["id"]);
+			print_r(Zend_Json::encode($row));
+			exit();
+		}
+	}
+	
+	function getFoodByCatAction(){
+		if($this->getRequest()->isPost()){
+			$_data = $this->getRequest()->getPost();
+			$db = new Application_Model_DbTable_DbGlobal();
+			$row = $db->getFoodByCat($_data["id"]);
 			print_r(Zend_Json::encode($row));
 			exit();
 		}

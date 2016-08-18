@@ -40,9 +40,9 @@ class Order_indexController extends Zend_Controller_Action {
 			$list = new Application_Form_Frmtable();
 			$collumns = array("ORDER NO","CUSTOMER","PHONE","ADDRESS","CEREMONY_DATE","TOTAL_AMOUNT","STATUS");
 			$link=array(
-					'module'=>'order','controller'=>'quote','action'=>'edit',
+					'module'=>'order','controller'=>'index','action'=>'edit',
 			);
-			$this->view->list=$list->getCheckList(1, $collumns, $rows,array('quot_code'=>$link,'customer'=>$link,'date_ceremony'=>$link));
+			$this->view->list=$list->getCheckList(1, $collumns, $rows,array('order_code'=>$link,'first_name'=>$link,'date_ceremony'=>$link));
 		}catch (Exception $e){
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
@@ -79,11 +79,11 @@ class Order_indexController extends Zend_Controller_Action {
 		$db = new Application_Model_DbTable_DbGlobal();
 		
 		$this->view->food = $db->getFood();
+		$this->view->food_cat = $db_make->getFoodCat();
 		$this->view->Customer_name = $db->getCustomer(1);
 		$this->view->Customer_code = $db->getCustomer(2);
 		
 		$this->view->service = $db_make->getAllService();
-		
 		$this->view->QuoteNo = $db_order->getQuoteNo();
 	}
 	
@@ -119,7 +119,8 @@ class Order_indexController extends Zend_Controller_Action {
 	}	
 	function editAction(){
 		$id=$this->getRequest()->getParam('id');
-		$db_make = new Order_Model_DbTable_DbQuote();
+		$db_make = new Order_Model_DbTable_DbOrder();
+		$db_order = new Order_Model_DbTable_DbQuote();
 		$db = new Application_Model_DbTable_DbGlobal();
 		if($this->getRequest()->isPost()){
 			$data=$this->getRequest()->getPost();
@@ -127,10 +128,10 @@ class Order_indexController extends Zend_Controller_Action {
 			try{
 				
 				if(isset($data['save_close'])){
-					$db_make->updateQuote($data);
+					$db_make->updateOrder($data);
 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("EDIT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
 				}elseif(isset($data['save_new'])){
-					$db_make->updateQuote($data);
+					$db_make->updateOrder($data);
 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("EDIT_SUCCESS"),self::REDIRECT_URL_ADD);
 				}elseif(isset($data['convert_to_order'])){
 					$db_make->convertToOrder($id);
@@ -143,13 +144,17 @@ class Order_indexController extends Zend_Controller_Action {
 			}
 		}
 		$this->view->status = $db_make->getStatus();
+		$this->view->QuoteNo = $db_make->getQuoteNo();
 		
-		$this->view->quote_wedding = $db_make->getQuoteDetailByid($id,1);
-		$this->view->quote_breakfast = $db_make->getQuoteDetailByid($id,2);
-		$this->view->quote_lunch = $db_make->getQuoteDetailByid($id,3);
-		$this->view->quote_dinner = $db_make->getQuoteDetailByid($id,4);
+		$this->view->order_wedding = $db_make->getOrderDetailByid($id,1);
+		$this->view->order_breakfast = $db_make->getOrderDetailByid($id,2);
+		$this->view->order_lunch = $db_make->getOrderDetailByid($id,3);
+		$this->view->order_dinner = $db_make->getOrderDetailByid($id,4);
+		$this->view->order_service = $db_make->getOrderDetailByid($id,5);
 		
-		$this->view->quote = $db_make->getQuoteByid($id);
+		$this->view->order = $db_make->getOrderByid($id);
+		
+		$this->view->service = $db_order->getAllService();
 		
 		$this->view->food = $db->getFood();
 		$this->view->Customer_name = $db->getCustomer(1);
