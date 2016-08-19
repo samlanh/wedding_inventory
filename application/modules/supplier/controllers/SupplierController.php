@@ -25,7 +25,7 @@ class Group_supplierController extends Zend_Controller_Action {
 			
 			$rs_rows= $db->getAllSupplier($search);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Supplier Code","First Name","Last Name","Tel","Email","Company","Street","Home","District","Province","status");
+			$collumns = array("CUSTOMER_CODE","SUPPLIER_NAME","Tel","EMAIL","Company","Street","Home","District","Province","status");
 			$link=array(
 					'module'=>'group','controller'=>'supplier','action'=>'edit',
 			);

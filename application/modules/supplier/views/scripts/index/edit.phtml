@@ -38,37 +38,36 @@ dojo.ready(function(){
 							<tr>
 								<td valign="top" width="34%" style="white-space: nowrap;">
 										<fieldset>
-											<legend align="center"><strong>Contact Person</strong></legend>
+											<legend align="left" style="padding-left: 10px;"><strong><?php echo $tr->translate("ADD_SUPPLIER")?></strong></legend>
 											<table style="margin: 0 auto;" cellspacing="10">
 													<tr>
-													   <td><?php echo $tr->translate("Title")?></td>
+													   <td><?php echo $tr->translate("SEX")?></td>
 													   <td><select dojoType='dijit.form.FilteringSelect' id="title" name="title" class="fullside">
-													   			<option value="1" <?php if($this->supplier['title']==1) {echo "selected='selected'";} ?>>Mr</option>
-													   			<option value="2" <?php if($this->supplier['title']==2) {echo "selected='selected'";} ?>>Ms</option>
-													   			<option value="3" <?php if($this->supplier['title']==3) {echo "selected='selected'";} ?>>Mss</option>
+													   			<option value="1" <?php if($this->supplier['title']==1) {echo "selected='selected'";} ?>><?php echo $tr->translate("MALE")?></option>
+													   			<option value="2" <?php if($this->supplier['title']==2) {echo "selected='selected'";} ?>><?php echo $tr->translate("FEMALE")?></option>
 													   		</select>
-													   <td><?php echo $tr->translate("Spplier Code")?></td>
+													   <td><?php echo $tr->translate("CUSTOMER_ID")?></td>
 													   <td><input type="text" dojoType="dijit.form.TextBox" readonly="readonly" name="su_no"  id="su_no" value="<?php echo $this->supplier["su_code"];?>" class="fullside"></td>
 													</tr>
 													<tr>
-													   <td><?php echo $tr->translate("First Name")?>*</td>
+													   <td><?php echo $tr->translate("SUPPLIER_NAME")?>*</td>
 													   <td><input type="text" dojoType="dijit.form.TextBox" required="required" name="first_name"  id="first_name" value="<?php echo $this->supplier["first_name"];?>" class="fullside"></td>
 													   
 													</tr>
 													<tr>
-														<td><?php echo $tr->translate("Phone")?></td>
+														<td><?php echo $tr->translate("Tel")?></td>
 														<td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->supplier["p_phone"];?>"  id="p_phone" name="p_phone" class="fullside" /></td>
-														<td><?php echo $tr->translate("Email")?></td>
+														<td><?php echo $tr->translate("EMAIL")?></td>
 														<td><input type="text" dojoType="dijit.form.TextBox"   name="p_email"  id="p_email" value="<?php echo $this->supplier["p_email"];?>" class="fullside"></td>
 														
 													</tr>
 													<tr>
-														<td><?php echo $tr->translate("Posotion")?></td>
+														<td><?php echo $tr->translate("POSITION")?></td>
 														<td><input type="text" dojoType="dijit.form.TextBox"   name="position"  id="position" value="<?php echo $this->supplier["position"];?>" class="fullside"></td>
 														<td><?php echo $tr->translate("STATUS")?></td>
 														<td><select dojoType='dijit.form.FilteringSelect' id="status" name="status" onchange="Showbranch();" class="fullside">
-													   			<option value="1" <?php if($this->supplier['status']==1) {echo "selected='selected'";} ?>>Active</option>
-													   			<option value="0" <?php if($this->supplier['status']==1) {echo "selected='selected'";} ?>>Deactive</option>
+													   			<option value="1" <?php if($this->supplier['status']==1) {echo "selected='selected'";} ?>><?php echo $tr->translate("ACTIVE")?></option>
+													   			<option value="0" <?php if($this->supplier['status']==1) {echo "selected='selected'";} ?>><?php echo $tr->translate("DEACTIVE")?></option>
 													   		</select>
 													   	</td>
 													</tr>
@@ -78,23 +77,23 @@ dojo.ready(function(){
 							</tr>
 							<tr>
 								<td width="100%" align="top">
-										<fieldset><legend align="center"><strong>Company Contact</strong></legend>
+										<fieldset><legend align="left" style="padding-left: 10px;"><strong><?php echo $tr->translate("COMPANY_ADDRESS")?></strong></legend>
 									   <table style="padding-left:10px;" cellspacing="10">
 											<tr>
-												<td><?php echo $tr->translate("Company_Name")?></td>
+												<td><?php echo $tr->translate("COMPANY_NAME")?></td>
 											    <td><input id="company_name" name="company_name" type="text" dojoType="dijit.form.TextBox" required="required" class="fullside" value="<?php echo $this->supplier["company_name"];?>"></td>
-												<td title="ទីកន្លែងកំណើត"><?php echo $tr->translate("Address")?></td>
+												<td title="ទីកន្លែងកំណើត"><?php echo $tr->translate("ADDRESS")?></td>
 												<td rowspan="2">
 													<textarea class="fullside" tabindex="8" style=" height: 60px !important;"tabindex="21" dojoType=""   id="com_addres" name="com_addres"  ><?php echo $this->supplier["note"];?></textarea>
 												</td>  
 											     
 											</tr>
 											<tr>
-											   <td><?php echo $tr->translate("PHONE*")?></td>
+											   <td><?php echo $tr->translate("Tel")?>*</td>
 											   <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->supplier['c_phone'];?>" required="required"  id="c_phone" name="c_phone" class="fullside" /></td>
 											</tr>
 											<tr>
-												<td><?php echo $tr->translate("Email*")?></td>
+												<td><?php echo $tr->translate("EMAIL")?>*</td>
 											   <td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->supplier['c_email'];?>"    id="c_email" name="c_email" class="fullside" /></td>
 											    <td><?php echo $tr->translate("BALANCE")?></td>
 											   <td><input type="text" dojoType="dijit.form.TextBox" value="0" required="required"  id="balance" name="balance" class="fullside" value="<?php echo $this->supplier["balance"];?>"/></td>

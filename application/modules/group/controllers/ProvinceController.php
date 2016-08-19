@@ -25,7 +25,7 @@ class Group_provinceController extends Zend_Controller_Action {
 			
 			$rs_rows= $db->getAllProvince($search);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Province Name","Status");
+			$collumns = array("PROVINCE_NAME","STATUS");
 			$link=array(
 					'module'=>'group','controller'=>'province','action'=>'edit',
 			);

@@ -18,14 +18,14 @@ require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 	<tr>
 		<td>
 		<fieldset>
-					<legend ><strong>Add Province</strong></legend>
+					<legend ><strong><?php echo $tr->translate("ADD_PROVINCE");?></strong></legend>
 							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 							    <tr>
-									<td>Province Name</td>
+									<td><?php echo $tr->translate("PROVINCE_NAME");?></td>
 									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside"  id="province_name" name="province_name" value="" type="text" required="true"></td>
 								</tr>
 								<tr>
-									<td>Status</td>
+									<td><?php echo $tr->translate("STATUS");?></td>
 									<td>
 									    <select tabindex="24" name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
 										    <?php if(!empty($this->status)) foreach($this->status as $row){?>

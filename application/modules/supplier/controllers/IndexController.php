@@ -23,7 +23,7 @@ const REDIRECT_URL = '/supplier/index';
 			
 			$rs_rows= $db->getAllSupplier($search);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Supplier Code","First Name","Tel","Email","Company","Company Adress","status");
+			$collumns = array("CUSTOMER_ID","SUPPLIER_NAME","Tel","EMAIL","COMPANY_NAME","ADDRESS","STATUS");
 			$link=array(
 					'module'=>'supplier','controller'=>'index','action'=>'edit',
 			);
