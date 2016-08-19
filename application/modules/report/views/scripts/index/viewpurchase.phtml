@@ -118,8 +118,10 @@ function addRowAjax(){
 					//	if(old_item==data[i].item_id){
 						//	if(old_address==data[i].deliver_address){
 							//	if(old_deliver_date == data[i].deliver_date){
-									new_qty = parseFloat($('#item_qty_'+addr_name+"_"+num).val());
-									new_qty = new_qty +parseFloat(data[i].qty);
+									//new_qty = parseFloat($('#item_qty_'+addr_name+"_"+num).val());
+									new_qty = $('#item_qty_'+addr_name+"_"+num).val();
+									//new_qty = new_qty +parseFloat(data[i].qty);
+									new_qty = new_qty +'+'+data[i].qty;
 									$('#item_qty_'+addr_name+"_"+num).val(new_qty);
 									document.getElementById('lb_item_qty_'+addr_name+"_"+num).innerHTML = new_qty+"   "+data[i].measure_name_kh;
 									continue;

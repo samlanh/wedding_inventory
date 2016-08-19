@@ -690,7 +690,11 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 		$sql = "SELECT f.`id`,f.`name_kh`,f.`name_en` FROM `ldc_food` AS f WHERE f.`status`=1";
 		return $db->fetchAll($sql);
 	}
-	
+	function getFoodByCat($id){
+		$db = $this->getAdapter();
+		$sql = "SELECT f.`id`,f.`name_kh` as name FROM `ldc_food` AS f WHERE f.`status`=1 AND f.`cat_id`=$id";
+		return $db->fetchAll($sql);
+	}	
 	function getCustomerById($id){
 		$db = $this->getAdapter();
 		$sql = "SELECT c.`phone`,c.`email`,c.address FROM `ldc_customers` AS c WHERE c.`id`=$id";
