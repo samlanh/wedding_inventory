@@ -1,0 +1,102 @@
+<?php $filter = $this->frm_search;
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+// print_r($this->row_cuss);
+$frm=$this->form_search;
+
+?>
+<script>
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.DateTextBox");
+dojo.require("dijit.form.Textarea");
+require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
+</script>
+<style>
+.absolute{ position: absolute !important; top: 210px !important;}
+.tbl_first{width:20% !important;}
+.tbl_second{width:60% !important;}
+</style>
+ <meta charset="utf-8">
+ 
+
+<div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+<form  action="<?php echo $this->url(array('module'=>'report','controller'=>'index','action'=>'rptcustomermeeting')); ?>" dojoType="dijit.form.Form" method="post">
+					   <table style="width:90%">
+						  <tr> 
+						       <td> <?php echo $frm->getElement("adv_search");?></td>
+							   <td> <?php echo $frm->getElement("customer");?></td>
+							   <td> <?php echo $frm->getElement("start_date");?></td>
+							   <td> <?php echo $frm->getElement("end_date");?></td>
+							   
+							  <td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>
+					   	  </tr>
+					   	  
+					   </table>
+ </form>
+<div id="divPrint" style="width: 100%;">
+<style>
+.style{
+	line-height: 20px; font-size: 10px !important;
+	font-family: 'Khmer OS Battambang';
+}
+
+.invoice p{ }
+.center{width:4%; text-align: center;}
+.wd{width:30%}
+th{padding: 3px;font-size: 12px !important;}
+td{padding: 3px;color: #000; font-size: 12px !important;}
+</style>
+<table style="background:#fff;width:90%; margin: 0 auto;width: 100%;">
+										
+<tr>
+	    <td width="28%" align="left">
+		   <!-- <img style="width:70%;" src="/ahs/trunk/public/images/logo.png"><br /><br > -->
+		</td>
+		<td align="center" width="44%">
+			<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">របាយការណ៏​​  អតិថិជនត្រូវជួប</strong><br />
+        <span style="font-weight: bold;font-size: 11px;">From &nbsp;<?php echo date('Y-m-d');?> &nbsp;To&nbsp; 04-Aug-2016</span><br /><br />
+		</td>
+		<td width="28%" align="right">
+		</td>
+	</tr>
+<tr>
+	<td colspan="3">
+    	<table border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:11px !important; white-space: nowrap;" width="100%" cellspacing="0">
+	    	<tr style="font-size:11px; height: 18px;"​ >
+	    		<th>&nbsp;No.</th>
+				<th>&nbsp;Customer Code</th>
+				<th>&nbsp;Customer Name</th>
+				<th>&nbsp;Tel </th>
+				<th>&nbsp;Email</th>
+				<th>&nbsp;Customer Address </th>
+				<th>&nbsp;Ceremony Date</th>
+				<th>&nbsp;Address One</th>
+				<th>&nbsp;Metting</th>
+	    	</tr>
+	    	<?php if(!empty($this->row_cuss)) foreach ($this->row_cuss As $key=>$rs_cus){ $key=$key+1;?>
+	    	<?php 
+	    	         if($rs_cus['is_meeting']==1){
+	    	         	$meeting="Was Meeting";
+	    	         }else{ $meeting="Not yet Meeting";}
+	    	         $date = date('m-d-Y',strtotime($rs_cus["ceremony_date"]));
+	    	         
+	    	?>
+	    	<tr  style="font-size:10px; height: 18px;"​ >
+	    		<td class="items">&nbsp;<?php echo $key;?></td>
+				<td class="items" >&nbsp;<a href="<?php echo $this->baseUrl();?>/report/index/rpt-customer-detial/id/<?php //echo $rs_cus["id"]?>"><?php echo $rs_cus["customer_code"]?></a></td>
+				<td class="items" >&nbsp;<?php echo $rs_cus["first_name"]?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["phone"]?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["email"]?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["address"]?></td>
+				<td class="items">&nbsp;<?php echo $date;?></td>
+				<td class="items">&nbsp;<?php echo $rs_cus["address_1"]?></td>
+				<td class="items">&nbsp;<?php echo $meeting?></td>
+	    	</tr>
+	    	<?php }?>
+    	</table>
+  </td>
+  </tr>
+ </table>
+</div>
+</div>

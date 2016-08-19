@@ -700,4 +700,9 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 		$sql = "SELECT c.`phone`,c.`email`,c.address FROM `ldc_customers` AS c WHERE c.`id`=$id";
 		return $db->fetchRow($sql);
 	}
+	function getLabel(){
+		$db = $this->getAdapter();
+		$sql = "SELECT b.`id`,b.`name` FROM `ldc_label` AS b WHERE b.`status`=1";
+		return $db->fetchAll($sql);
+	}
 }

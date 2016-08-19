@@ -2,6 +2,7 @@
 $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 $frm=$this->frm;
 $db = new Report_Model_DbTable_DbQuote();
+print_r($db->getQuoteConnects($this->rows_quote["id"]));
 ?>
 <style>
 .absolute{ position: absolute !important; top: 210px !important;}
@@ -66,72 +67,48 @@ th{padding: 5px;}
     <?php 
     	$total_pay=0;
     	
-    	foreach ($db->getQuoteConnects($this->rows_quote["id"]) as $row_connect){
-    		$total_pay = $total_pay + $row_connect["total_pay"];
+//     	foreach ($db->getQuoteConnects($this->rows_quote["id"]) as $row_connect){
+//     		$total_pay = $total_pay + $row_connect["total_pay"];
     ?>
     	<tr>
     		<td colspan="2">
     			<table border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:12px; white-space: nowrap;" width="100%" cellspacing="0">
     				<tr>
     					<th class="center">&nbsp;<?php echo $tr->translate("No");?>&nbsp;</th>
-                    	<th >&nbsp;<?php echo $tr->translate("Name Of Food");?>&nbsp;</th>
-                    	<th >&nbsp;<?php echo $tr->translate("Quantity");?>&nbsp;</th>
-                    	<th >&nbsp;<?php echo $tr->translate("Price");?>&nbsp;</th>
-                    	<th >&nbsp;<?php echo $tr->translate("Amount");?>&nbsp;</th>
+                    	<th>&nbsp;<?php echo $tr->translate("Name Of Food");?>&nbsp;</th>
+                    	<th>&nbsp;<?php echo $tr->translate("Quantity");?>&nbsp;</th>
+                    	<th>&nbsp;<?php echo $tr->translate("Price");?>&nbsp;</th>
+                    	<th>&nbsp;<?php echo $tr->translate("Amount");?>&nbsp;</th>
     				</tr>
-    				<?php foreach ($db->getQuoteDetail($row_connect["id"]) as $key => $row_detail){ $num = $key+1;?>
+    				<?php foreach ($db->getQuoteConnects($this->rows_quote["id"]) as $key => $row_connect){ 
+    					$num = $key+1; 
+    					$total_pay = $total_pay + $row_connect["total_pay"];
+    					if($row_connect["type"]==1){
+							$title_name = "For Wedding Ceremony";
+						}elseif($row_connect["type"]==2){
+							$title_name = "For Breakfast Ceremony";
+						}elseif($row_connect["type"]==3){
+							$title_name = "For Lunch Ceremony";
+						}elseif($row_connect["type"]==4){
+							$title_name = "For Dinner Ceremony";
+						}
+    				
+    				?>
     				<tr>
     					<td class="center">&nbsp;<?php echo $num;?>&nbsp;</td>
-                    	<td>&nbsp;<?php echo $row_detail["name_kh"];?>&nbsp;</td>
+                    	<td>&nbsp;<?php echo $title_name."   ".$row_connect["date_do"];?>&nbsp;</td>
+                    	<td>&nbsp;<?php echo $row_connect["num_table"]?>&nbsp;</td>
+                    	<td>&nbsp;<?php echo $row_connect["price"]?>&nbsp;</td>
+                    	<td>&nbsp;<?php echo $row_connect["total_pay"]?>&nbsp;</td>
     				</tr>
     				<?php }?>
     			</table>
-    			<table style="border-collapse:collapse; font-size:12px; white-space: nowrap;line-height:16px;" width="100%" cellspacing="0">
-    				<tr style="background: #ccc;line-height: 36px;">
-    					<td colspan="4" style="font-size: 14px; font-weight: 800;"><?php if($row_connect["type"]==1){echo "For Wedding Ceremony";}elseif($row_connect["type"]==2){echo "For Breakfast Ceremony";}elseif($row_connect["type"]==3){echo "For Lunch Ceremony";}elseif($row_connect["type"]==4){echo "<h4>For Dinner Ceremony</h4>";}?></td>
-    				</tr>
-    				<tr>
-    					<td class="wd">Number Of Table </td>
-    					<td> : <?php echo $row_connect["num_table"]?></td>
-    					<td>Price/Table </td>
-    					<td class="currency"> : $<?php echo $row_connect["price"]?></td>
-    				</tr>
-    				<tr>
-    					<td class="wd">Date Ceremony </td>
-    					<td> : <?php echo $row_connect["date_do"]?></td>
-    					<td>Time Ceremony </td>
-    					<td> : <?php echo $row_connect["time_do"]?></td>
-    				</tr>
-    				<tr>
-    					<td class="wd">Address Ceremony </td>
-    					<td> : <?php echo $row_connect["address"]?></td>
-    					<td>Total Amount </td>
-    					<td class="currency"> : $<?php echo $row_connect["total_pay"]?></td>
-    				</tr>
-    			</table>
+    			
     		</td>
     	</tr>
-    	<tr>
-    		<td colspan="2">
-    			<table border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:12px; white-space: nowrap;" width="100%" cellspacing="0">
-    				<tr>
-    					<th class="center">&nbsp;<?php echo $tr->translate("No");?>&nbsp;</th>
-                    	<th >&nbsp;<?php echo $tr->translate("Name Of Food");?>&nbsp;</th>
-                    	<th >&nbsp;<?php echo $tr->translate("Quantity");?>&nbsp;</th>
-                    	<th >&nbsp;<?php echo $tr->translate("Price");?>&nbsp;</th>
-                    	<th >&nbsp;<?php echo $tr->translate("Amount");?>&nbsp;</th>
-    				</tr>
-    				<?php foreach ($db->getQuoteDetail($row_connect["id"]) as $key => $row_detail){ $num = $key+1;?>
-    				<tr>
-    					<td class="center">&nbsp;<?php echo $num;?>&nbsp;</td>
-                    	<td>&nbsp;<?php echo $row_detail["name_kh"];?>&nbsp;</td>
-    				</tr>
-    				<?php }?>
-    			</table>
-    		</td>
-    	</tr>
+    	
     	<tr><td colspan="2"><br></td></tr>
-    <?php }?>
+    <?php // }?>
     <tr>
     	<td colspan="2">
             <table id="exportExcel" style="border-collapse:collapse; font-size:12px; white-space: nowrap;" width="100%" cellspacing="0">

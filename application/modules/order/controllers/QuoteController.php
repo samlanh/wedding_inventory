@@ -2,7 +2,7 @@
 class Order_quoteController extends Zend_Controller_Action {
 	private $activelist = array('áž˜áž·áž“áž”áŸ’ážšáž¾â€‹áž”áŸ’ážšáž¶ážŸáŸ‹', 'áž”áŸ’ážšáž¾â€‹áž”áŸ’ážšáž¶ážŸáŸ‹');
 	const REDIRECT_URL_ADD ='/order/quote/add';
-	const REDIRECT_URL_ADD_CLOSE ='order/quote/index/';
+	const REDIRECT_URL_ADD_CLOSE ='/order/quote/index/';
     public function init()
     {    	
      /* Initialize action controller here */
@@ -55,8 +55,10 @@ class Order_quoteController extends Zend_Controller_Action {
 	}
 	public function addAction(){
 		$db_make = new Order_Model_DbTable_DbQuote();
+		$db = new Application_Model_DbTable_DbGlobal();
 		if($this->getRequest()->isPost()){
 			$data=$this->getRequest()->getPost();
+			//print_r($data["is_free_breakfast"]);exit();
 			try {
 				if(isset($data['save_new'])){
 					$db_make->addQuoteNew($data);
@@ -72,6 +74,7 @@ class Order_quoteController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
+		$this->view->label = $db->getLabel();
 		$this->view->quote_id = $db_make->getQuoteID();
 		
 		$this->view->service = $db_make->getAllService();
@@ -190,6 +193,7 @@ class Order_quoteController extends Zend_Controller_Action {
 // 		$this->view->quote_breakfast = $db_make->getQuoteDetailByid($id,2);
 // 		$this->view->quote_lunch = $db_make->getQuoteDetailByid($id,3);
 // 		$this->view->quote_dinner = $db_make->getQuoteDetailByid($id,4);
+		$this->view->label = $db->getLabel();
 		
 		$this->view->quote_wedding = $db_make->getQuoteOrderDetail($id,1);
 		$this->view->quote_breakfast = $db_make->getQuoteOrderDetail($id,2);

@@ -204,6 +204,10 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_in = array(
     						'quote_id'		=>	$id,
     						'num_table'		=>	$data['t_number_wedding'],
+    						'title'			=>	$data['title_wedding'],
+    						'label'			=>	$data['label_wedding'],
+    						'is_free'		=>	$data["is_free_wedding"],
+    						'free'			=>	$data["free_wedding"],
     		    			'type'			=>	1,
     		    			'price'			=>	$data['t_price_wedding'],
     		    			'address'		=>	$data['address_wedding'],
@@ -259,6 +263,10 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     			$arr_in = array(
     					'quote_id'		=>	$id,
     					'num_table'		=>	$data['t_number_breakfast'],
+    					'title'		=>	$data['title_breakfast'],
+    					'label'		=>	$data['label_breakfast'],
+    					'is_free'		=>	$data["is_free_breakfast"],
+    					'free'			=>	$data["free_breakfast"],
     					'type'			=>	2,
     					'price'			=>	$data['t_price_breakfast'],
     					'address'		=>	$data['address_breakfast'],
@@ -310,6 +318,10 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     			$arr_in = array(
     					'quote_id'		=>	$id,
     					'num_table'		=>	$data['t_number_lunch'],
+    					'title'			=>	$data['title_lunch'],
+    					'label'			=>	$data['label_lunch'],
+    					'is_free'		=>	$data["is_free_lunch"],
+    					'free'			=>	$data["free_lunch"],
     					'type'			=>	3,
     					'price'			=>	$data['t_price_lunch'],
     					'address'		=>	$data['address_lunch'],
@@ -361,6 +373,10 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     			$arr_in = array(
     					'quote_id'		=>	$id,
     					'num_table'		=>	$data['t_number_dinner'],
+    					'title'			=>	$data['title_dinner'],
+    					'label'			=>	$data['label_dinner'],
+    					'is_free'		=>	$data["is_free_lunch"],
+    					'free'			=>	$data["free_lunch"],
     					'type'			=>	4,
     					'price'			=>	$data['t_price_dinner'],
     					'address'		=>	$data['address_dinner'],
