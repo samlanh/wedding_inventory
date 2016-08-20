@@ -38,7 +38,7 @@ class Order_quoteController extends Zend_Controller_Action {
 			$glClass = new Application_Model_GlobalClass();
 			$rows = $glClass->getImgActive($rows, BASE_URL, true);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("QUOTE NO","CUSTOMER","DATE CEREMONY","ADDRESS","TABLE_FOR_WEDDING","TABLE_FOR_BREAKFAST","TABLE_FOR_LUNCH","TABLE_FOR_DINNER","TOTAL_AMOUNT","STATUS");
+			$collumns = array("QUOTE_NO","CUSTOMER","DATE CEREMONY","ADDRESS","TABLE_FOR_WEDDING","TABLE_FOR_BREAKFAST","TABLE_FOR_LUNCH","TABLE_FOR_DINNER","TOTAL_AMOUNT","STATUS");
 			$link=array(
 					'module'=>'order','controller'=>'quote','action'=>'edit',
 			);
