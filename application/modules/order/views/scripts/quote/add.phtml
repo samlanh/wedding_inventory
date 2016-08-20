@@ -90,7 +90,7 @@ dojo.ready(function(){
 										    <?php }?>
 										</select>
 									</td>
-									<td><?php echo $this->tr->translate("CUSTOMER_CODE");?>:</td>
+									<td><?php echo $this->tr->translate("CUSTOMER_ID");?>:</td>
 									<td>
 										<select  name="customer_code" id="customer_code" onChange="getCustomer(2)" dojoType="dijit.form.FilteringSelect" required="true" class="fullside" placeHolder="Select Customer Code">
 										   <option value="" label="<?php echo $this->tr->translate("SELECT CUSTOMER_CODE");?>"></option>
@@ -101,7 +101,7 @@ dojo.ready(function(){
 									</td>	
 								</tr>
 								<tr>
-									<td><?php echo $this->tr->translate("TEL");?> :</td>
+									<td><?php echo $this->tr->translate("Tel");?> :</td>
 									<td><input type="text" name="tel" id="tel" dojoType="dijit.form.ValidationTextBox" class="fullside"></td>
 									<td><?php echo $this->tr->translate("EMAIL");?> :</td>
 									<td><input type="text" name="email" id="email" dojoType="dijit.form.ValidationTextBox" class="fullside" readonly="readonly" value=""></td>
@@ -137,7 +137,7 @@ dojo.ready(function(){
 						</tr>
 					</table>
 					<div id="mainTabContainer" style="max-width:1110px; height: 540px;" dojoType="dijit.layout.TabContainer" region="center"  >
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Food For Wedding">
+						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("FOOD_FOR_WEDDING");?>">
 							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								<tr>
 									<td><?php echo $this->tr->translate("TITLE");?></td>
@@ -203,7 +203,7 @@ dojo.ready(function(){
 								<thead>
 									<tr>
 										<td colspan="8" align="left">
-											<input type="button" label="<?php echo $this->tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+											<input type="button" label="<?php echo $this->tr->translate('ADD_FOODS');?>" dojoType="dijit.form.Button" 
 										 		iconClass="dijitIconEditProperty" onclick="addRow(1);" />
 											<input type="hidden" name="identity_wedding" id="identity_wedding"  value="" >
 										 </td>
@@ -219,7 +219,7 @@ dojo.ready(function(){
 								</thead>
 						 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="Food For Breackfast">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("FOOD_FOR_BREACKFAST");?>">
 					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								<tr>
 									<td><?php echo $this->tr->translate("TITLE");?></td>
@@ -302,7 +302,7 @@ dojo.ready(function(){
 						</thead>
 				 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="Food For Lunch">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("FOOD_FOR_LUNCH");?>">
 					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								<tr>
 									<td><?php echo $this->tr->translate("TITLE");?></td>
@@ -384,7 +384,7 @@ dojo.ready(function(){
 						</thead>
 				 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="Food For Dinner">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("FOOD_FOR_DINNER");?>">
 					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								<tr>
 									<td><?php echo $this->tr->translate("TITLE");?></td>
@@ -449,7 +449,7 @@ dojo.ready(function(){
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
-									<input type="button" label="<?php echo $this->tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+									<input type="button" label="<?php echo $this->tr->translate('ADD_FOODS');?>" dojoType="dijit.form.Button" 
 								 		iconClass="dijitIconEditProperty" onclick="addRow(4);" />
 									<input type="hidden" name="identity_dinner" id="identity_dinner"  value="" >
 								 </td>
@@ -465,12 +465,12 @@ dojo.ready(function(){
 						</thead>
 				 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="Service">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("SERVICES");?>">
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
-									<input type="button" label="<?php echo $this->tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+									<input type="button" label="<?php echo $this->tr->translate('ADD_FOODS');?>" dojoType="dijit.form.Button" 
 								 		iconClass="dijitIconEditProperty" onclick="addRowService();" />
 									<input type="hidden" name="identity_service" id="identity_service"  value="" >
 								 </td>
@@ -634,10 +634,10 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 		}
 		template='';
 		temp='';
-			temp+='<th>DEL</th>';
-			temp+='<th>N_O</th>';
-			temp+='<th>Food Category</th>';
-			temp+='<th>PRODUCT_NAME</th>';
+			temp+='<th><?php echo $this->tr->translate("DEL");?></th>';
+			temp+='<th><?php echo $this->tr->translate("N_O");?></th>';
+			temp+='<th><?php echo $this->tr->translate("GATEGORY_FOOD");?></th>';
+			temp+='<th><?php echo $this->tr->translate("ITEM_NAME");?></th>';
 			//temp+='<th>QTY</th>';
 			if(type==1){
 				if(title_wedding!=1){
@@ -666,13 +666,13 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 			template+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td align="center">'+no+'</td>';
 			template+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row+col+'" onChange="getFoodByCat('+"'"+row+"'"+','+col+')" name="food_cat_name_'+row+col+'" style="width:100%;">';
-			template+='<option value="-1">Select Food Category</option>';
+			template+='<option value="-1"><?php echo $this->tr->translate("SELECT_FOOD_CATEGORY");?></option>';
 				<?php foreach($this->food_cat as $key){?>
 					template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
 				<?php }?>
 			template+='</select>';
 			template+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row+col+'" name="item_name_'+row+col+'" style="width:100%;">';
-				template+='<option value="-1">Select Food</option>';
+				template+='<option value="-1"><?php echo $this->tr->translate("SELECT_ITEM");?></option>';
 			<?php foreach($this->food as $key){?>
 				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
 			<?php }?>
