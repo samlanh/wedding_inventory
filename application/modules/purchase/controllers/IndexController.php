@@ -36,7 +36,7 @@ class Purchase_indexController extends Zend_Controller_Action {
 			$glClass = new Application_Model_GlobalClass();
 			$rows = $glClass->getImgActive($rows, BASE_URL, true);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("PURCHASE_NO","CUSTOMER","PHONE","EMAIL","ADDRESS","DATE_CEREMONY","SUPPLIER","STATUS");
+			$collumns = array("PURCHASE_NO","CUSTOMER_NAME","PHONE","EMAIL","ADDRESS","CEREMONY_DATE","SUPPLIER","STATUS");
 			$link=array(
 					'module'=>'purchase','controller'=>'index','action'=>'editbysulong',
 			);
@@ -79,7 +79,7 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$glClass = new Application_Model_GlobalClass();
 		$rows = $glClass->getImgActive($rows, BASE_URL, true);
 		$list = new Application_Form_Frmtable();
-		$collumns = array("QOUTE_NO","CUSTOMER","PHONE","EMAIL","ADDRESS","DATE_CEREMONY","STATUS");
+		$collumns = array("QOUTE_NO","CUSTOMER","PHONE","EMAIL","ADDRESS","CEREMONY_DATE","STATUS");
 		$link=array(
 				'module'=>'purchase','controller'=>'index','action'=>'addbysulong',
 		);

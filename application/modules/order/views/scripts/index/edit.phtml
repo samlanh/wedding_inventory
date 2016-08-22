@@ -1,5 +1,6 @@
 <?php 
 	  $url_save = $this->url(array('module'=>'order','controller'=>'index','action'=>'edit'));
+	  $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 	  //$this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
 //       $rows_engine=$this->rows_engine;
 //       $rows_type=$this->rows_type;
@@ -105,10 +106,10 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 	<tr>
 		<td>
 		<fieldset>
-					<legend ><strong>Add Food</strong></legend>
+					<legend ><strong><?php echo $tr->translate('ADD_FOOD');?> </strong></legend>
 					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								<tr>
-									<td>Quote Reference</td>
+									<td><?php echo $tr->translate('QUOTE_REFERENCE');?></td>
 									<td>
 										<select name="quote_no" id="quote_no" onChange="getCeremonyId(); getCustomerByQuoteCode(); oldRowWedding();oldRowDinner();oldRowBreakFast();oldRowLunch(); oldRowService();" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Select Quote Reference Code">
 										    <?php if(!empty($this->QuoteNo)) foreach($this->QuoteNo as $row){?>
@@ -118,11 +119,11 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 										</select>
 										<input type="hidden" name="cer_id" id="cer_id">
 									</td>
-									<td>Order No:</td>
+									<td><?php echo $tr->translate('ORDER_NO');?>:</td>
 									<td><input type="text" name="order_code" dojoType="dijit.form.ValidationTextBox" class="fullside" readonly="readonly" value="<?php echo $this->order["order_code"] ?>"></td>
 								</tr>
 							    <tr>
-									<td>Customer Name:</td>
+									<td><?php echo $tr->translate('CUSTOMER_NAME');?>:</td>
 									<td>
 										<select name="customer_name" id="customer_name" onChange="getCustomer(1); " dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Select Customer Name">
 										    <?php if(!empty($this->Customer_name)) foreach($this->Customer_name as $row){?>
@@ -131,7 +132,7 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 										    <?php }?>
 										</select>
 									</td>
-									<td>Customer Code:</td>
+									<td><?php echo $tr->translate('CUSTOMER_ID');?>:</td>
 									<td>
 										<select name="customer_code" id="customer_code" onChange="getCustomer(2);" dojoType="dijit.form.FilteringSelect" class="fullside" placeHolder="Select Customer Code">
 										    <?php if(!empty($this->Customer_code)) foreach($this->Customer_code as $row){?>
@@ -142,16 +143,16 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 									</td>	
 								</tr>
 								<tr>
-									<td>Phone No :</td>
+									<td><?php echo $tr->translate('Tel');?>:</td>
 									<td><input type="text" name="tel" id="tel" dojoType="dijit.form.ValidationTextBox" class="fullside"></td>
-									<td>Email :</td>
+									<td><?php echo $tr->translate('EMAIL');?> :</td>
 									<td><input type="text" name="email" id="email" dojoType="dijit.form.ValidationTextBox" class="fullside" readonly="readonly" value=""></td>
 								</tr>
 								<tr>
-									<td>Address :</td>
+									<td><?php echo $tr->translate('ADDRESS');?> :</td>
 									<td><input type="text" name="address" id="address" dojoType="dijit.form.ValidationTextBox" class="fullside"></td>
 									
-									<td>Ceremony Date</td>
+									<td><?php echo $tr->translate('CEREMONY_DATE');?> </td>
 									<td>
 <!-- 									<input id="ceremony_date" name="ceremony_date" dojoType="dijit.form.DateTextBox" class="fullside"> -->
 										<select name="ceremony_date" id="ceremony_date"  dojoType="dijit.form.FilteringSelect" class="fullside" >
@@ -160,7 +161,7 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 									</td>
 								</tr>
 								<tr>
-									<td>Status</td>
+									<td><?php echo $tr->translate('STATUS');?></td>
 									<td>
 									    <select tabindex="24" name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
 										    <?php if(!empty($this->status)) foreach($this->status as $row){?>
@@ -171,32 +172,32 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 								</tr>
 					</table>
 					<div id="mainTabContainer" style="max-width:1110px; height: 540px;" dojoType="dijit.layout.TabContainer" region="center"  >
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Food For Wedding">
+						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="<?php echo $tr->translate('FOOD_FOR_WEDDING');?>">
 							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								
 								<tr>
-									<td>Number Of Table:</td>
+									<td><?php echo $tr->translate('TITLE');?>:</td>
 									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_number_wedding" name="t_number_wedding" value="" type="text"></td>	
-									<td>Price/Table</td>
+									<td><?php echo $tr->translate('PRICE');?></td>
 									<td>
 									    <input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_wedding" name="t_price_wedding" value="" type="text">
 									</td>
 								</tr>
 								<tr>
-									<td>Date Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_DATE');?></td>
 									<td><input type="text" name="date_wedding" id="date_wedding" dojoType="dijit.form.DateTextBox" class="fullside" value="now"></td>
-									<td>Time Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_TIME');?></td>
 									<td><input type="text" name="time_wedding" id="time_wedding" dojoType="dijit.form.TextBox" class="fullside"></td>
 								</tr>
 								<tr>
-									<td>Address Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_ADDRESS');?></td>
 									<td>
 <!-- 									<textarea rows="" cols="" name="address_wedding" id="address_wedding" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
 										<select  name="address_wedding" id="address_wedding" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
-											<option value="" label="Choose Location">Choose Location</option>
+											<option value="" label="Choose Location"><?php echo $tr->translate('CHOOSE_LOCATION');?></option>
 										</select>
 									</td>
-									<td>Total Amount</td>
+									<td><?php echo $tr->translate('TOTAL_AMOUNT');?></td>
 									<td><input type="text" name="amount_wedding" id="amount_wedding" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_wedding" id="id_wedding" dojoType="dijit.form.TextBox"></td>
 								</tr>
 							</table>
@@ -204,7 +205,7 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 								<thead>
 									<tr>
 										<td colspan="8" align="left">
-											<input type="button" label="Add Row<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+											<input type="button" label="<?php echo $tr->translate('ADD_FOOD');?>" dojoType="dijit.form.Button" 
 										 		iconClass="dijitIconEditProperty" onclick="addRow(1);" />
 											<input type="hidden" name="identity_wedding" id="identity_wedding"  value="" >
 										 </td>
@@ -220,33 +221,33 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 								</thead>
 						 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="Food For Breackfast">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $tr->translate('FOOD_FOR_BREACKFAST');?>">
 					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								
 								<tr>
-									<td>Number Of Table:</td>
+									<td><?php echo $tr->translate('TITLE');?>:</td>
 									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_number_breakfast" name="t_number_breakfast" value="" type="text"></td>	
-									<td>Price/Table</td>
+									<td><?php echo $tr->translate('PRICE');?></td>
 									<td>
 									    <input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_breakfast" name="t_price_breakfast" value="" type="text">
 									</td>
 								</tr>
 								
 								<tr>
-									<td>Date Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_DATE');?></td>
 									<td><input type="text" name="date_breakfast" id="date_breakfast" dojoType="dijit.form.DateTextBox" class="fullside" value="now"></td>
-									<td>Time Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_TIME');?></td>
 									<td><input type="text" name="time_breakfast" id="time_breakfast" dojoType="dijit.form.TextBox" class="fullside"></td>
 								</tr>
 								<tr>
-									<td>Address Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_ADDRESS');?></td>
 									<td>
 <!-- 									<textarea rows="" cols="" name="address_breakfast" id="address_breakfast" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
 										<select  name="address_breakfast" id="address_breakfast" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
-											<option value="" label="Choose Location">Choose Location</option>
+											<option value="" label="Choose Location"><?php echo $tr->translate('CHOOSE_LOCATION');?></option>
 										</select>
 									</td>
-									<td>Total Amount</td>
+									<td><?php echo $tr->translate('TOTAL_AMOUNT');?></td>
 									<td><input type="text" name="amount_breakfast" id="amount_breakfast" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_breakfast" id="id_breakfast" dojoType="dijit.form.TextBox"></td>
 								</tr>
 					</table>
@@ -254,7 +255,7 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
-									<input type="button" label="Add Row<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+									<input type="button" label="<?php echo $tr->translate('ADD_FOOD');?>" dojoType="dijit.form.Button" 
 								 		iconClass="dijitIconEditProperty" onclick="addRow(2);" />
 									<input type="hidden" name="identity_breakfast" id="identity_breakfast"  value="" >
 								 </td>
@@ -270,32 +271,32 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 						</thead>
 				 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="Food For Lunch">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $tr->translate('FOOD_FOR_LUNCH');?>">
 					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								
 								<tr>
-									<td>Number Of Table:</td>
+									<td><?php echo $tr->translate('TITLE');?>:</td>
 									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_number_lunch" name="t_number_lunch" value="" type="text"></td>	
-									<td>Price/Table</td>
+									<td><?php echo $tr->translate('PRICE');?></td>
 									<td>
 									    <input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_lunch" name="t_price_lunch" value="" type="text">
 									</td>
 								</tr>
 								<tr>
-									<td>Date Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_DATE');?></td>
 									<td><input type="text" name="date_lunch" id="date_lunch" dojoType="dijit.form.DateTextBox" class="fullside" value="now"></td>
-									<td>Time Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_TIME');?></td>
 									<td><input type="text" name="time_lunch" id="time_lunch" dojoType="dijit.form.TextBox" class="fullside"></td>
 								</tr>
 								<tr>
-									<td>Address Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_ADDRESS');?></td>
 									<td>
 <!-- 									<textarea rows="" cols="" name="address_lunch" id="address_lunch" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
 										<select  name="address_lunch" id="address_lunch" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
-											<option value="" label="Choose Location">Choose Location</option>
+											<option value="" label="Choose Location"><?php echo $tr->translate('CHOOSE_LOCATION');?></option>
 										</select>
 									</td>
-									<td>Total Amount</td>
+									<td><?php echo $tr->translate('TOTAL_AMOUNT');?></td>
 									<td><input type="text" name="amount_lunch" id="amount_lunch" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_lunch" id="id_lunch" dojoType="dijit.form.TextBox"></td>
 								</tr>
 					</table>
@@ -303,7 +304,7 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
-									<input type="button" label="Add Row<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+									<input type="button" label="<?php echo $tr->translate('ADD_FOOD');?>" dojoType="dijit.form.Button" 
 								 		iconClass="dijitIconEditProperty" onclick="addRow(3);" />
 									<input type="hidden" name="identity_lunch" id="identity_lunch"  value="" >
 								 </td>
@@ -319,32 +320,32 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 						</thead>
 				 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="Food For Dinner">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $tr->translate('FOOD_FOR_DINNER');?>">
 					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								
 								<tr>
-									<td>Number Of Table:</td>
+									<td><?php echo $tr->translate('TITLE');?>:</td>
 									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_number_dinner" name="t_number_dinner" value="" type="text"></td>	
-									<td>Price/Table</td>
+									<td><?php echo $tr->translate('PRICE');?></td>
 									<td>
 									    <input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_dinner" name="t_price_dinner" value="" type="text">
 									</td>
 								</tr>
 								<tr>
-									<td>Date Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_DATE');?></td>
 									<td><input type="text" name="date_dinner" id="date_dinner" dojoType="dijit.form.DateTextBox" value="now" class="fullside"></td>
-									<td>Time Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_TIME');?></td>
 									<td><input type="text" name="time_dinner" id="time_dinner" dojoType="dijit.form.TextBox" class="fullside"></td>
 								</tr>
 								<tr>
-									<td>Address Ceremony</td>
+									<td><?php echo $tr->translate('CEREMONY_ADDRESS');?></td>
 									<td>
 <!-- 									<textarea rows="" cols="" name="address_dinner" id="address_dinner" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
 										<select  name="address_dinner" id="address_dinner" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
-											<option value="" label="Choose Location">Choose Location</option>
+											<option value="" label="Choose Location"><?php echo $tr->translate('CHOOSE_LOCATION');?></option>
 										</select>
 									</td>
-									<td>Total Amount</td>
+									<td><?php echo $tr->translate('TOTAL_AMOUNT');?></td>
 									<td><input type="text" name="amount_dinner" id="amount_dinner" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_dinner" id="id_dinner" dojoType="dijit.form.TextBox"></td>
 								</tr>
 					</table>
@@ -352,7 +353,7 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
-									<input type="button" label="Add Row<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+									<input type="button" label="<?php echo $tr->translate('ADD_FOOD');?>" dojoType="dijit.form.Button" 
 								 		iconClass="dijitIconEditProperty" onclick="addRow(4);" />
 									<input type="hidden" name="identity_dinner" id="identity_dinner"  value="" >
 								 </td>
@@ -368,12 +369,12 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 						</thead>
 				 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="Service">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $tr->translate('SERVICES');?>">
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
-									<input type="button" label="Add Row<?php //echo $tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+									<input type="button" label="<?php echo $tr->translate('ADD_SERVICE');?>" dojoType="dijit.form.Button" 
 								 		iconClass="dijitIconEditProperty" onclick="addRowService();" />
 									<input type="hidden" name="identity_service" id="identity_service"  value="" >
 								 </td>
@@ -385,7 +386,7 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 									</table>
 									<table style="width: 30%; float: right; border:0 !important">
 										<tr>
-											<td style="border: none;">Total :</td>
+											<td style="border: none;"><?php echo $tr->translate('TOTAL_AMOUNT');?> :</td>
 											<td style="border: none;"><input type="text" name="amount_service" id="amount_service" dojoType="dijit.form.NumberTextBox" class="fullside"> </td>
 										</tr>
 									</table>
@@ -534,10 +535,10 @@ function oldRowWedding(){
 			dijit.byId('address_wedding').attr('value',addr_w);
 			dijit.byId('amount_wedding').attr('value','<?php echo $row["total_pay"]?>');
 			dijit.byId('id_wedding').attr('value','<?php echo $row["id"]?>');
-			temp+='<th>DEL</th>';
-			temp+='<th>N_O</th>';
-			temp+='<th>Food Category</th>';
-			temp+='<th>PRODUCT_NAME</th>';
+			temp+='<th><?php echo $tr->translate('DEL');?></th>';
+			temp+='<th><?php echo $tr->translate('N_O');?></th>';
+			temp+='<th><?php echo $tr->translate('CATEGORY_FOOD');?></th>';
+			temp+='<th><?php echo $tr->translate('ITEM_NAME');?></th>';
 // 			temp+='<th>QTY</th>';
 		dojo.query("#head-title-wedding").append(temp);
 		title_wedding=1;
@@ -545,13 +546,13 @@ function oldRowWedding(){
 	template+='<td width="3%" align="center"><img onclick="deleteRecord('+col_wedding+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 	template+='<td align="center">'+no_wedding+'</td>';
 	template+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_wedding_'+col_wedding+'" onChange="getFoodByCat('+"'"+row_wedding+"'"+','+col_wedding+')" name="food_cat_name_wedding_'+col_wedding+'" style="width:100%;">';
-			template+='<option value="-1">Select Food Category</option>';
+			template+='<option value="-1"><?php echo $tr->translate('SELECT_FOOD_CATEGORY');?></option>';
 				<?php foreach($this->food_cat as $key){?>
 					template+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
 				<?php }?>
 	template+='</select>';
 	template+='<td><select dojoType="dijit.form.FilteringSelect"  id="item_name_wedding_'+col_wedding+'" name="item_name_wedding_'+col_wedding+'" style="width:100%;">';
-		template+='<option value="-1">Select Food</option>';
+		template+='<option value="-1"><?php echo $tr->translate('SELECT_ITEM');?></option>';
 	<?php foreach($this->food as $key){?>
 		template+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["food_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
 	<?php }?>
@@ -587,10 +588,10 @@ function oldRowBreakFast(){
 			dijit.byId('address_breakfast').attr('value','<?php echo $row["address"]?>');
 			dijit.byId('amount_breakfast').attr('value','<?php echo $row["total_pay"]?>');
 			dijit.byId('id_breakfast').attr('value','<?php echo $row["id"]?>');
-			temp_b+='<th>DEL</th>';
-			temp_b+='<th>N_O</th>';
-			temp_b+='<th>Food Category</th>';
-			temp_b+='<th>PRODUCT_NAME</th>';
+			temp_b+='<th><?php echo $tr->translate('DEL');?></th>';
+			temp_b+='<th><?php echo $tr->translate('N_O');?></th>';
+			temp_b+='<th><?php echo $tr->translate('CATEGORY_FOOD');?></th>';
+			temp_b+='<th><?php echo $tr->translate('ITEM_NAME');?></th>';
 			//temp_b+='<th>QTY</th>';
 		dojo.query("#head-title-breakfast").append(temp_b);
 		title_breakfast=1;
@@ -598,13 +599,13 @@ function oldRowBreakFast(){
 	template_b+='<td width="3%" align="center"><img onclick="deleteRecord('+col_breakfast+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 	template_b+='<td align="center">'+no_breakfast+'</td>';
 	template_b+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_breakfast_'+col_breakfast+'" onChange="getFoodByCat('+"'"+row_breakfast+"'"+','+col_breakfast+')" name="food_cat_name_breakfast_'+col_breakfast+'" style="width:100%;">';
-			template_b+='<option value="-1">Select Food Category</option>';
+			template_b+='<option value="-1"><?php echo $tr->translate('SELECT_FOOD_CATEGORY');?></option>';
 				<?php foreach($this->food_cat as $key){?>
 					template_b+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
 				<?php }?>
 	template_b+='</select>';
 	template_b+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_breakfast_'+col_breakfast+'" name="item_name_breakfast_'+col_breakfast+'" style="width:100%;">';
-	template_b+='<option value="-1">Select Food</option>';
+	template_b+='<option value="-1"><?php echo $tr->translate('SELECT_ITEM');?></option>';
 	<?php foreach($this->food as $key){?>
 	template_b+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["food_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
 	<?php }?>
@@ -639,10 +640,10 @@ function oldRowLunch(){
 			dijit.byId('address_lunch').attr('value','<?php echo $row["address"]?>');
 			dijit.byId('amount_lunch').attr('value','<?php echo $row["total_pay"]?>');
 			dijit.byId('id_lunch').attr('value','<?php echo $row["id"]?>');
-			temp_l+='<th>DEL</th>';
-			temp_l+='<th>N_O</th>';
-			temp_l+='<th>Food Category</th>';
-			temp_l+='<th>PRODUCT_NAME</th>';
+			temp_l+='<th><?php echo $tr->translate('DEL');?></th>';
+			temp_l+='<th><?php echo $tr->translate('N_O');?></th>';
+			temp_l+='<th><?php echo $tr->translate('CATEGORY_FOOD');?></th>';
+			temp_l+='<th><?php echo $tr->translate('ITEM_NAME');?></th>';
 			//temp_l+='<th>QTY</th>';
 		dojo.query("#head-title-lunch").append(temp_l);
 		title_lunch=1;
@@ -650,13 +651,13 @@ function oldRowLunch(){
 	template_l+='<td width="3%" align="center"><img onclick="deleteRecord('+col_lunch+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 	template_l+='<td align="center">'+no_lunch+'</td>';
 	template_l+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_lunch_'+col_lunch+'" onChange="getFoodByCat('+"'"+row_lunch+"'"+','+col_lunch+')" name="food_cat_name_lunch_'+col_lunch+'" style="width:100%;">';
-			template_l+='<option value="-1">Select Food Category</option>';
+			template_l+='<option value="-1"><?php echo $tr->translate('SELECT_FOOD_CATEGORY');?></option>';
 				<?php foreach($this->food_cat as $key){?>
 					template_l+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
 				<?php }?>
 	template_l+='</select>';
 	template_l+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_lunch_'+col_lunch+'" name="item_name_lunch_'+col_lunch+'" style="width:100%;">';
-	template_l+='<option value="-1">Select Food</option>';
+	template_l+='<option value="-1"><?php echo $tr->translate('SELECT_ITEM');?></option>';
 	<?php foreach($this->food as $key){?>
 	template_l+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["food_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
 	<?php }?>
@@ -690,10 +691,10 @@ function oldRowDinner(){
 			dijit.byId('address_dinner').attr('value','<?php echo $row["address"]?>');
 			dijit.byId('amount_dinner').attr('value','<?php echo $row["total_pay"]?>');
 			dijit.byId('id_dinner').attr('value','<?php echo $row["id"]?>');
-			temp_d+='<th>DEL</th>';
-			temp_d+='<th>N_O</th>';
-			temp_d+='<th>Food Category</th>';
-			temp_d+='<th>PRODUCT_NAME</th>';
+			temp_d+='<th><?php echo $tr->translate('DEL');?></th>';
+			temp_d+='<th><?php echo $tr->translate('N_O');?></th>';
+			temp_d+='<th><?php echo $tr->translate('CATEGORY_FOOD');?></th>';
+			temp_d+='<th><?php echo $tr->translate('ITEM_NAME');?></th>';
 			//temp_d+='<th>QTY</th>';
 		dojo.query("#head-title-dinner").append(temp_d);
 		title_dinner=1;
@@ -701,13 +702,13 @@ function oldRowDinner(){
 	template_d+='<td width="3%" align="center"><img onclick="deleteRecord('+col_dinner+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 	template_d+='<td align="center">'+no_dinner+'</td>';
 	template_d+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row_dinner+col_dinner+'" onChange="getFoodByCat('+"'"+row_dinner+"'"+','+col_dinner+')" name="food_cat_name_dinner_'+col_dinner+'" style="width:100%;">';
-			template_d+='<option value="-1">Select Food Category</option>';
+			template_d+='<option value="-1"><?php echo $tr->translate('SELECT_FOOD_CATEGORY');?></option>';
 				<?php foreach($this->food_cat as $key){?>
 					template_d+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
 				<?php }?>
 			template_d+='</select>';
 	template_d+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_dinner_'+col_dinner+'" name="item_name_dinner_'+col_dinner+'" style="width:100%;">';
-	template_d+='<option value="-1">Select Food</option>';
+	template_d+='<option value="-1"><?php echo $tr->translate('SELECT_ITEM');?></option>';
 	<?php foreach($this->food as $key){?>
 	template_d+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["food_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
 	<?php }?>
@@ -745,12 +746,12 @@ function oldRowService(){
 					temp_s='';
 					no_s++;
 					col_s++;
-					temp_s+='<th>DEL</th>';
-					temp_s+='<th>N_O</th>';
-					temp_s+='<th>PRODUCT_NAME</th>';
-					temp_s+='<th>QTY</th>';
-					temp_s+='<th>PRICE</th>';
-					temp_s+='<th>NOTE</th>';
+					temp_s+='<th><?php echo $tr->translate('DEL');?></th>';
+					temp_s+='<th><?php echo $tr->translate('N_O');?></th>';
+					temp_s+='<th><?php echo $tr->translate('SERVICE_NAME');?></th>';
+					temp_s+='<th><?php echo $tr->translate('QTY');?></th>';
+					temp_s+='<th><?php echo $tr->translate('PRICE');?></th>';
+					temp_s+='<th><?php echo $tr->translate('NOTE');?></th>';
 						
 					if(title_service!=1){
 					 	dojo.query("#head-title-service").append(temp_s);
@@ -759,7 +760,7 @@ function oldRowService(){
 					template_s+='<td width="3%" align="center"><img onclick="deleteRecord('+col_s+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 					template_s+='<td align="center">'+no_s+'</td>';
 					template_s+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row_s+col_s+'" name="item_name_'+row_s+col_s+'" style="width:100%;">';
-					template_s+='<option value="-1">Select Service</option>';
+					template_s+='<option value="-1"><?php echo $tr->translate('SELECT_SERVICE');?></option>';
 					<?php foreach($this->service as $key){?>
 						template_s+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['title'];?></option>';
 					<?php }?>
@@ -840,10 +841,10 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 		}
 		template='';
 		temp='';
-			temp+='<th>DEL</th>';
-			temp+='<th>N_O</th>';
-			temp+='<th>Food Category</th>';
-			temp+='<th>PRODUCT_NAME</th>';
+			temp+='<th><?php echo $tr->translate('DEL');?></th>';
+			temp+='<th><?php echo $tr->translate('N_O');?></th>';
+			temp+='<th><?php echo $tr->translate('CATEGORY_FOOD');?></th>';
+			temp+='<th><?php echo $tr->translate('ITEM_NAME');?></th>';
 			//temp+='<th>QTY</th>';
 			if(type==1){
 				if(title_wedding!=1){
@@ -872,13 +873,13 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 			template+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td align="center">'+no+'</td>';
 			template+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row+col+'" onChange="getFoodByCat('+"'"+row+"'"+','+col+')" name="food_cat_name_'+row+col+'" style="width:100%;">';
-			template+='<option value="-1">Select Food Category</option>';
+			template+='<option value="-1"><?php echo $tr->translate('SELECT_FOOD_CATEGORY');?></option>';
 				<?php foreach($this->food_cat as $key){?>
 					template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
 				<?php }?>
 			template+='</select>';
 			template+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row+col+'" name="item_name_'+row+col+'" style="width:100%;">';
-				template+='<option value="-1">Select Food</option>';
+				template+='<option value="-1"><?php echo $tr->translate('SELECT_ITEM');?></option>';
 			<?php foreach($this->food as $key){?>
 				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
 			<?php }?>
@@ -925,12 +926,12 @@ title_service=0;
 		temp_s='';
 		no_s++;
 		col_s++;
-		temp_s+='<th>DEL</th>';
-		temp_s+='<th>N_O</th>';
-		temp_s+='<th>PRODUCT_NAME</th>';
-		temp_s+='<th>QTY</th>';
-		temp_s+='<th>PRICE</th>';
-		temp_s+='<th>NOTE</th>';
+		temp_s+='<th><?php echo $tr->translate('DEL');?></th>';
+		temp_s+='<th><?php echo $tr->translate('N_O');?></th>';
+		temp_s+='<th><?php echo $tr->translate('SERVICE_NAME');?></th>';
+		temp_s+='<th><?php echo $tr->translate('QTY');?></th>';
+		temp_s+='<th><?php echo $tr->translate('PRICE');?></th>';
+		temp_s+='<th><?php echo $tr->translate('NOTE');?></th>';
 			
 		if(title_service!=1){
 		 	dojo.query("#head-title-service").append(temp_s);
@@ -939,7 +940,7 @@ title_service=0;
 		template_s+='<td width="3%" align="center"><img onclick="deleteRecord('+col_s+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 		template_s+='<td align="center">'+no_s+'</td>';
 		template_s+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row_s+col_s+'" name="item_name_'+row_s+col_s+'" style="width:100%;">';
-		template_s+='<option value="-1">Select Service</option>';
+		template_s+='<option value="-1"><?php echo $tr->translate('SELECT_SERVICE');?></option>';
 		<?php foreach($this->service as $key){?>
 		template_s+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['title'];?></option>';
 		<?php }?>

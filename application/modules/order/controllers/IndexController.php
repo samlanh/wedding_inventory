@@ -38,7 +38,7 @@ class Order_indexController extends Zend_Controller_Action {
 			$glClass = new Application_Model_GlobalClass();
 			$rows = $glClass->getImgActive($rows, BASE_URL, true);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("ORDER NO","CUSTOMER","PHONE","ADDRESS","CEREMONY_DATE","TOTAL_AMOUNT","STATUS");
+			$collumns = array("ORDER_NO","CUSTOMER_NAME","PHONE","ADDRESS","CEREMONY_DATE","TOTAL_AMOUNT","STATUS");
 			$link=array(
 					'module'=>'order','controller'=>'index','action'=>'edit',
 			);
