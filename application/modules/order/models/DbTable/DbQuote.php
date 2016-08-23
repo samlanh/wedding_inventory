@@ -447,8 +447,42 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     						'qc_id'		=>$qc_id,
     						'food_id'	=>$data['item_name_ser_'.$i],
     						'qty'		=>$data['qty_ser_'.$i],
-    						'price'		=>$data['qty_ser_'.$i],
-    						'note'		=>$data['qty_ser_'.$i],
+    						'price'		=>$data['price_ser_'.$i],
+    						'note'		=>$data['note_ser_'.$i],
+    				);
+    				$this->_name ='ldc_quotation_detail';
+    				$this->insert($arr_ins);
+    			}
+    		}
+    		
+    		if($data['identity_other']){
+    			$ids = explode(',', $data['identity_service']);
+    			foreach ($ids as $i){
+    				$sql = "SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.`id`=".$data['item_name_other_'.$i];
+    				$other_title = $db->fetchOne($sql);
+    				$arr_in = array(
+    						'quote_id'		=>	$id,
+	    					'num_table'		=>	$data['qty_other_'.$i],
+	    					'title'			=>	$other_title,
+	    					'label'			=>	$data['label_other_'.$i],
+	    					'is_free'		=>	$data["is_free_other_".$i],
+	    					//'free'			=>	$data["free_dinner"],
+	    					//'allocate_num'	=>	$data["allocate_number_dinner"],
+	    					'type'			=>	6,
+	    					'price'			=>	$data['price_other_'.$i],
+	    					'address'		=>	$data['address_other_'.$i],
+	    					'date_do'		=>	$data["date_other_".$i],
+	    					'time_do'		=>	$data["time_dinner"],
+	    					'total_pay'		=>	$data['qty_other_'.$i]*$data['price_other_'.$i],
+    				);
+    				$this->_name ='ldc_quotation_connection';
+    				$qc_id = $this->insert($arr_in);
+    				$arr_ins = array(
+    						'qc_id'		=>$qc_id,
+    						'food_id'	=>$data['item_name_other_'.$i],
+    						'qty'		=>$data['qty_other_'.$i],
+    						'price'		=>$data['price_other_'.$i],
+    						'note'		=>$data['note_other_'.$i],
     		
     				);
     				$this->_name ='ldc_quotation_detail';
