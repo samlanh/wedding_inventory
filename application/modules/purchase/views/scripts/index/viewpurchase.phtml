@@ -38,18 +38,18 @@ dojo.ready(function(){
     	<td>
     		<table style="border-collapse:collapse; font-size:12px; white-space: nowrap;line-height:16px;" width="100%" cellspacing="0">
     			<tr>
-    				<td>Purchase Code</td>
+    				<td><?php echo $tr->translate("PURCHASE_NO");?></td>
     				<td><input type="text" value="" namr="pu_code" dojoType="dijit.form.TextBox" class="fullside"></td>
-    				<td>Supplier :</td>
+    				<td><?php echo $tr->translate("SUPPLIER");?> :</td>
     				<td>
     					<select dojoType="dijit.form.FilteringSelect" id="supplier_name" name="supplier_name" style="width:100%;" placeHolder="Select Supplier">
-							<option value="-1" label="Select Supplier">All Supplier</option>
+							<option value="-1" label="Select Supplier"><?php echo $tr->translate('ALL_SUPPLIER');?></option>
 							<?php foreach($this->supplier as $key){?>
-							<option value="<?php echo $key['id']?>"><?php echo $key['company_name'];?></option>
+							<option value="<?php echo $key['id']?>" <?php if($this->status['supplier_name']==$key['id']) echo "selected='selected'";?> ><?php echo $key['company_name'];?></option>
 							<?php }?>
 						</select>
     				</td>
-    				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="SEARCH" label="SEARCH" id="save_close" dojoType="dijit.form.Button" name="save_close" iconClass="dijitEditorIcon dijitEditorIconSearch" /> </td>
+    				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="SEARCH" label="<?php echo $tr->translate('SEARCH');?>" id="save_close" dojoType="dijit.form.Button" name="save_close" iconClass="dijitEditorIcon dijitEditorIconSearch" /> </td>
     			</tr>
     		</table>
     		
@@ -99,17 +99,17 @@ function addRowAjax(){
 					if(su_id != data[i].su_id){
 						indexs++;
 						addr_name = "address_temp_"+indexs;
-					   temp ='<tr style="background: rgb(78, 157, 246) none repeat scroll 0% 0%; color:white; font-weight:800;"><td colspan=""> Ceremony Address : '+data[i].supplier_name+'</td></tr>';
+					   temp ='<tr style="background: rgb(78, 157, 246) none repeat scroll 0% 0%; color:white; font-weight:800;"><td colspan=""><?php echo $tr->translate("CEREMONY_ADDRESS");?>: '+data[i].supplier_name+'</td></tr>';
 			 		   temp_h = '<tr>';
 			 		  	temp_h += '<td>';
 			 		  		temp_h += '<table id="tables_'+addr_name+'"  border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;">';
 				 		  		temp_h += '<tr style="background:rgb(251, 247, 221);">';
-					 		  		temp_h += '<td width="2%">No</td>';
-					 		  		temp_h += '<td>Item Name</td>';
-					 		  		temp_h += '<td>QTY</td>';
+					 		  		temp_h += '<td width="2%"><?php echo $tr->translate("N_O");?></td>';
+					 		  		temp_h += '<td><?php echo $tr->translate("ITEM_NAME");?></td>';
+					 		  		temp_h += '<td><?php echo $tr->translate("QTY");?></td>';
 					 		  		//temp_h += '<td>Location</td>';
 					 		  		//temp_h += '<td>Date</td>';
-					 		  		temp_h += '<td>Note</td>';
+					 		  		temp_h += '<td><?php echo $tr->translate("NOTE");?></td>';
 							 	temp_h += '</tr>';
 			 		  		temp_h += '</table>';
 			 		  	temp_h += '</td>';
@@ -142,8 +142,8 @@ function addRowAjax(){
 						old_su_id = data[i].su_id;
 						
 						if((old_su_ids != data[i].su_id ) || (old_date_deliver != data[i].deliver_date) || (old_deliver_addr != data[i].deliver_address)){
-							temp_date = '<td colspan="3">Deliver Address : '+data[i].deliver_address+'</td>';
-							temp_date += '<td colspan="">Delivery Date : '+data[i].deliver_date+'</td>';
+							temp_date = '<td colspan="3"><?php echo $tr->translate("DELIVER_ADDRESS");?> : '+data[i].deliver_address+'</td>';
+							temp_date += '<td colspan=""><?php echo $tr->translate("DELIVERY_DAY");?> : '+data[i].deliver_date+'</td>';
 						temp_a = '<tr id="rows_'+addr_name+'_'+num+'" style="background: rgb(231, 138, 245);color: rgb(255, 255, 255);">';
 						temp_a += '</tr>';
 						dojo.query("#tables_"+addr_name).append(temp_a);

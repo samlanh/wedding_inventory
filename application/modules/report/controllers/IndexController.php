@@ -221,5 +221,20 @@ class Report_indexController extends Zend_Controller_Action {
  	$this->view->row_item=$sup_item->getSupplierItem($id);
  	
  }
+ function qouteAction(){
+ 	 
+ }
+ function purchaseAction(){
+ 		
+ }
+ function supplierAction(){
+ 		
+ }
+ function foodAction(){
+ 		
+ }
+ function itemAction(){
+ 		
+ }
 }
 

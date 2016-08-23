@@ -1,0 +1,46 @@
+
+
+  <style>
+  ul.link-rpt li a {
+	color: #3A3939;
+    height: 50px;
+  	width:180px;
+    display: block;
+    padding: 10px;
+    background: #D6D6D6;
+  	font-family: 'Kh Battambang','Khmer Battambang' !important;
+  	text-align: center;
+  	word-wrap: break-word;
+  } 
+    ul.link-rpt li {
+	float:left; margin:10px;
+    list-style: none;
+    border:1px solid #B1B0AF;
+    word-wrap: break-word;
+    
+  } 
+  .dijitReset, .dijitInline  ,.dijitButton {
+	width: 200px !important;
+  }
+  </style>
+  <?php 
+  
+  $tr = Application_Form_FrmLanguages::getCurrentlanguage();
+  $qoute_report=$this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-quote'), null, true);
+  $rpt_student_payment_late=$this->url(array('module'=>'allreport','controller'=>'accounting','action'=>'rptstudentpaymentlate'), null, true);
+  ?>
+  <div style="background:#ccc; width: 100%;    padding-left: 100px;">
+  	<ul class="link-rpt">
+  		<li><a href="<?php echo $qoute_report;?>"><?php echo $tr->translate('QUOTE_REPORTS');?></a></li>
+  		<li><a href="#"><?php echo $tr->translate('ORDER_FOOD');?></a></li>
+  		<li><a href="#"><?php echo $tr->translate('ORDER_QOUTATION');?></a></li>
+  	</ul>
+  </div>
+  <div style="clear: both;"></div>
+  
+  
+  
+  
+  
+  
+  

@@ -260,9 +260,10 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$id = $this->getRequest()->getParam("id");
 		//$db = new Report_Model_DbTable_DbPurchase();
 		$db = new Purchase_Model_DbTable_DbPurchase();
-	
+	    
 		if($this->getRequest()->isPost()){
 			$data = $this->getRequest()->getPost();
+			$this->view->status=$data;
 			$su_id = $data['supplier_name'];
 		}else{
 			$su_id = -1;
