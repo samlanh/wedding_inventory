@@ -252,6 +252,7 @@ function oldRow(){
 	if(title!=1){
 		tem+='<th><?php echo $this->tr->translate("DEL")?></th>';
 		tem+='<th><?php echo $this->tr->translate("N_O")?></th>';
+		tem+='<th ><?php echo $this->tr->translate("ALLOCATED_FOODS")?></th>';
 		tem+='<th ><?php echo $this->tr->translate("ITEM_NAME")?></th>';
 		tem+='<th><?php echo $this->tr->translate("PRICE")?></th>';
 		tem+='<th><?php echo $this->tr->translate("QTY")?></th>';
@@ -262,6 +263,7 @@ function oldRow(){
 	}
 		templates+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 		templates+='<td align="center">'+col+'</td>';
+		templates+='<td align="center"><input type="checkBox" dojoType="dijit.form.CheckBox"  name="all_food_'+col+'" id="all_food_'+col+'" onClick="setAllocation('+col+')" style="width: 23%;" value="<?php echo $row['is_allocate'];?>"/><input type="hidden" name="al_food_'+col+'" id="al_food_'+col+'" value="<?php echo $row['is_allocate'];?>"/></td>';
 		templates+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemPrice('+col+');getSupplier('+col+');setSupplierVal('+col+',<?php echo $row["su_id"]; ?>);" id="item_name_'+col+'" name="item_name_'+col+'" style="width:100%;">';
 			templates+='<option value="-1">Select product</option>';
 		<?php foreach($this->pro as $key){?>
@@ -284,7 +286,11 @@ function oldRow(){
 	dojo.html.set(dojo.byId("row"+col),templates , {
 	     parseContent: true,
 	});
+	var als_food=$('#all_food_'+col).val();
 	dijit.byId("item_name_"+col).attr('value',<?php echo $row['item_id'];?>);
+	if(als_food==1){
+		dijit.byId('all_food_'+col).attr("checked", "checked");
+	}
 	<?php }?>
 }
 var template = '';
@@ -302,6 +308,7 @@ function addRow() {
 		if(title!=1){
 			temp+='<th><?php echo $this->tr->translate("DEL");?></th>';
 			temp+='<th><?php echo $this->tr->translate("N_O");?></th>';
+			temp+='<th ><?php echo $this->tr->translate("ALLOCATED_FOODS")?></th>';
 			temp+='<th ><?php echo $this->tr->translate("ITEM_NAME");?></th>';
 			temp+='<th><?php echo $this->tr->translate("PRICE");?></th>';
 			temp+='<th><?php echo $this->tr->translate("QTY");?></th>';
@@ -312,6 +319,7 @@ function addRow() {
 		}
 			template+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td align="center">'+no+'</td>';
+			template+='<td align="center"><input type="checkBox" dojoType="dijit.form.CheckBox" name="all_food_'+col+'" id="all_food_'+col+'" onClick="setAllocation('+col+')" style="width: 23%;"/><input type="hidden" name="al_food_'+col+'" id="al_food_'+col+'" value="0"/></td>';
 			template+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemPrice('+col+');getSupplier('+col+');" id="item_name_'+col+'" name="item_name_'+col+'" style="width:100%;">';
 				template+='<option value="-1">Select product</option>';
 			<?php foreach($this->pro as $key){?>
@@ -395,4 +403,15 @@ function hideDialog() {
 	 dijit.byId("supplier_name_"+index).attr('value',id);
 	 
   }
+  ////set value checkbox 
+  function setAllocation(r){
+ 	
+ 		$('#all_food_'+r).change(function(){
+ 		     if($(this).attr('checked')){
+ 		          $('#al_food_'+r).val('1');
+ 		     }else{
+ 		    	 $('#al_food_'+r).val('0');
+ 		     }
+ 		});
+ 	}
 </script>

@@ -63,6 +63,7 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
 	    					'qty'			=>	$data['qty'.$i],
 	    					//'amount'=>$data['amount'.$i],
 	    					'su_id'			=>	$data['supplier_name_'.$i],
+	    					'is_allocate'	=>	$data['al_food_'.$i],
 	    					'deliver_day'	=>	$data['deliver_day_'.$i]
 	    			);
 	    			$this->_name ='ldc_food_ingredients';
@@ -115,6 +116,7 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
 	    					'qty'			=>	$data['qty'.$i],
 	    					//'amount'	=>	$data['amount'.$i],
 	    					'su_id'			=>	$data['supplier_name_'.$i],
+	    					'is_allocate'	=>	$data['al_food_'.$i],
 	    					'deliver_day'	=>	$data['deliver_day_'.$i]
 	    			);
 	    			$this->_name ='ldc_food_ingredients';
@@ -162,7 +164,8 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
     					'price'		=>	$data['price'.$i],
     					'qty'		=>	$data['qty'.$i],
     					//'amount'=>$data['amount'.$i],
-    					'su_id'		=>	$data['supplier_name_'.$i]
+    					'su_id'		=>	$data['supplier_name_'.$i],
+    					'is_allocate'	=>	$data['al_food_'.$i]
     			);
     			$this->_name ='ldc_food_ingredients';
     			$this->insert($arr_in);
