@@ -477,7 +477,7 @@ old_addr = "";
 function hideDialog() {		
 	dijit.byId("popup_service").hide();
 }
- function deleteRecord(addr,index) {
+function deleteRecord(addr,index) {
 		var identity = $('#identity_'+addr).val();
 		var arrays = identity.split(',');
 		for(var i=0;i<arrays.length;i++) {
@@ -488,14 +488,14 @@ function hideDialog() {
 		dojo.query("#row_"+addr+"_"+index).remove();
 		//calculateDiscount(index);
 }
- function doAmount(index){
+function doAmount(index){
 	 price = dijit.byId('price'+index).get('value');
 	 qty = dijit.byId('qty'+index).get('value');
 	 total = parseFloat(price)*parseFloat(qty);
 	 dijit.byId('amount'+index).attr('value',total);
  }
  
- function myTrim(x) {
+function myTrim(x) {
     return x.replace(/[^\w\s]/gi, '');
 }
  function TimeTexbox(addr,indexs,inxs){
