@@ -53,10 +53,16 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
 				  oc.`date_do`,
 				  oc.`time_do`,
 				  oc.`total_pay`,
+				  oc.label,
+				  oc.allocate_num,
+				  oc.is_free,
+				  oc.free,
+				  oc.title,
 				  od.`food_id`,
 				  od.cat_id,
 				  od.`qty`,
-				  od.`price` AS price_d
+				  od.`price` AS price_d,
+				  od.note
 				FROM
 				  `ldc_order_connection` AS oc,
 				  `ldc_order_detail` AS od 

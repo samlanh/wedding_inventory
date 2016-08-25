@@ -154,6 +154,8 @@ class Order_indexController extends Zend_Controller_Action {
 		$this->view->order_lunch = $db_make->getOrderDetailByid($id,3);
 		$this->view->order_dinner = $db_make->getOrderDetailByid($id,4);
 		$this->view->order_service = $db_make->getOrderDetailByid($id,5);
+		$this->view->order_other = $db_make->getOrderDetailByid($id,6);
+		$this->view->order_sacrifice = $db_make->getOrderDetailByid($id,7);
 		
 		$this->view->order = $db_make->getOrderByid($id);
 		
