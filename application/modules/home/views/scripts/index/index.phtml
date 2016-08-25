@@ -1,65 +1,160 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
+<?php  $tr=Application_Form_FrmLanguages::getCurrentlanguage();?>
 <head>
+   <meta charset="utf-8" />
+   <title><?php echo $tr->translate('HOME');?></title>
+   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+   <meta content="" name="description" />
+   <meta content="" name="author" />
+   <link href="<?php echo $this->baseUrl()?>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+   <link href="<?php echo $this->baseUrl()?>/assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
+   <link href="<?php echo $this->baseUrl()?>/assets/bootstrap/css/bootstrap-fileupload.css" rel="stylesheet" />
+   <link href="<?php echo $this->baseUrl()?>/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+   <link href="<?php echo $this->baseUrl()?>/css/style.css" rel="stylesheet" />
+   <link href="<?php echo $this->baseUrl()?>/css/style-responsive.css" rel="stylesheet" />
+   <link href="<?php echo $this->baseUrl()?>/css/style-default.css" rel="stylesheet" id="style_color" />
+   <link rel="shortcut icon" href="<?php echo $this->baseUrl()?>/images/icon.ico" type="image/x-icon"/>
 <style>
- .metro-destaque-rodape{
-          background: #ccc;
+
+ul, ol {
+    padding: 0;
+     margin: 0px !important;}
+.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
 }
-.metro span {
-    color:#fff;
-    font-weight: 800;
+#menu li {
+    background: #ec920e;
 }
-.metro span {
-    position:relative;
-    height:20px;
-    text-decoration:none;
-    color:rgba(255, 255, 255, 1.0);
-    float:left;
-    text-align:center;
-    clear:both;
-    width:100%;
-    bottom:0px;
-    background:#ccc;
-    padding:7px 0px 7px 0px ;
-    
+#menu ul {
+	background: #ec920e;
 }
 </style>
-    <title>Home Page</title>
-    <link href="<?php echo $this->baseUrl()?>/assets/assets-home/Style/Interacao.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo $this->baseUrl()?>/assets/assets-home/Style/jq-metro.css" rel="stylesheet" type="text/css" />
-    <script src="<?php echo $this->baseUrl()?>/assets/assets-home/Script/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <script src="<?php echo $this->baseUrl()?>/assets/assets-home/Script/jquery.metro-btn.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#metroaqui").AddMetroSimpleButton('bt3', 'metro-vermelho', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Vermelho' );
-            $("#metroaqui").AddMetroSingleLabeledButton('bt6', 'metro-roxo', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', '30' );
-			
+<?php 
+$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+$item=$this->url(array('module'=>'items','controller'=>'index','action'=>'add'), null, true);
+$food=$this->url(array('module'=>'food','controller'=>'index','action'=>'add'), null, true);
+$customert=$this->url(array('module'=>'group','controller'=>'index','action'=>'add'), null, true);
+$supplier=$this->url(array('module'=>'supplier','controller'=>'index','action'=>'add'), null, true);
+$order=$this->url(array('module'=>'order','controller'=>'index','action'=>'index'), null, true);
+$purchase=$this->url(array('module'=>'purchase','controller'=>'index','action'=>'index'), null, true);
+$report=$this->url(array('module'=>'report','controller'=>'index','action'=>'index'), null, true);
 
-			$("#metroaqui_novo").AddMetroDoubleWithTrailer('bt6', 'metro-azul', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/admin.png', 'Customer Information','window.open("http://localhost/wedding_system/trunk/public/group","_blank")' );
-			$("#metroaqui_novo").AddMetroDoubleWithTrailerWithBG('bt6', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/item-1.jpg', 'Manage Foods ','window.open("http://localhost/wedding_system/trunk/public/food","_blank")');
-			$("#metroaqui_novo").AddMetroSimpleButton('bt1', 'metro-verde', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Manage Items', 'window.open("http://localhost/wedding_system/trunk/public/items","_blank")' );
-            $("#metroaqui_novo").AddMetroSimpleButton('bt2', 'metro-laranja', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'All Report','window.open("http://localhost/wedding_system/trunk/public/report","_blank")');
-            $("#metroaqui_novo").AddMetroDoubleButton('bt4', 'metro-azul', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Supplier Information','window.open("http://localhost/wedding_system/trunk/public/supplier","_blank")');
-            $("#metroaqui_novo").AddMetroSimpleButton('bt5', 'metro-laranja', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Laranja' );
-			$("#metroaqui_novo").AddMetroSimpleButton('bt1', 'metro-verde', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/admin.png', 'Teste Roger', '');
-            $("#metroaqui_novo").AddMetroSimpleButton('bt2', 'metro-laranja', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Laranja', '');
-			$("#metroaqui_novo").AddMetroSimpleButton('bt1', 'metro-verde', '<?php echo $this->baseUrl()?>/assets/assets-home/Style/Imagem/carta.png', 'Teste Roger', '');
-        });
-    </script>
-
+?>
+<style type="text/css">
+.metro-nav {
+    font-family: 'Kh Battambang','Khmer Battambang' !important;
+}
+.container-fluid {
+    padding-right: 0px;
+    padding-left: 28px;
+}
+</style>
 </head>
+<body class="fixed-top" style="font-family:'Kh Battambang','Khmer Battambang' !important; background: #cfddf5;">
+   <div id="container" class="row-fluid" style="margin: 0 auto; background: #cfddf5;height: 100%; padding:10px 0px;">
+   <h1 class="page-header" style="text-align:center;color:#f65108;">Welcome to Wedding System</h1>
+         <div class="container-fluid">
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row-fluid">
+                <!--BEGIN METRO STATES-->
+                <div class="metro-nav metro-fix-view">
+                     <div class="metro-nav-block double" style="background:#ec920e;">
+                        <a target="blank" href="<?php echo $item;?>" style="text-align: center;" class="text-center" data-original-title="">
+                            <span class="value">
+                                <i class="icon-shopping-cart"></i>
+                            </span>
+                        </a>
+                         <div class="status" align="center"><?php echo $tr->translate('ITEM_INFO');?></div>
+                    </div>
+                    <div class="metro-nav-block double" style="background:#8d3e03;">
+                        <a  target="blank" href="<?php echo $food;?>" data-original-title="">
+                            <i class="icon-shopping-cart"></i>
+                            <div class="info"></div>
+                            <div class="status"><?php echo $tr->translate('FOOD_INFO');?></div>
+                        </a>
+                    </div>
+                   <div class="metro-nav-block double" style="background:#ec920e;">
+                       <a target="blank" href="<?php echo $customert;?>" data-original-title="">
+                           <i class="icon-user"></i>
+                           <div class="info"></div>
+                           <div class="status"><?php echo $tr->translate('CUSTOMER_INFO');?></div>
+                       </a>
+                   </div>
+                    <div class="metro-nav-block double" style="background:#f65108;">
+                        <a target="blank" href="<?php echo $supplier;?>" data-original-title="">
+                            <i class="icon-user"></i>
+                            <div class="info"> </div>
+                            <div class="status"><?php echo $tr->translate('SUPPLIER_INFO');?></div>
+                        </a>
+                    </div>
+                    <div class="metro-nav-block double" style="background:#0233eb;">
+                        <a target="blank" href="<?php echo $report;?>" data-original-title="">
+                            <i class="icon-signout"></i>
+                            <div class="info"></div>
+                            <div class="status"><?php echo $tr->translate('REPORT');?></div>
+                        </a>
+                    </div>
+                     <div class="metro-nav-block double" style="background: #8f001c;">
+                        <a target="blank" href="<?php echo $order;?>" data-original-title="">
+                            <i class="icon-signout"></i>
+                            <div class="info"></div>
+                            <div class="status"><?php echo $tr->translate('ORDER');?></div>
+                        </a>
+                    </div>
+                    <div class="metro-nav-block double" style="background:#84089e">
+                        <a href="<?php echo $purchase;?>" data-original-title="">
+                            <i class="icon-bar-chart"></i>
+                            <div class="status"><?php echo $tr->translate('PURCHASE');?></div>
+                        </a>
+                    </div>
+                    
+                    <div class="metro-nav-block nav-block-purple">
+                        <a href="<?php //echo $service_name;?>" data-original-title="">
+                            <i class="icon-eye-open"></i>
+                            <div class="info"></div>
+                            <div class="status"><?php echo $tr->translate('');?> </div>
+                        </a>
+                    </div>
+                    <div class="metro-nav-block double" style="background:#1746f7;">
+                        <a href="<?php //echo $stopservice;?>" data-original-title="">
+                            <i class="icon-remove-sign"></i>
+                            <div class="info"></div>
+                            <div class="status"><?php echo $tr->translate('');?></div>
+                        </a>
+                    </div>
+                    <div class="metro-nav-block nav-block-blue" style="background:#530be6;">
+                        <a href="<?php //echo $rpt_calculate;?>" class="text-center" data-original-title="">
+                            <i class="icon-dashboard"></i>
+                            <div class="status"><?php echo $tr->translate('');?></div>
+                        </a>
+                    </div>
+                     <div class="metro-nav-block double" style="background:#693d8d;">
+                        <a href="<?php //echo $rpt_dailypayment;?>" data-original-title="">
+                            <i class="icon-external-link"></i>
+                            <div class="status"><?php echo $tr->translate(' ');?></div>
+                        </a>
+                    </div>
+                  
 
-<body>
-    <div class="cabecalho">
-        <!--<img src="Style/Imagem/logo.png" alt="Interação Sistemas" height="150" />-->
-        <h1 class="page-header" style="text-align:center;">Welcome to Wedding System</h1>
-    </div>
-
-    <div id="metroaqui_novo" class="metro-panel  active">
-	    
-	</div>
-	
-    <div id="metroaqui" class="metro-panel"></div>
-	
-	<div class="center" style="position:fixed; bottom:30px; left:0px; width:100%;text-decoration:none;font-weight: bold; font-size: 17px;text-shadow: 1px 1px 1px #0B404A;">Developer:By Cam App Technology - <a href="http://www.cam-app.com" target="_blank">http://www.cam-app.com</a></div>
+                  
+                   
+                </div>
+                <!--END METRO STATES-->
+            </div>
+            <!-- END PAGE CONTENT-->
+         </div>
+         <!-- END PAGE CONTAINER-->
+     
+      <!-- END PAGE -->  
+   </div>
+   <!-- END CONTAINER -->
+   <!-- BEGIN JAVASCRIPTS -->
+   <!-- Load javascripts at bottom, this will reduce page load time -->
+   <script src="<?php echo $this->baseUrl()?>/js/jquery-1.8.3.min.js"></script>
+   <script src="<?php echo $this->baseUrl()?>/js/jquery.nicescroll.js" type="text/javascript"></script>
+   <script src="<?php echo $this->baseUrl()?>/assets/bootstrap/js/bootstrap.min.js"></script>
+   <script src="<?php echo $this->baseUrl()?>/js/common-scripts.js"></script>
 </body>
+<!-- END BODY -->
 </html>
