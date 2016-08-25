@@ -236,5 +236,19 @@ class Report_indexController extends Zend_Controller_Action {
  function itemAction(){
  		
  }
+ function rptItemsAction(){
+ 	$items=new Report_Model_DbTable_DbItem();
+ 	$this->view->items=$items->getItemAll();
+ 		
+ }
+ function rptMeasureItemsAction(){
+ 	$items=new Report_Model_DbTable_DbItem();
+ 	$this->view->cat_measur=$items->getMeasureAll();
+ }
+ 
+ function rptCategoryItemsAction(){
+ 	$items=new Report_Model_DbTable_DbItem();
+ 	$this->view->cat_type=$items->getItemCatagory();
+ }
 }
 

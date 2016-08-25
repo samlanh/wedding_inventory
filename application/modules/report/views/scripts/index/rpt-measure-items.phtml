@@ -1,0 +1,92 @@
+
+<?php 
+	$base_url = Application_Form_FrmMessage::getUrl("/");
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	//print_r($this->cat_measur);
+?>
+<title><?php echo $tr->translate('MANAGE_MEASURE');?></title>
+<style>
+ 
+body{font-family: "Times New Roman",Arial; }
+</style>
+<style>
+tr.normal td, tr.alternate td {
+    border: 1px solid #0C0C0C;
+    line-height: 14px;
+    padding: 0px 2px 0px 2px;
+    font-size: 11px;
+}
+</style>
+<div style="background: #fff; margin: 0 auto;min-height: 27cm;">
+<div id="divPrint"  >
+<table style="background:#fff;width:90%; margin: 0 auto;width: 100%;">
+										
+<tr>
+	    <td width="28%" align="left">
+		   <!-- <img style="width:70%;" src="/ahs/trunk/public/images/logo.png"><br /><br > -->
+		</td>
+		<td align="center" width="44%">
+			<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">របាយការណ៏​​  <?php echo $tr->translate('MANAGE_MEASURE');?></strong><br />
+        <span style="font-weight: bold;font-size: 11px;">From &nbsp;04-Aug-2016 &nbsp;To&nbsp; 04-Aug-2016</span><br /><br />
+		</td>
+		<td width="28%" align="right">
+		</td>
+	</tr>
+<tr>
+	<td colspan="3" style="padding: 0px 20px;">
+		<table border="1px solide #000;"  id="exportExcel" width="100%" style=" font-size: 11px;">
+				<style type="text/css">
+											body{font-family: "Times New Roman",Arial; }
+											table{ border-collapse:collapse; margin:0 auto;
+											border-color:#000; }
+											.padd tr td{  text-align:center}
+											.padd tr th{  background-color: #ccc; }
+				</style>
+			<tr style="font-size:10px; height: 18px;"​ >
+				<th >&nbsp;No.</th>
+				<th >&nbsp;Measur Name Kh</th>
+				<th >&nbsp;Measur Name En</th>
+				<th >&nbsp;Status</th>
+			</tr>
+		<?php if(!empty($this->cat_measur)) foreach($this->cat_measur As $key=>$rs){$num=$key+1;?>
+			<tr class="normal">
+			  <?php if($rs['status']==1){
+			    	     $status="Active";
+			    		}else {$status="Deactive";}
+			    	?>
+				<td class="items-no">&nbsp;<?php echo $num;?></td>
+				<td class="items">&nbsp;<?php echo $rs["measure_name_kh"]?></td>
+				<td class="items">&nbsp;<?php echo $rs["measure_name_en"]?></td>
+				<td class="items">&nbsp;<?php echo $status?></td>
+			</tr>
+		<?php }?>
+		</table>
+   </td>
+  </tr>
+ </table>
+</div>
+</div>	
+<script type="text/javascript">
+function doPrint() {
+	window.frames["print_frame"].document.body.innerHTML=dojo.byId('divPrint').innerHTML;
+    window.frames["print_frame"].window.focus();
+    window.frames["print_frame"].window.print();
+    hideDialog();
+}
+function preview()
+{ 
+  var disp_setting="toolbar=no,status=no,resizable=no,location=no,directories=yes,menubar=no,"; 
+      disp_setting+="scrollbars=no,width=1200, height=700, left=100, top=25"; 
+  var content_vlue = document.getElementById("divPrint").innerHTML; 
+  
+  var docprint=window.open("","",disp_setting); 
+   docprint.document.open(); 
+   docprint.document.write('<html><head>'); 
+   docprint.document.write('</head><div style=" font-size:16px !important; margin:0px; font-family:Verdana;"><style>table th {font-size:14px !important;} table td{font-size:12px !important;}</style><center>');          
+   docprint.document.write(content_vlue);          
+   docprint.document.write('</center></div></html>'); 
+   docprint.document.close(); 
+   docprint.focus(); 
+}
+</script>
+	 
