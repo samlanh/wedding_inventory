@@ -42,7 +42,7 @@ th{padding: 5px;}
 	    			<tr>
 	    				<td class="wd"><?php echo $tr->translate("RENTER_NAME");?> </td>
 	    				<td>: <?php echo $this->rows_quote["first_name"]?></td>
-	    				<td><?php echo $tr->translate("TEL");?> </td>
+	    				<td><?php echo $tr->translate("PHONE");?> </td>
 	    				<td>: <?php echo $this->rows_quote["phone"]?></td>
 	    			</tr>
 	    			<tr>
@@ -52,11 +52,11 @@ th{padding: 5px;}
 	    				<td>: <?php echo $this->rows_quote["email"]?></td>
 	    			</tr>
 	    			<tr>
-	    				<td class="wd"><?php echo $tr->translate("ADDRESS_CEREMONY");?> </td>
+	    				<td class="wd"><?php echo $tr->translate("CEREMONY_ADDRESS");?> </td>
 	    				<td colspan="3">: <?php echo $this->rows_quote["ceremony_addr"]?></td>
 	    			</tr>
 	    			<tr>
-	    				<td><?php echo $tr->translate("DUE_DATE");?> </td>
+	    				<td><?php echo $tr->translate("CEREMONY_DATE");?> </td>
 	    				<td colspan="">: <?php echo $this->rows_quote["ceremony_date"]?></td>
 	    			</tr>
 	    	</table>
@@ -74,11 +74,11 @@ th{padding: 5px;}
     		<td colspan="2">
     			<table border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:12px; white-space: nowrap;" width="100%" cellspacing="0">
     				<tr>
-    					<th class="center">&nbsp;<?php echo $tr->translate("No");?>&nbsp;</th>
-                    	<th>&nbsp;<?php echo $tr->translate("Name Of Food");?>&nbsp;</th>
-                    	<th>&nbsp;<?php echo $tr->translate("Quantity");?>&nbsp;</th>
-                    	<th>&nbsp;<?php echo $tr->translate("Price");?>&nbsp;</th>
-                    	<th>&nbsp;<?php echo $tr->translate("Amount");?>&nbsp;</th>
+    					<th class="center">&nbsp;<?php echo $tr->translate("NO");?>&nbsp;</th>
+                    	<th>&nbsp;<?php echo $tr->translate("FOOD_NAME");?>&nbsp;</th>
+                    	<th>&nbsp;<?php echo $tr->translate("QTY");?>&nbsp;</th>
+                    	<th>&nbsp;<?php echo $tr->translate("PRICE");?>&nbsp;</th>
+                    	<th>&nbsp;<?php echo $tr->translate("AMOUNT");?>&nbsp;</th>
     				</tr>
     				<?php foreach ($db->getQuoteConnects($this->rows_quote["id"]) as $key => $row_connect){ 
     					$num = $key+1; 
@@ -96,8 +96,8 @@ th{padding: 5px;}
     				?>
     				<tr>
     					<td class="center">&nbsp;<?php echo $num;?>&nbsp;</td>
-                    	<td>&nbsp;<?php echo $title_name."   ".$row_connect["date_do"];?>&nbsp;</td>
-                    	<td>&nbsp;<?php echo $row_connect["num_table"]?>&nbsp;</td>
+                    	<td>&nbsp;<?php echo $row_connect["title"]."   ".$row_connect["date_do"];?>&nbsp;</td>
+                    	<td>&nbsp;<?php echo $row_connect["num_table"]." ".$row_connect["l_name"];?>&nbsp;</td>
                     	<td>&nbsp;<?php echo $row_connect["price"]?>&nbsp;</td>
                     	<td>&nbsp;<?php echo $row_connect["total_pay"]?>&nbsp;</td>
     				</tr>

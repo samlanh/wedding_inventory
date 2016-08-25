@@ -69,7 +69,7 @@ class Report_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
 	}
 	function getQuoteConnects($id){
 		$db = $this->getAdapter();
-		$sql ="SELECT qc.* FROM `ldc_quotation_connection` AS qc WHERE qc.`quote_id`=$id";
+		$sql ="SELECT qc.*,l.`name` AS l_name FROM `ldc_quotation_connection` AS qc,`ldc_label` AS l WHERE qc.`label`=l.`id` AND qc.`quote_id`=$id";
 		return $db->fetchAll($sql);
 	}
 	
