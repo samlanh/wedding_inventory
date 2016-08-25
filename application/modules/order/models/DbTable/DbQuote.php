@@ -53,138 +53,6 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     	$sql="SELECT fc.`id`,fc.`name_kh` FROM `ldc_food_cat` AS fc WHERE fc.`status`=1";
     	return $db->fetchAll($sql);
    	}
-    function addQuote($data){
-    	$db = $this->getAdapter();
-    	$db->beginTransaction();
-    	try{
-    		if($data['identity_wedding']!=""){
-    			$arr =array(
-    					'quot_code'		=>	$data['qutoe_code'],
-    					'customer_id'	=>	$data['customer_name'],
-    					'num_table'		=>	$data['t_number_wedding'],
-    					'type'			=>	1,
-    					'price'			=>	$data['t_price_wedding'],
-    					'address'		=>	$data['address_wedding'],
-    					'date_do'		=>	$data["date_wedding"],
-    					'time_do'		=>	$data["time_wedding"],
-    					'total_pay'		=>	$data["amount_wedding"],
-    					//'balance'		=>	$data[""],
-    					'status'		=>	$data['status'],
-    					//'desc'			=>	$data['note']
-    			);
-    			$this->_name ="ldc_quotation";
-    			$id = $this->insert($arr);
-    			
-    			$ids = explode(',', $data['identity_wedding']);
-    			foreach ($ids as $i){
-    				$arr_in = array(
-    						'quote_id'	=>	$id,
-    						'food_id'	=>	$data['item_name_wedding_'.$i],
-    						'qty'		=>	$data['qty_wedding_'.$i],
-    				);
-    				$this->_name ='ldc_quotation_detail';
-    				$this->insert($arr_in);
-    			}
-    		}
-    		
-    		if($data['identity_breakfast']!=""){
-    			$arr =array(
-    					'quot_code'		=>	$data['qutoe_code'],
-    					'customer_id'	=>	$data['customer_name'],
-    					'num_table'		=>	$data['t_number_breakfast'],
-    					'type'			=>	2,
-    					'price'			=>	$data['t_price_breakfast'],
-    					'address'		=>	$data['address_breakfast'],
-    					'date_do'		=>	$data["date_breakfast"],
-    					'time_do'		=>	$data["time_breakfast"],
-    					'total_pay'		=>	$data["amount_breakfast"],
-    					//'balance'		=>	$data[""],
-    					'status'		=>	$data['status'],
-    					//'desc'			=>	$data['note']
-    			);
-    			$this->_name ="ldc_quotation";
-    			$id = $this->insert($arr);
-    			 
-    			$ids = explode(',', $data['identity_breakfast']);
-    			foreach ($ids as $i){
-    				$arr_in = array(
-    						'quote_id'=>$id,
-    						'food_id'=>$data['item_name_breakfast_'.$i],
-    						'qty'=>$data['qty_breakfast_'.$i],
-    				);
-    				$this->_name ='ldc_quotation_detail';
-    				$this->insert($arr_in);
-    			}
-    		}
-    		
-    		if($data['identity_lunch']!=""){
-    			$arr =array(
-    					'quot_code'		=>	$data['qutoe_code'],
-    					'customer_id'	=>	$data['customer_name'],
-    					'num_table'		=>	$data['t_number_lunch'],
-    					'type'			=>	3,
-    					'price'			=>	$data['t_price_lunch'],
-    					'address'		=>	$data['address_lunch'],
-    					'date_do'		=>	$data["date_lunch"],
-    					'time_do'		=>	$data["time_lunch"],
-    					'total_pay'		=>	$data["amount_lunch"],
-    					//'balance'		=>	$data[""],
-    					'status'		=>	$data['status'],
-    					//'desc'			=>	$data['note']
-    			);
-    			$this->_name ="ldc_quotation";
-    			$id = $this->insert($arr);
-    		
-    			$ids = explode(',', $data['identity_lunch']);
-    			foreach ($ids as $i){
-    				$arr_in = array(
-    						'quote_id'=>$id,
-    						'food_id'=>$data['item_name_lunch_'.$i],
-    						'qty'=>$data['qty_lunch_'.$i],
-    				);
-    				$this->_name ='ldc_quotation_detail';
-    				$this->insert($arr_in);
-    			}
-    		}
-	    	 
-    		if($data['identity_dinner']){
-    			$arr =array(
-    					'quot_code'		=>	$data['qutoe_code'],
-    					'customer_id'	=>	$data['customer_name'],
-    					'num_table'		=>	$data['t_number_dinner'],
-    					'type'			=>	4,
-    					'price'			=>	$data['t_price_dinner'],
-    					'address'		=>	$data['address_dinner'],
-    					'date_do'		=>	$data["date_dinner"],
-    					'time_do'		=>	$data["time_dinner"],
-    					'total_pay'		=>	$data["amount_dinner"],
-    					//'balance'		=>	$data[""],
-    					'status'		=>	$data['status'],
-    					//'desc'			=>	$data['note']
-    			);
-    			$this->_name ="ldc_quotation";
-    			$id = $this->insert($arr);
-    		
-    			$ids = explode(',', $data['identity_dinner']);
-    			foreach ($ids as $i){
-    				$arr_in = array(
-    						'quote_id'=>$id,
-    						'food_id'=>$data['item_name_dinner_'.$i],
-    						'qty'=>$data['qty_dinner_'.$i],
-    				);
-    				$this->_name ='ldc_quotation_detail';
-    				$this->insert($arr_in);
-    			}
-    		}
-	    		
-	    	$db->commit();
-    	}catch (Exception $e){
-    		$db->rollBack();
-    		Application_Model_DbTable_DbUserLog::writeMessageError($e);
-    		echo $e->getMessage();exit();
-    	}
-    }
-    
     function addQuoteNew($data){
     	$db = $this->getAdapter();
     	$db->beginTransaction();
@@ -425,24 +293,100 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				}
     			}
     		}
-    		 
-    		if($data['identity_service']){
+    		if($data['identity_other']){
+    			$ids = explode(',', $data['identity_other']);
+    			foreach ($ids as $i){
+    				$sql = "SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.`id`=".$data['item_name_other_'.$i];
+    				$other_title = $db->fetchOne($sql);
+    				$arr_in = array(
+    						'quote_id'		=>	$id,
+    						'num_table'		=>	$data['qty_other_'.$i],
+    						'title'			=>	$other_title,
+    						'label'			=>	$data['label_other_'.$i],
+    						'is_free'		=>	$data["is_free_other_".$i],
+    						//'free'			=>	$data["free_dinner"],
+    						//'allocate_num'	=>	$data["allocate_number_dinner"],
+    						'type'			=>	6,
+    						'price'			=>	$data['price_other_'.$i],
+    						'address'		=>	$data['address_other_'.$i],
+    						'date_do'		=>	$data["date_other_".$i],
+    						//'time_do'		=>	$data["time_dinner"],
+    						'total_pay'		=>	$data['qty_other_'.$i]*$data['price_other_'.$i],
+    				);
+    				$this->_name ='ldc_quotation_connection';
+    				$qc_id = $this->insert($arr_in);
+    				$arr_ins = array(
+    						'qc_id'		=>$qc_id,
+    						'cat_id'	=>	$data['food_cat_name_other_'.$i],
+    						'food_id'	=>$data['item_name_other_'.$i],
+    						'qty'		=>$data['qty_other_'.$i],
+    						'price'		=>$data['price_other_'.$i],
+    						'note'		=>$data['note_other_'.$i],
     		
-    			$arr_in = array(
-    					'quote_id'		=>	$id,
-    					//'num_table'		=>	$data['t_number_dinner'],
-    					'type'			=>	5,
-    					//'price'			=>	$data['t_price_dinner'],
-    					//'address'		=>	$data['address_dinner'],
-    					//'date_do'		=>	$data["date_dinner"],
-    					//'time_do'		=>	$data["time_dinner"],
-    					'total_pay'		=>	$data["amount_service"],
-    			);
-    			$this->_name ='ldc_quotation_connection';
-    			$qc_id = $this->insert($arr_in);
+    				);
+    				$this->_name ='ldc_quotation_detail';
+    				$this->insert($arr_ins);
+    			}
+    		}
+    		
+    		if($data['identity_sacrifice']){
+    			$ids = explode(',', $data['identity_sacrifice']);
+    			foreach ($ids as $i){
+    				$sql = "SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.`id`=".$data['item_name_sacrifice_'.$i];
+    				$other_title = $db->fetchOne($sql);
+    				$arr_in = array(
+    						'quote_id'		=>	$id,
+    						'num_table'		=>	$data['qty_sacrifice_'.$i],
+    						'title'			=>	$other_title,
+    						'label'			=>	$data['label_sacrifice_'.$i],
+    						'is_free'		=>	$data["is_free_sacrifice_".$i],
+    						//'free'			=>	$data["free_dinner"],
+    						//'allocate_num'	=>	$data["allocate_number_dinner"],
+    						'type'			=>	7,
+    						'price'			=>	$data['price_sacrifice_'.$i],
+    						'address'		=>	$data['address_sacrifice_'.$i],
+    						'date_do'		=>	$data["date_sacrifice_".$i],
+    						//'time_do'		=>	$data["time_dinner"],
+    						'total_pay'		=>	$data['qty_sacrifice_'.$i]*$data['price_sacrifice_'.$i],
+    				);
+    				$this->_name ='ldc_quotation_connection';
+    				$qc_id = $this->insert($arr_in);
+    				$arr_ins = array(
+    						'qc_id'		=>	$qc_id,
+    						'cat_id'	=>	$data['food_cat_name_sacrifice_'.$i],
+    						'food_id'	=>	$data['item_name_sacrifice_'.$i],
+    						'qty'		=>	$data['qty_sacrifice_'.$i],
+    						'price'		=>	$data['price_sacrifice_'.$i],
+    						'note'		=>	$data['note_sacrifice_'.$i],
+    				);
+    				$this->_name ='ldc_quotation_detail';
+    				$this->insert($arr_ins);
+    			}
+    		}
+    		if($data['identity_service']){
     		
     			$ids = explode(',', $data['identity_service']);
     			foreach ($ids as $i){
+    				$sql = "SELECT s.`title` FROM `ldc_service` AS s WHERE s.`id`=".$data['item_name_ser_'.$i];
+    				$service_title = $db->fetchOne($sql);
+    				$arr_in = array(
+    						'quote_id'		=>	$id,
+    						'num_table'		=>	$data['qty_ser_'.$i],
+    						'title'			=>	$service_title,
+    						//'label'			=>	$data['label_other_'.$i],
+    						'is_free'		=>	$data["is_free_ser_".$i],
+    						//'free'			=>	$data["free_dinner"],
+    						//'allocate_num'	=>	$data["allocate_number_dinner"],
+    						'type'			=>	5,
+    						'price'			=>	$data['price_ser_'.$i],
+    						'address'		=>	$data['address_ser_'.$i],
+    						'date_do'		=>	$data["date_ser_".$i],
+    						//'time_do'		=>	$data["time_dinner"],
+    						'total_pay'		=>	$data['qty_ser_'.$i]*$data['price_ser_'.$i],
+    				);
+    				$this->_name ='ldc_quotation_connection';
+    				$qc_id = $this->insert($arr_in);
+    				
     				$arr_ins = array(
     						'qc_id'		=>$qc_id,
     						'food_id'	=>$data['item_name_ser_'.$i],
@@ -455,40 +399,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     			}
     		}
     		
-    		if($data['identity_other']){
-    			$ids = explode(',', $data['identity_service']);
-    			foreach ($ids as $i){
-    				$sql = "SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.`id`=".$data['item_name_other_'.$i];
-    				$other_title = $db->fetchOne($sql);
-    				$arr_in = array(
-    						'quote_id'		=>	$id,
-	    					'num_table'		=>	$data['qty_other_'.$i],
-	    					'title'			=>	$other_title,
-	    					'label'			=>	$data['label_other_'.$i],
-	    					'is_free'		=>	$data["is_free_other_".$i],
-	    					//'free'			=>	$data["free_dinner"],
-	    					//'allocate_num'	=>	$data["allocate_number_dinner"],
-	    					'type'			=>	6,
-	    					'price'			=>	$data['price_other_'.$i],
-	    					'address'		=>	$data['address_other_'.$i],
-	    					'date_do'		=>	$data["date_other_".$i],
-	    					'time_do'		=>	$data["time_dinner"],
-	    					'total_pay'		=>	$data['qty_other_'.$i]*$data['price_other_'.$i],
-    				);
-    				$this->_name ='ldc_quotation_connection';
-    				$qc_id = $this->insert($arr_in);
-    				$arr_ins = array(
-    						'qc_id'		=>$qc_id,
-    						'food_id'	=>$data['item_name_other_'.$i],
-    						'qty'		=>$data['qty_other_'.$i],
-    						'price'		=>$data['price_other_'.$i],
-    						'note'		=>$data['note_other_'.$i],
     		
-    				);
-    				$this->_name ='ldc_quotation_detail';
-    				$this->insert($arr_ins);
-    			}
-    		}
     		$db->commit();
     	}catch (Exception $e){
     		$db->rollBack();
@@ -500,45 +411,50 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     function updateQuoteNew($data){
     	$db = $this->getAdapter();
     	$db->beginTransaction();
+    	$id = $data['id'];
     	try{
     		$arr =array(
     				//'quot_code'		=>	$data['qutoe_code'],
     				'customer_id'	=>	$data['customer_name'],
     				'ceremony_id'	=>	$data["ceremony_date"],
-    				'total_pay'		=>	$data["amount_wedding"]+$data["amount_breakfast"]+$data["amount_lunch"]+$data["amount_dinner"]+$data["amount_service"],
+    				'total_pay'		=>	$data["amount_wedding"]+$data["amount_breakfast"]+$data["amount_lunch"]+$data["amount_dinner"]+$data["amount_service"]+$data["amount_other"]+$data["amount_sacrifice"],
     				'status'		=>	$data['status'],
     		);
     		$this->_name ="ldc_quotation";
     		$where = $db->quoteInto("id=?", $data["id"]);
     		$this->update($arr, $where);
     		
+    		$sql= "DELETE FROM `ldc_quotation_detail` WHERE qc_id IN ((SELECT id FROM `ldc_quotation_connection` WHERE `quote_id` = $id))";
+    		$db->query($sql);
+    		
     		$sql_con = "DELETE FROM ldc_quotation_connection WHERE quote_id=".$data['id'];
     		$db->query($sql_con);
     		
-    		if($data['id_wedding']){
-	    		$sql_we = "DELETE FROM ldc_quotation_detail WHERE qc_id=".$data['id_wedding'];
-	    		$db->query($sql_we);
-    		}
     		
-    		if($data['id_breakfast']){
-	    		$sql_bf = "DELETE FROM ldc_quotation_detail WHERE qc_id=".$data['id_breakfast'];
-	    		$db->query($sql_bf);
-    		}
+//     		if($data['id_wedding']){
+// 	    		$sql_we = "DELETE FROM ldc_quotation_detail WHERE qc_id=".$data['id_wedding'];
+// 	    		$db->query($sql_we);
+//     		}
     		
-    		if($data['id_lunch']){
-	    		$sql_lu = "DELETE FROM ldc_quotation_detail WHERE qc_id=".$data['id_lunch'];
-	    		$db->query($sql_lu);
-    		}
+//     		if($data['id_breakfast']){
+// 	    		$sql_bf = "DELETE FROM ldc_quotation_detail WHERE qc_id=".$data['id_breakfast'];
+// 	    		$db->query($sql_bf);
+//     		}
     		
-    		if($data['id_dinner']){
-	    		$sql_di = "DELETE FROM ldc_quotation_detail WHERE qc_id=".$data['id_dinner'];
-	    		$db->query($sql_di);
-    		}
+//     		if($data['id_lunch']){
+// 	    		$sql_lu = "DELETE FROM ldc_quotation_detail WHERE qc_id=".$data['id_lunch'];
+// 	    		$db->query($sql_lu);
+//     		}
     		
-    		if($data['id_service']){
-    			$sql_ds = "DELETE FROM ldc_quotation_detail WHERE qc_id=".$data['id_service'];
-    			$db->query($sql_ds);
-    		}
+//     		if($data['id_dinner']){
+// 	    		$sql_di = "DELETE FROM ldc_quotation_detail WHERE qc_id=".$data['id_dinner'];
+// 	    		$db->query($sql_di);
+//     		}
+    		
+//     		if($data['id_service']){
+//     			$sql_ds = "DELETE FROM ldc_quotation_detail WHERE qc_id=".$data['id_service'];
+//     			$db->query($sql_ds);
+//     		}
     		
     		$sql = "DELETE FROM ldc_quote_item WHERE quote_id=".$data["id"];
     		$db->query($sql);
@@ -548,6 +464,11 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				$arr_in = array(
     						'quote_id'		=>	$data["id"],
     						'num_table'		=>	$data['t_number_wedding'],
+    						'title'			=>	$data['title_wedding'],
+    						'label'			=>	$data['label_wedding'],
+    						'is_free'		=>	$data["is_free_wedding"],
+    						'free'			=>	$data["free_wedding"],
+    						'allocate_num'	=>	$data["allocate_number_wedding"],
     		    			'type'			=>	1,
     		    			'price'			=>	$data['t_price_wedding'],
     		    			'address'		=>	$data['address_wedding'],
@@ -603,6 +524,11 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     			$arr_in = array(
     					'quote_id'		=>	$data["id"],
     					'num_table'		=>	$data['t_number_breakfast'],
+    					'title'		=>	$data['title_breakfast'],
+    					'label'		=>	$data['label_breakfast'],
+    					'is_free'		=>	$data["is_free_breakfast"],
+    					'free'			=>	$data["free_breakfast"],
+    					'allocate_num'	=>	$data["allocate_number_breakfast"],
     					'type'			=>	2,
     					'price'			=>	$data['t_price_breakfast'],
     					'address'		=>	$data['address_breakfast'],
@@ -654,6 +580,11 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     			$arr_in = array(
     					'quote_id'		=>	$data["id"],
     					'num_table'		=>	$data['t_number_lunch'],
+    					'title'			=>	$data['title_lunch'],
+    					'label'			=>	$data['label_lunch'],
+    					'is_free'		=>	$data["is_free_lunch"],
+    					'free'			=>	$data["free_lunch"],
+    					'allocate_num'	=>	$data["allocate_number_lunch"],
     					'type'			=>	3,
     					'price'			=>	$data['t_price_lunch'],
     					'address'		=>	$data['address_lunch'],
@@ -705,6 +636,11 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     			$arr_in = array(
     					'quote_id'		=>	$data["id"],
     					'num_table'		=>	$data['t_number_dinner'],
+    					'title'			=>	$data['title_dinner'],
+    					'label'			=>	$data['label_dinner'],
+    					'is_free'		=>	$data["is_free_dinner"],
+    					'free'			=>	$data["free_dinner"],
+    					'allocate_num'	=>	$data["allocate_number_dinner"],
     					'type'			=>	4,
     					'price'			=>	$data['t_price_dinner'],
     					'address'		=>	$data['address_dinner'],
@@ -749,31 +685,106 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     				}
     			}
     		}
-    		 
-    		if($data['identity_service']){
+    		if($data['identity_other']){
+    			$ids = explode(',', $data['identity_other']);
+    			foreach ($ids as $i){
+    				$sql = "SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.`id`=".$data['item_name_other_'.$i];
+    				$other_title = $db->fetchOne($sql);
+    				$arr_in = array(
+    						'quote_id'		=>	$data["id"],
+    						'num_table'		=>	$data['qty_other_'.$i],
+    						'title'			=>	$other_title,
+    						'label'			=>	$data['label_other_'.$i],
+    						'is_free'		=>	$data["is_free_other_".$i],
+    						//'free'			=>	$data["free_dinner"],
+    						//'allocate_num'	=>	$data["allocate_number_dinner"],
+    						'type'			=>	6,
+    						'price'			=>	$data['price_other_'.$i],
+    						'address'		=>	$data['address_other_'.$i],
+    						'date_do'		=>	$data["date_other_".$i],
+    						//'time_do'		=>	$data["time_dinner"],
+    						'total_pay'		=>	$data['qty_other_'.$i]*$data['price_other_'.$i],
+    				);
+    				$this->_name ='ldc_quotation_connection';
+    				$qc_id = $this->insert($arr_in);
+    				$arr_ins = array(
+    						'qc_id'		=>$qc_id,
+    						'cat_id'	=>	$data['food_cat_name_other_'.$i],
+    						'food_id'	=>$data['item_name_other_'.$i],
+    						'qty'		=>$data['qty_other_'.$i],
+    						'price'		=>$data['price_other_'.$i],
+    						'note'		=>$data['note_other_'.$i],
     		
-    			$arr_in = array(
-    					'quote_id'		=>	$data["id"],
-    					//'num_table'		=>	$data['t_number_dinner'],
-    					'type'			=>	5,
-    					//'price'			=>	$data['t_price_dinner'],
-    					//'address'		=>	$data['address_dinner'],
-    					//'date_do'		=>	$data["date_dinner"],
-    					//'time_do'		=>	$data["time_dinner"],
-    					'total_pay'		=>	$data["amount_service"],
-    			);
-    			$this->_name ='ldc_quotation_connection';
-    			$qc_id = $this->insert($arr_in);
+    				);
+    				$this->_name ='ldc_quotation_detail';
+    				$this->insert($arr_ins);
+    			}
+    		}
+    		
+    		if($data['identity_sacrifice']){
+    			$ids = explode(',', $data['identity_sacrifice']);
+    			foreach ($ids as $i){
+    				$sql = "SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.`id`=".$data['item_name_sacrifice_'.$i];
+    				$other_title = $db->fetchOne($sql);
+    				$arr_in = array(
+    						'quote_id'		=>	$data["id"],
+    						'num_table'		=>	$data['qty_sacrifice_'.$i],
+    						'title'			=>	$other_title,
+    						'label'			=>	$data['label_sacrifice_'.$i],
+    						'is_free'		=>	$data["is_free_sacrifice_".$i],
+    						//'free'			=>	$data["free_dinner"],
+    						//'allocate_num'	=>	$data["allocate_number_dinner"],
+    						'type'			=>	7,
+    						'price'			=>	$data['price_sacrifice_'.$i],
+    						'address'		=>	$data['address_sacrifice_'.$i],
+    						'date_do'		=>	$data["date_sacrifice_".$i],
+    						//'time_do'		=>	$data["time_dinner"],
+    						'total_pay'		=>	$data['qty_sacrifice_'.$i]*$data['price_sacrifice_'.$i],
+    				);
+    				$this->_name ='ldc_quotation_connection';
+    				$qc_id = $this->insert($arr_in);
+    				$arr_ins = array(
+    						'qc_id'		=>	$qc_id,
+    						'cat_id'	=>	$data['food_cat_name_sacrifice_'.$i],
+    						'food_id'	=>	$data['item_name_sacrifice_'.$i],
+    						'qty'		=>	$data['qty_sacrifice_'.$i],
+    						'price'		=>	$data['price_sacrifice_'.$i],
+    						'note'		=>	$data['note_sacrifice_'.$i],
+    				);
+    				$this->_name ='ldc_quotation_detail';
+    				$this->insert($arr_ins);
+    			}
+    		}
+    		if($data['identity_service']){
     		
     			$ids = explode(',', $data['identity_service']);
     			foreach ($ids as $i){
+    				$sql = "SELECT s.`title` FROM `ldc_service` AS s WHERE s.`id`=".$data['item_name_ser_'.$i];
+    				$service_title = $db->fetchOne($sql);
+    				$arr_in = array(
+    						'quote_id'		=>	$data["id"],
+    						'num_table'		=>	$data['qty_ser_'.$i],
+    						'title'			=>	$service_title,
+    						//'label'			=>	$data['label_other_'.$i],
+    						'is_free'		=>	$data["is_free_ser_".$i],
+    						//'free'			=>	$data["free_dinner"],
+    						//'allocate_num'	=>	$data["allocate_number_dinner"],
+    						'type'			=>	5,
+    						'price'			=>	$data['price_ser_'.$i],
+    						'address'		=>	$data['address_ser_'.$i],
+    						'date_do'		=>	$data["date_ser_".$i],
+    						//'time_do'		=>	$data["time_dinner"],
+    						'total_pay'		=>	$data['qty_ser_'.$i]*$data['price_ser_'.$i],
+    				);
+    				$this->_name ='ldc_quotation_connection';
+    				$qc_id = $this->insert($arr_in);
+    				
     				$arr_ins = array(
     						'qc_id'		=>$qc_id,
     						'food_id'	=>$data['item_name_ser_'.$i],
     						'qty'		=>$data['qty_ser_'.$i],
-    						'price'		=>$data['qty_ser_'.$i],
-    						'note'		=>$data['qty_ser_'.$i],
-    		
+    						'price'		=>$data['price_ser_'.$i],
+    						'note'		=>$data['note_ser_'.$i],
     				);
     				$this->_name ='ldc_quotation_detail';
     				$this->insert($arr_ins);
@@ -1200,7 +1211,12 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
 				  qc.`address`,
 				  qc.`date_do`,
 				  qc.`time_do`,
-				  qc.`total_pay`
+				  qc.`total_pay`,
+				  qc.label,
+				  qc.allocate_num,
+				  qc.is_free,
+				  qc.free,
+				  qc.title
 				FROM
 				  `ldc_quotation_detail` AS qs,
 				  `ldc_quotation` AS q,
@@ -1214,7 +1230,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
     
     function getQuoteOrderDetail($id,$type){
     	$db = $this->getAdapter();
-    	$sql = "SELECT qc.*,qd.cat_id,qd.`food_id`,qd.`qty`,qd.price as price_d FROM `ldc_quotation_connection` AS qc,`ldc_quotation_detail` AS qd WHERE qc.`id`=qd.`qc_id` AND qc.`type`=$type AND qc.`quote_id`=$id ";
+    	$sql = "SELECT qc.*,qd.cat_id,qd.`food_id`,qd.`qty`,qd.price as price_d,qd.note FROM `ldc_quotation_connection` AS qc,`ldc_quotation_detail` AS qd WHERE qc.`id`=qd.`qc_id` AND qc.`type`=$type AND qc.`quote_id`=$id ";
     	return $db->fetchAll($sql);
     }
     
@@ -1256,7 +1272,7 @@ class Order_Model_DbTable_DbQuote extends Zend_Db_Table_Abstract
 				  (SELECT c.`address_1` FROM `ldc_customer_ceremony` AS c WHERE c.`id`=q.`ceremony_id`) AS address
 				FROM
 				  `ldc_quotation` AS q
-				WHERE q.`id`=1";
+				WHERE q.`id`=$id";
     	return $db->fetchRow($sql);
     }
     function getQuote($id){

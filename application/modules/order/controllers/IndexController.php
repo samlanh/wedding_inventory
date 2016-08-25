@@ -56,6 +56,7 @@ class Order_indexController extends Zend_Controller_Action {
 	public function addAction(){
 		$db_order = new Order_Model_DbTable_DbOrder();
 		$db_make = new Order_Model_DbTable_DbQuote();
+		$db_globle = new Application_Model_DbTable_DbGlobal();
 		if($this->getRequest()->isPost()){
 			$data=$this->getRequest()->getPost();
 			try {
@@ -73,6 +74,7 @@ class Order_indexController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
+		$this->view->label = $db_globle->getLabel();
 		$this->view->quote_id = $db_order->getOrderID();
 		
 		$this->view->status = $db_order->getStatus();
@@ -143,6 +145,7 @@ class Order_indexController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
+		$this->view->label = $db->getLabel();
 		$this->view->status = $db_make->getStatus();
 		$this->view->QuoteNo = $db_make->getQuoteNo();
 		
@@ -262,6 +265,24 @@ class Order_indexController extends Zend_Controller_Action {
 			$_data = $this->getRequest()->getPost();
 			$db = new Order_Model_DbTable_DbQuote();
 			$row = $db->getQuoteDetailByid($_data["id"],4);
+			print_r(Zend_Json::encode($row));
+			exit();
+		}
+	}
+	function getQuoteOtherAction(){
+		if($this->getRequest()->isPost()){
+			$_data = $this->getRequest()->getPost();
+			$db = new Order_Model_DbTable_DbQuote();
+			$row = $db->getQuoteDetailByid($_data["id"],6);
+			print_r(Zend_Json::encode($row));
+			exit();
+		}
+	}
+	function getQuoteSacrificeAction(){
+		if($this->getRequest()->isPost()){
+			$_data = $this->getRequest()->getPost();
+			$db = new Order_Model_DbTable_DbQuote();
+			$row = $db->getQuoteDetailByid($_data["id"],7);
 			print_r(Zend_Json::encode($row));
 			exit();
 		}

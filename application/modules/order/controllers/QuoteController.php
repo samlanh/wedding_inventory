@@ -58,7 +58,7 @@ class Order_quoteController extends Zend_Controller_Action {
 		$db = new Application_Model_DbTable_DbGlobal();
 		if($this->getRequest()->isPost()){
 			$data=$this->getRequest()->getPost();
-			//print_r($data["is_free_breakfast"]);exit();
+			//print_r($data);exit();
 			try {
 				if(isset($data['save_new'])){
 					$db_make->addQuoteNew($data);
@@ -200,6 +200,8 @@ class Order_quoteController extends Zend_Controller_Action {
 		$this->view->quote_lunch = $db_make->getQuoteOrderDetail($id,3);
 		$this->view->quote_dinner = $db_make->getQuoteOrderDetail($id,4);
 		$this->view->quote_service = $db_make->getQuoteOrderDetail($id,5);
+		$this->view->quote_other = $db_make->getQuoteOrderDetail($id,6);
+		$this->view->quote_sacrifice = $db_make->getQuoteOrderDetail($id,7);
 		
 		$row_quote = $db_make->getQuoteOrderById($id);
 		$this->view->quote = $row_quote;

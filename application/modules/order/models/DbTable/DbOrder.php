@@ -76,7 +76,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				'quote_id'		=>	$data["quote_no"],
     				'customer_id'	=>	$data['customer_name'],
     				'ceremony_id'	=>	$data["ceremony_date"],
-    				'total_pay'		=>	$data["amount_wedding"]+$data["amount_breakfast"]+$data["amount_lunch"]+$data["amount_dinner"]+$data["amount_service"],
+    				'total_pay'		=>	$data["amount_wedding"]+$data["amount_breakfast"]+$data["amount_lunch"]+$data["amount_dinner"]+$data["amount_service"]+$data["amount_other"]+$data["amount_sacrifice"],
     				'status'		=>	$data['status'],
     		);
     		$this->_name ="ldc_order";
@@ -87,6 +87,11 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				$arr_in = array(
     						'order_id'		=>	$id,
     						'num_table'		=>	$data['t_number_wedding'],
+    						'title'			=>	$data['title_wedding'],
+    						'label'			=>	$data['label_wedding'],
+    						'is_free'		=>	$data["is_free_wedding"],
+    						'free'			=>	$data["free_wedding"],
+    						'allocate_num'	=>	$data["allocate_number_wedding"],
     		    			'type'			=>	1,
     		    			'price'			=>	$data['t_price_wedding'],
     		    			'address'		=>	$data['address_wedding'],
@@ -142,6 +147,11 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     			$arr_in = array(
     					'order_id'		=>	$id,
     					'num_table'		=>	$data['t_number_breakfast'],
+    					'title'		=>	$data['title_breakfast'],
+    					'label'		=>	$data['label_breakfast'],
+    					'is_free'		=>	$data["is_free_breakfast"],
+    					'free'			=>	$data["free_breakfast"],
+    					'allocate_num'	=>	$data["allocate_number_breakfast"],
     					'type'			=>	2,
     					'price'			=>	$data['t_price_breakfast'],
     					'address'		=>	$data['address_breakfast'],
@@ -193,6 +203,11 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     			$arr_in = array(
     					'order_id'		=>	$id,
     					'num_table'		=>	$data['t_number_lunch'],
+    					'title'			=>	$data['title_lunch'],
+    					'label'			=>	$data['label_lunch'],
+    					'is_free'		=>	$data["is_free_lunch"],
+    					'free'			=>	$data["free_lunch"],
+    					'allocate_num'	=>	$data["allocate_number_lunch"],
     					'type'			=>	3,
     					'price'			=>	$data['t_price_lunch'],
     					'address'		=>	$data['address_lunch'],
@@ -244,6 +259,11 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     			$arr_in = array(
     					'order_id'		=>	$id,
     					'num_table'		=>	$data['t_number_dinner'],
+    					'title'			=>	$data['title_dinner'],
+    					'label'			=>	$data['label_dinner'],
+    					'is_free'		=>	$data["is_free_dinner"],
+    					'free'			=>	$data["free_dinner"],
+    					'allocate_num'	=>	$data["allocate_number_dinner"],
     					'type'			=>	4,
     					'price'			=>	$data['t_price_dinner'],
     					'address'		=>	$data['address_dinner'],
@@ -262,7 +282,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     						'cat_id'	=>	$data['food_cat_name_dinner_'.$i],
     						//'qty'		=>$data['qty_dinner_'.$i],
     				);
-    				$this->_name ='ldc_qorder_detail';
+    				$this->_name ='ldc_order_detail';
     				$this->insert($arr_ins);
     				
     				$row_food_ind = $this->getFoodIngrediant($data['item_name_dinner_'.$i]);
@@ -288,31 +308,109 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				}
     			}
     		}
-    		 
-    		if($data['identity_service']){
+    		if($data['identity_other']){
+    			$ids = explode(',', $data['identity_other']);
+    			foreach ($ids as $i){
+    				$sql = "SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.`id`=".$data['item_name_other_'.$i];
+    				$other_title = $db->fetchOne($sql);
+    				$arr_in = array(
+    						'order_id'		=>	$id,
+    						'num_table'		=>	$data['qty_other_'.$i],
+    						'title'			=>	$other_title,
+    						'label'			=>	$data['label_other_'.$i],
+    						'is_free'		=>	$data["is_free_other_".$i],
+    						//'free'			=>	$data["free_dinner"],
+    						//'allocate_num'	=>	$data["allocate_number_dinner"],
+    						'type'			=>	6,
+    						'price'			=>	$data['price_other_'.$i],
+    						'address'		=>	$data['address_other_'.$i],
+    						'date_do'		=>	$data["date_other_".$i],
+    						//'time_do'		=>	$data["time_dinner"],
+    						'total_pay'		=>	$data['qty_other_'.$i]*$data['price_other_'.$i],
+    				);
+    				$this->_name ='ldc_order_connection';
+    				$qc_id = $this->insert($arr_in);
+    				$arr_ins = array(
+    						'order_id'	=>	$id,
+    						'oc_id'		=>	$qc_id,
+    						'cat_id'	=>	$data['food_cat_name_other_'.$i],
+    						'food_id'	=>	$data['item_name_other_'.$i],
+    						'qty'		=>	$data['qty_other_'.$i],
+    						'price'		=>	$data['price_other_'.$i],
+    						'note'		=>	$data['note_other_'.$i],
     		
-    			$arr_in = array(
-    					'order_id'		=>	$id,
-    					//'num_table'		=>	$data['t_number_dinner'],
-    					'type'			=>	5,
-    					//'price'			=>	$data['t_price_dinner'],
-    					//'address'		=>	$data['address_dinner'],
-    					//'date_do'		=>	$data["date_dinner"],
-    					//'time_do'		=>	$data["time_dinner"],
-    					'total_pay'		=>	$data["amount_service"],
-    			);
-    			$this->_name ='ldc_order_connection';
-    			$qc_id = $this->insert($arr_in);
+    				);
+    				$this->_name ='ldc_order_detail';
+    				$this->insert($arr_ins);
+    			}
+    		}
+    		
+    		if($data['identity_sacrifice']){
+    			$ids = explode(',', $data['identity_sacrifice']);
+    			foreach ($ids as $i){
+    				$sql = "SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.`id`=".$data['item_name_sacrifice_'.$i];
+    				$other_title = $db->fetchOne($sql);
+    				$arr_in = array(
+    						'order_id'		=>	$id,
+    						'num_table'		=>	$data['qty_sacrifice_'.$i],
+    						'title'			=>	$other_title,
+    						'label'			=>	$data['label_sacrifice_'.$i],
+    						'is_free'		=>	$data["is_free_sacrifice_".$i],
+    						//'free'			=>	$data["free_dinner"],
+    						//'allocate_num'	=>	$data["allocate_number_dinner"],
+    						'type'			=>	7,
+    						'price'			=>	$data['price_sacrifice_'.$i],
+    						'address'		=>	$data['address_sacrifice_'.$i],
+    						'date_do'		=>	$data["date_sacrifice_".$i],
+    						//'time_do'		=>	$data["time_dinner"],
+    						'total_pay'		=>	$data['qty_sacrifice_'.$i]*$data['price_sacrifice_'.$i],
+    				);
+    				$this->_name ='ldc_order_connection';
+    				$qc_id = $this->insert($arr_in);
+    				$arr_ins = array(
+    						'order_id'	=>	$id,
+    						'oc_id'		=>	$qc_id,
+    						'cat_id'	=>	$data['food_cat_name_sacrifice_'.$i],
+    						'food_id'	=>	$data['item_name_sacrifice_'.$i],
+    						'qty'		=>	$data['qty_sacrifice_'.$i],
+    						'price'		=>	$data['price_sacrifice_'.$i],
+    						'note'		=>	$data['note_sacrifice_'.$i],
+    				);
+    				$this->_name ='ldc_order_detail';
+    				$this->insert($arr_ins);
+    			}
+    		}
+    	if($data['identity_service']){
     		
     			$ids = explode(',', $data['identity_service']);
     			foreach ($ids as $i){
+    				$sql = "SELECT s.`title` FROM `ldc_service` AS s WHERE s.`id`=".$data['item_name_ser_'.$i];
+    				$service_title = $db->fetchOne($sql);
+    				$arr_in = array(
+    						'order_id'		=>	$id,
+    						'num_table'		=>	$data['qty_ser_'.$i],
+    						'title'			=>	$service_title,
+    						//'label'			=>	$data['label_other_'.$i],
+    						'is_free'		=>	$data["is_free_ser_".$i],
+    						//'free'			=>	$data["free_dinner"],
+    						//'allocate_num'	=>	$data["allocate_number_dinner"],
+    						'type'			=>	5,
+    						'price'			=>	$data['price_ser_'.$i],
+    						'address'		=>	$data['address_ser_'.$i],
+    						'date_do'		=>	$data["date_ser_".$i],
+    						//'time_do'		=>	$data["time_dinner"],
+    						'total_pay'		=>	$data['qty_ser_'.$i]*$data['price_ser_'.$i],
+    				);
+    				$this->_name ='ldc_order_connection';
+    				$qc_id = $this->insert($arr_in);
+    				
     				$arr_ins = array(
-    						'oc_id'		=>$qc_id,
-    						'food_id'	=>$data['item_name_ser_'.$i],
-    						'qty'		=>$data['qty_ser_'.$i],
-    						'price'		=>$data['qty_ser_'.$i],
-    						'note'		=>$data['qty_ser_'.$i],
-    		
+    						'order_id'	=>	$id,
+    						'oc_id'		=>	$qc_id,
+    						'food_id'	=>	$data['item_name_ser_'.$i],
+    						'qty'		=>	$data['qty_ser_'.$i],
+    						'price'		=>	$data['price_ser_'.$i],
+    						'note'		=>	$data['note_ser_'.$i],
     				);
     				$this->_name ='ldc_order_detail';
     				$this->insert($arr_ins);

@@ -22,6 +22,8 @@ table tr.head-title{ background: none repeat scroll 0% 0% rgba(213, 249, 244, 1)
 table tr td.null-border{ background: #fff; border-left:none !important;}
 table .set-style td,table .set-style th{ padding: 5px; border:1px solid #ccc;}
 table .display_form-add{display:none;}
+.width {width:76% !important;} 
+.l_width{width:20% !important;}
 </style>
 <script type="dojo/method" event="onSubmit">			
 	if(this.validate()) {
@@ -172,40 +174,74 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 								</tr>
 					</table>
 					<div id="mainTabContainer" style="max-width:1110px; height: 540px;" dojoType="dijit.layout.TabContainer" region="center"  >
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="<?php echo $tr->translate('FOOD_FOR_WEDDING');?>">
+						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("FOOD_FOR_WEDDING");?>">
 							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								
 								<tr>
-									<td><?php echo $tr->translate('TITLE');?>:</td>
-									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_number_wedding" name="t_number_wedding" value="" type="text"></td>	
-									<td><?php echo $tr->translate('PRICE');?></td>
-									<td>
-									    <input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_wedding" name="t_price_wedding" value="" type="text">
+									<td><?php echo $this->tr->translate("TITLE");?></td>
+									<td><input dojoType="dijit.form.TextBox" class="fullside" id="title_wedding" name="title_wedding" value="ម្ហូបសម្រាប់ពិធី"/></td>
+									<td colspan="4">
+										<table>
+											<tr>
+												<td>
+													<input type="radio" name="is_free_wedding" id="free_qty_wedding" value="1" style="line-height: 30px; float: left;"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_BY_QTY");?></span>
+													<input style="margin: 0 30px 0 20px; width:32%" value="0" dojoType="dijit.form.NumberTextBox" name="free_wedding" id="free_wedding"> 
+												</td>
+												<td>
+													<input type="radio" name="is_free_wedding" id="free_all_wedding" style="line-height: 30px; float: left;" value="2"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_ALL");?></span>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 								<tr>
-									<td><?php echo $tr->translate('CEREMONY_DATE');?></td>
-									<td><input type="text" name="date_wedding" id="date_wedding" dojoType="dijit.form.DateTextBox" class="fullside" value="now"></td>
-									<td><?php echo $tr->translate('CEREMONY_TIME');?></td>
-									<td><input type="text" name="time_wedding" id="time_wedding" dojoType="dijit.form.TextBox" class="fullside"></td>
+									<td><?php echo $this->tr->translate("QUANTITY");?>:</td>
+									<td>
+										<input dojoType="dijit.form.NumberTextBox" class="fullside width" id="t_number_wedding" name="t_number_wedding" value="" type="text">
+										<select name="label_wedding" id="label_wedding" dojoType="dijit.form.FilteringSelect" required="false" class="fullside l_width" >
+											<option value="" label="<?php echo $this->tr->translate("CHOOSE_LABEL");?>"><?php echo $this->tr->translate("CHOOSE_LABEL");?></option>
+											<?php foreach ($this->label as $rs_l){?>
+													<option value="<?php echo $rs_l["id"];?>"><?php echo $rs_l["name"];?></option>
+											<?php }?>
+										</select>
+									</td>	
+									<td><?php echo $this->tr->translate("ALLOCATED_FOOD");?></td>
+									<td><input  dojoType="dijit.form.NumberTextBox" class="fullside" id="allocate_number_wedding" name="allocate_number_wedding" value="" type="text"></td>
+									<td><?php echo $this->tr->translate("PRICE");?></td>
+									<td>
+									    <input dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_wedding" name="t_price_wedding" value="" type="text">
+									</td>
 								</tr>
 								<tr>
-									<td><?php echo $tr->translate('CEREMONY_ADDRESS');?></td>
+									<td><?php echo $this->tr->translate("CEREMONY_ADDRESS");?></td>
 									<td>
-<!-- 									<textarea rows="" cols="" name="address_wedding" id="address_wedding" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
-										<select  name="address_wedding" id="address_wedding" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
-											<option value="" label="Choose Location"><?php echo $tr->translate('CHOOSE_LOCATION');?></option>
+<!-- 										<textarea rows="" cols="" name="address_wedding" id="address_wedding" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
+										<select  name=address_wedding id="address_wedding" dojoType="dijit.form.FilteringSelect" class="fullside" >
+ 										    <option value="" label="Choose Location"><?php echo $this->tr->translate("CHOOSE_LOCATION");?></option>
 										</select>
 									</td>
-									<td><?php echo $tr->translate('TOTAL_AMOUNT');?></td>
-									<td><input type="text" name="amount_wedding" id="amount_wedding" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_wedding" id="id_wedding" dojoType="dijit.form.TextBox"></td>
+									<td><?php echo $this->tr->translate("CEREMONY_DATE");?></td>
+									<td><input type="text" name="date_wedding" id="date_wedding" dojoType="dijit.form.DateTextBox" class="fullside" value="now"></td>
+									<td><?php echo $this->tr->translate("CEREMONY_TIME");?>:</td>
+									<td><input type="text" name="time_wedding" id="time_wedding" class="fullside"></td>
+								</tr>
+								<tr>
+									
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td><?php echo $this->tr->translate("TOTAL_AMOUNT");?></td>
+									<td><input type="text" name="amount_wedding" id="amount_wedding" dojoType="dijit.form.TextBox" class="fullside"></td>
 								</tr>
 							</table>
 							<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 								<thead>
 									<tr>
 										<td colspan="8" align="left">
-											<input type="button" label="<?php echo $tr->translate('ADD_FOOD');?>" dojoType="dijit.form.Button" 
+											<input type="button" label="<?php echo $this->tr->translate("ADD_FOOD");?>" dojoType="dijit.form.Button" 
 										 		iconClass="dijitIconEditProperty" onclick="addRow(1);" />
 											<input type="hidden" name="identity_wedding" id="identity_wedding"  value="" >
 										 </td>
@@ -221,41 +257,75 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 								</thead>
 						 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $tr->translate('FOOD_FOR_BREACKFAST');?>">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("FOOD_FOR_BREACKFAST");?>">
 					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								
 								<tr>
-									<td><?php echo $tr->translate('TITLE');?>:</td>
-									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_number_breakfast" name="t_number_breakfast" value="" type="text"></td>	
-									<td><?php echo $tr->translate('PRICE');?></td>
+									<td><?php echo $this->tr->translate("TITLE");?></td>
+									<td><input dojoType="dijit.form.TextBox" class="fullside" name="title_breakfast" id="title_breakfast"​ value="អាហារសម្រាប់ពេលព្រឹក"/></td>
+									<td colspan="4">
+										<table>
+											<tr>
+												<td>
+													<input type="radio" name="is_free_breakfast" id="free_qty_breakfast" value="1" style="line-height: 30px; float: left;"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_BY_QTY");?></span>
+													<input style="margin: 0 30px 0 20px; width:32%" value="0" dojoType="dijit.form.NumberTextBox" name="free_breakfast" id="free_breakfast"> 
+												</td>
+												<td>
+													<input type="radio" name="is_free_breakfast" id="free_all_breakfast" style="line-height: 30px; float: left;" value="2"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_ALL");?></span>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo $this->tr->translate("QUANTITY");?>:</td>
 									<td>
-									    <input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_breakfast" name="t_price_breakfast" value="" type="text">
+										<input  dojoType="dijit.form.NumberTextBox" class="fullside width" id="t_number_breakfast" name="t_number_breakfast" value="" type="text">
+										<select name="label_breakfast" id="label_breakfast" dojoType="dijit.form.FilteringSelect" required="false" class="fullside l_width" >
+											<option value="" label="<?php echo $this->tr->translate("CHOOSE_LABEL");?>"><?php echo $this->tr->translate("CHOOSE_LABEL");?></option>
+											<?php foreach ($this->label as $rs_l){?>
+													<option value="<?php echo $rs_l["id"];?>"><?php echo $rs_l["name"];?></option>
+											<?php }?>
+										</select>
+									</td>	
+									<td><?php echo $this->tr->translate("ALLOCATED_FOOD");?></td>
+									<td><input  dojoType="dijit.form.NumberTextBox" class="fullside" id="allocate_number_breakfast" name="allocate_number_breakfast" value="" type="text"></td>
+									<td><?php echo $this->tr->translate("PRICE");?></td>
+									<td>
+									    <input  dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_breakfast" name="t_price_breakfast" value="" type="text">
 									</td>
 								</tr>
 								
 								<tr>
-									<td><?php echo $tr->translate('CEREMONY_DATE');?></td>
-									<td><input type="text" name="date_breakfast" id="date_breakfast" dojoType="dijit.form.DateTextBox" class="fullside" value="now"></td>
-									<td><?php echo $tr->translate('CEREMONY_TIME');?></td>
-									<td><input type="text" name="time_breakfast" id="time_breakfast" dojoType="dijit.form.TextBox" class="fullside"></td>
-								</tr>
-								<tr>
-									<td><?php echo $tr->translate('CEREMONY_ADDRESS');?></td>
+									<td><?php echo $this->tr->translate("CEREMONY_ADDRESS");?></td>
 									<td>
-<!-- 									<textarea rows="" cols="" name="address_breakfast" id="address_breakfast" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
-										<select  name="address_breakfast" id="address_breakfast" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
-											<option value="" label="Choose Location"><?php echo $tr->translate('CHOOSE_LOCATION');?></option>
+<!-- 										<textarea rows="" cols="" name="address_breakfast" id="address_breakfast" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
+										<select  name=address_breakfast id="address_breakfast" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
+											<option value="" label="Choose Location"><?php echo $this->tr->translate("CHOOSE_LOCATION");?></option>
 										</select>
 									</td>
-									<td><?php echo $tr->translate('TOTAL_AMOUNT');?></td>
-									<td><input type="text" name="amount_breakfast" id="amount_breakfast" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_breakfast" id="id_breakfast" dojoType="dijit.form.TextBox"></td>
+									<td><?php echo $this->tr->translate("CEREMONY_DATE");?></td>
+									<td><input type="text" name="date_breakfast" id="date_breakfast" dojoType="dijit.form.DateTextBox" class="fullside" value="now"></td>
+									<td><?php echo $this->tr->translate("CEREMONY_TIME");?></td>
+									<td><input type="text" name="time_breakfast" id="time_breakfast" class="fullside"></td>
+								</tr>
+								<tr>
+									
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td><?php echo $this->tr->translate("TOTAL_AMOUNT");?></td>
+									<td><input type="text" name="amount_breakfast" id="amount_breakfast" dojoType="dijit.form.TextBox" class="fullside"></td>
 								</tr>
 					</table>
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
-									<input type="button" label="<?php echo $tr->translate('ADD_FOOD');?>" dojoType="dijit.form.Button" 
+									<input type="button" label="<?php echo $this->tr->translate("ADD_FOOD");?>" dojoType="dijit.form.Button" 
 								 		iconClass="dijitIconEditProperty" onclick="addRow(2);" />
 									<input type="hidden" name="identity_breakfast" id="identity_breakfast"  value="" >
 								 </td>
@@ -271,40 +341,74 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 						</thead>
 				 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $tr->translate('FOOD_FOR_LUNCH');?>">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("FOOD_FOR_LUNCH");?>">
 					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								
 								<tr>
-									<td><?php echo $tr->translate('TITLE');?>:</td>
-									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_number_lunch" name="t_number_lunch" value="" type="text"></td>	
-									<td><?php echo $tr->translate('PRICE');?></td>
-									<td>
-									    <input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_lunch" name="t_price_lunch" value="" type="text">
+									<td><?php echo $this->tr->translate("TITLE");?></td>
+									<td><input dojoType="dijit.form.TextBox" class="fullside" name="title_lunch"​ id="title_lunch"​ value="អាហារសម្រាប់ថ្ងៃត្រង់"/></td>
+									<!-- <td><?php //echo $this->tr->translate("FREE");?></td> -->
+									<td  colspan="4">
+										<table>
+											<tr>
+												<td>
+													<input type="radio" name="is_free_lunch" id="free_qty_lunch" value="1" style="line-height: 30px; float: left;"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_BY_QTY");?></span>
+													<input style="margin: 0 30px 0 20px; width:32%" value="0" dojoType="dijit.form.NumberTextBox" name="free_lunch" id="free_lunch"> 
+												</td>
+												<td>
+													<input type="radio" name="is_free_lunch" id="free_all_lunch" style="line-height: 30px; float: left;" value="2"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_ALL");?></span>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 								<tr>
-									<td><?php echo $tr->translate('CEREMONY_DATE');?></td>
-									<td><input type="text" name="date_lunch" id="date_lunch" dojoType="dijit.form.DateTextBox" class="fullside" value="now"></td>
-									<td><?php echo $tr->translate('CEREMONY_TIME');?></td>
-									<td><input type="text" name="time_lunch" id="time_lunch" dojoType="dijit.form.TextBox" class="fullside"></td>
+									<td><?php echo $this->tr->translate("QUANTITY");?>:</td>
+									<td>
+										<input  dojoType="dijit.form.NumberTextBox" class="fullside width" id="t_number_lunch" name="t_number_lunch" value="" type="text">
+										<select name="label_lunch" id="label_lunch" dojoType="dijit.form.FilteringSelect" required="false" class="fullside l_width" >
+											<option value="" label="<?php echo $this->tr->translate("CHOOSE_LABEL");?>"><?php echo $this->tr->translate("CHOOSE_LABEL");?></option>
+											<?php foreach ($this->label as $rs_l){?>
+													<option value="<?php echo $rs_l["id"];?>"><?php echo $rs_l["name"];?></option>
+											<?php }?>
+										</select>
+									</td>	
+									<td><?php echo $this->tr->translate("ALLOCATED_FOOD");?></td>
+									<td><input  dojoType="dijit.form.NumberTextBox" class="fullside" id="allocate_number_lunch" name="allocate_number_lunch" value="" type="text"></td>
+									<td><?php echo $this->tr->translate("PRICE");?></td>
+									<td>
+									    <input  dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_lunch" name="t_price_lunch" value="" type="text">
+									</td>
 								</tr>
 								<tr>
-									<td><?php echo $tr->translate('CEREMONY_ADDRESS');?></td>
+									<td><?php echo $this->tr->translate("CEREMONY_ADDRESS");?></td>
 									<td>
 <!-- 									<textarea rows="" cols="" name="address_lunch" id="address_lunch" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
-										<select  name="address_lunch" id="address_lunch" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
-											<option value="" label="Choose Location"><?php echo $tr->translate('CHOOSE_LOCATION');?></option>
+										<select name=address_lunch id="address_lunch" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
+											<option value="" label="Choose Location"><?php echo $this->tr->translate('CHOOSE_LOCATION');?></option>
 										</select>
 									</td>
-									<td><?php echo $tr->translate('TOTAL_AMOUNT');?></td>
-									<td><input type="text" name="amount_lunch" id="amount_lunch" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_lunch" id="id_lunch" dojoType="dijit.form.TextBox"></td>
+									<td><?php echo $this->tr->translate("CEREMONY_DATE");?></td>
+									<td><input type="text" name="date_lunch" id="date_lunch" dojoType="dijit.form.DateTextBox" class="fullside" value="now"></td>
+									<td><?php echo $this->tr->translate("CEREMONY_TIME");?></td>
+									<td><input type="text" name="time_lunch" id="time_lunch" class="fullside"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td><?php echo $this->tr->translate("TOTAL_AMOUNT");?></td>
+									<td><input type="text" name="amount_lunch" id="amount_lunch" dojoType="dijit.form.TextBox" class="fullside"></td>
 								</tr>
 					</table>
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
-									<input type="button" label="<?php echo $tr->translate('ADD_FOOD');?>" dojoType="dijit.form.Button" 
+									<input type="button" label="<?php echo $this->tr->translate("ADD_FOOD");?>" dojoType="dijit.form.Button" 
 								 		iconClass="dijitIconEditProperty" onclick="addRow(3);" />
 									<input type="hidden" name="identity_lunch" id="identity_lunch"  value="" >
 								 </td>
@@ -320,40 +424,73 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 						</thead>
 				 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $tr->translate('FOOD_FOR_DINNER');?>">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("FOOD_FOR_DINNER");?>">
 					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 								
 								<tr>
-									<td><?php echo $tr->translate('TITLE');?>:</td>
-									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_number_dinner" name="t_number_dinner" value="" type="text"></td>	
-									<td><?php echo $tr->translate('PRICE');?></td>
-									<td>
-									    <input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_dinner" name="t_price_dinner" value="" type="text">
+									<td><?php echo $this->tr->translate("TITLE");?></td>
+									<td><input dojoType="dijit.form.TextBox" class="fullside" name="title_dinner" id="title_dinner"​ value="អាហារសម្រាប់ពេលល្ងាច"/></td>
+									<td colspan="4">
+										<table>
+											<tr>
+												<td>
+													<input type="radio" name="is_free_dinner" id="free_qty_dinner" value="1" style="line-height: 30px; float: left;"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_BY_QTY");?></span>
+													<input style="margin: 0 30px 0 20px; width:32%" value="0" dojoType="dijit.form.NumberTextBox" name="free_dinner" id="free_dinner"> 
+												</td>
+												<td>
+													<input type="radio" name="is_free_dinner" id="free_all_dinner" style="line-height: 30px; float: left;" value="2"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_ALL");?></span>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 								<tr>
-									<td><?php echo $tr->translate('CEREMONY_DATE');?></td>
-									<td><input type="text" name="date_dinner" id="date_dinner" dojoType="dijit.form.DateTextBox" value="now" class="fullside"></td>
-									<td><?php echo $tr->translate('CEREMONY_TIME');?></td>
-									<td><input type="text" name="time_dinner" id="time_dinner" dojoType="dijit.form.TextBox" class="fullside"></td>
+									<td><?php echo $this->tr->translate("QUANTITY");?>:</td>
+									<td>
+										<input  dojoType="dijit.form.NumberTextBox" class="fullside width" id="t_number_dinner" name="t_number_dinner" value="" type="text">
+										<select name="label_dinner" id="label_dinner" dojoType="dijit.form.FilteringSelect" required="false" class="fullside l_width" >
+											<option value="" label="<?php echo $this->tr->translate("CHOOSE_LABEL");?>"><?php echo $this->tr->translate("CHOOSE_LABEL");?></option>
+											<?php foreach ($this->label as $rs_l){?>
+													<option value="<?php echo $rs_l["id"];?>"><?php echo $rs_l["name"];?></option>
+											<?php }?>
+										</select>
+									</td>	
+									<td><?php echo $this->tr->translate("ALLOCATED_FOOD");?></td>
+									<td><input  dojoType="dijit.form.NumberTextBox" class="fullside" id="allocate_number_dinner" name="allocate_number_dinner" value="" type="text"></td>
+									<td><?php echo $this->tr->translate("PRICE");?></td>
+									<td>
+									    <input dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_dinner" name="t_price_dinner" value="" type="text">
+									</td>
 								</tr>
 								<tr>
-									<td><?php echo $tr->translate('CEREMONY_ADDRESS');?></td>
+									<td><?php echo $this->tr->translate("CEREMONY_ADDRESS");?></td>
 									<td>
 <!-- 									<textarea rows="" cols="" name="address_dinner" id="address_dinner" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
-										<select  name="address_dinner" id="address_dinner" dojoType="dijit.form.FilteringSelect" class="fullside" required="false" >
-											<option value="" label="Choose Location"><?php echo $tr->translate('CHOOSE_LOCATION');?></option>
+										<select name=address_dinner id="address_dinner" dojoType="dijit.form.FilteringSelect" required="false" class="fullside" >
+											<option value="" label="Choose Location"><?php echo $this->tr->translate("CHOOSE_LOCATION");?></option>
 										</select>
 									</td>
-									<td><?php echo $tr->translate('TOTAL_AMOUNT');?></td>
-									<td><input type="text" name="amount_dinner" id="amount_dinner" dojoType="dijit.form.TextBox" class="fullside"><input type="hidden" name="id_dinner" id="id_dinner" dojoType="dijit.form.TextBox"></td>
+									<td><?php echo $this->tr->translate("CEREMONY_DATE");?></td>
+									<td><input type="text" name="date_dinner" id="date_dinner" dojoType="dijit.form.DateTextBox" value="now" class="fullside"></td>
+									<td><?php echo $this->tr->translate("CEREMONY_TIME");?></td>
+									<td><input type="text" name="time_dinner" id="time_dinner" class="fullside"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td><?php echo $this->tr->translate("TOTAL_AMOUNT");?></td>
+									<td><input type="text" name="amount_dinner" id="amount_dinner" dojoType="dijit.form.NumberTextBox" class="fullside"></td>
 								</tr>
 					</table>
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
-									<input type="button" label="<?php echo $tr->translate('ADD_FOOD');?>" dojoType="dijit.form.Button" 
+									<input type="button" label="<?php echo $this->tr->translate('ADD_FOOD');?>" dojoType="dijit.form.Button" 
 								 		iconClass="dijitIconEditProperty" onclick="addRow(4);" />
 									<input type="hidden" name="identity_dinner" id="identity_dinner"  value="" >
 								 </td>
@@ -369,14 +506,67 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 						</thead>
 				 </table>
 				</div>
-				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $tr->translate('SERVICES');?>">
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("SACRIFICE_FOOD");?>">
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
-									<input type="button" label="<?php echo $tr->translate('ADD_SERVICE');?>" dojoType="dijit.form.Button" 
+									<input type="button" label="<?php echo $this->tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+								 		iconClass="dijitIconEditProperty" onclick="addRowSacrifice();" />
+									<input type="hidden" name="identity_sacrifice" id="identity_sacrifice"  value="" >
+								 </td>
+							</tr>
+							<tr>
+								<td colspan="8">
+									<table id="table_row_sacrifice" border="1px" style="border-collapse: collapse; border:1px solid #ccc;">
+										<tr id="head-title-sacrifice" class="head-td" align="right"></tr>
+									</table>
+									<table style="width: 30%; float: right; border:0 !important">
+										<tr>
+											<td style="border: none;"><?php echo $this->tr->translate('TOTAL');?> :</td>
+											<td style="border: none;"><input type="text" name="amount_sacrifice" id="amount_sacrifice" dojoType="dijit.form.NumberTextBox" class="fullside"> </td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("OTHER_FOOD");?>">
+					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
+						<thead>
+							<tr>
+								<td colspan="8" align="left">
+									<input type="button" label="<?php echo $this->tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
+								 		iconClass="dijitIconEditProperty" onclick="addRowOther();" />
+									<input type="hidden" name="identity_other" id="identity_other"  value="" >
+								 </td>
+							</tr>
+							<tr>
+								<td colspan="8">
+									<table id="table_row_other" border="1px" style="border-collapse: collapse; border:1px solid #ccc;">
+										<tr id="head-title-other" class="head-td" align="right"></tr>
+									</table>
+									<table style="width: 30%; float: right; border:0 !important">
+										<tr>
+											<td style="border: none;"><?php echo $this->tr->translate('TOTAL');?> :</td>
+											<td style="border: none;"><input type="text" name="amount_other" id="amount_other" dojoType="dijit.form.NumberTextBox" class="fullside"> </td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate('SERVICES');?>">
+					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
+						<thead>
+							<tr>
+								<td colspan="8" align="left">
+									<input type="button" label="<?php echo $this->tr->translate('ADD_SERVICE');?>" dojoType="dijit.form.Button" 
 								 		iconClass="dijitIconEditProperty" onclick="addRowService();" />
 									<input type="hidden" name="identity_service" id="identity_service"  value="" >
+									<input type="hidden" name="id_service" id="id_service" dojoType="dijit.form.TextBox">
 								 </td>
 							</tr>
 							<tr>
@@ -386,14 +576,15 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 									</table>
 									<table style="width: 30%; float: right; border:0 !important">
 										<tr>
-											<td style="border: none;"><?php echo $tr->translate('TOTAL_AMOUNT');?> :</td>
+											<td style="border: none;">Total :</td>
 											<td style="border: none;"><input type="text" name="amount_service" id="amount_service" dojoType="dijit.form.NumberTextBox" class="fullside"> </td>
 										</tr>
 									</table>
 								</td>
 							</tr>
+							
 						</thead>
-				 	</table>
+				 </table>
 				</div>
 			</div>		
 			<table>
