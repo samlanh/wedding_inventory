@@ -157,7 +157,12 @@ class Order_indexController extends Zend_Controller_Action {
 		$this->view->order_other = $db_make->getOrderDetailByid($id,6);
 		$this->view->order_sacrifice = $db_make->getOrderDetailByid($id,7);
 		
-		$this->view->order = $db_make->getOrderByid($id);
+		$order = $db_make->getOrderByid($id);
+		$this->view->order = $order;
+		
+		$row_addr = $db_order->getAllAddress($order["ceremony_id"]);
+		
+		$this->view->alladdr = $row_addr;
 		
 		$this->view->service = $db_order->getAllService();
 		
