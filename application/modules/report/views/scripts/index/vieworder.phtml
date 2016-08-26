@@ -33,14 +33,15 @@ dojo.require("dojo.NodeList-manipulate");
 require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 
 dojo.ready(function(){
-	addRowAjax();
+	//addRowAjax();
 });
 </script>
 <form id='add_food' action="<?php echo $url_save; ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
-<table style="background:#fff; margin: 0 auto;width: 100%;">
+<div style="border: 1px dotted #000;background: #fff; margin: 0 auto;min-height: 27cm;">
+<table style="background:#fff;width:90%; margin: 0 auto;width: 70%;">
 	<tr>
 		<td align="center" >
-			<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">បញ្ជិទិញទំនិញ</strong><br />
+			<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">របាយការណ៏​​  កម្មង់ម្ហូប</strong><br />
 		</td>
 		
 	</tr>
@@ -50,59 +51,62 @@ dojo.ready(function(){
 				<tr>
 					<td></td>
 					<td></td>
-					<td><?php echo $tr->translate("PURCHASE_NO");?></td>
-					<td><?php echo $this->cus_purchase["pu_code"]?></td>
+					<td><?php echo $tr->translate("ORDER_CODE");?></td>
+					<td><?php echo $this->customer_order["order_code"]?></td>
 				</tr>
 				<tr>
 					<td><?php echo $tr->translate("CUSTOMER_NAME");?></td>
-					<td><?php echo $this->cus_purchase["first_name"]?></td>
+					<td><?php echo $this->customer_order["first_name"]?></td>
 					<td><?php echo $tr->translate("PHONE");?></td>
-					<td><?php echo $this->cus_purchase["phone"]?></td>
+					<td><?php echo $this->customer_order["phone"]?></td>
 				</tr>
 				<tr>
 					<td><?php echo $tr->translate("EMAIL");?></td>
-					<td><?php echo $this->cus_purchase["email"]?></td>
+					<td><?php echo $this->customer_order["email"]?></td>
 					<td><?php echo $tr->translate("ADDRESS");?></td>
-					<td><?php echo $this->cus_purchase["address"]?></td>
+					<td><?php echo $this->customer_order["address"]?></td>
 				</tr>
 				<tr>
 					<td><?php echo $tr->translate("CEREMONY_ADDRESS");?></td>
-					<td><?php echo $this->cus_purchase["address_1"]?></td>
+					<td><?php echo $this->customer_order["address_1"]?></td>
 					<td><?php echo $tr->translate("CEREMONY_DATE");?></td>
-					<td><?php echo $this->cus_purchase["ceremony_date"]?></td>
+					<td><?php echo $this->customer_order["ceremony_date"]?></td>
 				</tr>
 				</table>
 		</td>
 	</tr>
 </table>
-<table style="font-family: 'Khmer OS Content'; width:100%;">
-	<tr>
-    	<td>
-    		<table style="border-collapse:collapse; font-size:12px; white-space: nowrap;line-height:16px;" width="100%" cellspacing="0">
-    			<tr>
-    				<td>Purchase Code</td>
-    				<td><input type="text" value="" namr="pu_code" dojoType="dijit.form.TextBox" class="fullside"></td>
-    				<td>Supplier :</td>
-    				<td>
-    					<select dojoType="dijit.form.FilteringSelect" id="supplier_name" name="supplier_name" style="width:100%;" placeHolder="Select Supplier">
-							<option value="-1" label="Select Supplier">All Supplier</option>
-							<?php foreach($this->supplier as $key){?>
-							<option value="<?php echo $key['id']?>"><?php echo $key['company_name'];?></option>
-							<?php }?>
-						</select>
-    				</td>
-    				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="SEARCH" label="SEARCH" id="save_close" dojoType="dijit.form.Button" name="save_close" iconClass="dijitEditorIcon dijitEditorIconSearch" /> </td>
-    			</tr>
-    		</table>
-    		
-        </td>
-    </tr>
-     
-</table>
-<div id="divPrint" style="width: 100%;">
-    		<table id="table_data" class="set-style" border="2px" style="font-family: 'Khmer OS Content';border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;">
-				
+<div id="divPrint" style="width: 70%; margin: 0 auto;border: 1px solid rgb(204, 204, 204);">
+    		<table  style="font-family: 'Khmer OS Content';margin: 0 auto; width: 100%;">
+				<?php if(!empty($this->rows_order)){
+						$old_type = null;
+						$old_date = null;
+						$old_addr = null;
+						foreach ($this->rows_order as $key => $rs){
+							$num = $key+1;
+				?>
+				<?php if($old_addr != $rs["address"]){?>
+					<tr>
+						<td><br /><?php echo $tr->translate("CEREMONY_ADDRESS") .":  ". $rs["address"];?><hr /></td>
+					</tr>
+				<?php $old_addr = $rs["address"];}?>
+				<?php if($old_type != $rs["type"]){?>
+					<tr>
+						<td style="background: #f3f1f1;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $rs["date_do"]." ".$rs["title"]." ".number_format($rs["num_table"],0)." ".$rs["l_name"]?></td>
+					</tr>
+				<?php $old_type = $rs["type"]; } ?>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo " - &nbsp;&nbsp;&nbsp;&nbsp;".$rs["name_kh"]?></td>
+					</tr>
+					
+				<?php 
+							
+						}
+					
+					
+				}?>
 			</table>
+</div>
 </div>
 </form>
 </div>
@@ -110,10 +114,9 @@ dojo.ready(function(){
 
 <script>
 function addRowAjax(){
-	data = <?php print_r(Zend_Json::encode($this->rows));?>;
+	data = <?php print_r(Zend_Json::encode($this->rows_order));?>;
 	inx =0 ;
 				indexs =0;
-				var su_id = null;
 				old_item = null;
 				old_address = null;
 				old_deliver = null;

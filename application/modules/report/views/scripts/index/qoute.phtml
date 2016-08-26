@@ -27,12 +27,13 @@
   
   $tr = Application_Form_FrmLanguages::getCurrentlanguage();
   $qoute_report=$this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-quote'), null, true);
+  $order_report=$this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-order'), null, true);
   $rpt_student_payment_late=$this->url(array('module'=>'allreport','controller'=>'accounting','action'=>'rptstudentpaymentlate'), null, true);
   ?>
   <div style="background:#ccc; width: 100%;    padding-left: 100px;">
   	<ul class="link-rpt">
   		<li><a href="<?php echo $qoute_report;?>"><?php echo $tr->translate('QUOTE_REPORTS');?></a></li>
-  		<li><a href="#"><?php echo $tr->translate('ORDER_FOOD');?></a></li>
+  		<li><a href="<?php echo $order_report;?>"><?php echo $tr->translate('ORDER_REPORTS');?></a></li>
   		<li><a href="#"><?php echo $tr->translate('ORDER_QOUTATION');?></a></li>
   	</ul>
   </div>

@@ -25,18 +25,21 @@ class Report_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 	function getPurchaseById($id){
 		$db = $this->getAdapter();
 		$sql = "SELECT 
-				  q.`id`,
-				  q.`quot_code`,
-				  q.`total_pay`,
+				  o.`pu_code`,
 				  c.`first_name`,
 				  c.`phone`,
 				  c.`email`,
-				  c.`address` 
+				  c.`address`,
+				  cc.`address_1`,
+				  cc.`ceremony_date`
+				  
 				FROM
-				  `ldc_quotation` AS q,
-				  `ldc_customers` AS c 
-				WHERE q.`customer_id` = c.id 
-				  AND q.id = $id";
+				  `ldc_purchase_order` AS o,
+				  `ldc_customers` AS c,
+				  `ldc_customer_ceremony` AS cc 
+				WHERE o.`cu_id` = c.`id` 
+				  AND o.`ce_id` = cc.`id` 
+				  AND o.id=$id";
 		return $db->fetchRow($sql);
 	}
 	

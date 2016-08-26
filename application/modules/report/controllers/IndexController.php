@@ -20,6 +20,21 @@ class Report_indexController extends Zend_Controller_Action {
 	
 	$this->view->rows = $db->getQuote();
  }
+ 
+ function rptOrderAction()
+ {
+ 	$db = new Report_Model_DbTable_DbOrder();
+ 
+ 	$this->view->rows = $db->getAllOrder();
+ }
+ function vieworderAction(){
+ 	$id = $this->getRequest()->getParam("id");
+ 	$db = new Report_Model_DbTable_DbOrder();
+ 	$rows_order = $db->getOrderById($id);
+ 	//$rows_connect = $db->getQuoteConnect($id, $type);
+ 	$this->view->rows_order = $rows_order;
+ 	$this->view->customer_order = $db->getCustomerOrderById($id);
+ }
 
  function viewindAction(){
  	$id = $this->getRequest()->getParam("id");
@@ -51,6 +66,7 @@ class Report_indexController extends Zend_Controller_Action {
  	$db = new Report_Model_DbTable_DbPurchase();
  	
  	$this->view->rows = $db->getPurchase();
+ 	
  }
  
  function viewpurchaseAction(){
@@ -67,6 +83,7 @@ class Report_indexController extends Zend_Controller_Action {
  
  	$this->view->rows = $db->getPurchaseDetailById($id,$su_id);
  	$this->view->supplier = $db_order->getSupplier();
+ 	$this->view->cus_purchase = $db->getPurchaseById($id);
  }
  
  // Food Report
