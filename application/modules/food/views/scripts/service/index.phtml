@@ -1,0 +1,40 @@
+<?php $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+ echo '<title>'. $this->tr->translate("SERVICE").'</title>';
+ 
+?>
+<?php 
+    $request=Zend_Controller_Front::getInstance()->getRequest();
+    $tr = Application_Form_FrmLanguages::getCurrentlanguage();
+    $frm =  $this->form_search;
+?>
+<meta charset="utf-8">
+ <form  action="<?php echo $this->url(array('module'=>'food','controller'=>'category','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
+					   <table style="width:50%">
+						  <tr> 
+							   <td> <?php echo $frm->getElement("title");?></td>
+							   <td> <?php echo $frm->getElement("status_search");?></td>
+							   <td> <?php //echo $frm->getElement("time");?></td>
+							   <td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>
+					   	  </tr>
+					   </table>
+ </form>
+<table width="100%" border='1' style="border:1px solid #ccc; border-collapse:collapse;">
+	  <tr>
+	    <th class="tdheader header"><?php echo $tr->translate("N_O");?></th>
+	    <th class="tdheader header"><?php echo $tr->translate("SERVICE_NAME");?></th>
+	    <th class="tdheader header"><?php echo $tr->translate("DATE");?></th>
+	    <th class="tdheader header"><?php echo $tr->translate("STATUS");?></th>
+	  </tr>
+	  <?php 
+		if(!empty($this->rows))foreach ($this->rows as $key =>$row){
+	 ?>
+	  <tr  align="center">
+	  	<td style="border:1px solid #ccc;padding:1px;" align="center"><?php echo $key+1;?></td>
+	  	<td style="border:1px solid #ccc;padding:1px;"><a href="<?php echo $this->baseUrl().'/food/service/edit/id/'.$row['id'];?>"><?php echo $row['title'];?></a></td>
+	  	<td style="border:1px solid #ccc;padding:1px;"><a href="<?php echo $this->baseUrl().'/food/service/edit/id/'.$row['id'];?>"><?php echo $row['date'];?></a></td>
+	  	<td style="border:1px solid #ccc;padding:1px;"><?php echo $row['status'];?></td>
+	  </tr>
+	  <?php 
+		}
+		?>
+</table>
