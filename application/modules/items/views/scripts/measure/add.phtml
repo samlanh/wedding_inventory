@@ -16,6 +16,13 @@ dojo.require("dijit.form.DateTextBox");
 require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 </script>
 <form id='add_client' action="<?php echo $url_save; ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
 <table width="50%" style=" margin-left:25%; margin-top:10px;">
 	<tr>
 		<td>

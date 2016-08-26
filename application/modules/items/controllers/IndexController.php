@@ -20,7 +20,7 @@ class Items_indexController extends Zend_Controller_Action {
 			}
 			else{
 				$search = array(
-						'search_status' => -1,
+						'status_search' =>-1,
 						'adv_search' 	=> '',
 						'make'			=> -1,
 				//		'model'=> -1,
@@ -47,6 +47,10 @@ class Items_indexController extends Zend_Controller_Action {
 		$model = $db->getAllItemCat();
 		//array_unshift($model, array ( 'id' => -1, 'name' => 'Selected Category') );
 		$this->view->all_make=$model;
+		$form=new Items_Form_FrmSearchInfo();
+		$form=$form->FrmDepartment();
+		Application_Model_Decorator::removeAllDecorator($form);
+		$this->view->form_search=$form;
 		
 	}
 	public function addAction(){

@@ -7,6 +7,7 @@ echo $this->headTitle($tr->translate("PRODUCTS"));
  $make=$request->getParam('make');
  $model=$request->getParam('model');
  $submodel=$request->getParam('submodel');
+ $frm =  $this->form_search;
 ?>
 <script type="text/javascript">
 dojo.require("dojo.data.ObjectStore");
@@ -41,11 +42,7 @@ new dijit.form.FilteringSelect({
 		   <td><input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $tr->translate("SEARCH");?>" type="text" ></td>
 		   <td><input id="make" /></td>
 		   <td>
-		        <select name="search_status" id="search_status" dojoType="dijit.form.FilteringSelect" class="fullside">
-		                <option value="-1" <?php if($this->search_status['search_status']==-1){ echo"selected='selected'";} ?>><?php echo $tr->translate("STATUS");?></option>
-					    <option value="1" <?php if($this->search_status['search_status']==1){ echo"selected='selected'";} ?> ><?php echo $tr->translate("ACTIVE");?></option>
-					    <option value="0"  <?php if($this->search_status['search_status']==0){ echo"selected='selected'";} ?>><?php echo $tr->translate("DEACTIVE");?></option>
-				</select>
+		         <td> <?php echo $frm->getElement("status_search");?></td>
 		   </td>
 		   <td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>
    	  </tr>

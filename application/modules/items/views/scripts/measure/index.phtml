@@ -22,7 +22,7 @@ dojo.ready(function(){
 </script>
 
 <form id="list" name="list" action="<?php echo $this->url(array('module'=>'items','controller'=>'measure','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
-   <table>
+   <table width="50%">
 	  <tr> 
 		   <td><input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $this->translate("SEARCH");?>" type="text" ></td>
 		   <td>
