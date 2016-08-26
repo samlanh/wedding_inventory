@@ -27,13 +27,7 @@ table tr td.null-border{ background: #fff; border-left:none !important;}
 table .set-style td,table .set-style th{ padding: 5px; border:1px solid #ccc;}
 table .display_form-add{display:none;}
 </style>
-<script type="dojo/method" event="onSubmit">			
-	if(this.validate()) {
-				return true;
-			} else {
-				return false;
-			}
-</script>
+
 <script type="text/javascript" src="js/dojo/dojo.js" djConfig="isDebug: true, parseOnLoad: true"></script>
 <script type="text/javascript">
 dojo.require("dojo.data.ItemFileWriteStore");  
@@ -78,6 +72,13 @@ if(<?php echo $result?> == 1){
 
 </script>
 <form id='add_food' action="<?php echo $url_save; ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
 <table  width="100%" style="margin-top:10px;">
 	<tr>
 		<td>
@@ -90,7 +91,7 @@ if(<?php echo $result?> == 1){
 									<td></td>
 									<td></td>
 									<td><?php echo $this->tr->translate("FOOD_NO")?></td>
-									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside" readonly="readonly" id="food_no" name="food_no" value="<?php echo $this->product["food_code"] ?>" type="text" required="true"></td>
+									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside" id="food_no" name="food_no" value="<?php echo $this->product["food_code"] ?>" type="text" required="true"></td>
 								</tr>
 							    <tr>
 									<td><?php echo $this->tr->translate("FOOD_NAME")?></td>
@@ -161,8 +162,6 @@ if(<?php echo $result?> == 1){
 										 iconClass="dijitIconClear" /> 
 								    <input type="submit" value="SAVE_CLOSE" label="Save&Close" id="save_close" dojoType="dijit.form.Button" name="save_close"
 										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
-									<input type="submit" value="SAVE_NEW" label="Save&New" id="save_new" dojoType="dijit.form.Button" name="save_new"
-										 iconClass="dijitEditorIcon dijitEditorIconSave"/>
 									</td>
 								</tr>
 								
@@ -252,28 +251,29 @@ function oldRow(){
 	if(title!=1){
 		tem+='<th><?php echo $this->tr->translate("DEL")?></th>';
 		tem+='<th><?php echo $this->tr->translate("N_O")?></th>';
-		tem+='<th ><?php echo $this->tr->translate("ALLOCATED_FOODS")?></th>';
-		tem+='<th ><?php echo $this->tr->translate("ITEM_NAME")?></th>';
-		tem+='<th><?php echo $this->tr->translate("PRICE")?></th>';
+		tem+='<th style="width: 250px;"><?php echo $this->tr->translate("ITEM_NAME")?></th>';
 		tem+='<th><?php echo $this->tr->translate("QTY")?></th>';
+		tem+='<th><?php echo $this->tr->translate("PRICE")?></th>';
 		tem+='<th><?php echo $this->tr->translate("SUPPLIER")?></th>';
 		tem+='<th><?php echo $this->tr->translate("DELIVER_DAY")?> </th>';
+		tem+='<th ><?php echo $this->tr->translate("ALLOCATED_FOODS")?></th>';
 		dojo.query("#head-title").append(tem);
 		title=1;
 	}
 		templates+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 		templates+='<td align="center">'+col+'</td>';
-		templates+='<td align="center"><input type="checkBox" dojoType="dijit.form.CheckBox"  name="all_food_'+col+'" id="all_food_'+col+'" onClick="setAllocation('+col+')" style="width: 23%;" value="<?php echo $row['is_allocate'];?>"/><input type="hidden" name="al_food_'+col+'" id="al_food_'+col+'" value="<?php echo $row['is_allocate'];?>"/></td>';
 		templates+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemPrice('+col+');getSupplier('+col+');setSupplierVal('+col+',<?php echo $row["su_id"]; ?>);" id="item_name_'+col+'" name="item_name_'+col+'" style="width:100%;">';
 			templates+='<option value="-1">Select product</option>';
 		<?php foreach($this->pro as $key){?>
 			templates+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['pro_name_kh']."-".$key['pro_name_en'];?></option>';
 		<?php }?>
 		templates+='<input type="hidden" id="proid'+col+'">';
-		templates+='<td ><input type="text" value="<?php echo $row['price'];?>" required="true" style="width:60%;float:left;" readonly="readonly" name="price'+col+'" id="price'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="price($)" /><label id="measure'+col+'" style="width: 34%;float:right;align:center;padding-top: 5px;">/<?php echo $row["measure_name_kh"];?></label></td>';
 		templates+='<td><input type="text" value="'+parseFloat(<?php echo $row['qty'];?>)+'" required="true" name="qty'+col+'" id="qty'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
+		templates+='<td ><input type="text" value="<?php echo $row['price'];?>" required="true" style="width:60%;float:left;"  name="price'+col+'" id="price'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="price($)" /><label id="measure'+col+'" style="width: 34%;float:right;align:center;padding-top: 5px;">/<?php echo $row["measure_name_kh"];?></label></td>';
+		
 		templates+='<td><input id="supplier_name_'+col+'"</td>';
 		templates+='<td><input type="text" name="deliver_day_'+col+'" id="deliver_day_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="Deliver Day" style="width: 100%;" value="<?php echo $row['deliver_day']; ?>"/></td>';
+		templates+='<td align="center"><input type="checkBox"   name="all_food_'+col+'" id="all_food_'+col+'" onClick="setAllocation('+col+')" style="width: 23%;" value="<?php echo $row['is_allocate'];?>"/><input type="hidden" name="al_food_'+col+'" id="al_food_'+col+'" value="<?php echo $row['is_allocate'];?>"/></td>';
 		
 	tmps='<tr id="row'+col+'">';
 	tmps+="</tr>";
@@ -289,7 +289,7 @@ function oldRow(){
 	var als_food=$('#all_food_'+col).val();
 	dijit.byId("item_name_"+col).attr('value',<?php echo $row['item_id'];?>);
 	if(als_food==1){
-		dijit.byId('all_food_'+col).attr("checked", "checked");
+		$('#all_food_'+col).attr("checked", "checked");
 	}
 	<?php }?>
 }
@@ -308,29 +308,30 @@ function addRow() {
 		if(title!=1){
 			temp+='<th><?php echo $this->tr->translate("DEL");?></th>';
 			temp+='<th><?php echo $this->tr->translate("N_O");?></th>';
-			temp+='<th ><?php echo $this->tr->translate("ALLOCATED_FOODS")?></th>';
-			temp+='<th ><?php echo $this->tr->translate("ITEM_NAME");?></th>';
-			temp+='<th><?php echo $this->tr->translate("PRICE");?></th>';
+			temp+='<th style="width: 250px;"><?php echo $this->tr->translate("ITEM_NAME");?></th>';
 			temp+='<th><?php echo $this->tr->translate("QTY");?></th>';
+			temp+='<th><?php echo $this->tr->translate("PRICE");?></th>';
 			temp+='<th><?php echo $this->tr->translate("SUPPLIER");?></th>';
 			temp+='<th><?php echo $this->tr->translate("DELIVER_DAY");?></th>';
+			temp+='<th ><?php echo $this->tr->translate("ALLOCATED_FOODS")?></th>';
 			dojo.query("#head-title").append(temp);
 			title=1;
 		}
 			template+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td align="center">'+no+'</td>';
-			template+='<td align="center"><input type="checkBox" dojoType="dijit.form.CheckBox" name="all_food_'+col+'" id="all_food_'+col+'" onClick="setAllocation('+col+')" style="width: 23%;"/><input type="hidden" name="al_food_'+col+'" id="al_food_'+col+'" value="0"/></td>';
+			
 			template+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemPrice('+col+');getSupplier('+col+');" id="item_name_'+col+'" name="item_name_'+col+'" style="width:100%;">';
 				template+='<option value="-1">Select product</option>';
 			<?php foreach($this->pro as $key){?>
 				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['pro_name_kh']."-".$key['pro_name_en'];?></option>';
 			<?php }?>
 			template+='<input type="hidden" id="proid'+col+'">';
-			template+='<td ><input type="text" required="true" style="width:60%;float:left;" readonly="readonly" name="price'+col+'" id="price'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="price($)" /><label id="measure'+col+'" style="width: 34%;float:right;align:center;padding-top: 5px;"></label></td>';
 			template+='<td><input type="text" required="true" name="qty'+col+'" id="qty'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
+			template+='<td ><input type="text" required="true" style="width:60%;float:left;"  name="price'+col+'" id="price'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="price($)" /><label id="measure'+col+'" style="width: 34%;float:right;align:center;padding-top: 5px;"></label></td>';
+			
 			template+='<td><input id="supplier_name_'+col+'"</td>';
 			template+='<td><input type="text" name="deliver_day_'+col+'" id="deliver_day_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="Deliver Day" style="width: 100%;"/></td>';
-			
+			template+='<td align="center"><input type="checkBox" name="all_food_'+col+'" id="all_food_'+col+'" onClick="setAllocation('+col+')" style="width: 23%;"/><input type="hidden" name="al_food_'+col+'" id="al_food_'+col+'" value="0"/></td>';
 		tmp='<tr id="row'+col+'">';
 		tmp+="</tr>";
 		dojo.query("#table_row").append(tmp);
