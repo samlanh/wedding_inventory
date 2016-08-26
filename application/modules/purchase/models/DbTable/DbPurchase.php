@@ -138,14 +138,42 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     
     function getItemsPurchaseByQuoteIdShortBySu($id,$su_id){
     	$db = $this->getAdapter();
-    	$sql = "SELECT
+//     	$sql = "SELECT
+// 			    	q.id,
+// 			    	q.`quot_code`,
+// 			    	qc.`num_table`,
+// 			    	qc.`date_do`,
+// 			    	qc.`address`,
+// 			    	f.`name_kh`,
+// 			    	f.id as food_id,
+// 			    	p.`pro_name_kh`,
+// 			    	qt.`item_id`,
+// 			    	qt.`qty`,
+// 			    	qt.`su_id`,
+// 			    	qt.`type`,
+// 			    	qt.`deliver_day`,
+// 			    	(SELECT m.id FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_id,
+// 			    	(SELECT m.`measure_name_kh` FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_name_kh
+// 			    FROM
+// 			    	`ldc_quotation` AS q,
+// 			    	`ldc_quotation_connection` AS qc,
+// 			    	`ldc_quote_item` AS qt,
+// 			    	`ldc_product` AS p,
+// 			    	`ldc_food` AS f
+// 			    WHERE q.id = qc.`quote_id`
+// 			    	AND qc.id = qt.`qc_id`
+// 			    	AND qt.`item_id` = p.`id`
+// 			    	AND qt.`food_id`=f.`id`
+// 			    	AND q.`id` = $id
+// 			    ";
+		$sql ="SELECT
 			    	q.id,
-			    	q.`quot_code`,
+			    	q.`order_code`,
 			    	qc.`num_table`,
 			    	qc.`date_do`,
 			    	qc.`address`,
 			    	f.`name_kh`,
-			    	f.id as food_id,
+			    	f.id AS food_id,
 			    	p.`pro_name_kh`,
 			    	qt.`item_id`,
 			    	qt.`qty`,
@@ -155,17 +183,16 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 			    	(SELECT m.id FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_id,
 			    	(SELECT m.`measure_name_kh` FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_name_kh
 			    FROM
-			    	`ldc_quotation` AS q,
-			    	`ldc_quotation_connection` AS qc,
-			    	`ldc_quote_item` AS qt,
+			    	`ldc_order` AS q,
+			    	`ldc_order_connection` AS qc,
+			    	`ldc_order_item` AS qt,
 			    	`ldc_product` AS p,
 			    	`ldc_food` AS f
-			    WHERE q.id = qc.`quote_id`
-			    	AND qc.id = qt.`qc_id`
+			    WHERE q.id = qc.`order_id`
+			    	AND qc.id = qt.`oc_id`
 			    	AND qt.`item_id` = p.`id`
 			    	AND qt.`food_id`=f.`id`
-			    	AND q.`id` = $id
-			    ";
+			    	AND q.`id` =$id";
     
     	$where = '';
     	if($su_id>0){
@@ -183,7 +210,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     function getQuoteById($id){
     	$db = $this->getAdapter();
     	$sql ="SELECT 
-				  q.`quot_code`,
+				  q.`order_code`,
 				  c.`id` AS cu_id,
 				  c.`first_name`,
 				  c.`phone`,
@@ -192,7 +219,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				  cc.`address_1` AS address,
 				  cc.`ceremony_date`
 				FROM
-				  `ldc_quotation` AS q,
+				  `ldc_order` AS q,
 				  `ldc_customers` AS c,
 				  `ldc_customer_ceremony` AS cc
 				WHERE c.`id` = q.`customer_id`

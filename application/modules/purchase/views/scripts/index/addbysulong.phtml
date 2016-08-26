@@ -1,7 +1,7 @@
 <?php 
 $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
 	$url_save = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'addbysulong'));
-	echo $this->pu_id;
+	//echo $this->pu_id;
 ?>
 <?php //$this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
  echo '<title>'. $this->tr->translate("PRODUCTS").'</title>';
@@ -86,7 +86,7 @@ dojo.ready(function(){
 								<tr>
 									<td class="td-left">Quote Reference</td>
 									<td> :
-										<input name="quote_no" id="quote_no" dojoType="dijit.form.TextBox" class="fullside" value="<?php echo $this->quote_detail["quot_code"]; ?>"/>
+										<input name="quote_no" id="quote_no" dojoType="dijit.form.TextBox" class="fullside" value="<?php echo $this->quote_detail["order_code"]; ?>"/>
 									</td>
 									<td class="td-left">Customer Name</td>
 									<td> :
