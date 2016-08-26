@@ -28,7 +28,7 @@ const REDIRECT_URL = '/supplier/index';
 					'module'=>'supplier','controller'=>'index','action'=>'edit',
 			);
 			
-			$this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('customer_code'=>$link,'first_name'=>$link,'last_name'=>$link,'sex'=>$link));
+			$this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('su_code'=>$link,'customer_code'=>$link,'first_name'=>$link,'last_name'=>$link,'sex'=>$link));
 			$db_branch = new Group_Model_DbTable_DbBranch();
 // 			$this->view->company = $db_branch->getCompanyName();
 		}catch (Exception $e){
@@ -37,6 +37,12 @@ const REDIRECT_URL = '/supplier/index';
 		}
 		$db_branch = new Group_Model_DbTable_DbClient();
 		$this->view->company = $db_branch->getSupCompany();
+		
+		$form=new Items_Form_FrmSearchInfo();
+		$form=$form->FrmDepartment();
+		Application_Model_Decorator::removeAllDecorator($form);
+		$this->view->form_search=$form;
+		
 	}
 	public function addAction(){
 		$db = new Supplier_Model_DbTable_DbClient();
