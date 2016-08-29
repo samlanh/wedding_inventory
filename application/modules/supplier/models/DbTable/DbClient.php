@@ -206,5 +206,44 @@ class Supplier_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 		$order=" ORDER BY id DESC";
 		return $db->fetchAll($sql.$where.$order);
 	}
+	public function addSupplierAjax($_data){
+		try{
+			//if ($_data['cus_type']==1){
+			$this->_name ='ldc_supplier';
+			$arr = array(
+					'title'	  			=> $_data['title'],
+					'su_code'	  		=> $_data['su_no'],
+					'first_name'	  	=>$_data['first_name'],
+					//	'last_name' 		=> $_data['last_name'],
+					//'note'	      		=> $_data['desc'],
+					'p_phone'        	=>$_data['p_phone'],
+					'p_email'			=>$_data['p_email'],
+					'c_phone'        	=>$_data['c_phone'],
+					'c_email'			=>$_data['c_email'],
+					//	'house_num'			=>$_data['house_no'],
+					//	'street'			=>$_data['street'],
+					//	'district' 			=> $_data["district"],
+					'date'				=> date('Y-m-d'),
+					'note'	  			=> $_data['com_addres'],
+					'status'  			=> $_data['statuss'],
+					'balance'  			=> $_data['balance'],
+					'company_name'  	=> $_data['company_name'],
+					'position'  		=> $_data['position'],
+					//'discount_login'  => $_data['discount_login'],
+			);
+			if(!empty($_data['id'])){
+				$where = 'id = '.$_data['id'];
+				$this->update($arr, $where);
+				return $_data['id'];
+	
+			}else{
+				return  $this->insert($arr);
+			}
+	
+		}catch(Exception $e){
+			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
+			echo $e->getMessage();
+		}
+	}
 }
 
