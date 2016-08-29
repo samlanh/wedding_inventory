@@ -84,6 +84,9 @@ class Items_indexController extends Zend_Controller_Action {
 		$model = $db->getAllItemCat();
 		array_unshift($model, array ( 'id' => -1, 'name' => 'Add New') );
 		$this->view->all_make=$model;
+		//select supplier id
+		$db_cus = new Application_Model_DbTable_DbGlobal();
+		$this->view->su_no = $db_cus->getNewSupplierId();
 	}
 	function editAction(){
 		$id=$this->getRequest()->getParam('id');
@@ -136,5 +139,17 @@ class Items_indexController extends Zend_Controller_Action {
 			exit();
 		}
 	}
+	
+	function addSupplierAction(){
+		if($this->getRequest()->isPost()){
+			$_data = $this->getRequest()->getPost();
+			$db = new Supplier_Model_DbTable_DbClient();
+			$id = $db->addSupplierAjax($_data);
+			print_r(Zend_Json::encode($id));
+			exit();
+		}
+	}
+	
+	
 }
 

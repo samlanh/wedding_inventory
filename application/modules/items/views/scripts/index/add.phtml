@@ -1,6 +1,7 @@
 <?php 
 	  $url_save = $this->url(array('module'=>'items','controller'=>'index','action'=>'add'));
 	  $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+	  $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 //       $rows_engine=$this->rows_engine;
 //       $rows_type=$this->rows_type;
 //       $rows_tran=$this->rows_tran;
@@ -23,6 +24,9 @@ table .display_form-add{display:none;}
 </style>
 
 <script type="text/javascript">
+
+dojo.require("dijit.form.Textarea");
+
 dojo.require("dojo.data.ItemFileWriteStore");  
 dojo.require("dijit.form.NumberTextBox");
 dojo.require("dijit.form.DateTextBox");
@@ -161,7 +165,9 @@ dojo.ready(function(){
 </table>	
 </form>
 
+
 <div class="dijitHidden">
+ 
 	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_make" >
 		<form id='frm_make' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
 		<table class="height" >
@@ -178,7 +184,97 @@ dojo.ready(function(){
 		</table>
 		</form>
 	</div>
+	
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="popup_supplier" >
+		<form id='frm_supplier_info' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<script type="dojo/method" event="onClick">			
+			if(this.validate()) {
+				return true;
+			}else{
+				return false;
+			}
+		</script>
+			<table style=" width: 100%">
+							<tr>
+								<td valign="top" width="34%" style="white-space: nowrap;">
+										<fieldset>
+											<legend align="left" style="padding-left: 10px;"><strong><?php echo $tr->translate("ADD_SUPPLIER")?></strong></legend>
+											<table style="margin: 0 auto;" cellspacing="10">
+													<tr>
+													   <td><?php echo $tr->translate("SEX")?></td>
+													   <td><select dojoType='dijit.form.FilteringSelect' id="title" name="title" class="fullside">
+													   			<option value="1"><?php echo $tr->translate("MALE")?></option>
+													   			<option value="2"><?php echo $tr->translate("FEMALE")?></option>
+													   		</select>
+													   <td><?php echo $tr->translate("CUSTOMER_ID")?></td>
+													   <td><input type="text" dojoType="dijit.form.TextBox" readonly="readonly" name="su_no"  id="su_no" value="<?php echo $this->su_no;?>" class="fullside"></td>
+													</tr>
+													<tr>
+													   <td><?php echo $tr->translate("SUPPLIER_NAME")?>*</td>
+													   <td><input type="text" dojoType="dijit.form.ValidationTextBox" required="required" name="first_name"  id="first_name" value="" class="fullside"></td>
+													   <td></td>
+													   <td></td>
+													</tr>
+													<tr>
+														<td><?php echo $tr->translate("Tel")?></td>
+														<td><input type="text" dojoType="dijit.form.ValidationTextBox" value="" required="required"  id="p_phone" name="p_phone" class="fullside" /></td>
+														<td><?php echo $tr->translate("EMAIL")?></td>
+														<td><input type="text" dojoType="dijit.form.TextBox" ​ name="p_email"  id="p_email" value="" class="fullside"></td>
+														
+													</tr>
+													<tr>
+														<td><?php echo $tr->translate("POSITION")?></td>
+														<td><input type="text" dojoType="dijit.form.TextBox"  name="position"  id="position" value="" class="fullside"></td>
+														<td><?php echo $tr->translate("STATUS")?></td>
+														<td><select dojoType='dijit.form.FilteringSelect' id="statuss" name="statuss" onchange="Showbranch();" class="fullside">
+													   			<option value="1">Active</option>
+													   			<option value="0">Deactive</option>
+													   		</select>
+													   	</td>
+													</tr>
+											</table>
+										</fieldset>
+								</td>
+							</tr>
+							<tr>
+								<td width="100%" align="top">
+										<fieldset><legend align="left" style="padding-left: 10px;"><strong><?php echo $tr->translate("COMPANY_ADDRESS")?></strong></legend>
+									   <table style="padding:10px;" cellspacing="10" >
+											<tr>
+												<td><?php echo $tr->translate("COMPANY_NAME")?></td>
+											    <td><input id="company_name" name="company_name" type="text" dojoType="dijit.form.ValidationTextBox" required="required" class="fullside"></td>
+												<td title="ទីកន្លែងកំណើត"><?php echo $tr->translate("ADDRESS")?></td>
+												<td rowspan="2">
+													<textarea class="fullside" tabindex="8" style=" height: 60px !important;"tabindex="21"  id="com_addres" name="com_addres"  ></textarea>
+												</td>  
+											</tr>
+											 
+											<tr>
+											   <td><?php echo $tr->translate("Tel")?>*</td>
+											   <td><input type="text" dojoType="dijit.form.ValidationTextBox" value="" required="required"  id="c_phone" name="c_phone" class="fullside" /></td>
+											</tr>
+											<tr>
+											   <td><?php echo $tr->translate("EMAIL")?>*</td>
+											   <td><input type="text" dojoType="dijit.form.TextBox" value="" id="c_email" name="c_email" class="fullside" /></td>
+											    <td><?php echo $tr->translate("BALANCE")?></td>
+											   <td><input type="text" dojoType="dijit.form.TextBox" value="0" required="required"  id="balance" name="balance" class="fullside" /></td>
+											</tr>
+											 
+										</table>
+									</fieldset>
+								</td>
+							</tr>
+							<tr align="center">
+								<td valign="top">
+										 	<input type="button"  label="SAVE" dojoType="dijit.form.Button" 
+				 							iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addSupplier();"/>
+								</td>
+							</tr>
+					</table>	
+			</form>
+	</div>
 </div>
+ 
 
 <script type="text/javascript">
 dojo.require("dijit.form.Textarea"); 
@@ -225,8 +321,9 @@ function addRow() {
 		}
 			template+='<td width="5%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td width="5%" align="center">'+no+'</td>';
-			template+='<td><select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" placeHolder="Select Supplier">';
+			template+='<td><select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" placeHolder="Select Supplier" onChange="addSuppliers('+col+');" >';
 				template+='<option value="" label="Select Supplier"></option>';
+				template+='<option value="-1" label="Select Supplier">Add New</option>';
 			<?php foreach($this->supplier as $key){?>
 				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['company_name'];?></option>';
 			<?php }?>
@@ -257,5 +354,38 @@ function hideDialog() {
 		dojo.query("#row"+index).remove();
 		//calculateDiscount(index);
 }
+function addSuppliers(i){
+	supplier_id=dijit.byId('supplier_name_'+i).get('value');
+	if(supplier_id==-1){
+		dijit.byId('popup_supplier').show();
+	}
+            
+}
+
+var url_supplier = '<?php echo $this->url(array('module'=>'items','controller'=>'index','action'=>'add-supplier')); ?>';
+function addSupplier(){
+	if(dijit.byId('frm_supplier_info').validate()){
+		dojo.xhrPost({
+			url:url_supplier,
+			form: dojo.byId("frm_supplier_info"),
+			handleAs:"json",
+			load: function(data) {
+				alert(data);
+				var Itemmake = {					
+					 	id: data,
+					    name: dijit.byId('company_name').get('value')
+				 };			
+				 addDataToSelectbox(dijit.byId('supplier_name_1'), make_store, Itemmake, data);
+				dijit.byId('frm_supplier_info').reset();
+				dijit.byId("popup_supplier").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+ 
+ 
 
 </script>

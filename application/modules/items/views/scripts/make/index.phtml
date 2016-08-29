@@ -23,7 +23,6 @@
 	    <th class="tdheader header"><?php echo $tr->translate("N_O");?></th>
 	    <th class="tdheader header"><?php echo $tr->translate("NAME_CATEGORY_KH");?></th>
 	    <th class="tdheader header"><?php echo $tr->translate("NAME_CATEGORY_EN");?></th>
-	    <th class="tdheader header"><?php echo $tr->translate("IMG");?></th>
 	    <th class="tdheader header"><?php echo $tr->translate("STATUS");?></th>
 	  </tr>
 	  <?php 
@@ -33,7 +32,6 @@
 	  	<td style="border:1px solid #ccc;padding:1px;" align="center"><?php echo $key+1;?></td>
 	  	<td style="border:1px solid #ccc;padding:1px;"><a href="<?php echo $this->baseUrl().'/items/make/edit/id/'.$row['id'];?>"><?php echo $row['name_kh'];?></a></td>
 	  	<td style="border:1px solid #ccc;padding:1px;"><a href="<?php echo $this->baseUrl().'/items/make/edit/id/'.$row['id'];?>"><?php echo $row['name_en'];?></a></td>
-	  	<td style="border:1px solid #ccc;padding:1px;text-align: center;" ><a href="<?php echo $this->baseUrl().'/items/make/edit/id/'.$row['id'];?>"><img src="<?php echo $this->baseUrl().'/images/product/'.$row['img_feature'];?>"  style="max-height:70px;"/></a></td>
 	  	<td style="border:1px solid #ccc;padding:1px;"><?php echo $row['status'];?></td>
 	  </tr>
 	  <?php 
