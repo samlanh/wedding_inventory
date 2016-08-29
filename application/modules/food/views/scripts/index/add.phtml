@@ -160,8 +160,12 @@ dojo.ready(function(){
 		<form id='frm_make' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
 		<table class="height" >
 			<tr>
-				<td>Make Title</td>
+				<td><?php echo $this->tr->translate("NAME_CATEGORY_KH")?></td>
 				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_make" name="txt_make" value="" type="text"></td>
+			</tr>
+			<tr>
+				<td><?php echo $this->tr->translate("NAME_CATEGORY_EN")?></td>
+				<td><input dojoType="dijit.form.TextBox"  id="cat_eng" name="cat_eng" value="" type="text"></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
@@ -178,7 +182,7 @@ dojo.ready(function(){
 dojo.require("dijit.form.Textarea"); 
 </script>
 <script type="text/javascript">
-var url_make = '<?php echo $this->url(array('module'=>'items','controller'=>'index','action'=>'add-make')); ?>';
+var url_make = '<?php echo $this->url(array('module'=>'food','controller'=>'index','action'=>'add-make')); ?>';
 function addMake(){
 	if(dijit.byId('frm_make').validate()){
 		dojo.xhrPost({
@@ -255,7 +259,7 @@ function addRow() {
 			template+='<input type="hidden" id="proid'+col+'">';
 			template+='<td><input type="text" required="true" onKeyup="doAmount('+col+');" name="qty'+col+'" id="qty'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
 			template+='<td ><input type="text" required="true" onKeyup="doAmount('+col+');" style="width:60%;float:left;"  name="price'+col+'" id="price'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="price($)" /><label id="measure'+col+'" style="width: 34%;float:right;align:center;padding-top: 5px;"></label></td>';
-			template+='<td><input id="supplier_name_'+col+'"</td>';
+			template+='<td><input id="supplier_name_'+col+'"/></td>';
 			template+='<td><input type="text" name="deliver_day_'+col+'" id="deliver_day_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="Deliver Day" style="width: 100%;"/></td>';
 			template+='<td align="center"><input type="checkBox"   name="all_food_'+col+'" id="all_food_'+col+'" onClick="setAllocation('+col+')" style="width: 23%;"/><input type="hidden" name="al_food_'+col+'" id="al_food_'+col+'" value="0"/></td>';
 // 			template+='<td><input type="text" required="true" readonly="readonly"  name="amount'+col+'" id="amount'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="amount($)"style="width: 100%;"/></td>';

@@ -165,7 +165,7 @@ class Food_indexController extends Zend_Controller_Action {
 	function addMakeAction(){
 		if($this->getRequest()->isPost()){
 			$_data = $this->getRequest()->getPost();
-			$_dbmodel = new Application_Model_DbTable_DbGlobal();
+			$_dbmodel = new Food_Model_DbTable_DbFood();
 			$id = $_dbmodel->ajaxaddMake($_data);
 			print_r(Zend_Json::encode($id));
 			exit();

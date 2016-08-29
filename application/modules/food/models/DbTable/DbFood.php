@@ -252,6 +252,17 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
     	$sql = "SELECT s.id,s.`company_name` FROM `ldc_supplier` AS s WHERE s.`status`=1";
     	return $db->fetchAll($sql);
     }
+    function ajaxaddMake($data){
+    	$this->_name='ldc_food_cat';
+    	$db = $this->getAdapter();
+    	$arr = array(
+    			'name_kh'=>$data['txt_make'],
+    			'name_en'=>$data['cat_eng'],
+    			'status'=>1
+    
+    	);
+    	return $this->insert($arr);
+    }
 
 }  
 	  
