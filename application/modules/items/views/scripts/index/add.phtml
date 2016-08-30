@@ -52,7 +52,9 @@ new dijit.form.FilteringSelect({
     	}           
     }
 }, "make");
+
 });
+ 
 //model controll
 dojo.ready(function(){
 	addRow();
@@ -131,6 +133,8 @@ dojo.ready(function(){
 																<input type="button" label="<?php echo $this->tr->translate("ADD_SUPPLIER");?>" dojoType="dijit.form.Button" 
 															 		iconClass="dijitIconEditProperty" onclick="addRow();" />
 																<input type="hidden" name="identity" id="identity"  value="" >
+																<input type="hidden" id="sum" name="sum" value="" /> 
+																
 															 </td>
 														</tr>
 														<tr>
@@ -321,13 +325,14 @@ function addRow() {
 		}
 			template+='<td width="5%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td width="5%" align="center">'+no+'</td>';
-			template+='<td><select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" placeHolder="Select Supplier" onChange="addSuppliers('+col+');" >';
+			template+='<td><select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" placeHolder="Select Supplier" onChange="sumValue('+col+');addSuppliers('+col+');" >';
 				template+='<option value="" label="Select Supplier"></option>';
 				template+='<option value="-1" label="Select Supplier">Add New</option>';
 			<?php foreach($this->supplier as $key){?>
 				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['company_name'];?></option>';
 			<?php }?>
 			template+='</td>';
+			 
 		tmp='<tr id="row'+col+'">';
 		tmp+="</tr>";
 		dojo.query("#table_row").append(tmp);
@@ -358,24 +363,28 @@ function addSuppliers(i){
 	supplier_id=dijit.byId('supplier_name_'+i).get('value');
 	if(supplier_id==-1){
 		dijit.byId('popup_supplier').show();
+		
 	}
-            
+	      
+}
+function sumValue(i){
+	 $('#sum').attr('value',i);
 }
 
 var url_supplier = '<?php echo $this->url(array('module'=>'items','controller'=>'index','action'=>'add-supplier')); ?>';
 function addSupplier(){
+	ids=$('#sum').val();
 	if(dijit.byId('frm_supplier_info').validate()){
 		dojo.xhrPost({
 			url:url_supplier,
 			form: dojo.byId("frm_supplier_info"),
 			handleAs:"json",
 			load: function(data) {
-				alert(data);
 				var Itemmake = {					
 					 	id: data,
 					    name: dijit.byId('company_name').get('value')
 				 };			
-				 addDataToSelectbox(dijit.byId('supplier_name_1'), make_store, Itemmake, data);
+				 addDataToSelectbox(dijit.byId('supplier_name_'+ids), make_store, Itemmake, data);
 				dijit.byId('frm_supplier_info').reset();
 				dijit.byId("popup_supplier").hide();
 			},
@@ -385,7 +394,5 @@ function addSupplier(){
 		});
 	}
 }
- 
- 
 
 </script>
