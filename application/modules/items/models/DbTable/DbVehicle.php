@@ -166,7 +166,7 @@ class Items_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     
 	function getSupplier(){
 		$db = $this->getAdapter();
-		$sql ="SELECT s.id,s.`company_name` FROM `ldc_supplier` AS s WHERE s.`status`=1";
+		$sql ="SELECT s.id As id,s.`company_name` As name FROM `ldc_supplier` AS s WHERE s.`status`=1";
 		return $db->fetchAll($sql);
 	}
 	

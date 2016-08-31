@@ -329,7 +329,7 @@ function addRow() {
 				template+='<option value="" label="Select Supplier"></option>';
 				template+='<option value="-1" label="Select Supplier">Add New</option>';
 			<?php foreach($this->supplier as $key){?>
-				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['company_name'];?></option>';
+				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name'];?></option>';
 			<?php }?>
 			template+='</td>';
 			 
@@ -371,6 +371,7 @@ function sumValue(i){
 	 $('#sum').attr('value',i);
 }
 
+var supplier_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->supplier));?> );
 var url_supplier = '<?php echo $this->url(array('module'=>'items','controller'=>'index','action'=>'add-supplier')); ?>';
 function addSupplier(){
 	ids=$('#sum').val();
@@ -384,7 +385,7 @@ function addSupplier(){
 					 	id: data,
 					    name: dijit.byId('company_name').get('value')
 				 };			
-				 addDataToSelectbox(dijit.byId('supplier_name_'+ids), make_store, Itemmake, data);
+				 addDataToSelectbox(dijit.byId('supplier_name_'+ids), supplier_store, Itemmake, data);
 				dijit.byId('frm_supplier_info').reset();
 				dijit.byId("popup_supplier").hide();
 			},
