@@ -38,7 +38,6 @@ dojo.require("dojo.parser");
 dojo.require("dojo.NodeList-manipulate");
 require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
-var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
 dojo.ready(function(){
 	
 	
@@ -179,8 +178,12 @@ if(<?php echo $result?> == 1){
 		<form id='frm_make' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
 		<table class="height" >
 			<tr>
-				<td>Make Title</td>
+				<td><?php echo $this->tr->translate("NAME_CATEGORY_KH")?></td>
 				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_make" name="txt_make" value="" type="text"></td>
+			</tr>
+			<tr>
+				<td><?php echo $this->tr->translate("NAME_CATEGORY_EN")?></td>
+				<td><input dojoType="dijit.form.TextBox"  id="cat_eng" name="cat_eng" value="" type="text"></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
@@ -197,7 +200,7 @@ if(<?php echo $result?> == 1){
 dojo.require("dijit.form.Textarea"); 
 </script>
 <script type="text/javascript">
-var url_make = '<?php echo $this->url(array('module'=>'items','controller'=>'index','action'=>'add-make')); ?>';
+var url_make = '<?php echo $this->url(array('module'=>'food','controller'=>'index','action'=>'add-make')); ?>';
 function addMake(){
 	if(dijit.byId('frm_make').validate()){
 		dojo.xhrPost({
@@ -205,6 +208,7 @@ function addMake(){
 			form: dojo.byId("frm_make"),
 			handleAs:"json",
 			load: function(data) {
+				alert(data);
 				var Itemmake = {					
 						id: data,
 					    name: dijit.byId('txt_make').get('value')

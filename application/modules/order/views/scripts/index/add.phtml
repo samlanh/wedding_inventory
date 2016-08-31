@@ -123,6 +123,13 @@ var ceremony_store  = getDataStorefromJSON('id','name', <?php print_r(array())?>
 
 </script>
 <form id='add_food' action="<?php echo $url_save; ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+	<script type="dojo/method" event="onSubmit">			
+		if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+	</script>
 <table  width="100%" style="margin-top:10px;">
 	<tr>
 		<td>

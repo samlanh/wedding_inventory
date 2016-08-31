@@ -113,12 +113,10 @@ class Food_indexController extends Zend_Controller_Action {
 		
 		$db = new Application_Model_DbTable_DbGlobal();
 		$model = $db->getAllFoodCat();
+		array_unshift($model, array ( 'id' => -1, 'name' => 'Add New') );
 		$this->view->all_make=$model;
-		
 		$this->view->pro = $db->getItem();
-		
 		$this->view->food_ingredients = $db_make->getFoodIngredients($id);
-		
 	}
 	function copyAction(){
 		$id=$this->getRequest()->getParam('id');
