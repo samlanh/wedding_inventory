@@ -77,6 +77,8 @@ class Food_indexController extends Zend_Controller_Action {
 		
 		$this->view->supplier = $db->getSupplier();
 		
+		$this->view->item_cat = $db->getItemCat();
+		
 		$db = new Application_Model_DbTable_DbGlobal();
 		$model = $db->getAllFoodCat();
 		array_unshift($model, array ( 'id' => -1, 'name' => 'Add New') );
@@ -105,7 +107,7 @@ class Food_indexController extends Zend_Controller_Action {
 		$db=new Food_Model_DbTable_DbFood();
 		$this->view->product =$db->getFoodByid($id);
 		
-		
+		$this->view->item_cat = $db->getItemCat();
 		$this->view->status = $db->getStatus();
 		$this->view->unit = $db->getUnitOption();
 		
@@ -147,7 +149,7 @@ class Food_indexController extends Zend_Controller_Action {
 		$db = new Application_Model_DbTable_DbGlobal();
 		$model = $db->getAllFoodCat();
 		$this->view->all_make=$model;
-	
+		$this->view->item_cat = $db_make->getItemCat();
 		$this->view->pro = $db->getItem();
 	
 		$this->view->food_ingredients = $db_make->getFoodIngredients($id);
@@ -190,5 +192,15 @@ class Food_indexController extends Zend_Controller_Action {
 			print_r(Zend_Json::encode($row));
 			exit();
 		}
-	}}
+	}
+	function getItemAction(){
+		if($this->getRequest()->isPost()){
+			$_data = $this->getRequest()->getPost();
+			$db = new Food_Model_DbTable_DbFood();
+			$row = $db->getItemByCat($_data["id"]);
+			print_r(Zend_Json::encode($row));
+			exit();
+		}
+	}
+}
 

@@ -232,11 +232,11 @@ function getItemPrice(index){
 			load: function(data) {
 				dijit.byId('price'+index).attr('value',data.price);
 				document.getElementById('measure'+index).innerHTML = "/"+data.measure_name_kh;
-				dijit.byId('qty'+index).attr('value',1);
+				//dijit.byId('qty'+index).attr('value',1);
 				//doAmount(index);
 			},
 			error: function(err) {
-				alert(err);
+				//alert(err);
 			}
 		});
 }
@@ -247,11 +247,14 @@ title=0;
 function oldRow(){
 	<?php foreach ($this->food_ingredients as $key => $row){ $i = $key + 1;?>
 	col++;no++;
+	food_id = '<?php echo $row["item_id"];?>';
+	suppier_id = '<?php echo $row["su_id"]; ?>';
 	var templates = '';
 	if(title!=1){
 		tem+='<th><?php echo $this->tr->translate("DEL")?></th>';
 		tem+='<th><?php echo $this->tr->translate("N_O")?></th>';
-		tem+='<th style="width: 250px;"><?php echo $this->tr->translate("ITEM_NAME")?></th>';
+		tem+='<th><?php echo $this->tr->translate("CATEGORY_NAME")?></th>';
+		tem+='<th><?php echo $this->tr->translate("ITEM_NAME")?></th>';
 		tem+='<th><?php echo $this->tr->translate("QTY")?></th>';
 		tem+='<th><?php echo $this->tr->translate("PRICE")?></th>';
 		tem+='<th><?php echo $this->tr->translate("SUPPLIER")?></th>';
@@ -262,11 +265,18 @@ function oldRow(){
 	}
 		templates+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 		templates+='<td align="center">'+col+'</td>';
-		templates+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemPrice('+col+');getSupplier('+col+');setSupplierVal('+col+',<?php echo $row["su_id"]; ?>);" id="item_name_'+col+'" name="item_name_'+col+'" style="width:100%;">';
+		templates+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemByCat('+col+','+food_id+');" id="item_cat_'+col+'" name="item_cat_'+col+'" style="width:100%;">';
+		templates+='<option value="-1">Select Category</option>';
+		<?php foreach($this->item_cat as $key){?>
+			templates+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
+		<?php }?>
+		templates+='</select>';
+		templates+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemPrice('+col+');getSupplier('+col+','+suppier_id+');" id="item_name_'+col+'" name="item_name_'+col+'" style="width:100%;">';
 			templates+='<option value="-1">Select product</option>';
 		<?php foreach($this->pro as $key){?>
 			templates+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['pro_name_kh']."-".$key['pro_name_en'];?></option>';
 		<?php }?>
+		templates+='</select>';
 		templates+='<input type="hidden" id="proid'+col+'">';
 		templates+='<td><input type="text" value="'+parseFloat(<?php echo $row['qty'];?>)+'" required="true" name="qty'+col+'" id="qty'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
 		templates+='<td ><input type="text" value="<?php echo $row['price'];?>" required="true" style="width:60%;float:left;"  name="price'+col+'" id="price'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="price($)" /><label id="measure'+col+'" style="width: 34%;float:right;align:center;padding-top: 5px;">/<?php echo $row["measure_name_kh"];?></label></td>';
@@ -287,7 +297,8 @@ function oldRow(){
 	     parseContent: true,
 	});
 	var als_food=$('#all_food_'+col).val();
-	dijit.byId("item_name_"+col).attr('value',<?php echo $row['item_id'];?>);
+	dijit.byId("item_cat_"+col).attr('value','<?php echo $row['cat_id'];?>');
+	//dijit.byId("item_name_"+col).attr('value',<?php //echo $row['item_id'];?>);
 	if(als_food==1){
 		$('#all_food_'+col).attr("checked", "checked");
 	}
@@ -308,7 +319,8 @@ function addRow() {
 		if(title!=1){
 			temp+='<th><?php echo $this->tr->translate("DEL");?></th>';
 			temp+='<th><?php echo $this->tr->translate("N_O");?></th>';
-			temp+='<th style="width: 250px;"><?php echo $this->tr->translate("ITEM_NAME");?></th>';
+			temp+='<th><?php echo $this->tr->translate("CATEGORY_NAME")?></th>';
+			temp+='<th><?php echo $this->tr->translate("ITEM_NAME");?></th>';
 			temp+='<th><?php echo $this->tr->translate("QTY");?></th>';
 			temp+='<th><?php echo $this->tr->translate("PRICE");?></th>';
 			temp+='<th><?php echo $this->tr->translate("SUPPLIER");?></th>';
@@ -319,14 +331,20 @@ function addRow() {
 		}
 			template+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td align="center">'+no+'</td>';
-			
+			template+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemByCat('+col+');" id="item_cat_'+col+'" name="item_cat_'+col+'" style="width:100%;">';
+			template+='<option value="-1">Select Category</option>';
+			<?php foreach($this->item_cat as $key){?>
+				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
+			<?php }?>
+			template+='</select>';
 			template+='<td><select dojoType="dijit.form.FilteringSelect" onChange="getItemPrice('+col+');getSupplier('+col+');" id="item_name_'+col+'" name="item_name_'+col+'" style="width:100%;">';
 				template+='<option value="-1">Select product</option>';
 			<?php foreach($this->pro as $key){?>
 				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['pro_name_kh']."-".$key['pro_name_en'];?></option>';
 			<?php }?>
+			template+='</select>';
 			template+='<input type="hidden" id="proid'+col+'">';
-			template+='<td><input type="text" required="true" name="qty'+col+'" id="qty'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
+			template+='<td><input type="text" required="true" name="qty'+col+'" id="qty'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;" value="1"/></td>';
 			template+='<td ><input type="text" required="true" style="width:60%;float:left;"  name="price'+col+'" id="price'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="price($)" /><label id="measure'+col+'" style="width: 34%;float:right;align:center;padding-top: 5px;"></label></td>';
 			
 			template+='<td><input id="supplier_name_'+col+'"</td>';
@@ -364,10 +382,35 @@ function hideDialog() {
 	 total = parseFloat(price)*parseFloat(qty);
 	 dijit.byId('amount'+index).attr('value',total);
  }
+ url_item = '<?php echo $this->url(array('module'=>'food','controller'=>'index','action'=>'get-item'));?>';
+ var store_item  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
+ function getItemByCat(index,food_id){
+	 templates='';
+	 id = dijit.byId('item_cat_'+index).get('value');
+	 dojo.xhrPost({
+			url: url_item,
+			content:{
+	 			'id':id
+	 			},
+			handleAs:"json",
+			load: function(data) {
+				if(data!=""){
+					dijit.byId('item_name_'+index).reset('value');
+					store_item  = getDataStorefromJSON('id','name', data);
+				    dijit.byId('item_name_'+index).set('store',store_item);  
+				    dijit.byId("item_name_"+index).attr('value',food_id);
+				}
+			},
+			error: function(err) {
+				//alert(err);
+			}
+		});
+	 
+ }
  url_supplier = '<?php echo $this->url(array('module'=>'food','controller'=>'index','action'=>'get-supplier'));?>';
  var supplier_store  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
  old_index="";
-  function getSupplier(index){
+  function getSupplier(index,suppier_id){
  	 if(old_index != index){
  	 new dijit.form.FilteringSelect({
  		    //store: make_store,
@@ -391,18 +434,13 @@ function hideDialog() {
  				dijit.byId('supplier_name_'+index).reset('value');
  				supplier_store  = getDataStorefromJSON('id','name', data);
  			    dijit.byId('supplier_name_'+index).set('store',supplier_store);   
-
+ 			    dijit.byId('supplier_name_'+index).attr('value',suppier_id);
  			},
  			error: function(err) {
- 				alert(err);
+ 				//alert(err);
  			}
  		});
  	old_index = index;
-  }
-
-  function setSupplierVal(index,id){
-	 dijit.byId("supplier_name_"+index).attr('value',id);
-	 
   }
   ////set value checkbox 
   function setAllocation(r){

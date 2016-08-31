@@ -58,6 +58,7 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
 	    		foreach ($ids as $i){
 	    			$arr_in = array(
 	    					'food_id'		=>	$id,
+	    					'cat_id'		=>	$data['item_cat_'.$i],
 	    					'item_id'		=>	$data['item_name_'.$i],
 	    					'price'			=>	$data['price'.$i],
 	    					'qty'			=>	$data['qty'.$i],
@@ -111,6 +112,7 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
 	    		foreach ($ids as $i){
 	    			$arr_in = array(
 	    					'food_id'		=>	$data['id'],
+	    					'cat_id'		=>	$data['item_cat_'.$i],
 	    					'item_id'		=>	$data['item_name_'.$i],
 	    					'price'			=>	$data['price'.$i],
 	    					'qty'			=>	$data['qty'.$i],
@@ -160,6 +162,7 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
     		foreach ($ids as $i){
     			$arr_in = array(
     					'food_id'	=>	$id,
+    					'cat_id'		=>	$data['item_cat_'.$i],
     					'item_id'	=>	$data['item_name_'.$i],
     					'price'		=>	$data['price'.$i],
     					'qty'		=>	$data['qty'.$i],
@@ -262,6 +265,18 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
     
     	);
     	return $this->insert($arr);
+    }
+    
+    function getItemByCat($id){
+    	$db = $this->getAdapter();
+    	$sql = "SELECT p.`id`,p.`pro_name_kh` as name FROM `ldc_product` AS p WHERE p.`category_id`=$id";
+    	return $db->fetchAll($sql);
+    }
+    
+    function getItemCat(){
+    	$db = $this->getAdapter();
+    	$sql = "SELECT i.id,i.`name_kh` FROM `ldc_item_cat` AS i WHERE i.`status`=1";
+    	return $db->fetchAll($sql);
     }
 
 }  
