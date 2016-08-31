@@ -29,6 +29,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
 			    	fi.`qty`,
 			    	fi.`su_id`,
 			    	fi.deliver_day,
+			    	fi.is_allocate,
 			    	m.`id` AS measure_id
 			    FROM
 			    	`ldc_food_ingredients` AS fi,
@@ -137,6 +138,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     							'su_id'			=>	$row_ind["su_id"],
     							'measure_id'	=>	$row_ind["measure_id"],
     							'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    							'is_allocate'	=>	$row_ind["is_allocate"],
     						);
     						$this->_name = "ldc_order_item";
 //     						$db->getProfiler()->setEnabled(true);
@@ -196,6 +198,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     								'su_id'			=>	$row_ind["su_id"],
     								'measure_id'	=>	$row_ind["measure_id"],
     								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    								'is_allocate'	=>	$row_ind["is_allocate"],
     						);
     						$this->_name = "ldc_order_item";
     						$this->insert($arr_d);
@@ -252,6 +255,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     								'su_id'			=>	$row_ind["su_id"],
     								'measure_id'	=>	$row_ind["measure_id"],
     								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    								'is_allocate'	=>	$row_ind["is_allocate"],
     						);
     						$this->_name = "ldc_order_item";
     						$this->insert($arr_d);
@@ -307,6 +311,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     								'su_id'			=>	$row_ind["su_id"],
     								'measure_id'	=>	$row_ind["measure_id"],
     								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    								'is_allocate'	=>	$row_ind["is_allocate"],
     						);
     						$this->_name = "ldc_order_item";
     						$this->insert($arr_d);
@@ -348,6 +353,29 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				);
     				$this->_name ='ldc_order_detail';
     				$this->insert($arr_ins);
+    				
+    				$row_food_ind = $this->getFoodIngrediant($data['item_name_other_'.$i]);
+    				if(!empty($row_food_ind)){
+    					foreach ($row_food_ind as $row_ind){
+    						$deliver_day = $row_ind["deliver_day"];
+    						$do_date_wed = new DateTime($data["date_other_".$i]);
+    						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
+    						$arr_d = array(
+    								'quote_id'		=> $id,
+    								'qc_id'			=>	$qc_id,
+    								'type'			=>	6,
+    								'food_id'		=>	$data['item_name_other_'.$i],
+    								'item_id'		=>	$row_ind["item_id"],
+    								'qty'			=>	$row_ind["qty"],
+    								'su_id'			=>	$row_ind["su_id"],
+    								'measure_id'	=>	$row_ind["measure_id"],
+    								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    								'is_allocate'	=>	$row_ind["is_allocate"],
+    						);
+    						$this->_name = "ldc_quote_item";
+    						$this->insert($arr_d);
+    					}
+    				}
     			}
     		}
     		
@@ -384,6 +412,29 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				);
     				$this->_name ='ldc_order_detail';
     				$this->insert($arr_ins);
+    				
+    				$row_food_ind = $this->getFoodIngrediant($data['item_name_sacrifice_'.$i]);
+    				if(!empty($row_food_ind)){
+    					foreach ($row_food_ind as $row_ind){
+    						$deliver_day = $row_ind["deliver_day"];
+    						$do_date_wed = new DateTime($data["date_sacrifice_".$i]);
+    						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
+    						$arr_d = array(
+    								'quote_id'		=> $id,
+    								'qc_id'			=>	$qc_id,
+    								'type'			=>	6,
+    								'food_id'		=>	$data['item_name_sacrifice_'.$i],
+    								'item_id'		=>	$row_ind["item_id"],
+    								'qty'			=>	$row_ind["qty"],
+    								'su_id'			=>	$row_ind["su_id"],
+    								'measure_id'	=>	$row_ind["measure_id"],
+    								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    								'is_allocate'	=>	$row_ind["is_allocate"],
+    						);
+    						$this->_name = "ldc_quote_item";
+    						$this->insert($arr_d);
+    					}
+    				}
     			}
     		}
     	if($data['identity_service']){
@@ -505,6 +556,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     							'su_id'			=>	$row_ind["su_id"],
     							'measure_id'	=>	$row_ind["measure_id"],
     							'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    							'is_allocate'	=>	$row_ind["is_allocate"],
     						);
     						$this->_name = "ldc_order_item";
 //     						$db->getProfiler()->setEnabled(true);
@@ -565,6 +617,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     								'su_id'			=>	$row_ind["su_id"],
     								'measure_id'	=>	$row_ind["measure_id"],
     								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    								'is_allocate'	=>	$row_ind["is_allocate"],
     						);
     						$this->_name = "ldc_order_item";
     						$this->insert($arr_d);
@@ -622,6 +675,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     								'su_id'			=>	$row_ind["su_id"],
     								'measure_id'	=>	$row_ind["measure_id"],
     								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    								'is_allocate'	=>	$row_ind["is_allocate"],
     						);
     						$this->_name = "ldc_order_item";
     						$this->insert($arr_d);
@@ -678,6 +732,7 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     								'su_id'			=>	$row_ind["su_id"],
     								'measure_id'	=>	$row_ind["measure_id"],
     								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    								'is_allocate'	=>	$row_ind["is_allocate"],
     						);
     						$this->_name = "ldc_order_item";
     						$this->insert($arr_d);
@@ -719,6 +774,29 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				);
     				$this->_name ='ldc_order_detail';
     				$this->insert($arr_ins);
+    				
+    				$row_food_ind = $this->getFoodIngrediant($data['item_name_other_'.$i]);
+    				if(!empty($row_food_ind)){
+    					foreach ($row_food_ind as $row_ind){
+    						$deliver_day = $row_ind["deliver_day"];
+    						$do_date_wed = new DateTime($data["date_other_".$i]);
+    						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
+    						$arr_d = array(
+    								'quote_id'		=> $id,
+    								'qc_id'			=>	$qc_id,
+    								'type'			=>	6,
+    								'food_id'		=>	$data['item_name_other_'.$i],
+    								'item_id'		=>	$row_ind["item_id"],
+    								'qty'			=>	$row_ind["qty"],
+    								'su_id'			=>	$row_ind["su_id"],
+    								'measure_id'	=>	$row_ind["measure_id"],
+    								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    								'is_allocate'	=>	$row_ind["is_allocate"],
+    						);
+    						$this->_name = "ldc_quote_item";
+    						$this->insert($arr_d);
+    					}
+    				}
     			}
     		}
     		
@@ -755,6 +833,29 @@ class Order_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
     				);
     				$this->_name ='ldc_order_detail';
     				$this->insert($arr_ins);
+    				
+    				$row_food_ind = $this->getFoodIngrediant($data['item_name_sacrifice_'.$i]);
+    				if(!empty($row_food_ind)){
+    					foreach ($row_food_ind as $row_ind){
+    						$deliver_day = $row_ind["deliver_day"];
+    						$do_date_wed = new DateTime($data["date_sacrifice_".$i]);
+    						$deliver_date = $do_date_wed->modify('-'.$deliver_day.' day');
+    						$arr_d = array(
+    								'quote_id'		=> $id,
+    								'qc_id'			=>	$qc_id,
+    								'type'			=>	6,
+    								'food_id'		=>	$data['item_name_sacrifice_'.$i],
+    								'item_id'		=>	$row_ind["item_id"],
+    								'qty'			=>	$row_ind["qty"],
+    								'su_id'			=>	$row_ind["su_id"],
+    								'measure_id'	=>	$row_ind["measure_id"],
+    								'deliver_day'	=>	$deliver_date->format('Y-m-d'),
+    								'is_allocate'	=>	$row_ind["is_allocate"],
+    						);
+    						$this->_name = "ldc_quote_item";
+    						$this->insert($arr_d);
+    					}
+    				}
     			}
     		}
     	if($data['identity_service']){

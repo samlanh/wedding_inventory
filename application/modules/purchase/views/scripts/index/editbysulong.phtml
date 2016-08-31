@@ -2,14 +2,11 @@
 $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
 $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 	$url_save = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'editbysulong'));
-	echo $this->pu_id;
+	//echo $this->pu_id;
 ?>
 <?php //$this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
  echo '<title>'. $this->tr->translate("PRODUCTS").'</title>';
 ?>
-<script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
-<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
-<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
 <style>
 .bg{ background:#eeeeee; border:1px solid #000;}
 
@@ -36,44 +33,15 @@ dojo.require("dojo.html");
 dojo.require("dojo.parser");
 dojo.require("dojo.NodeList-manipulate");
 dojo.require("dijit.form.TimeTextBox");
-require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
-var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
+//dojo.require("dijit.form.Textarea");
+//require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
+//var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
 dojo.ready(function(){
 	//addRow(1);
 // 	addRow(2);
 // 	addRow(3);
 // 	addRow(4);
 addRowAjax();
-new dijit.form.FilteringSelect({
-    store: make_store,
-    autoComplete: true,                        
-    required: true,
-    id: "make",
-    name: "make",           
-    class: 'fullside',            
-    onChange: function() {  
-    	make_id = dijit.byId('make').get('value');
-    	if(make_id==-1){
-			dijit.byId('pop_make').show();
-	     }
-    	else {
-    		dijit.byId('model').attr('value','');
-    		getallModel(make_id);
-    	}           
-    }
-}, "make");
-});
-require(["dojo/ready", "dijit/form/TimeTextBox"], function(ready, TimeTextBox){
-    ready(function(){
-        new TimeTextBox({name: "progval", value: new Date(),
-            constraints: {
-                timePattern: 'HH:mm:ss',
-                clickableIncrement: 'T00:15:00',
-                visibleIncrement: 'T00:15:00',
-                visibleRange: 'T01:00:00'
-            }
-        }, "progval");
-    });
 });
 
 </script>
@@ -95,7 +63,7 @@ require(["dojo/ready", "dijit/form/TimeTextBox"], function(ready, TimeTextBox){
 								<tr>
 									<td class="td-left"><?php echo $tr->translate("QUOTE_REFERENCE");?> </td>
 									<td> :
-										<input name="quote_no" id="quote_no" dojoType="dijit.form.TextBox" class="fullside" value="<?php echo $this->quote_detail["quot_code"]; ?>"/>
+										<input name="quote_no" id="quote_no" dojoType="dijit.form.TextBox" class="fullside" value="<?php echo $this->quote_detail["order_code"]; ?>"/>
 									</td>
 									<td class="td-left"><?php echo $tr->translate("CUSTOMER_NAME");?></td>
 									<td> :
@@ -158,30 +126,7 @@ require(["dojo/ready", "dijit/form/TimeTextBox"], function(ready, TimeTextBox){
 </table>	
 </form>
 
-<div class="dijitHidden">
-	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_make" >
-		<form id='frm_make' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
-		<table class="height" >
-			<tr>
-				<td>Make Title</td>
-				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_make" name="txt_make" value="" type="text"></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
-				  	<input type="button"  label="SAVE" dojoType="dijit.form.Button" 
-				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addMake();"/>
-				</td>
-			</tr>
-		</table>
-		</form>
-	</div>
-</div>
-
 <script type="text/javascript">
-dojo.require("dijit.form.Textarea"); 
-</script>
-<script type="text/javascript">
-
 var url_item = '<?php echo $this->url(array('module'=>'purchase','controller'=>'index','action'=>'get-item-purchase')); ?>';
 var title = 0;
 no = 1;
@@ -248,7 +193,7 @@ function addRowAjax(){
 						col++;
 							temp_d +='<td class="quater-input"><img onclick="deleteRecord('+"'"+addr_name+"'"+','+num+')" src="/wedding_system/trunk/public/images/Delete_16.png"></td>';
 				 		  	temp_d += '<td>'+col+' <input type="hidden" name="qty_'+inx+'" id="qty_'+addr_name+"_"+num+'" value="'+data[i].qty+'"> <input type="hidden" name="table_'+inx+'" id="num_table_'+addr_name+"_"+num+'" value="'+data[i].num_table+'"> </td>';
-				 		  	temp_d += '<td>'+data[i].pro_name_kh+'<span style="color:red;">('+data[i].name_kh+')</span>'+'<input type="hidden" name="item_name_'+inx+'" id="item_id_'+addr_name+"_"+num+'" value="'+data[i].item_id+'"><input type="hidden" name="food_name_'+inx+'" id="food_id_'+addr_name+"_"+num+'" value="'+data[i].food_id+'" /></td>';
+				 		  	temp_d += '<td style="white-space: nowrap;">'+data[i].pro_name_kh+'<span style="color:red;">('+data[i].name_kh+')</span>'+'<input type="hidden" name="item_name_'+inx+'" id="item_id_'+addr_name+"_"+num+'" value="'+data[i].item_id+'"><input type="hidden" name="food_name_'+inx+'" id="food_id_'+addr_name+"_"+num+'" value="'+data[i].food_id+'" /></td>';
 				 		  	temp_d += '<td><input style="width: 50%;float: left;margin-right: 5px;" type="text" dojoType="dijit.form.TextBox" class="[]" name="item_qty_'+inx+'" id="item_qty_'+addr_name+"_"+num+'" value="'+data[i].qty+'"><label style="float: right;">'+data[i].measure_name_kh+'</label><input type="hidden" name="measure_id_'+inx+'" value="'+data[i].measure_id+'"></td>';
 				 		  	temp_d += '<td><input type="" id="supplier_name_'+addr_name+"_"+num+'" name="supplier_name_'+inx+'"​​ /></td>';
 				 		  	temp_d += '<td><input type="hidden" name="date_do_'+inx+'" id="date_do_'+addr_name+"_"+num+'" value="'+data[i].date_do+'" /><input dojoType="dijit.form.DateTextBox" style="width:59%; float:left;" class="fullside" name="daliver_date_'+inx+'" id="daliver_date_'+addr_name+"_"+num+'" value="'+data[i].deliver_date+'">';
@@ -278,9 +223,11 @@ function addRowAjax(){
 					$("#identity_"+addr_name).val(identity+','+num);
 					$("#index_id_"+addr_name).val(num);
 				} else {$("#identity_"+addr_name).val(num);}
+				
 				 dijit.byId("supplier_name_"+addr_name+"_"+num).attr('value',data[i].su_id);
 				dijit.byId("daliver_date_"+addr_name+"_"+num).attr('value',data[i].deliver_date);
 				dijit.byId("location_"+addr_name+"_"+num).attr('value',data[i].deliver_address); 
+				
 				  if($("#identity").val()!=''){
 					  var identitys = $("#identity").val();
 					  $("#identity").val(identitys+','+inx);

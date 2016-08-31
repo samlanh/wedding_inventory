@@ -107,6 +107,9 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				  q.id,
 				  q.`quot_code`,
 				  qc.`num_table`,
+				  qc.`allocate_num`,
+				  qc.`free`,
+				  qc.`is_free`,
 				  qc.`date_do`,
 				  qc.`address`,
 				  p.`pro_name_kh`,
@@ -115,6 +118,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				  qt.`su_id`,
 				  qt.`type`,
 				  qt.`deliver_day`,
+				  qt.is_allocate,
 				  (SELECT m.id FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_id,
   				  (SELECT m.`measure_name_kh` FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_name_kh
 				FROM
@@ -172,9 +176,9 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 			    	qc.`num_table`,
 			    	qc.`date_do`,
 			    	qc.`address`,
-			    	f.`name_kh`,
-			    	f.id AS food_id,
-			    	p.`pro_name_kh`,
+			    	(SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.`id`=qt.`food_id`) name_kh,
+			    	(SELECT f.`id` FROM `ldc_food` AS f WHERE f.`id`=qt.`food_id`) food_id,
+			    	(SELECT p.`pro_name_kh` FROM `ldc_product` AS p WHERE p.`id`=qt.`item_id`) AS pro_name_kh,
 			    	qt.`item_id`,
 			    	qt.`qty`,
 			    	qt.`su_id`,
@@ -185,13 +189,9 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 			    FROM
 			    	`ldc_order` AS q,
 			    	`ldc_order_connection` AS qc,
-			    	`ldc_order_item` AS qt,
-			    	`ldc_product` AS p,
-			    	`ldc_food` AS f
+			    	`ldc_order_item` AS qt
 			    WHERE q.id = qc.`order_id`
 			    	AND qc.id = qt.`oc_id`
-			    	AND qt.`item_id` = p.`id`
-			    	AND qt.`food_id`=f.`id`
 			    	AND q.`id` =$id";
     
     	$where = '';
@@ -338,22 +338,44 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     
     function getPurchaseDetail($id,$su_id){
     	$db = $this->getAdapter();
-    	$sql ="SELECT 
-    	          p.`pro_name_kh`,
-				  f.`name_kh`,
-				  f.`id` AS food_id,
-				  m.`measure_name_kh`,
-				  poi.* 
+//     	$sql ="SELECT 
+//     	          p.`pro_name_kh`,
+// 				  f.`name_kh`,
+// 				  f.`id` AS food_id,
+// 				  m.`measure_name_kh`,
+// 				  poi.* 
+// 				FROM
+// 				  `ldc_purchase_order_item` AS poi,
+// 				  `ldc_product` AS p,
+// 				  `ldc_food` AS f ,
+// 				  `ldc_measure` AS m
+// 				WHERE poi.`pu_id` = $id 
+// 				  AND poi.`item_id` = p.`id` 
+// 				  AND poi.`food_id` = f.id 
+// 				  AND poi.`measure_id`= m.`id`
+// 				";
+    	$sql = "SELECT 
+				  (SELECT p.`pro_name_kh` FROM `ldc_product` AS p WHERE p.id=poi.`item_id`) AS pro_name_kh,
+				  (SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.id=poi.`food_id`) AS name_kh,
+				  (SELECT f.`id` FROM `ldc_food` AS f WHERE f.id=poi.`food_id`) AS food_id,
+				  (SELECT m.`measure_name_kh` FROM `ldc_measure` AS m WHERE m.id=poi.`measure_id`) AS measure_name_kh,
+				  poi.`id`,
+				  poi.`item_id`,
+				  poi.`food_id`,
+				  poi.`measure_id`,
+				  poi.`address_do`,
+				  poi.`date_do`,
+				  poi.`deliver_address`,
+				  poi.`deliver_date`,
+				  poi.`note`,
+				  poi.`qty`,
+				  poi.`time_deliver`,
+				  poi.`su_id`,
+				  poi.`pu_id`,
+  				  poi.`puc_id`
 				FROM
-				  `ldc_purchase_order_item` AS poi,
-				  `ldc_product` AS p,
-				  `ldc_food` AS f ,
-				  `ldc_measure` AS m
-				WHERE poi.`pu_id` = $id 
-				  AND poi.`item_id` = p.`id` 
-				  AND poi.`food_id` = f.id 
-				  AND poi.`measure_id`= m.`id`
-				";
+				  `ldc_purchase_order_item` AS poi
+				WHERE poi.`pu_id` = $id";
     	$where = '';
     	if($su_id>0){
     		$where.=" AND poi.`su_id`=$su_id";
@@ -579,9 +601,10 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 				$sqls = "DELETE FROM ldc_purchase_order_item WHERE pu_id=".$data["id"]." AND su_id=".$data["supplier_name"];
 				$db->query($sqls);
 			}else {
+				
 				$sql = "DELETE FROM ldc_purchase_connection WHERE pu_id=".$data["id"];
 				$db->query($sql);
-					
+				
 				$sqls = "DELETE FROM ldc_purchase_order_item WHERE pu_id=".$data["id"];
 				$db->query($sqls);
 			}
@@ -589,7 +612,6 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     		$arr_cc = array(
     				'pu_id'		=>	$data["id"],
     				'su_id'		=>	$data["supplier_name"],
-    				 
     		);
     		$this->_name= "ldc_purchase_connection";
     		$pc_id = $this->insert($arr_cc);
@@ -617,7 +639,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     			$this->insert($arr_p);
     		}
     
-    		$db->commit();
+    		//$db->commit();
     	}catch (Exception $e){
     		$db->rollBack();
     		Application_Model_DbTable_DbUserLog::writeMessageError($e);
