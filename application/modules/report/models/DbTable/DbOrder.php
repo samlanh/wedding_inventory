@@ -33,16 +33,14 @@ class Report_Model_DbTable_DbOrder extends Zend_Db_Table_Abstract
 				  oc.`date_do`,
 				  f.`name_kh`,
 				  od.`note` ,
-  				  l.`name` as l_name
+  				  (SELECT l.`name` FROM `ldc_label` AS l WHERE l.id=oc.`label`) AS l_name
 				FROM
 				  `ldc_order_connection` AS oc,
 				  `ldc_order_detail` AS od,
-				  `ldc_food` AS f ,
-				  `ldc_label` AS l
+				  `ldc_food` AS f
 				WHERE oc.id = od.`oc_id` 
 				  AND od.`food_id` = f.`id` 
 				  AND oc.`order_id` = $id 
-				  AND oc.`label`=l.id
 				 ORDER BY oc.`type`,oc.`address`,oc.`date_do`";
 		return $db->fetchAll($sql);
 	}

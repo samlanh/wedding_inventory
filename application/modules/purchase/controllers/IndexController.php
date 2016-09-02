@@ -83,7 +83,7 @@ class Purchase_indexController extends Zend_Controller_Action {
 		$link=array(
 				'module'=>'purchase','controller'=>'index','action'=>'addbysulong',
 		);
-		$this->view->list=$list->getCheckList(0, $collumns, $rows,array('quot_code'=>$link,'first_name'=>$link,'phone'=>$link,'date_ceremony'=>$link));
+		$this->view->list=$list->getCheckList(0, $collumns, $rows,array('order_code'=>$link,'first_name'=>$link,'phone'=>$link,'date_ceremony'=>$link));
 	
 		$this->view->qute_code = $db_order-> getQuoteCode();
 		$this->view->supplier = $db_order->getSupplier();

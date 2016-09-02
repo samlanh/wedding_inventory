@@ -174,6 +174,9 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 			    	q.id,
 			    	q.`order_code`,
 			    	qc.`num_table`,
+			    	qc.`allocate_num`,
+			    	qc.`is_free`,
+			    	qc.`free`,
 			    	qc.`date_do`,
 			    	qc.`address`,
 			    	(SELECT f.`name_kh` FROM `ldc_food` AS f WHERE f.`id`=qt.`food_id`) name_kh,
@@ -184,6 +187,7 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
 			    	qt.`su_id`,
 			    	qt.`type`,
 			    	qt.`deliver_day`,
+			    	qt.`is_allocate`,
 			    	(SELECT m.id FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_id,
 			    	(SELECT m.`measure_name_kh` FROM `ldc_measure` AS m WHERE m.`id`=qt.`measure_id`) AS measure_name_kh
 			    FROM
@@ -390,15 +394,15 @@ class Purchase_Model_DbTable_DbPurchase extends Zend_Db_Table_Abstract
     	$end_date = $search["end_date"];
     	$sql ="SELECT 
 				  q.id,
-				  q.`quot_code`,
+				  q.`order_code`,
 				  c.`first_name`,
 				  c.`phone`,
 				  c.`email`,
 				  cc.`address_1`,
-				  cc.`ceremony_date` ,
-    			  q.`status`
+				  cc.`ceremony_date`,
+				  q.`status` 
 				FROM
-				  `ldc_quotation` AS q,
+				  `ldc_order` AS q,
 				  `ldc_customers` AS c,
 				  `ldc_customer_ceremony` AS cc 
 				WHERE c.`id` = q.`customer_id` 

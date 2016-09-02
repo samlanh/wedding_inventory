@@ -1,7 +1,6 @@
 <?php 
 $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
 	$url_save = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'addbysulong'));
-	//echo $this->pu_id;
 ?>
 <?php //$this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
  echo '<title>'. $this->tr->translate("PRODUCTS").'</title>';
@@ -186,6 +185,7 @@ function addRowAjax(){
 				old_su_id = null;
 				old_deliver = null;
 				for(var i=0;i<data.length;i++){
+					
 					inx++;
 					if(address != data[i].address){
 						indexs++;
@@ -240,9 +240,11 @@ function addRowAjax(){
 						if(data[i].is_free == 1){
 							free_qty=data[i].free;
 						}else{ free_qty = 0;}
-						total_num = parseFloat(data[i].num_table) + parseFloat(data[i].allocate_num) + parseFloat(free_qty);
+						
 						if(data[i].is_allocate == 1){
-							
+							total_num = parseFloat(data[i].num_table) + parseFloat(free_qty);
+						}else{
+							total_num = parseFloat(data[i].num_table) + parseFloat(data[i].allocate_num) + parseFloat(free_qty);
 						}
 							temp_d +='<td class="quater-input"><img onclick="deleteRecord('+"'"+addr_name+"'"+','+num+')" src="/wedding_inventory/public/images/Delete_16.png"></td>';
 				 		  	temp_d += '<td>'+col+' <input type="hidden" name="qty_'+inx+'" id="qty_'+addr_name+"_"+num+'" value="'+data[i].qty+'"> <input type="hidden" name="table_'+inx+'" id="num_table_'+addr_name+"_"+num+'" value="'+data[i].num_table+'"> </td>';
