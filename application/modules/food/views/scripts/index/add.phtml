@@ -42,15 +42,20 @@ new dijit.form.FilteringSelect({
     id: "make",
     name: "make",           
     class: 'fullside',            
-    onChange: function() {  
+    onChange: function() {    
     	make_id = dijit.byId('make').get('value');
     	if(make_id==-1){
 			dijit.byId('pop_make').show();
+			
 	     }
-    	else {
-    		dijit.byId('model').attr('value','');
-    		getallModel(make_id);
-    	}           
+    	else { checkFood();
+    		 
+    		//dijit.byId('model').attr('value','');
+    		//getallModel(make_id);
+    		
+    	}  
+    	
+    	      
     }
 }, "make");
 });
@@ -78,13 +83,13 @@ dojo.ready(function(){
 							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
 							    <tr>
 							    	<td></td>
-							    	<td></td>
+							    	<td><label id="message"> <label></td>
 							    	<td><?php echo $this->tr->translate("FOOD_NO")?></td>
 									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside"   id="food_no" name="food_no" value="<?php echo $this->porid ?>" type="text" required="true"></td>
 							    </tr>
 							    <tr>
 									<td><?php echo $this->tr->translate("FOOD_NAME")?></td>
-									<td><input tabindex="2"dojoType="dijit.form.ValidationTextBox" class="fullside" id="name_kh" name="name_kh" value="" type="text" required="true"></td>	
+									<td><input tabindex="2"dojoType="dijit.form.ValidationTextBox" class="fullside" id="name_kh" name="name_kh" value="" type="text" required="true" onKeyup="checkFood();"></td>	
 <!-- 									<td>Food Name In English</td> -->
 <!-- 									<td><input tabindex="3"dojoType="dijit.form.ValidationTextBox" class="fullside" id="name_kh" name="name_kh" value="" type="text" required="true"></td>	 -->
 									<td><?php echo $this->tr->translate("MANAGE_CATEGORY")?></td>
@@ -115,13 +120,7 @@ dojo.ready(function(){
 												<legend><?php echo $this->tr->translate("INGREDIENTS")?></legend>
 												<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 													<thead>
-														<tr>
-															<td colspan="8" align="left">
-																<input type="button" label="<?php echo $this->tr->translate("ADD_INGREDIENTS");?>" dojoType="dijit.form.Button" 
-															 		iconClass="dijitIconEditProperty" onclick="addRow();" />
-																<input type="hidden" name="identity" id="identity"  value="" >
-															 </td>
-														</tr>
+														
 														<tr>
 															<td colspan="8">
 																<table id="table_row" border="1px" style="border-collapse: collapse; border:1px solid #ccc;">
@@ -129,7 +128,13 @@ dojo.ready(function(){
 																</table>
 															</td>
 														</tr>
-														
+														<tr>
+															<td colspan="8" align="left">
+																<input type="button" label="<?php echo $this->tr->translate("ADD_INGREDIENTS");?>" dojoType="dijit.form.Button" 
+															 		iconClass="dijitIconEditProperty" onclick="addRow();" />
+																<input type="hidden" name="identity" id="identity"  value="" >
+															 </td>
+														</tr>
 													</thead>
 											 	</table>
 										</fieldset>
@@ -200,6 +205,36 @@ function addMake(){
 			},
 			error: function(err) {
 				alert(err);
+			}
+		});
+	}
+}
+//condition name food have already
+var url_check_food = '<?php echo $this->url(array('module'=>'food','controller'=>'index','action'=>'get-food')); ?>';
+function checkFood(){
+	
+	name_kh= dijit.byId('name_kh').get('value');
+	make= dijit.byId('make').get('value');
+	if(name_kh !='' && make !='' ){
+		//alert('hello');
+		dojo.xhrPost({
+			url: url_check_food,
+			content:{
+	 			'name_kh':name_kh,
+	 			'cat_id':make
+	 			},
+			handleAs:"json",
+			load: function(data) {
+			               if(data==1){
+			            	   name_kh=dijit.byId('name_kh').get('value');
+				               dojo.byId('message').innerHTML='<h4  style="color:red;">​'+name_kh+'ឈ្មោះម្ហូបអាហា  មានរួចហើយ!</h4>'; 
+				               dijit.byId('name_kh').attr('value','');
+			               }else {
+			            	   dojo.byId('message').innerHTML='';
+			               }
+			},
+			error: function(err) {
+				//alert(err);
 			}
 		});
 	}

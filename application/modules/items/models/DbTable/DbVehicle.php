@@ -176,6 +176,7 @@ class Items_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
 		
 		return $db->fetchAll($sql);
 	}
+	
 }  
 	  
 

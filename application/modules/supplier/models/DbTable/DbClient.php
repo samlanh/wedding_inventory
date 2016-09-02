@@ -119,6 +119,16 @@ class Supplier_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 		return  $this->insert($_arr);
 	}
 	
+	public function addMeasureAjax($_data){
+		$_arr=array(
+				'measure_name_kh'	=> $_data['txt_measure'],
+				'measure_name_en'	=> $_data['txt_measure_en'],
+				'status'	  		=> 1,
+		);
+		$this->_name='ldc_measure';
+		return  $this->insert($_arr);
+	}
+	
 	public function addSupplier($_data){
 		//  	print_r($_data);exit();
 		//     	$photoname = str_replace(" ", "_", $_data['name_en'].'-pro') . '.jpg';

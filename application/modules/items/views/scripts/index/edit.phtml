@@ -110,7 +110,7 @@ function data(){
 								<tr>
 									<td><?php echo $this->tr->translate("MANAGE_MEASURE");?></td>
 									<td>
-										<select tabindex="24" name="unit" id="unit" dojoType="dijit.form.FilteringSelect" class="fullside">
+										<select tabindex="24" name="unit" id="unit" dojoType="dijit.form.FilteringSelect" class="fullside" onChange="showMeasur();">
 										   <?php if(!empty($this->unit)) foreach ($this->unit as $row){?>
 										    <option value="<?php echo $row['id'];?>"<?php if ($row['id']==$this->product['unit']) echo "selected='selected'";?>><?php echo $row['name']?></option>
 										    <?php  } ?>
@@ -148,6 +148,13 @@ function data(){
 												<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 													<thead>
 														<tr>
+															<td colspan="8">
+																<table id="table_row" border="1px" style="border-collapse: collapse; border:1px solid #ccc;">
+																	<tr id="head-title" class="head-td" align="right"></tr>
+																</table>
+															</td>
+														</tr>
+														<tr>
 															<td colspan="8" align="left">
 																<input type="button" label=" <?php echo $this->tr->translate("ADD_SUPPLIER");?>" dojoType="dijit.form.Button" 
 															 		iconClass="dijitIconEditProperty" onclick="addRow();" />
@@ -155,14 +162,6 @@ function data(){
 																<input type="hidden" id="sum" name="sum" value="" /> 
 															 </td>
 														</tr>
-														<tr>
-															<td colspan="8">
-																<table id="table_row" border="1px" style="border-collapse: collapse; border:1px solid #ccc;">
-																	<tr id="head-title" class="head-td" align="right"></tr>
-																</table>
-															</td>
-														</tr>
-														
 													</thead>
 											 	</table>
 									 	</fieldset>
@@ -189,12 +188,12 @@ function data(){
 					<tr>
 						<td>District Name English</td>
 						<td>
-<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="pop_district_name" name="pop_district_name" value="" type="text"></td>
+						<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="pop_district_name" name="pop_district_name" value="" type="text"></td>
 					</tr>
 								<tr>
 						<td>Province Name English</td>
 						<td>
-<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="pop_district_namekh" name="pop_district_namekh" value="" type="text"></td>
+						<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="pop_district_namekh" name="pop_district_namekh" value="" type="text"></td>
 					</tr>
 					<tr>
 						<td>District Name Khmer</td>
@@ -213,6 +212,28 @@ function data(){
 						</td>
 				    </tr>
 				</table></form></div>
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="show_measure" >
+		<form id='show_measure_form' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td><?php echo  $this->tr->translate("MEASURE_NAME_KH");?></td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_measure" name="txt_measure" value="" type="text"></td>
+				
+			</tr>
+			<tr>
+				<td><?php echo  $this->tr->translate("MEASURE_NAME_EN");?></td>
+				<td><input dojoType="dijit.form.ValidationTextBox"  id="txt_measure_en" name="txt_measure_en" value="" type="text"></td>
+				
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="SAVE" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addMeasure();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
 		</div><div class="dijitHidden">
 				<div data-dojo-type="dijit.Dialog"  id="frm_village" >
 					<form id="form_village" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
@@ -368,17 +389,18 @@ function data(){
 											<legend align="left" style="padding-left: 10px;"><strong><?php echo $tr->translate("ADD_SUPPLIER")?></strong></legend>
 											<table style="margin: 0 auto;" cellspacing="10">
 													<tr>
+													   <td><?php echo $tr->translate("SUPPLIER_NAME")?>*</td>
+													   <td><input type="text" dojoType="dijit.form.ValidationTextBox" required="required" name="first_name"  id="first_name" value="" class="fullside"></td>
+													   <td><?php echo $tr->translate("CUSTOMER_ID")?></td>
+													   <td><input type="text" dojoType="dijit.form.TextBox" readonly="readonly" name="su_no"  id="su_no" value="<?php echo $this->su_no;?>" class="fullside"></td>
+													</tr>
+													<tr>
 													   <td><?php echo $tr->translate("SEX")?></td>
 													   <td><select dojoType='dijit.form.FilteringSelect' id="title" name="title" class="fullside">
 													   			<option value="1"><?php echo $tr->translate("MALE")?></option>
 													   			<option value="2"><?php echo $tr->translate("FEMALE")?></option>
 													   		</select>
-													   <td><?php echo $tr->translate("CUSTOMER_ID")?></td>
-													   <td><input type="text" dojoType="dijit.form.TextBox" readonly="readonly" name="su_no"  id="su_no" value="<?php echo $this->su_no;?>" class="fullside"></td>
-													</tr>
-													<tr>
-													   <td><?php echo $tr->translate("SUPPLIER_NAME")?>*</td>
-													   <td><input type="text" dojoType="dijit.form.ValidationTextBox" required="required" name="first_name"  id="first_name" value="" class="fullside"></td>
+													   </td>
 													   <td></td>
 													   <td></td>
 													</tr>
@@ -418,7 +440,7 @@ function data(){
 											 
 											<tr>
 											   <td><?php echo $tr->translate("Tel")?>*</td>
-											   <td><input type="text" dojoType="dijit.form.ValidationTextBox" value="" required="required"  id="c_phone" name="c_phone" class="fullside" /></td>
+											   <td><input type="text" dojoType="dijit.form.ValidationTextBox" value=""   id="c_phone" name="c_phone" class="fullside" /></td>
 											</tr>
 											<tr>
 											   <td><?php echo $tr->translate("EMAIL")?>*</td>
@@ -517,7 +539,7 @@ function oldRow(){
 		templates+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 		templates+='<td align="center">'+col+'</td>';
 		templates+='<td><select dojoType="dijit.form.FilteringSelect"   id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" onChange="sumValue('+col+');addSuppliers('+col+');"  >';
-			templates+='<option value="">Select product</option>';
+			templates+='<option value="">Select Supplier</option>';
 			templates+='<option value="-1" label="Select Supplier">Add New</option>';
 		<?php foreach($this->supplier as $key){?>
 			templates+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["su_id"]){ echo "selected=".'"selected"';}?>><?php echo $key['name'];?></option>';
@@ -614,6 +636,40 @@ function addSupplier(){
 				 addDataToSelectbox(dijit.byId('supplier_name_'+ids), supplier_store, Itemmake, data);
 				dijit.byId('frm_supplier_info').reset();
 				dijit.byId("popup_supplier").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+//function add measure to table 
+function showMeasur(){
+	unit=dijit.byId('unit').get('value');
+	if(unit==-1){
+		dijit.byId('show_measure').show();
+	}else {
+
+	}
+}
+var unit_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->unit));?> );
+var url_measur = '<?php echo $this->url(array('module'=>'items','controller'=>'index','action'=>'add-measure')); ?>';
+function addMeasure(){
+	//ids=$('#sum').val();
+	if(dijit.byId('show_measure_form').validate()){
+		dojo.xhrPost({
+			url:url_measur,
+			form: dojo.byId("show_measure_form"),
+			handleAs:"json",
+			load: function(data) {
+				var Itemmake = {					
+					 	id: data,
+					    name: dijit.byId('txt_measure').get('value')+' '+dijit.byId('txt_measure_en').get('value'),
+					     
+				 };			
+				 addDataToSelectbox(dijit.byId('unit'), unit_store, Itemmake, data);
+				dijit.byId('show_measure_form').reset();
+				dijit.byId("show_measure").hide();
 			},
 			error: function(err) {
 				alert(err);

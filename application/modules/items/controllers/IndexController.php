@@ -76,7 +76,9 @@ class Items_indexController extends Zend_Controller_Action {
 		$db=new Items_Model_DbTable_DbVehicle();
 		$this->view->porid = $db->getProID();
 		$this->view->status = $db->getStatus();
-		$this->view->unit = $db->getUnitOption();
+		$model= $db->getUnitOption();
+		array_unshift($model, array ( 'id' => -1, 'name' => 'Add New') );
+		$this->view->unit=$model;
 		
 		$this->view->supplier = $db->getSupplier();
 		
@@ -110,7 +112,9 @@ class Items_indexController extends Zend_Controller_Action {
 		
 		
 		$this->view->status = $db->getStatus();
-		$this->view->unit = $db->getUnitOption();
+		$model= $db->getUnitOption();
+		array_unshift($model, array ( 'id' => -1, 'name' => 'Add New') );
+		$this->view->unit=$model;
 		
 		$this->view->supplier = $db->getSupplier();
 		
@@ -145,6 +149,15 @@ class Items_indexController extends Zend_Controller_Action {
 			$_data = $this->getRequest()->getPost();
 			$db = new Supplier_Model_DbTable_DbClient();
 			$id = $db->addSupplierAjax($_data);
+			print_r(Zend_Json::encode($id));
+			exit();
+		}
+	}
+	function addMeasureAction(){
+		if($this->getRequest()->isPost()){
+			$_data = $this->getRequest()->getPost();
+			$db = new Supplier_Model_DbTable_DbClient();
+			$id = $db->addMeasureAjax($_data);
 			print_r(Zend_Json::encode($id));
 			exit();
 		}

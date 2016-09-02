@@ -278,6 +278,11 @@ class Food_Model_DbTable_DbFood extends Zend_Db_Table_Abstract
     	$sql = "SELECT i.id,i.`name_kh` FROM `ldc_item_cat` AS i WHERE i.`status`=1";
     	return $db->fetchAll($sql);
     }
+    function getChechName($cat_id,$name_kh){
+    	$db = $this->getAdapter();
+    	$sql = "SELECT id,name_kh,cat_id FROM ldc_food WHERE cat_id=$cat_id AND name_kh='$name_kh'";
+    	return $db->fetchRow($sql);
+    }
 
 }  
 	  

@@ -200,5 +200,19 @@ class Food_indexController extends Zend_Controller_Action {
 			exit();
 		}
 	}
+	function getFoodAction(){
+		if($this->getRequest()->isPost()){
+			$_data = $this->getRequest()->getPost();
+			$db = new Food_Model_DbTable_DbFood();
+			$row = $db->getChechName($_data["cat_id"],$_data["name_kh"]);
+			if(!empty($row)){
+				$rs=1;
+			}else {
+				$rs=0;
+			}
+			print_r(Zend_Json::encode($rs));
+			exit();
+		}
+	}
 }
 
