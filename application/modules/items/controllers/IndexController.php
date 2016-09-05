@@ -80,7 +80,9 @@ class Items_indexController extends Zend_Controller_Action {
 		array_unshift($model, array ( 'id' => -1, 'name' => 'Add New') );
 		$this->view->unit=$model;
 		
-		$this->view->supplier = $db->getSupplier();
+		$sup=$db->getSupplier();
+		array_unshift($sup, array ( 'id' => -1, 'name' => 'Add New') );
+		$this->view->supplier =$sup; 
 		
 		$db = new Application_Model_DbTable_DbGlobal();
 		$model = $db->getAllItemCat();
@@ -116,7 +118,9 @@ class Items_indexController extends Zend_Controller_Action {
 		array_unshift($model, array ( 'id' => -1, 'name' => 'Add New') );
 		$this->view->unit=$model;
 		
-		$this->view->supplier = $db->getSupplier();
+		$sup=$db->getSupplier();
+		array_unshift($sup, array ( 'id' => -1, 'name' => 'Add New') );
+		$this->view->supplier =$sup; 
 		
 		$this->view->item_supplier = $db->getItemSupplier($id);
 		

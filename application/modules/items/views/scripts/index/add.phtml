@@ -246,7 +246,7 @@ dojo.ready(function(){
 													</tr>
 													<tr>
 														<td><?php echo $tr->translate("Tel")?></td>
-														<td><input type="text" dojoType="dijit.form.ValidationTextBox" value="" required="required"  id="p_phone" name="p_phone" class="fullside" /></td>
+														<td><input type="text" dojoType="dijit.form.ValidationTextBox" value=""    id="p_phone" name="p_phone" class="fullside" /></td>
 														<td><?php echo $tr->translate("EMAIL")?></td>
 														<td><input type="text" dojoType="dijit.form.TextBox" ​ name="p_email"  id="p_email" value="" class="fullside"></td>
 														
@@ -351,8 +351,7 @@ function addRow() {
 			template+='<td width="5%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td width="5%" align="center">'+no+'</td>';
 			template+='<td><select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" placeHolder="Select Supplier" onChange="sumValue('+col+');addSuppliers('+col+');" >';
-				template+='<option value="" label="Select Supplier"></option>';
-				template+='<option value="-1" label="Select Supplier">Add New</option>';
+				template+='<option value="" label="Select Supplier">Select Supplier</option>';
 			<?php foreach($this->supplier as $key){?>
 				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name'];?></option>';
 			<?php }?>

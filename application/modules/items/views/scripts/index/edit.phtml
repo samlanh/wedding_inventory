@@ -406,7 +406,7 @@ function data(){
 													</tr>
 													<tr>
 														<td><?php echo $tr->translate("Tel")?></td>
-														<td><input type="text" dojoType="dijit.form.ValidationTextBox" value="" required="required"  id="p_phone" name="p_phone" class="fullside" /></td>
+														<td><input type="text" dojoType="dijit.form.ValidationTextBox" value=""    id="p_phone" name="p_phone" class="fullside" /></td>
 														<td><?php echo $tr->translate("EMAIL")?></td>
 														<td><input type="text" dojoType="dijit.form.TextBox" ​ name="p_email"  id="p_email" value="" class="fullside"></td>
 														
@@ -540,7 +540,7 @@ function oldRow(){
 		templates+='<td align="center">'+col+'</td>';
 		templates+='<td><select dojoType="dijit.form.FilteringSelect"   id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" onChange="sumValue('+col+');addSuppliers('+col+');"  >';
 			templates+='<option value="">Select Supplier</option>';
-			templates+='<option value="-1" label="Select Supplier">Add New</option>';
+			 
 		<?php foreach($this->supplier as $key){?>
 			templates+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["su_id"]){ echo "selected=".'"selected"';}?>><?php echo $key['name'];?></option>';
 		<?php }?>
@@ -579,7 +579,7 @@ function addRow() {
 		template+='<td width="5%" align="center">'+no+'</td>';
 		template+='<td><select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" placeHolder="Select Supplier" onChange="sumValue('+col+');addSuppliers('+col+');" >';
 			template+='<option value="" label="Select Supplier"></option>';
-			template+='<option value="-1" label="Select Supplier">Add New</option>';
+			 
 		<?php foreach($this->supplier as $key){?>
 			template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name'];?></option>';
 		<?php }?>
