@@ -46,7 +46,7 @@ dojo.require("dijit.form.TimeTextBox");
 require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
 dojo.ready(function(){
-	var arr = ['wedding','breakfast','lunch','dinner'];
+	var arr = ['wedding','breakfast','lunch','dinner','other','sacrifice'];
 		for(i=0;i<arr.length;i++){
 			TimeTexbox(arr[i]);
 		}
@@ -59,8 +59,8 @@ dojo.ready(function(){
 	oldRowDinner();
 	oldRowLunch();
 	oldRowService();
-	 oldRowsacrifice();
-	 oldRowOther();
+	 oldRowSacrifice();
+	 oldRowother();
 new dijit.form.FilteringSelect({
     store: make_store,
     autoComplete: true,                        
@@ -80,11 +80,7 @@ new dijit.form.FilteringSelect({
     }
 }, "make");
 });
-
-//model controll
-dojo.ready(function(){
-	
-	});  
+ 
 
 	function TimeTexbox(arr){
 	 new dijit.form.TimeTextBox(
@@ -512,12 +508,73 @@ dojo.ready(function(){
 				 </table>
 				</div>
 				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("SACRIFICE_FOOD");?>">
+					
+					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
+								<tr>
+									<td><?php echo $this->tr->translate("TITLE");?></td>
+									<td><input dojoType="dijit.form.TextBox" class="fullside" name="title_sacrifice" id="title_sacrifice"​ value="ម្ហូបសម្រាប់សែន"/></td>
+									<td colspan="4">
+										<table>
+											<tr>
+												<td>
+													<input type="radio" checked="checked" name="is_free_sacrifice" id="free_qty_sacrifice" value="1" style="line-height: 30px; float: left;"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_BY_QTY");?></span>
+													<input style="margin: 0 30px 0 20px; width:32%" value="0" dojoType="dijit.form.NumberTextBox" name="free_sacrifice" id="free_sacrifice"> 
+												</td>
+												<td>
+													<input type="radio" name="is_free_sacrifice" id="free_all_sacrifice" style="line-height: 30px; float: left;" value="2"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_ALL");?></span>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo $this->tr->translate("QUANTITY");?>:</td>
+									<td>
+										<input  dojoType="dijit.form.NumberTextBox" class="fullside width" id="t_number_sacrifice" name="t_number_sacrifice" value="1" onKeyup="doAmount('sacrifice');" type="text">
+										<select name="label_sacrifice" id="label_sacrifice" dojoType="dijit.form.FilteringSelect" required="false" class="fullside l_width" >
+											<option value="" label="<?php echo $this->tr->translate("CHOOSE_LABEL");?>"><?php echo $this->tr->translate("CHOOSE_LABEL");?></option>
+											<?php foreach ($this->label as $rs_l){?>
+													<option value="<?php echo $rs_l["id"];?>"><?php echo $rs_l["name"];?></option>
+											<?php }?>
+										</select>
+									</td>	
+									<td><?php echo $this->tr->translate("ALLOCATED_FOOD");?></td>
+									<td><input  dojoType="dijit.form.NumberTextBox" class="fullside" id="allocate_number_sacrifice" name="allocate_number_sacrifice" value="0" onKeyup="doAmount('sacrifice');" type="text"></td>
+									<td><?php echo $this->tr->translate("PRICE");?></td>
+									<td>
+									    <input dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_sacrifice" name="t_price_sacrifice" value="0" onKeyup="doAmount('sacrifice');" type="text">
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo $this->tr->translate("CEREMONY_ADDRESS");?></td>
+									<td>
+<!-- 									<textarea rows="" cols="" name="address_dinner" id="address_dinner" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
+										<select name="address_sacrifice" id="address_sacrifice" dojoType="dijit.form.FilteringSelect" required="false" class="fullside" >
+											<option value="" label="Choose Location"><?php echo $this->tr->translate("CHOOSE_LOCATION");?></option>
+										</select>
+									</td>
+									<td><?php echo $this->tr->translate("CEREMONY_DATE");?></td>
+									<td><input name="date_sacrifice" id="date_sacrifice" dojoType="dijit.form.DateTextBox" value="now" class="fullside"></td>
+									<td><?php echo $this->tr->translate("CEREMONY_TIME");?></td>
+									<td><input name="time_sacrifice" id="time_sacrifice" class="fullside"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td><?php echo $this->tr->translate("TOTAL_AMOUNT");?></td>
+									<td><input type="text" name="amount_sacrifice" id="amount_sacrifice" dojoType="dijit.form.NumberTextBox" class="fullside"></td>
+								</tr>
+					</table>
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
 									<input type="button" label="<?php echo $this->tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
-								 		iconClass="dijitIconEditProperty" onclick="addRowSacrifice();" />
+								 		iconClass="dijitIconEditProperty" onclick="addRow(5);" />
 									<input type="hidden" name="identity_sacrifice" id="identity_sacrifice"  value="" >
 								 </td>
 							</tr>
@@ -526,24 +583,84 @@ dojo.ready(function(){
 									<table id="table_row_sacrifice" border="1px" style="border-collapse: collapse; border:1px solid #ccc;">
 										<tr id="head-title-sacrifice" class="head-td" align="right"></tr>
 									</table>
-									<table style="width: 30%; float: right; border:0 !important">
+									<!--<table style="width: 30%; float: right; border:0 !important">
 										<tr>
 											<td style="border: none;"><?php echo $this->tr->translate('TOTAL');?> :</td>
 											<td style="border: none;"><input type="text" name="amount_sacrifice" id="amount_sacrifice" dojoType="dijit.form.NumberTextBox" class="fullside"> </td>
 										</tr>
-									</table>
+									</table>-->
 								</td>
 							</tr>
 						</thead>
 					</table>
 				</div>
 				<div class="tabContentSection" dojoType ="dijit.layout.ContentPane" title="<?php echo $this->tr->translate("OTHER_FOOD");?>">
+					<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
+								<tr>
+									<td><?php echo $this->tr->translate("TITLE");?></td>
+									<td><input dojoType="dijit.form.TextBox" class="fullside" name="title_other" id="title_other"​ value="ម្ហូបផ្សេងៗ"/></td>
+									<td colspan="4">
+										<table>
+											<tr>
+												<td>
+													<input type="radio" checked="checked" name="is_free_other" id="free_qty_other" value="1" style="line-height: 30px; float: left;"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_BY_QTY");?></span>
+													<input style="margin: 0 30px 0 20px; width:32%" value="0" dojoType="dijit.form.NumberTextBox" name="free_other" id="free_other"> 
+												</td>
+												<td>
+													<input type="radio" name="is_free_other" id="free_all_other" style="line-height: 30px; float: left;" value="2"/>
+													<span style="margin-left: 10px"><?php echo $this->tr->translate("FREE_ALL");?></span>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo $this->tr->translate("QUANTITY");?>:</td>
+									<td>
+										<input  dojoType="dijit.form.NumberTextBox" class="fullside width" id="t_number_other" name="t_number_other" value="1" onKeyup="doAmount('other');" type="text">
+										<select name="label_other" id="label_other" dojoType="dijit.form.FilteringSelect" required="false" class="fullside l_width" >
+											<option value="" label="<?php echo $this->tr->translate("CHOOSE_LABEL");?>"><?php echo $this->tr->translate("CHOOSE_LABEL");?></option>
+											<?php foreach ($this->label as $rs_l){?>
+													<option value="<?php echo $rs_l["id"];?>"><?php echo $rs_l["name"];?></option>
+											<?php }?>
+										</select>
+									</td>	
+									<td><?php echo $this->tr->translate("ALLOCATED_FOOD");?></td>
+									<td><input  dojoType="dijit.form.NumberTextBox" class="fullside" id="allocate_number_other" name="allocate_number_other" value="0" onKeyup="doAmount('other');" type="text"></td>
+									<td><?php echo $this->tr->translate("PRICE");?></td>
+									<td>
+									    <input dojoType="dijit.form.NumberTextBox" class="fullside" id="t_price_other" name="t_price_other" value="0" onKeyup="doAmount('other');" type="text">
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo $this->tr->translate("CEREMONY_ADDRESS");?></td>
+									<td>
+<!-- 									<textarea rows="" cols="" name="address_dinner" id="address_dinner" dojoType="dijit.form.TextBox" class="fullside"></textarea> -->
+										<select name="address_other" id="address_other" dojoType="dijit.form.FilteringSelect" required="false" class="fullside" >
+											<option value="" label="Choose Location"><?php echo $this->tr->translate("CHOOSE_LOCATION");?></option>
+										</select>
+									</td>
+									<td><?php echo $this->tr->translate("CEREMONY_DATE");?></td>
+									<td><input type="text" name="date_other" id="date_other" dojoType="dijit.form.DateTextBox" value="now" class="fullside"></td>
+									<td><?php echo $this->tr->translate("CEREMONY_TIME");?></td>
+									<td><input type="text" name="time_other" id="time_other" class="fullside"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td><?php echo $this->tr->translate("TOTAL_AMOUNT");?></td>
+									<td><input type="text" name="amount_other" id="amount_other" dojoType="dijit.form.NumberTextBox" class="fullside"></td>
+								</tr>
+					</table>
 					<table id="table_parent" class="set-style" border="2px" style="border:1px solid #ccc; border-collapse: collapse;margin: 0 auto; width: 100%;" >
 						<thead>
 							<tr>
 								<td colspan="8" align="left">
 									<input type="button" label="<?php echo $this->tr->translate('ADD_ROW');?>" dojoType="dijit.form.Button" 
-								 		iconClass="dijitIconEditProperty" onclick="addRowOther();" />
+								 		iconClass="dijitIconEditProperty" onclick="addRow(6);" />
 									<input type="hidden" name="identity_other" id="identity_other"  value="" >
 								 </td>
 							</tr>
@@ -552,12 +669,12 @@ dojo.ready(function(){
 									<table id="table_row_other" border="1px" style="border-collapse: collapse; border:1px solid #ccc;">
 										<tr id="head-title-other" class="head-td" align="right"></tr>
 									</table>
-									<table style="width: 30%; float: right; border:0 !important">
+									<!--<table style="width: 30%; float: right; border:0 !important">
 										<tr>
-											<td style="border: none;"><?php echo $this->tr->translate('TOTAL');?> :</td>
+											<td style="border: none;"><?php //echo $this->tr->translate('TOTAL');?> :</td>
 											<td style="border: none;"><input type="text" name="amount_other" id="amount_other" dojoType="dijit.form.NumberTextBox" class="fullside"> </td>
 										</tr>
-									</table>
+									</table>-->
 								</td>
 							</tr>
 						</thead>
@@ -678,6 +795,14 @@ var title_lunch = 0;
 var col_dinner =0;
 var no_dinner =0;
 var title_dinner = 0;
+
+var col_sacrifice=0;
+var no_sacrifice=0;
+var title_sacrifices = 0;
+
+var col_other = 0;
+var no_other = 0;;
+var title_other = 0;
 
 var col_s =0;
 var no_s =0;
@@ -884,9 +1009,6 @@ function oldRowDinner(){
 			dijit.byId('free_dinner').attr('value','<?php echo $row["free"]?>');
 			
 			dijit.byId('t_number_dinner').attr('value',<?php echo $row["num_table"]?>);
-			dijit.byId('t_number_dinner').attr('value',<?php echo $row["num_table"]?>);
-			dijit.byId('t_number_dinner').attr('value',<?php echo $row["num_table"]?>);
-			dijit.byId('t_number_dinner').attr('value',<?php echo $row["num_table"]?>);
 			dijit.byId('t_price_dinner').attr('value',<?php echo $row["price"]?>);
 			dijit.byId('date_dinner').attr('value','<?php echo $row["date_do"]?>');
 			dijit.byId('time_dinner').attr('value','<?php echo $row["time_do"]?>');
@@ -937,7 +1059,133 @@ function oldRowDinner(){
 	
 	<?php }}?>
 }
+function oldRowSacrifice(){
+	<?php if(!empty($this->quote_sacrifice)){foreach ($this->quote_sacrifice as $key => $row){ $i = $key + 1;?>
+	col_sacrifice++;no_sacrifice++;
+	template_sa='';
+	temp_sa='';
+	row_sa = "sacrifice_";
+	if(title_sacrifices!=1){
+			dijit.byId('title_sacrifice').attr('value','<?php echo $row["title"]?>');
+			dijit.byId('allocate_number_sacrifice').attr('value','<?php echo $row["allocate_num"]?>');
+			dijit.byId('label_sacrifice').attr('value','<?php echo $row["label"]?>');
+			dijit.byId('free_sacrifice').attr('value','<?php echo $row["free"]?>');
+			
+			dijit.byId('t_number_sacrifice').attr('value',<?php echo $row["num_table"]?>);
+			dijit.byId('t_price_sacrifice').attr('value',<?php echo $row["price"]?>);
+			dijit.byId('date_sacrifice').attr('value','<?php echo $row["date_do"]?>');
+			dijit.byId('time_sacrifice').attr('value','<?php echo $row["time_do"]?>');
+			dijit.byId('address_sacrifice').attr('value','<?php echo $row["address"]?>');
+			dijit.byId('amount_sacrifice').attr('value','<?php echo $row["total_pay"]?>');
+			//dijit.byId('id_sacrifice').attr('value','<?php echo $row["id"]?>');
+			temp_sa+='<th><?php echo $this->tr->translate("DEL");?></th>';
+			temp_sa+='<th><?php echo $this->tr->translate("N_O");?></th>';
+			temp_sa+='<th><?php echo $this->tr->translate("GATEGORY_FOOD");?></th>';
+			temp_sa+='<th><?php echo $this->tr->translate("ITEM_NAME");?></th>';
+			if(<?php echo $row["is_free"]?> == 1){
+				$('#free_qty_sacrifice').attr('checked', true);
+			}else{
+				$('#free_all_sacrifice').attr('checked', true);
+			}
+			//dijit.byId("date_"+row_s+col_s).attr('value','<?php echo $row["date_do"] ?>');
+			//dijit.byId("date_"+row_s+col_s).attr('value','<?php echo $row["date_do"] ?>');
+			//temp_sa+='<th>QTY</th>';
+		dojo.query("#head-title-sacrifice").append(temp_sa);
+		title_sacrifices=1;
+	}
+	template_sa+='<td width="3%" align="center"><img onclick="deleteRecord('+col_sacrifice+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
+	template_sa+='<td align="center">'+no_sacrifice+'</td>';
+	template_sa+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row_sa+col_sacrifice+'" onChange="getFoodByCat('+"'"+row_sa+"'"+','+col_sacrifice+')" name="food_cat_name_sacrifice_'+col_sacrifice+'" style="width:100%;">';
+			template_sa+='<option value="-1"><?php echo $this->tr->translate("SELECT_FOOD_CATEGORY");?></option>';
+				<?php foreach($this->food_cat as $key){?>
+					template_sa+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
+				<?php }?>
+			template_sa+='</select>';
+	template_sa+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_sacrifice_'+col_sacrifice+'" name="item_name_sacrifice_'+col_sacrifice+'" style="width:100%;">';
+	template_sa+='<option value="-1"><?php echo $this->tr->translate("SELECT_ITEM");?></option>';
+	<?php foreach($this->food as $key){?>
+	template_sa+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["food_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
+	<?php }?>
+	//template_sa+='<td><input type="text" required="true" value="'+<?php echo $row['qty']?>+'" onKeyup="doAmount('+col_sacrifice+');" name="qty_sacrifice_'+col_sacrifice+'" id="qty_sacrifice_'+col_sacrifice+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
+		
+	tmp_sa='<tr id="rowsacrifice_'+col_sacrifice+'">';
+	tmp_sa+="</tr>";
+	
+	dojo.query("#table_row_sacrifice").append(tmp_sa);
+	if($("#identity_sacrifice").val()!='') {
+		var identity = $("#identity_sacrifice").val();
+		$("#identity_sacrifice").val(identity+','+col_sacrifice);
+	} else {$("#identity_sacrifice").val(col_sacrifice);}
+	dojo.html.set(dojo.byId("rowsacrifice_"+col_sacrifice),template_sa , {
+	     parseContent: true,
+	});
+	
+	<?php }}?>
+}
 
+function oldRowother(){
+	<?php if(!empty($this->quote_other)){foreach ($this->quote_other as $key => $row){ $i = $key + 1;?>
+	col_other++;no_other++;
+	template_o='';
+	temp_o='';
+	row_o = "other_";
+	if(title_other!=1){
+			dijit.byId('title_other').attr('value','<?php echo $row["title"]?>');
+			dijit.byId('allocate_number_other').attr('value','<?php echo $row["allocate_num"]?>');
+			dijit.byId('label_other').attr('value','<?php echo $row["label"]?>');
+			dijit.byId('free_other').attr('value','<?php echo $row["free"]?>');
+			
+			dijit.byId('t_number_other').attr('value',<?php echo $row["num_table"]?>);
+			dijit.byId('t_price_other').attr('value',<?php echo $row["price"]?>);
+			dijit.byId('date_other').attr('value','<?php echo $row["date_do"]?>');
+			dijit.byId('time_other').attr('value','<?php echo $row["time_do"]?>');
+			dijit.byId('address_other').attr('value','<?php echo $row["address"]?>');
+			dijit.byId('amount_other').attr('value','<?php echo $row["total_pay"]?>');
+			//dijit.byId('id_other').attr('value','<?php echo $row["id"]?>');
+			temp_o+='<th><?php echo $this->tr->translate("DEL");?></th>';
+			temp_o+='<th><?php echo $this->tr->translate("N_O");?></th>';
+			temp_o+='<th><?php echo $this->tr->translate("GATEGORY_FOOD");?></th>';
+			temp_o+='<th><?php echo $this->tr->translate("ITEM_NAME");?></th>';
+			if(<?php echo $row["is_free"]?> == 1){
+				$('#free_qty_other').attr('checked', true);
+			}else{
+				$('#free_all_other').attr('checked', true);
+			}
+			//dijit.byId("date_"+row_s+col_s).attr('value','<?php echo $row["date_do"] ?>');
+			//dijit.byId("date_"+row_s+col_s).attr('value','<?php echo $row["date_do"] ?>');
+			//temp_o+='<th>QTY</th>';
+		dojo.query("#head-title-other").append(temp_o);
+		title_other=1;
+	}
+	template_o+='<td width="3%" align="center"><img onclick="deleteRecord('+col_other+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
+	template_o+='<td align="center">'+no_other+'</td>';
+	template_o+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row_o+col_other+'" onChange="getFoodByCat('+"'"+row_o+"'"+','+col_other+')" name="food_cat_name_other_'+col_other+'" style="width:100%;">';
+			template_o+='<option value="-1"><?php echo $this->tr->translate("SELECT_FOOD_CATEGORY");?></option>';
+				<?php foreach($this->food_cat as $key){?>
+					template_o+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
+				<?php }?>
+			template_o+='</select>';
+	template_o+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_other_'+col_other+'" name="item_name_other_'+col_other+'" style="width:100%;">';
+	template_o+='<option value="-1"><?php echo $this->tr->translate("SELECT_ITEM");?></option>';
+	<?php foreach($this->food as $key){?>
+	template_o+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["food_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
+	<?php }?>
+	//template_o+='<td><input type="text" required="true" value="'+<?php echo $row['qty']?>+'" onKeyup="doAmount('+col_other+');" name="qty_other_'+col_other+'" id="qty_other_'+col_other+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
+		
+	tmp_o='<tr id="rowother_'+col_other+'">';
+	tmp_o+="</tr>";
+	
+	dojo.query("#table_row_other").append(tmp_o);
+	if($("#identity_other").val()!='') {
+		var identity = $("#identity_other").val();
+		$("#identity_other").val(identity+','+col_other);
+	} else {$("#identity_other").val(col_other);}
+	dojo.html.set(dojo.byId("rowother_"+col_other),template_o , {
+	     parseContent: true,
+	});
+	
+	<?php }}?>
+}
 function oldRowService(){
 	total_pay=0;
 	<?php if(!empty($this->quote_service)){foreach( $this->quote_service as $row){?>
@@ -995,172 +1243,9 @@ function oldRowService(){
 	<?php }}?>
  }
  
-no_sa =0;
-col_sa =0;
-row_sa = "sacrifice_";
-title_sacrifice=0;
- function oldRowsacrifice(){
-	 total_pay=0;
-	<?php if(!empty($this->quote_sacrifice)){foreach ($this->quote_sacrifice as $key => $row){ $i = $key + 1;?>
-		total_pay = total_pay + parseFloat(<?php echo $row["total_pay"]; ?>);
-	 	template_sa='';
-		temp_sa='';
-		no_sa++;
-		col_sa++;
-		temp_sa+='<th><?php echo $this->tr->translate("DEL");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("NO");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("FREE");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("CATEGORY");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("FOOD_NAME");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("QTY");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("PRICE");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("ADDRESS");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("DATE_DO");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("NOTE");?></th>';
-			
-		if(title_sacrifice!=1){
-			
-		 	dojo.query("#head-title-sacrifice").append(temp_sa);
-		 	title_sacrifice = 1;
-		}
-		template_sa+='<td width="3%" align="center"><img onclick="deleteRecord('+col_sa+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
-		template_sa+='<td align="center">'+no_sa+'</td>';
-		template_sa+='<td align="center"><input type="checkbox" name="is_free_'+row_sa+col_sa+'" id="is_free_'+row_sa+col_sa+'" value="1" <?php if($row["is_free"]==1){echo "checked=".'"checked"';} ?>/></td>';
-		template_sa+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row_sa+col_sa+'" onChange="getFoodByCat('+"'"+row_sa+"'"+','+col_sa+')" name="food_cat_name_'+row_sa+col_sa+'" style="width:100%;">';
-		template_sa+='<option value="-1"><?php echo $this->tr->translate("SELECT_FOOD_CATEGORY");?></option>';
-			<?php foreach($this->food_cat as $key){?>
-					template_sa+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
-			<?php }?>
-		template_sa+='</select>';
-		template_sa+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row_sa+col_sa+'" name="item_name_'+row_sa+col_sa+'" style="width:100%;">';
-			template_sa+='<option value="-1"><?php echo $this->tr->translate("SELECT_ITEM");?></option>';
-			<?php foreach($this->food as $key){?>
-			template_sa+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["food_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
-			<?php }?>
-		template_sa+='</select>';
-		template_sa+='<td>';
-		template_sa+='<input type="text" style="width:57% !important;" class="width fullside" required="true" onKeyup="doAmountService('+col_sa+');" name="qty_'+row_sa+col_sa+'" id="qty_'+row_sa+col_sa+'" value="<?php echo $row['qty'];?>" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/>';
-		template_sa+='<select style="margin-left: 5px;width:37% !important" name="label_'+row_sa+col_sa+'" id="label_'+row_sa+col_sa+'" dojoType="dijit.form.FilteringSelect" required="false" class="fullside l_width" >';
-			template_sa+='<option value="" label="<?php echo $this->tr->translate("CHOOSE_LABEL");?>"><?php echo $this->tr->translate("CHOOSE_LABEL");?></option>';
-							<?php foreach ($this->label as $rs_l){?>
-								template_sa+='<option value="<?php echo $rs_l["id"];?>" <?php if($rs_l["id"]==$row["label"]){echo "selected=".'"selected"';}?>><?php echo $rs_l["name"];?></option>';
-							<?php }?>
-		template_sa+='</select>';
-		template_sa+='</td>';
-		template_sa+='<td><input type="text" required="true" onKeyup="doAmountService('+col_sa+');" name="price_'+row_sa+col_sa+'" id="price_'+row_sa+col_sa+'" value="<?php echo $row['price_d'];?>"  dojoType="dijit.form.NumberTextBox" placeholder="price" style="width: 100%;"/> <input type="hidden" dojoType="dijit.form.TextBox" id="amount_'+row_sa+col_sa+'" value="<?php echo $row['qty']*$row['price_d'];?>" name="amount_'+row_sa+col_sa+'"/></td>';
-		template_sa+='<td>';
-			template_sa+='<select name="address_'+row_sa+col_sa+'" id="address_'+row_sa+col_sa+'" dojoType="dijit.form.FilteringSelect" required="false" class="fullside" >';
-				template_sa+='<option value="" label="Choose Location"><?php echo $this->tr->translate("CHOOSE_LOCATION");?></option>';
-			template_sa+='</select>';
-		template_sa+='</td>';
-		template_sa+='<td>';
-			template_sa+='<input type="text" name="date_'+row_sa+col_sa+'" id="date_'+row_sa+col_sa+'" dojoType="dijit.form.DateTextBox" value="now" class="fullside">';
-		template_sa+='</td>';
-		template_sa+='<td><input type="text"  name="note_'+row_sa+col_sa+'" id="note_'+row_sa+col_sa+'" value="<?php echo $row['note'];?>" dojoType="dijit.form.TextBox" placeholder="Note" style="width: 100%;"/></td>';
-	 tmp_o='<tr id="row'+row_sa+col_sa+'">';
-	 tmp_o+="</tr>";
-	 
-	 dojo.query("#table_row_sacrifice").append(tmp_o);
-	 
-		if($("#identity_sacrifice").val()!='') {
-			var identity = $("#identity_sacrifice").val();
-			$("#identity_sacrifice").val(identity+','+col_sa);
-		} else {$("#identity_sacrifice").val(col_sa);}
-	 dojo.html.set(dojo.byId("row"+row_sa+col_sa),template_sa , {
-	     parseContent: true,
-	});
-	getOldAddrOther('sacrifice_',col_sa);
-	dijit.byId('amount_sacrifice').attr('value',total_pay);
-	dijit.byId("address_"+row_sa+col_sa).attr('value','<?php echo $row["address"] ?>');
-	dijit.byId("date_"+row_sa+col_sa).attr('value','<?php echo $row["date_do"] ?>');
-	
-	<?php }}?>
-	
- }
- 
- no_o =0;
-col_o =0;
-row_o = "other_";
-title_other=0;
- function oldRowOther(){
-	 total_pay=0;
-	<?php if(!empty($this->quote_other)){foreach ($this->quote_other as $key => $row){ $i = $key + 1;?>
-	total_pay = total_pay + parseFloat(<?php echo $row["total_pay"]; ?>);
-	 	template_sa='';
-		temp_sa='';
-		no_o++;
-		col_o++;
-		temp_sa+='<th><?php echo $this->tr->translate("DEL");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("NO");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("FREE");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("CATEGORY");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("FOOD_NAME");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("QTY");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("PRICE");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("ADDRESS");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("DATE_DO");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("NOTE");?></th>';
-			
-		if(title_other!=1){
-			
-		 	dojo.query("#head-title-other").append(temp_sa);
-		 	title_other = 1;
-		}
-		template_sa+='<td width="3%" align="center"><img onclick="deleteRecord('+col_o+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
-		template_sa+='<td align="center">'+no_o+'</td>';
-		template_sa+='<td align="center"><input type="checkbox" name="is_free_'+row_o+col_o+'" id="is_free_'+row_o+col_o+'" value="1" <?php if($row["is_free"]==1){echo "checked=".'"checked"';} ?>/></td>';
-		template_sa+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row_o+col_o+'" onChange="getFoodByCat('+"'"+row_o+"'"+','+col_o+')" name="food_cat_name_'+row_o+col_o+'" style="width:100%;">';
-		template_sa+='<option value="-1"><?php echo $this->tr->translate("SELECT_FOOD_CATEGORY");?></option>';
-			<?php foreach($this->food_cat as $key){?>
-					template_sa+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["cat_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh'];?></option>';
-			<?php }?>
-		template_sa+='</select>';
-		template_sa+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row_o+col_o+'" name="item_name_'+row_o+col_o+'" style="width:100%;">';
-			template_sa+='<option value="-1"><?php echo $this->tr->translate("SELECT_ITEM");?></option>';
-			<?php foreach($this->food as $key){?>
-			template_sa+='<option value="'+<?php echo $key['id']?>+'" <?php if($key["id"]==$row["food_id"]){echo "selected=".'"selected"';}?>><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
-			<?php }?>
-		template_sa+='</select>';
-		template_sa+='<td>';
-		template_sa+='<input type="text" style="width:57% !important;" class="width fullside" required="true" onKeyup="doAmountService('+col_o+');" name="qty_'+row_o+col_o+'" id="qty_'+row_o+col_o+'" value="<?php echo $row['qty'];?>" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/>';
-		template_sa+='<select style="margin-left: 5px;width:37% !important" name="label_'+row_o+col_o+'" id="label_'+row_o+col_o+'" dojoType="dijit.form.FilteringSelect" required="false" class="fullside l_width" >';
-			template_sa+='<option value="" label="<?php echo $this->tr->translate("CHOOSE_LABEL");?>"><?php echo $this->tr->translate("CHOOSE_LABEL");?></option>';
-							<?php foreach ($this->label as $rs_l){?>
-								template_sa+='<option value="<?php echo $rs_l["id"];?>" <?php if($rs_l["id"]==$row["label"]){echo "selected=".'"selected"';}?>><?php echo $rs_l["name"];?></option>';
-							<?php }?>
-		template_sa+='</select>';
-		template_sa+='</td>';
-		template_sa+='<td><input type="text" required="true" onKeyup="doAmountService('+col_o+');" name="price_'+row_o+col_o+'" id="price_'+row_o+col_o+'" value="<?php echo $row['price_d'];?>"  dojoType="dijit.form.NumberTextBox" placeholder="price" style="width: 100%;"/> <input type="hidden" dojoType="dijit.form.TextBox" id="amount_'+row_o+col_o+'" value="<?php echo $row['qty']*$row['price_d'];?>" name="amount_'+row_o+col_o+'"/></td>';
-		template_sa+='<td>';
-			template_sa+='<select name="address_'+row_o+col_o+'" id="address_'+row_o+col_o+'" dojoType="dijit.form.FilteringSelect" required="false" class="fullside" >';
-				template_sa+='<option value="" label="Choose Location"><?php echo $this->tr->translate("CHOOSE_LOCATION");?></option>';
-			template_sa+='</select>';
-		template_sa+='</td>';
-		template_sa+='<td>';
-			template_sa+='<input type="text" name="date_'+row_o+col_o+'" id="date_'+row_o+col_o+'" dojoType="dijit.form.DateTextBox" value="now" class="fullside">';
-		template_sa+='</td>';
-		template_sa+='<td><input type="text"  name="note_'+row_o+col_o+'" id="note_'+row_o+col_o+'" value="<?php echo $row['note'];?>" dojoType="dijit.form.TextBox" placeholder="Note" style="width: 100%;"/></td>';
-	 tmp_o='<tr id="row'+row_o+col_o+'">';
-	 tmp_o+="</tr>";
-	 
-	 dojo.query("#table_row_other").append(tmp_o);
-	 
-		if($("#identity_other").val()!='') {
-			var identity = $("#identity_other").val();
-			$("#identity_other").val(identity+','+col_o);
-		} else {$("#identity_other").val(col_o);}
-	 dojo.html.set(dojo.byId("row"+row_o+col_o),template_sa , {
-	     parseContent: true,
-	});
-	getOldAddrOther('other_',col_o);
-	dijit.byId('amount_other').attr('value',total_pay);
-	dijit.byId("address_"+row_o+col_o).attr('value','<?php echo $row["address"] ?>');
-	dijit.byId("date_"+row_o+col_o).attr('value','<?php echo $row["date_do"] ?>');
-	
-	<?php }}?>
-	
- }
-//var template = '';
+
+
+var template = '';
 var services = '<?php //echo $this->service_options; ?>';
 
 var col_wedding = 0;
@@ -1179,17 +1264,27 @@ var col_dinner =0;
 var no_dinner =0;
 var title_dinner = 0;
 
+var col_other =0;
+var no_other =0;
+var title_other = 0;
+
+var col_sacrifice =0;
+var no_sacrifice =0;
+var title_sacrifices = 0;
+
 //var title = 0;
 func='';
 tmp = '';
 
 function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner 
+
 		if(type==1){
 			col_wedding++;
 			no_wedding++;
 			col = col_wedding;
 			no = no_wedding;
 			row = "wedding_";
+			row_name='wedding';
 			title = title_wedding;
 		}if(type==2){
 			col_breakfast++;
@@ -1197,6 +1292,7 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 			col = col_breakfast;
 			no = no_breakfast;
 			row = "breakfast_";
+			row_name='breakfast';
 			title = title_breakfast;
 		}if(type==3){
 			col_lunch++;
@@ -1204,21 +1300,38 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 			col = col_lunch;
 			no = no_lunch;
 			row = "lunch_";
+			row_name='lunch';
 			title = title_lunch;
 		}if(type==4){
 			col_dinner++;
 			no_dinner++;
-				
 			col = col_dinner;
 			no = no_dinner;
 			row = "dinner_";
+			row_name='dinner';
 			title = title_dinner;
+		}if(type==5){
+			col_sacrifice++;
+			no_sacrifice++;
+			col = col_sacrifice;
+			no = no_sacrifice;
+			row = "sacrifice_";
+			row_name='sacrifice';
+			title = title_sacrifices;
+		}if(type==6){
+			col_other++;
+			no_other++;
+			col = col_other;
+			no = no_other;
+			row = "other_";
+			row_name='other';
+			title = title_other;
 		}
 		template='';
 		temp='';
 			temp+='<th><?php echo $this->tr->translate("DEL");?></th>';
 			temp+='<th><?php echo $this->tr->translate("N_O");?></th>';
-			temp+='<th><?php echo $this->tr->translate("CATEGORY_FOOD");?></th>';
+			temp+='<th><?php echo $this->tr->translate("GATEGORY_FOOD");?></th>';
 			temp+='<th><?php echo $this->tr->translate("ITEM_NAME");?></th>';
 			//temp+='<th>QTY</th>';
 			if(type==1){
@@ -1245,7 +1358,19 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 					title_dinner = 1;
 				}
 			}
-			template+='<td width="3%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
+			if(type==5){
+				if(title_sacrifice!=1){
+					dojo.query("#head-title-sacrifice").append(temp);
+					title_sacrifice = 1;
+				}
+			}
+			if(type==6){
+				if(title_other!=1){
+					dojo.query("#head-title-other").append(temp);
+					title_other = 1;
+				}
+			}
+			template+='<td width="3%" align="center"><img onclick="deleteRecord('+"'"+row_name+"'"+','+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td align="center">'+no+'</td>';
 			template+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row+col+'" onChange="getFoodByCat('+"'"+row+"'"+','+col+')" name="food_cat_name_'+row+col+'" style="width:100%;">';
 			template+='<option value="-1"><?php echo $this->tr->translate("SELECT_FOOD_CATEGORY");?></option>';
@@ -1256,9 +1381,10 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 			template+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row+col+'" name="item_name_'+row+col+'" style="width:100%;">';
 				template+='<option value="-1"><?php echo $this->tr->translate("SELECT_ITEM");?></option>';
 			<?php foreach($this->food as $key){?>
-				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh']."-".$key['name_en'];?></option>';
+				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
 			<?php }?>
-			//template+='<td><input type="text" required="true" onKeyup="doAmount('+col+');" name="qty_'+row+col+'" id="qty_'+row+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
+			template+='</select>';
+			//template+='<td><input type="text" required="true" name="_'+row+col+'" id="qty_'+row+col+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/></td>';
 			
 		tmp='<tr id="row'+row+col+'">';
 		tmp+="</tr>";
@@ -1286,160 +1412,29 @@ function addRow(type) { //1 = wedding,2=breakfast,3=lunch,4=dinner
 				var identity = $("#identity_dinner").val();
 				$("#identity_dinner").val(identity+','+col);
 			} else {$("#identity_dinner").val(col);}
+		}else if(type==5){
+			dojo.query("#table_row_sacrifice").append(tmp);
+			if($("#identity_sacrifice").val()!='') {
+				var identity = $("#identity_sacrifice").val();
+				$("#identity_sacrifice").val(identity+','+col);
+			} else {$("#identity_sacrifice").val(col);}
+		}else if(type==6){
+			dojo.query("#table_row_other").append(tmp);
+			if($("#identity_other").val()!='') {
+				var identity = $("#identity_other").val();
+				$("#identity_other").val(identity+','+col);
+			} else {$("#identity_other").val(col);}
 		}
+		
 		dojo.html.set(dojo.byId("row"+row+col),template , {
 		     parseContent: true,
 		});
  }
-no_sa =0;
-col_sa =0;
-row_sa = "sacrifice_";
-title_sacrifice=0;
- function addRowSacrifice(){
-	 	template_sa='';
-		temp_sa='';
-		no_sa++;
-		col_sa++;
-		temp_sa+='<th><?php echo $this->tr->translate("DEL");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("NO");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("FREE");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("CATEGORY");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("FOOD_NAME");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("QTY");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("PRICE");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("ADDRESS");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("DATE_DO");?></th>';
-		temp_sa+='<th><?php echo $this->tr->translate("NOTE");?></th>';
-			
-		if(title_sacrifice!=1){
-		 	dojo.query("#head-title-sacrifice").append(temp_sa);
-		 	title_sacrifice = 1;
-		}
-		template_sa+='<td width="3%" align="center"><img onclick="deleteRecord('+col_sa+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
-		template_sa+='<td align="center">'+no_sa+'</td>';
-		template_sa+='<td align="center"><input type="checkbox" name="is_free_'+row_sa+col_sa+'" id="is_free_'+row_sa+col_sa+'" value="1"/></td>';
-		template_sa+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row_sa+col_sa+'" onChange="getFoodByCat('+"'"+row_sa+"'"+','+col_sa+')" name="food_cat_name_'+row_sa+col_sa+'" style="width:100%;">';
-		template_sa+='<option value="-1">Select Food Category</option>';
-			<?php foreach($this->food_cat as $key){?>
-				template_sa+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
-			<?php }?>
-		template_sa+='</select>';
-		template_sa+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row_sa+col_sa+'" name="item_name_'+row_sa+col_sa+'" style="width:100%;">';
-			template_sa+='<option value="-1">Select Food</option>';
-		<?php foreach($this->food as $key){?>
-			template_sa+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
-		<?php }?>
-		template_sa+='</select>';
-		template_sa+='<td>';
-		template_sa+='<input type="text" style="width:57% !important;" class="width fullside" required="true" onKeyup="doAmountService('+col_sa+');" name="qty_'+row_sa+col_sa+'" id="qty_'+row_sa+col_sa+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/>';
-		template_sa+='<select style="margin-left: 5px;width:37% !important" name="label_'+row_sa+col_sa+'" id="label_'+row_sa+col_sa+'" dojoType="dijit.form.FilteringSelect" required="false" class="fullside l_width" >';
-			template_sa+='<option value="" label="<?php echo $this->tr->translate("CHOOSE_LABEL");?>"><?php echo $this->tr->translate("CHOOSE_LABEL");?></option>';
-							<?php foreach ($this->label as $rs_l){?>
-								template_sa+='<option value="<?php echo $rs_l["id"];?>"><?php echo $rs_l["name"];?></option>';
-							<?php }?>
-		template_sa+='</select>';
-		template_sa+='</td>';
-		template_sa+='<td><input type="text" required="true" onKeyup="doAmountService('+col_sa+');" name="price_'+row_sa+col_sa+'" id="price_'+row_sa+col_sa+'" dojoType="dijit.form.NumberTextBox" placeholder="price" style="width: 100%;"/> <input type="hidden" dojoType="dijit.form.TextBox" id="amount_'+row_sa+col_sa+'" name="amount_'+row_sa+col_sa+'"/></td>';
-		template_sa+='<td>';
-			template_sa+='<select name="address_'+row_sa+col_sa+'" id="address_'+row_sa+col_sa+'" dojoType="dijit.form.FilteringSelect" required="false" class="fullside" >';
-				template_sa+='<option value="" label="Choose Location"><?php echo $this->tr->translate("CHOOSE_LOCATION");?></option>';
-			template_sa+='</select>';
-		template_sa+='</td>';
-		template_sa+='<td>';
-			template_sa+='<input type="text" name="date_'+row_sa+col_sa+'" id="date_'+row_sa+col_sa+'" dojoType="dijit.form.DateTextBox" value="now" class="fullside">';
-		template_sa+='</td>';
-		template_sa+='<td><input type="text"  name="note_'+row_sa+col_sa+'" id="note_'+row_sa+col_sa+'" dojoType="dijit.form.TextBox" placeholder="Note" style="width: 100%;"/></td>';
-	 tmp_o='<tr id="row'+row_sa+col_sa+'">';
-	 tmp_o+="</tr>";
-	 
-	 dojo.query("#table_row_sacrifice").append(tmp_o);
-	 
-		if($("#identity_sacrifice").val()!='') {
-			var identity = $("#identity_sacrifice").val();
-			$("#identity_sacrifice").val(identity+','+col_sa);
-		} else {$("#identity_sacrifice").val(col_sa);}
-	 dojo.html.set(dojo.byId("row"+row_sa+col_sa),template_sa , {
-	     parseContent: true,
-	});
-	getAddrOther('sacrifice_',col_sa);
-	
- }
-no_o =0;
-col_o =0;
-row_o = "other_";
-title_other=0;
- function addRowOther(){
-	 	template_o='';
-		temp_o='';
-		no_o++;
-		col_o++;
-		temp_o+='<th><?php echo $this->tr->translate("DEL");?></th>';
-		temp_o+='<th><?php echo $this->tr->translate("NO");?></th>';
-		temp_o+='<th><?php echo $this->tr->translate("FREE");?></th>';
-		temp_o+='<th><?php echo $this->tr->translate("CATEGORY");?></th>';
-		temp_o+='<th><?php echo $this->tr->translate("FOOD_NAME");?></th>';
-		temp_o+='<th><?php echo $this->tr->translate("QTY");?></th>';
-		temp_o+='<th><?php echo $this->tr->translate("PRICE");?></th>';
-		temp_o+='<th><?php echo $this->tr->translate("ADDRESS");?></th>';
-		temp_o+='<th><?php echo $this->tr->translate("DATE_DO");?></th>';
-		temp_o+='<th><?php echo $this->tr->translate("NOTE");?></th>';
-			
-		if(title_other!=1){
-		 	dojo.query("#head-title-other").append(temp_o);
-		 	title_other = 1;
-		}
-		template_o+='<td width="3%" align="center"><img onclick="deleteRecord('+col_o+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
-		template_o+='<td align="center">'+no_o+'</td>';
-		template_o+='<td align="center"><input type="checkbox" name="is_free_'+row_o+col_o+'" id="is_free_'+row_o+col_o+'" value="1"/></td>';
-		template_o+='<td><select dojoType="dijit.form.FilteringSelect" id="food_cat_name_'+row_o+col_o+'" onChange="getFoodByCat('+"'"+row_o+"'"+','+col_o+')" name="food_cat_name_'+row_o+col_o+'" style="width:100%;">';
-		template_o+='<option value="-1">Select Food Category</option>';
-			<?php foreach($this->food_cat as $key){?>
-				template_o+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
-			<?php }?>
-		template_o+='</select>';
-		template_o+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row_o+col_o+'" name="item_name_'+row_o+col_o+'" style="width:100%;">';
-			template_o+='<option value="-1">Select Food</option>';
-		<?php foreach($this->food as $key){?>
-			template_o+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name_kh'];?></option>';
-		<?php }?>
-		template_o+='</select>';
-		template_o+='<td>';
-		template_o+='<input type="text" style="width:57% !important;" class="width fullside" required="true" onKeyup="doAmountService('+col_o+');" name="qty_'+row_o+col_o+'" id="qty_'+row_o+col_o+'" dojoType="dijit.form.NumberTextBox" placeholder="quantity" style="width: 100%;"/>';
-		template_o+='<select style="margin-left: 5px;width:37% !important" name="label_'+row_o+col_o+'" id="label_'+row_o+col_o+'" dojoType="dijit.form.FilteringSelect" required="false" class="fullside l_width" >';
-			template_o+='<option value="" label="<?php echo $this->tr->translate("CHOOSE_LABEL");?>"><?php echo $this->tr->translate("CHOOSE_LABEL");?></option>';
-							<?php foreach ($this->label as $rs_l){?>
-								template_o+='<option value="<?php echo $rs_l["id"];?>"><?php echo $rs_l["name"];?></option>';
-							<?php }?>
-		template_o+='</select>';
-		template_o+='</td>';
-		template_o+='<td><input type="text" required="true" onKeyup="doAmountService('+col_o+');" name="price_'+row_o+col_o+'" id="price_'+row_o+col_o+'" dojoType="dijit.form.NumberTextBox" placeholder="price" style="width: 100%;"/> <input type="hidden" dojoType="dijit.form.TextBox" id="amount_'+row_o+col_o+'" name="amount_'+row_o+col_o+'"/></td>';
-		template_o+='<td>';
-			template_o+='<select name="address_'+row_o+col_o+'" id="address_'+row_o+col_o+'" dojoType="dijit.form.FilteringSelect" required="false" class="fullside" >';
-				template_o+='<option value="" label="Choose Location"><?php echo $this->tr->translate("CHOOSE_LOCATION");?></option>';
-			template_o+='</select>';
-		template_o+='</td>';
-		template_o+='<td>';
-			template_o+='<input type="text" name="date_'+row_o+col_o+'" id="date_'+row_o+col_o+'" dojoType="dijit.form.DateTextBox" value="now" class="fullside">';
-		template_o+='</td>';
-		template_o+='<td><input type="text"  name="note_'+row_o+col_o+'" id="note_'+row_o+col_o+'" dojoType="dijit.form.TextBox" placeholder="Note" style="width: 100%;"/></td>';
-	 tmp_o='<tr id="row'+row_o+col_o+'">';
-	 tmp_o+="</tr>";
-	 
-	 dojo.query("#table_row_other").append(tmp_o);
-	 
-		if($("#identity_other").val()!='') {
-			var identity = $("#identity_other").val();
-			$("#identity_other").val(identity+','+col_o);
-		} else {$("#identity_other").val(col_o);}
-	 dojo.html.set(dojo.byId("row"+row_o+col_o),template_o , {
-	     parseContent: true,
-	});
-	getAddrOther('other_',col_o);
-	
- }
+
 no_s =0;
 col_s =0;
-row_s = "ser_";
+row_s = "service_";
+row_name = "service";
 title_service=0;
  function addRowService(){
 	 	template_s='';
@@ -1460,7 +1455,7 @@ title_service=0;
 		 	dojo.query("#head-title-service").append(temp_s);
 		 	title_service = 1;
 		}
-		template_s+='<td width="3%" align="center"><img onclick="deleteRecord('+col_s+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
+		template_s+='<td width="3%" align="center"><img onclick="deleteRecord('+"'"+row_name+"'"+','+col_s+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 		template_s+='<td align="center">'+no_s+'</td>';
 		template_s+='<td><select dojoType="dijit.form.FilteringSelect" id="item_name_'+row_s+col_s+'" name="item_name_'+row_s+col_s+'" style="width:100%;">';
 		template_s+='<option value="-1">Select Service</option>';
@@ -1489,20 +1484,20 @@ title_service=0;
 	 dojo.html.set(dojo.byId("row"+row_s+col_s),template_s , {
 	     parseContent: true,
 	});
-	getAddrOther('ser_',col_s);
+	getAddrOther('service_',col_s);
  } 
 function hideDialog() {		
 	dijit.byId("popup_service").hide();
 }
- function deleteRecord(index) {
-		var identity = $('#identity').val();
+ function deleteRecord(row,index) {
+		var identity = $('#identity_'+row).val();
 		var arrays = identity.split(',');
 		for(var i=0;i<arrays.length;i++) {
 		if(arrays[i] == index) arrays.splice(i,1);
 		}
 		var strings = arrays.join(',');
-		$('#identity').val(strings);
-		dojo.query("#row"+index).remove();
+		$('#identity_'+row).val(strings);
+		dojo.query("#row"+row+"_"+index).remove();
 		//calculateDiscount(index);
 }
  function doAmount(index){
@@ -1573,6 +1568,12 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 	 				dijit.byId('date_dinner').attr('value',data.ceremony_date);
 // 	 				dijit.byId('address_dinner').attr('value',data.address);
 
+					dijit.byId('date_sacrifice').attr('value',data.ceremony_date);
+// 	 				dijit.byId('address_dinner').attr('value',data.address);
+
+					dijit.byId('date_other').attr('value',data.ceremony_date);
+// 	 				dijit.byId('address_dinner').attr('value',data.address);
+
 	 			},
 	 			error: function(err) {
 	 				alert(err);
@@ -1602,13 +1603,22 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 			    dijit.byId('address_lunch').set('store',addr_store);
 
 			    dijit.byId('address_dinner').reset('value');
-			    dijit.byId('address_dinner').set('store',addr_store);   
+			    dijit.byId('address_dinner').set('store',addr_store);  
+
+				dijit.byId('address_sacrifice').reset('value');
+			    dijit.byId('address_sacrifice').set('store',addr_store);  
+
+				dijit.byId('address_other').reset('value');
+			    dijit.byId('address_other').set('store',addr_store); 
+ 				
 				var arr = data.length;
 				for(i=0;i<arr;i++){
 					dijit.byId('address_wedding').attr('value',data[0].name);
 					dijit.byId('address_breakfast').attr('value',data[0].name);
 					dijit.byId('address_lunch').attr('value',data[0].name);
 					dijit.byId('address_dinner').attr('value',data[0].name);
+					dijit.byId('address_sacrifice').attr('value',data[0].name);
+					dijit.byId('address_other').attr('value',data[0].name);
 				}
 			},
 			error: function(err) {
@@ -1631,6 +1641,12 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 
 			    dijit.byId('address_dinner').reset('value');
 			    dijit.byId('address_dinner').set('store',addr_store);  
+				
+				dijit.byId('address_sacrifice').reset('value');
+			    dijit.byId('address_sacrifice').set('store',addr_store);  
+
+				dijit.byId('address_other').reset('value');
+			    dijit.byId('address_other').set('store',addr_store); 
 //alert(addr_data.length);				
 				var arr = addr_data.length;
 				for(i=0;i<arr;i++){
@@ -1639,6 +1655,9 @@ var url_c_date = '<?php echo $this->url(array('module'=>'order','controller'=>'q
 					dijit.byId('address_breakfast').attr('value',addr_data[0].name);
 					dijit.byId('address_lunch').attr('value',addr_data[0].name);
 					dijit.byId('address_dinner').attr('value',addr_data[0].name);
+					
+					dijit.byId('address_sacrifice').attr('value',addr_data[0].name);
+					dijit.byId('address_other').attr('value',addr_data[0].name);
 				}
 			
   }
