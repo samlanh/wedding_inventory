@@ -81,7 +81,7 @@ dojo.ready(function(){
 													   			<input type="text" dojoType="dijit.form.TextBox" name="first_name"  id="first_name" value="<?php echo $this->cusbyID["first_name"];?>" class="fullside">
 													   		</span>
 													   		<span id="old_cu">
-													   			<select dojoType='dijit.form.FilteringSelect' id="cu_id" name="cu_id" onChange="getCustomer()" class="fullside" >
+													   			<select dojoType='dijit.form.FilteringSelect' id="cu_id" name="cu_id" onChange="getCustomer()" class="fullside" required="false" >
 														   			<?php foreach ($this->cu_name as $rs){?>
 														   			<option value="<?php echo $rs["id"]?>" <?php if($this->cusbyID["id"]== $rs["id"]){ echo 'selected="selected"';}?>><?php echo $rs["first_name"]?></option>
 														   			<?php }?>
@@ -104,9 +104,9 @@ dojo.ready(function(){
 													</tr>
 													<tr>
 														<td><?php echo $tr->translate("EMAIL")?></td>
-											   			<td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->cusbyID["email"]?>" required="required"  id="email" name="email" class="fullside" /></td>
+											   			<td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->cusbyID["email"]?>"    id="email" name="email" class="fullside" /></td>
 											   			<td><?php echo $tr->translate("ADDRESS")?></td>
-											   			<td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->cusbyID["address"]?>" required="required"  id="address" name="address" class="fullside" /></td>
+											   			<td><input type="text" dojoType="dijit.form.TextBox" value="<?php echo $this->cusbyID["address"]?>"    id="address" name="address" class="fullside" /></td>
 													</tr>
 													
 											</table>
@@ -135,7 +135,7 @@ dojo.ready(function(){
 											</tr>
 											<tr>
 												<td><?php echo $tr->translate("ADDRESS_ONE")?></td>
-												<td colspan="3"><input type="text" dojoType="dijit.form.TextBox" required="required" name="ceremony_add1"  id="ceremony_add1" value="<?php echo $this->cusbyID["address_1"];?>" class="fullside"></td>
+												<td colspan="3"><input type="text" dojoType="dijit.form.TextBox"  name="ceremony_add1"  id="ceremony_add1" value="<?php echo $this->cusbyID["address_1"];?>" class="fullside"></td>
 											</tr>
 											<tr>
 												<td><?php echo $tr->translate("ADDRESS_TWO")?></td>
@@ -155,8 +155,7 @@ dojo.ready(function(){
 											iconClass="dijitIconClear" /> 
 										<input type="submit" value="SAVE_CLOSE" label="<?php echo $tr->translate('SAVECLOSE');?>" style="color:#000;" id="save_close" dojoType="dijit.form.Button" name="save_close"
 											iconClass="dijitEditorIcon dijitEditorIconSave" /> 
-										<input type="submit" value="SAVE_NEW" label="<?php echo $tr->translate('SAVENEW');?>" id="save_new" style="color:#000;" dojoType="dijit.form.Button" name="save_new"
-											iconClass="dijitEditorIcon dijitEditorIconSave"/>
+										 
 								</td>
 							</tr>
 							<tr style="background: #711A7B">

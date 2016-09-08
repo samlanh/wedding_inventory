@@ -225,6 +225,24 @@ class Application_Model_GlobalClass  extends Zend_Db_Table_Abstract
 			}
 			return $rows;
 		}
+		public function getMeeting($rows,$base_url, $case='',$type=null){
+			if($rows){
+				$no_meet='មិនទាន់បានជួប';
+				$meet='បានជួប';
+				$order_read='បានទទួលកាទីញ';
+				foreach ($rows as $i =>$row){
+					if($row['is_meeting'] == 0){
+						$rows[$i]['is_meeting'] = $no_meet;
+					}if($row['is_meeting'] == 1){
+						$rows[$i]['is_meeting'] = $meet;
+					}
+					if($row['is_meeting'] == 2){
+						$rows[$i]['is_meeting'] = $order_read;
+					}
+				}
+			}
+			return $rows;
+		}
 		public function getAllClientGroupOption(){
 			$_db = new Application_Model_DbTable_DbGlobal();
 			$rows = $_db->getClientByType();

@@ -25,6 +25,7 @@ class Group_indexController extends Zend_Controller_Action {
 			//print_r($rs_rows);exit();
 			$row=new Application_Model_GlobalClass();
 			$rs_rows=$row->getImgActive($rs_rows, BASE_URL);
+			$rs_rows=$row->getMeeting($rs_rows, BASE_URL);
 			$list = new Application_Form_Frmtable();
 			$collumns = array("CUSTOMER_NAME","Tel","EMAIL","CUSTOMER_ADDRESS","CEREMONY_DATE","ADDRESS_ONE","ADDRESS_TWO","ADDRESS_THREE","METTING","STATUS");
 			$link=array(

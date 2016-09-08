@@ -62,51 +62,20 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     	$db = $this->getAdapter();
     	$db->beginTransaction();
     	try{
-    		
+    		$arr = array(
+    				'title'	  			=> $_data['title'],
+    				'first_name'	  	=> $_data['first_name'],
+    				'phone'        		=>$_data['phone'],
+    				'email'				=>$_data['email'],
+    				'address'			=>$_data['address'],
+    				'status'  			=> 1,
+    		);
     		if(@$_data["is_new_cu"]){
-    			$arr = array(
-		    			'title'	  			=> $_data['title'],
-		    			//'customer_code'	  	=> $_data['client_no'],
-		    			'first_name'	  	=> $_data['first_name'],
-		    			//'last_name' 		=> $_data['last_name'],
-		    			//'note'	      		=> $_data['desc'],
-		    			'phone'        		=>$_data['phone'],
-		    			'email'				=>$_data['email'],
-		    			'address'			=>$_data['address'],
-		    			//'house_num'			=>$_data['house_no'],
-		    			//'street'			=>$_data['street'],
-		    			//'district' 			=> $_data["district"],
-		    			//'province_id'	  	=> $_data['province'],
-		    			'status'  			=> 1,
-		    			//'is_meeting'  		=> $_data['meeting'],
-		    			//'ceremony_date'  	=> $_data['ceremony_date'],
-		    			//'ceremony_address'  => $_data['ceremony_add'],
-		    			//'discount_login'  => $_data['discount_login'],
-		    			);
     			$this->_name ='ldc_customers';
 			    		$where = 'id = '.$_data['cu_id'];
 			    		$this->update($arr, $where);
 			    		$id = $_data['cu_id'];
     		}else{
-    			$arr = array(
-		    			'title'	  			=> $_data['title'],
-		    			'customer_code'	  	=> $_data['client_no'],
-		    			'first_name'	  	=> $_data['first_name'],
-		    			//'last_name' 		=> $_data['last_name'],
-		    			//'note'	      		=> $_data['desc'],
-		    			'phone'        		=>$_data['phone'],
-		    			'email'				=>$_data['email'],
-		    			'address'			=>$_data['address'],
-		    			//'house_num'			=>$_data['house_no'],
-		    			//'street'			=>$_data['street'],
-		    			//'district' 			=> $_data["district"],
-		    			//'province_id'	  	=> $_data['province'],
-		    			'status'  			=> 1,
-		    			//'is_meeting'  		=> $_data['meeting'],
-		    			//'ceremony_date'  	=> $_data['ceremony_date'],
-		    			//'ceremony_address'  => $_data['ceremony_add'],
-		    			//'discount_login'  => $_data['discount_login'],
-		    			);
     				$this->_name ='ldc_customers';
 			    	$id = $this->insert($arr);
     		}
@@ -160,83 +129,65 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     	$db = $this->getAdapter();
     	$db->beginTransaction();
     	try{
-    
     		if(@$_data["is_new_cu"]){
+    			//print_r($_data['is_new_cu']);exit();
     			$arr = array(
     					'title'	  			=> $_data['title'],
-    					//'customer_code'	  	=> $_data['client_no'],
     					'first_name'	  	=> $_data['first_name'],
-    					//'last_name' 		=> $_data['last_name'],
-    					//'note'	      		=> $_data['desc'],
     					'phone'        		=>$_data['phone'],
     					'email'				=>$_data['email'],
     					'address'			=>$_data['address'],
-    					//'house_num'			=>$_data['house_no'],
-    					//'street'			=>$_data['street'],
-    					//'district' 			=> $_data["district"],
-    					//'province_id'	  	=> $_data['province'],
     					'status'  			=> 1,
-    					//'is_meeting'  		=> $_data['meeting'],
-    					//'ceremony_date'  	=> $_data['ceremony_date'],
-    					//'ceremony_address'  => $_data['ceremony_add'],
-    					//'discount_login'  => $_data['discount_login'],
     			);
     			$this->_name ='ldc_customers';
     			$where = 'id = '.$_data['cu_id'];
     			$this->update($arr, $where);
-    			$id = $_data['cu_id'];
+    		
     		}else{
     			$arr = array(
     					'title'	  			=> $_data['title'],
     					'customer_code'	  	=> $_data['client_no'],
     					'first_name'	  	=> $_data['first_name'],
-    					//'last_name' 		=> $_data['last_name'],
-    					//'note'	      		=> $_data['desc'],
     					'phone'        		=>$_data['phone'],
     					'email'				=>$_data['email'],
     					'address'			=>$_data['address'],
-    					//'house_num'			=>$_data['house_no'],
-    					//'street'			=>$_data['street'],
-    					//'district' 			=> $_data["district"],
-    					//'province_id'	  	=> $_data['province'],
     					'status'  			=> 1,
-    					//'is_meeting'  		=> $_data['meeting'],
-    					//'ceremony_date'  	=> $_data['ceremony_date'],
-    					//'ceremony_address'  => $_data['ceremony_add'],
-    					//'discount_login'  => $_data['discount_login'],
     			);
     			$this->_name ='ldc_customers';
-    			$id = $this->insert($arr);
+    			$where = 'id = '.$_data['cu_id'];
+    			$this->update($arr, $where);
     		}
-    		$sql= "DELETE FROM ldc_customer_ceremony WHERE id =".$_data["id"];
-    		$db->query($sql);
+    		
+    		//$sql= "DELETE FROM ldc_customer_ceremony WHERE id =".$_data["id"];
+    		//$db->query($sql);
     		$array = array(
-    				'cu_id'				=>	$id,
+    				'cu_id'				=>	$_data['cu_id'],
     				'ceremony_date'		=>	$_data["ceremony_date"],
     				'address_1'			=>	$_data["ceremony_add1"],
-	    			'address_2'			=>	$_data["ceremony_add2"],
-	    			'address_3'			=>	$_data["ceremony_add3"],
+    				'address_2'			=>	$_data["ceremony_add2"],
+    				'address_3'			=>	$_data["ceremony_add3"],
     				'is_meeting'		=>	$_data["meeting"],
     				'status'			=>	$_data["status"],
     		);
-    		$this->_name="ldc_customer_ceremony";
-    		$cc_id = $this->insert($array);
+//     		$this->_name="ldc_customer_ceremony";
+//     		$this->insert($array);
+    		$this->_name ='ldc_customer_ceremony';
+    		$where = 'id = '.$_data['id'];
+    		$this->update($array, $where);
     		
-    		$sqls= "DELETE FROM ldc_ceremony_addr WHERE id =".$_data["id"];
+    		$sqls= "DELETE FROM ldc_ceremony_addr WHERE cc_id =".$_data["id"];
     		$db->query($sqls);
-    		
     		if(!empty($_data["ceremony_add1"])){
     			$arr_cc = array(
-    					'cc_id'		=>	$cc_id,
+    					'cc_id'		=>	$_data['id'],
     					'addr_name'	=>	$_data["ceremony_add1"]
     			);
     			$this->_name = "ldc_ceremony_addr";
     			$this->insert($arr_cc);
     		}
-    		
     		if(!empty($_data["ceremony_add2"])){
     			$arr_cc = array(
-    					'cc_id'		=>	$cc_id,
+    					'cc_id'		=>	$_data['id'],
     					'addr_name'	=>	$_data["ceremony_add2"]
     			);
     			$this->_name = "ldc_ceremony_addr";
@@ -244,14 +195,14 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     		}
     		if(!empty($_data["ceremony_add3"])){
     			$arr_cc = array(
-    					'cc_id'		=>	$cc_id,
+    					'cc_id'		=>	$_data['id'],
     					'addr_name'	=>	$_data["ceremony_add3"]
     			);
     			$this->_name = "ldc_ceremony_addr";
     			$this->insert($arr_cc);
     		}
     		 
-    		// 			    	exit();
+    	  	
     		$db->commit();
     	}catch(Exception $e){
     		$db->rollBack();

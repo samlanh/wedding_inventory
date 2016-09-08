@@ -79,7 +79,8 @@ dojo.ready(function(){
 													   			<input type="text" dojoType="dijit.form.ValidationTextBox" name="first_name"  id="first_name" value="" class="fullside" required="required">
 													   		</span>
 													   		<span id="old_cu">
-													   			<select dojoType='dijit.form.FilteringSelect' id="cu_id" name="cu_id" onChange="getCustomer()" class="fullside" required="false">
+													   			<select dojoType='dijit.form.FilteringSelect' id="cu_id" name="cu_id" onChange="getCustomer()" class="fullside" required="false"​​  placeholder="ជ្រើសរើស ឈ្មោះអតិថិជន">
+														   			<option></option>
 														   			<?php foreach ($this->cu_name as $rs){?>
 														   			<option value="<?php echo $rs["id"]?>"><?php echo $rs["first_name"]?></option>
 														   			<?php }?>
@@ -102,9 +103,9 @@ dojo.ready(function(){
 													</tr>
 													<tr>
 														<td><?php echo $tr->translate("EMAIL")?></td>
-											   			<td><input type="text" dojoType="dijit.form.ValidationTextBox" value="" required="required"  id="email" name="email" class="fullside" /></td>
+											   			<td><input type="text" dojoType="dijit.form.ValidationTextBox" value=""   id="email" name="email" class="fullside" /></td>
 											   			<td><?php echo $tr->translate("ADDRESS")?></td>
-											   			<td><input type="text" dojoType="dijit.form.ValidationTextBox" value="" required="required"  id="address" name="address" class="fullside" /></td>
+											   			<td><input type="text" dojoType="dijit.form.ValidationTextBox" value=""   id="address" name="address" class="fullside" /></td>
 													</tr>
 													
 											</table>
@@ -134,7 +135,7 @@ dojo.ready(function(){
 											
 											<tr>
 												<td><?php echo $tr->translate("ADDRESS_ONE")?></td>
-												<td colspan="3"><input type="text" dojoType="dijit.form.ValidationTextBox" required="required" name="ceremony_add1"  id="ceremony_add1" value="" class="fullside"></td>
+												<td colspan="3"><input type="text" dojoType="dijit.form.ValidationTextBox"   name="ceremony_add1"  id="ceremony_add1" value="" class="fullside"></td>
 											</tr>
 											<tr>
 												<td><?php echo $tr->translate("ADDRESS_TWO")?></td>
