@@ -41,18 +41,17 @@ dojo.ready(function(){
 											<legend align="left" style="padding-left: 10px;"><strong><?php echo $tr->translate("ADD_SUPPLIER")?></strong></legend>
 											<table style="margin: 0 auto;" cellspacing="10">
 													<tr>
-													   <td><?php echo $tr->translate("SEX")?></td>
-													   <td><select dojoType='dijit.form.FilteringSelect' id="title" name="title" class="fullside">
-													   			<option value="1" <?php if($this->supplier['title']==1) {echo "selected='selected'";} ?>><?php echo $tr->translate("MALE")?></option>
-													   			<option value="2" <?php if($this->supplier['title']==2) {echo "selected='selected'";} ?>><?php echo $tr->translate("FEMALE")?></option>
-													   		</select>
+													    <td><?php echo $tr->translate("SUPPLIER_NAME")?>*</td>
+													   <td><input type="text" dojoType="dijit.form.TextBox" required="required" name="first_name"  id="first_name" value="<?php echo $this->supplier["first_name"];?>" class="fullside"></td>
 													   <td><?php echo $tr->translate("CUSTOMER_ID")?></td>
 													   <td><input type="text" dojoType="dijit.form.TextBox" readonly="readonly" name="su_no"  id="su_no" value="<?php echo $this->supplier["su_code"];?>" class="fullside"></td>
 													</tr>
 													<tr>
-													   <td><?php echo $tr->translate("SUPPLIER_NAME")?>*</td>
-													   <td><input type="text" dojoType="dijit.form.TextBox" required="required" name="first_name"  id="first_name" value="<?php echo $this->supplier["first_name"];?>" class="fullside"></td>
-													   
+													    <td><?php echo $tr->translate("SEX")?></td>
+													   <td><select dojoType='dijit.form.FilteringSelect' id="title" name="title" class="fullside">
+													   			<option value="1" <?php if($this->supplier['title']==1) {echo "selected='selected'";} ?>><?php echo $tr->translate("MALE")?></option>
+													   			<option value="2" <?php if($this->supplier['title']==2) {echo "selected='selected'";} ?>><?php echo $tr->translate("FEMALE")?></option>
+													   		</select>
 													</tr>
 													<tr>
 														<td><?php echo $tr->translate("Tel")?></td>

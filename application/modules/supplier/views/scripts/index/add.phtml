@@ -68,17 +68,18 @@ dojo.ready(function(){
 											<legend align="left" style="padding-left: 10px;"><strong><?php echo $tr->translate("ADD_SUPPLIER")?></strong></legend>
 											<table style="margin: 0 auto;" cellspacing="10">
 													<tr>
-													   <td><?php echo $tr->translate("SEX")?></td>
-													   <td><select dojoType='dijit.form.FilteringSelect' id="title" name="title" class="fullside">
-													   			<option value="1"><?php echo $tr->translate("MALE")?></option>
-													   			<option value="2"><?php echo $tr->translate("FEMALE")?></option>
-													   		</select>
+													    <td><?php echo $tr->translate("SUPPLIER_NAME")?>*</td>
+													   <td><input type="text" dojoType="dijit.form.ValidationTextBox" required="required" name="first_name"  id="first_name" value="" class="fullside"></td>
 													   <td><?php echo $tr->translate("CUSTOMER_ID")?></td>
 													   <td><input type="text" dojoType="dijit.form.TextBox" readonly="readonly" name="su_no"  id="su_no" value="<?php echo $this->su_no;?>" class="fullside"></td>
 													</tr>
 													<tr>
-													   <td><?php echo $tr->translate("SUPPLIER_NAME")?>*</td>
-													   <td><input type="text" dojoType="dijit.form.ValidationTextBox" required="required" name="first_name"  id="first_name" value="" class="fullside"></td>
+													  <td><?php echo $tr->translate("SEX")?></td>
+													   <td><select dojoType='dijit.form.FilteringSelect' id="title" name="title" class="fullside">
+													   			<option value="1"><?php echo $tr->translate("MALE")?></option>
+													   			<option value="2"><?php echo $tr->translate("FEMALE")?></option>
+													   		</select>
+													   </td>
 													   <td></td>
 													   <td></td>
 													</tr>
