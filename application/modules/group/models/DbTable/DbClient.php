@@ -65,6 +65,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     		$arr = array(
     				'title'	  			=> $_data['title'],
     				'first_name'	  	=> $_data['first_name'],
+    				'customer_code'	  	=> $_data['client_no'],
     				'phone'        		=>$_data['phone'],
     				'email'				=>$_data['email'],
     				'address'			=>$_data['address'],
@@ -129,37 +130,24 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     	$db = $this->getAdapter();
     	$db->beginTransaction();
     	try{
+    		$arr = array(
+    				'title'	  			=> $_data['title'],
+    				'customer_code'	  	=> $_data['client_no'],
+    				'first_name'	  	=> $_data['first_name'],
+    				'phone'        		=>$_data['phone'],
+    				'email'				=>$_data['email'],
+    				'address'			=>$_data['address'],
+    				'status'  			=> 1,
+    		);
     		if(@$_data["is_new_cu"]){
-    			//print_r($_data['is_new_cu']);exit();
-    			$arr = array(
-    					'title'	  			=> $_data['title'],
-    					'first_name'	  	=> $_data['first_name'],
-    					'phone'        		=>$_data['phone'],
-    					'email'				=>$_data['email'],
-    					'address'			=>$_data['address'],
-    					'status'  			=> 1,
-    			);
     			$this->_name ='ldc_customers';
     			$where = 'id = '.$_data['cu_id'];
     			$this->update($arr, $where);
-    		
     		}else{
-    			$arr = array(
-    					'title'	  			=> $_data['title'],
-    					'customer_code'	  	=> $_data['client_no'],
-    					'first_name'	  	=> $_data['first_name'],
-    					'phone'        		=>$_data['phone'],
-    					'email'				=>$_data['email'],
-    					'address'			=>$_data['address'],
-    					'status'  			=> 1,
-    			);
     			$this->_name ='ldc_customers';
     			$where = 'id = '.$_data['cu_id'];
     			$this->update($arr, $where);
     		}
-    		
-    		//$sql= "DELETE FROM ldc_customer_ceremony WHERE id =".$_data["id"];
-    		//$db->query($sql);
     		$array = array(
     				'cu_id'				=>	$_data['cu_id'],
     				'ceremony_date'		=>	$_data["ceremony_date"],
@@ -169,8 +157,6 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     				'is_meeting'		=>	$_data["meeting"],
     				'status'			=>	$_data["status"],
     		);
-//     		$this->_name="ldc_customer_ceremony";
-//     		$this->insert($array);
     		$this->_name ='ldc_customer_ceremony';
     		$where = 'id = '.$_data['id'];
     		$this->update($array, $where);
@@ -201,8 +187,6 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
     			$this->_name = "ldc_ceremony_addr";
     			$this->insert($arr_cc);
     		}
-    		 
-    	  	
     		$db->commit();
     	}catch(Exception $e){
     		$db->rollBack();
