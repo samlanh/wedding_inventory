@@ -166,6 +166,21 @@ class Items_indexController extends Zend_Controller_Action {
 			exit();
 		}
 	}
+	 
+	function getItemAction(){
+		if($this->getRequest()->isPost()){
+			$data = $this->getRequest()->getPost();
+			$db = new Items_Model_DbTable_DbVehicle();
+			$row = $db->getItem($data['name'],$data["cat_id"],$data["mea_id"],$data["sup_id"]);
+			if(!empty($row)){
+				$rs=1;
+			}else{
+				$rs=0;
+			}
+			print_r(Zend_Json::encode($rs));
+			exit();
+		}
+	}
 	
 	
 }

@@ -46,9 +46,9 @@ new dijit.form.FilteringSelect({
     	if(make_id==-1){
 			dijit.byId('pop_make').show();
 	     }
-    	else {
-    		dijit.byId('model').attr('value','');
-    		getallModel(make_id);
+    	else { checkItem();
+    		//dijit.byId('model').attr('value','');
+    		//getallModel(make_id);
     	}           
     }
 }, "make");
@@ -78,13 +78,13 @@ dojo.ready(function(){
 							    
 							    <tr>
 							    	<td></td>
-							    	<td></td>
+							    	<td><label name="message" id="message"></label></td>
 							    	<td><?php echo $this->tr->translate("ITEM_NO");?></td>
 									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside"  id="product_no" name="product_no" value="<?php echo $this->porid ?>" type="text" required="true"></td>
 							    </tr>
 							    <tr>
 									<td><?php echo $this->tr->translate("ITEM_NAME");?></td>
-									<td><input tabindex="2"dojoType="dijit.form.ValidationTextBox" class="fullside" id="product_name_kh" name="product_name_kh" value="" type="text" required="true"></td>	
+									<td><input tabindex="2"dojoType="dijit.form.ValidationTextBox" class="fullside" id="product_name_kh" name="product_name_kh" value="" type="text" required="true" onKeyup="checkItem();"></td>	
 									<td><?php echo $this->tr->translate("MANAGE_CATEGORY");?></td>
 									<td><input id="make" /></td>
 									
@@ -95,7 +95,7 @@ dojo.ready(function(){
 								<tr>
 									<td><?php echo $this->tr->translate("MANAGE_MEASURE");?></td>
 									<td>
-										<select tabindex="24" name="unit" id="unit" dojoType="dijit.form.FilteringSelect" class="fullside" onChange="showMeasur();">
+										<select tabindex="24" name="unit" id="unit" dojoType="dijit.form.FilteringSelect" class="fullside" onChange="showMeasur();checkItem();">
 										    <option>please selected</option>
 										   <?php if(!empty($this->unit)) foreach ($this->unit as $row){?>
 										    <option value="<?php echo $row['id'];?>"><?php echo $row['name']?></option>
@@ -142,6 +142,7 @@ dojo.ready(function(){
 															 		iconClass="dijitIconEditProperty" onclick="addRow();" />
 																<input type="hidden" name="identity" id="identity"  value="" >
 																<input type="hidden" id="sum" name="sum" value="" /> 
+																<input type="text" id="sup_id" name="sup_id" value=""/>
 																
 															 </td>
 														</tr>
@@ -195,7 +196,7 @@ dojo.ready(function(){
 		<table class="height" >
 			<tr>
 				<td><?php echo  $this->tr->translate("MEASURE_NAME_KH");?></td>
-				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_measure" name="txt_measure" value="" type="text"></td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_measure" name="txt_measure" value="" type="text" onKeyup="checkItem();"></td>
 				
 			</tr>
 			<tr>
@@ -350,7 +351,7 @@ function addRow() {
 		}
 			template+='<td width="5%" align="center"><img onclick="deleteRecord('+col+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 			template+='<td width="5%" align="center">'+no+'</td>';
-			template+='<td><select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" placeHolder="Select Supplier" onChange="sumValue('+col+');addSuppliers('+col+');" >';
+			template+='<td><select dojoType="dijit.form.FilteringSelect" id="supplier_name_'+col+'" name="supplier_name_'+col+'" style="width:100%;" placeHolder="Select Supplier" onChange="sumValue('+col+');addSuppliers('+col+');checkItem();" >';
 				template+='<option value="" label="Select Supplier">Select Supplier</option>';
 			<?php foreach($this->supplier as $key){?>
 				template+='<option value="'+<?php echo $key['id']?>+'"><?php echo $key['name'];?></option>';
@@ -387,9 +388,10 @@ function addSuppliers(i){
 	supplier_id=dijit.byId('supplier_name_'+i).get('value');
 	if(supplier_id==-1){
 		dijit.byId('popup_supplier').show();
-		
-	}
-	      
+		 $('#sup_id').val('');
+	}else { 
+			 $('#sup_id').val(supplier_id); 
+		 }
 }
 function sumValue(i){
 	 $('#sum').attr('value',i);
@@ -449,6 +451,38 @@ function addMeasure(){
 			},
 			error: function(err) {
 				alert(err);
+			}
+		});
+	}
+}
+//condition name item have already
+var url_check_item= '<?php echo $this->url(array('module'=>'items','controller'=>'index','action'=>'get-item')); ?>';
+function checkItem(){
+	name= dijit.byId('product_name_kh').get('value');
+	cat_id= dijit.byId('make').get('value');
+	mea_id= dijit.byId('unit').get('value');
+	sup_id= $('#sup_id').val();
+	if(name !='' && cat_id !='' && mea_id !='' && sup_id !='' ){
+		dojo.xhrPost({
+			url: url_check_item,
+			content:{
+	 			'name':name,
+	 			'cat_id':cat_id,
+	 			'mea_id':mea_id,
+	 			'sup_id':sup_id,
+	 			},
+			handleAs:"json",
+			load: function(data) {
+				if(data==1){
+	            	   name_kh=dijit.byId('product_name_kh').get('value');
+		               dojo.byId('message').innerHTML='<h4  style="color:red;">​'+name_kh+'ឈ្មោះគ្រឿងផ្សំ  មានរួចហើយ!</h4>'; 
+		               dijit.byId('product_name_kh').attr('value','');
+	               }else {
+	            	   dojo.byId('message').innerHTML='';
+	               }
+			},
+			error: function(err) {
+				//alert(err);
 			}
 		});
 	}
