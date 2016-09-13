@@ -176,7 +176,7 @@ class Items_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
 		
 		return $db->fetchAll($sql);
 	}
-	function getItem($name,$cat_id,$mea_id,$sup_id){
+	function getItem($name,$cat_id,$mea_id){
 		$db=$this->getAdapter();
 		$sql="SELECT  p.id,p.pro_name_kh,ip.su_id
 					FROM ldc_product AS p,
@@ -184,7 +184,6 @@ class Items_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
 					WHERE p.id = ip.item_id
 					    AND p.category_id =$cat_id
 					    AND p.unit = $mea_id
-					    AND ip.su_id=$sup_id
 						AND p.pro_name_kh='$name'";
 		return $db->fetchRow($sql);
 	}

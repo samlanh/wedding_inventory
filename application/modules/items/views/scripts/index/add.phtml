@@ -461,15 +461,14 @@ function checkItem(){
 	name= dijit.byId('product_name_kh').get('value');
 	cat_id= dijit.byId('make').get('value');
 	mea_id= dijit.byId('unit').get('value');
-	sup_id= $('#sup_id').val();
-	if(name !='' && cat_id !='' && mea_id !='' && sup_id !='' ){
+	//sup_id= $('#sup_id').val();
+	if(name !='' && cat_id !='' && mea_id !=''){
 		dojo.xhrPost({
 			url: url_check_item,
 			content:{
 	 			'name':name,
 	 			'cat_id':cat_id,
 	 			'mea_id':mea_id,
-	 			'sup_id':sup_id,
 	 			},
 			handleAs:"json",
 			load: function(data) {
